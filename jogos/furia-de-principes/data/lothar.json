@@ -946,6 +946,871 @@
         }
       ]
     },
+    "61": {
+      "estado": "extraida",
+      "resumo": "Após acordar, Lothar e Colthar encontram um porão com duas saídas possíveis e decidem juntos o caminho.",
+      "choices": [
+        {
+          "label": "Lothar entra pelo buraco estreito",
+          "target": 112
+        },
+        {
+          "label": "Os dois passam pela porta",
+          "target": 196
+        }
+      ]
+    },
+    "62": {
+      "estado": "extraida",
+      "resumo": "Ao tocar um montículo coberto de musgo, Lothar é ofuscado e sofre uma pequena queda.",
+      "effects": [
+        {
+          "type": "change_stat",
+          "stat": "energia",
+          "delta": -1
+        }
+      ],
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 393
+        }
+      ]
+    },
+    "63": {
+      "estado": "extraida",
+      "resumo": "Sozinho, Lothar chega a uma bifurcação entre floresta e montanhas.",
+      "choices": [
+        {
+          "label": "Seguir para a floresta",
+          "target": 257
+        },
+        {
+          "label": "Seguir para as montanhas",
+          "target": 167
+        }
+      ]
+    },
+    "64": {
+      "estado": "extraida",
+      "resumo": "Diante de uma criatura, Lothar escolhe entre três feitiços com custos diferentes.",
+      "spellOptions": [
+        {
+          "label": "Enfraquecer a criatura",
+          "cost": 1,
+          "successTarget": 275
+        },
+        {
+          "label": "Criar uma ilusão de força vinda da terra",
+          "cost": 2,
+          "successTarget": 361
+        },
+        {
+          "label": "Congelar a criatura",
+          "cost": 3,
+          "successTarget": 435
+        }
+      ],
+      "failureTarget": 404
+    },
+    "65": {
+      "estado": "extraida",
+      "resumo": "No castelo decadente de Peleus, Lothar decide onde passar a noite.",
+      "choices": [
+        {
+          "label": "Dormir na cama do quarto",
+          "target": 174
+        },
+        {
+          "label": "Dormir do lado de fora do quarto",
+          "target": 284
+        }
+      ]
+    },
+    "66": {
+      "estado": "extraida",
+      "resumo": "Um feitiço destrói uma criatura alada; o outro jogador precisa acompanhar o mesmo evento.",
+      "partnerInstruction": {
+        "sendToReference": 66
+      },
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 202
+        }
+      ]
+    },
+    "67": {
+      "estado": "extraida",
+      "resumo": "Uma bola de fogo dispersa o restante de um bando inimigo.",
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 273
+        }
+      ]
+    },
+    "68": {
+      "estado": "extraida",
+      "resumo": "Um homem reage com magia e deixa Lothar inconsciente de forma definitiva.",
+      "ending": "death",
+      "afterDeathReference": 39
+    },
+    "69": {
+      "estado": "extraida",
+      "resumo": "Uma garrafa de vinho provoca uma briga entre as duas cabeças de um gigante e permite a fuga dos irmãos.",
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 224
+        }
+      ]
+    },
+    "70": {
+      "estado": "parcial",
+      "resumo": "Os irmãos enfrentam juntos o Coletor de Impostos e seus capangas; o OCR não permite confirmar todos os atributos do grupo com segurança.",
+      "encounterNeedsReview": true,
+      "knownEnemies": [
+        {
+          "name": "Capanga Um",
+          "habilidade": 8,
+          "energia": 8
+        },
+        {
+          "name": "Capanga Dois",
+          "habilidade": 8,
+          "energia": 6
+        },
+        {
+          "name": "Capanga Três",
+          "habilidade": 7,
+          "energia": 6
+        }
+      ],
+      "allowCombatMagic": true,
+      "choices": [
+        {
+          "label": "Vitória com Colthar ativo",
+          "target": 132,
+          "conditions": [
+            {
+              "type": "partner_active"
+            }
+          ]
+        },
+        {
+          "label": "Vitória após Colthar sair da aventura",
+          "target": 189,
+          "conditions": [
+            {
+              "type": "partner_removed"
+            }
+          ]
+        }
+      ],
+      "needsManualReview": true
+    },
+    "71": {
+      "estado": "extraida",
+      "resumo": "Os jogadores conversam e uma rolagem de um dado define o próximo destino.",
+      "roll": {
+        "dice": "1d6",
+        "routes": [
+          {
+            "range": [
+              1,
+              3
+            ],
+            "target": 44
+          },
+          {
+            "range": [
+              4,
+              6
+            ],
+            "target": 185
+          }
+        ]
+      }
+    },
+    "72": {
+      "estado": "extraida",
+      "resumo": "Depois de deixar a casa do Troll, Lothar escolhe entre duas trilhas na margem do rio.",
+      "choices": [
+        {
+          "label": "Trilha da esquerda",
+          "target": 432
+        },
+        {
+          "label": "Trilha da direita",
+          "target": 340
+        }
+      ]
+    },
+    "73": {
+      "estado": "extraida",
+      "resumo": "Colthar responde às três velhas e os dois seguem para a consequência do encontro.",
+      "partnerInstruction": {
+        "sendToReference": 73
+      },
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 389
+        }
+      ]
+    },
+    "74": {
+      "estado": "extraida",
+      "resumo": "Depois de vencer o Tubarão, Lothar decide voltar ao recife ou mergulhar em direção às cavernas.",
+      "choices": [
+        {
+          "label": "Voltar ao recife",
+          "target": 390
+        },
+        {
+          "label": "Mergulhar para as cavernas",
+          "target": 456
+        }
+      ]
+    },
+    "75": {
+      "estado": "extraida",
+      "resumo": "A referência redireciona diretamente para outro ponto da aventura.",
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 101
+        }
+      ]
+    },
+    "76": {
+      "estado": "extraida",
+      "resumo": "Um feitiço reduz a Hidra a um pequeno lagarto, deixando a chave acessível.",
+      "choices": [
+        {
+          "label": "Pegar a chave e prosseguir",
+          "target": 41
+        }
+      ]
+    },
+    "77": {
+      "estado": "extraida",
+      "resumo": "Depois de vencer um monstro no lago, Lothar escolhe entre subir até uma construção ou continuar pelas montanhas.",
+      "choices": [
+        {
+          "label": "Subir até a construção",
+          "target": 300
+        },
+        {
+          "label": "Continuar pelas montanhas",
+          "target": 210
+        }
+      ]
+    },
+    "78": {
+      "estado": "extraida",
+      "resumo": "Após a morte de Colthar e dos Gremlins, Lothar alcança a outra margem e escolhe uma das duas trilhas.",
+      "partnerRemoved": true,
+      "choices": [
+        {
+          "label": "Caminho da esquerda",
+          "target": 432
+        },
+        {
+          "label": "Caminho da direita",
+          "target": 340
+        }
+      ]
+    },
+    "79": {
+      "estado": "extraida",
+      "resumo": "Uma cabeça de madeira propõe um enigma sobre o número de planetas; os irmãos escolhem entre três respostas.",
+      "choices": [
+        {
+          "label": "Responder sete",
+          "target": 120
+        },
+        {
+          "label": "Responder oito",
+          "target": 182
+        },
+        {
+          "label": "Responder nove",
+          "target": 244
+        }
+      ]
+    },
+    "80": {
+      "estado": "extraida",
+      "resumo": "Lothar enfrenta um grupo de Diabinhos Infernais tratado como um único oponente; magia de combate é permitida.",
+      "encounter": {
+        "allowCombatMagic": true,
+        "enemies": [
+          {
+            "name": "Diabinhos Infernais",
+            "habilidade": 9,
+            "energia": 8
+          }
+        ]
+      },
+      "onVictory": 133
+    },
+    "81": {
+      "estado": "extraida",
+      "resumo": "Os irmãos encontram 40 moedas de ouro e decidem como dividir o tesouro.",
+      "partnerInstruction": {
+        "sendToReference": 81
+      },
+      "effects": [
+        {
+          "type": "add_shared_loot",
+          "gold": 40
+        }
+      ],
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 224
+        }
+      ]
+    },
+    "82": {
+      "estado": "extraida",
+      "resumo": "Uma armadilha em um túnel custa um ponto de ENERGIA e força Lothar a retornar para a outra passagem.",
+      "effects": [
+        {
+          "type": "change_stat",
+          "stat": "energia",
+          "delta": -1
+        }
+      ],
+      "choices": [
+        {
+          "label": "Pegar a outra passagem",
+          "target": 278
+        }
+      ]
+    },
+    "83": {
+      "estado": "extraida",
+      "resumo": "Diante da toca dos Scuttlies, Lothar escolhe entre três feitiços; falha obriga os irmãos a persegui-los.",
+      "spellOptions": [
+        {
+          "label": "Lançar bola de fogo",
+          "cost": 2,
+          "successTarget": 130
+        },
+        {
+          "label": "Usar um feitiço encontrado",
+          "cost": 1,
+          "successTarget": 159
+        },
+        {
+          "label": "Fazer os Scuttlies voltarem à toca",
+          "cost": 3,
+          "successTarget": 198
+        }
+      ],
+      "failureTarget": 47,
+      "partnerOnFailure": 47
+    },
+    "84": {
+      "estado": "extraida",
+      "resumo": "O Roc é atingido por flechas e cai, encerrando a aventura.",
+      "ending": "death"
+    },
+    "85": {
+      "estado": "extraida",
+      "resumo": "Após os Orcs serem derrotados, Lothar liberta Colthar de uma armadilha e os dois voltam à rota anterior.",
+      "partnerInstruction": {
+        "sendToReference": 85
+      },
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 9
+        }
+      ]
+    },
+    "86": {
+      "estado": "extraida",
+      "resumo": "Os irmãos chegam à costa e à longa ponte de corda que leva à Ilha de Orcmoot.",
+      "choices": [
+        {
+          "label": "Prosseguir para a ponte",
+          "target": 136
+        }
+      ]
+    },
+    "87": {
+      "estado": "extraida",
+      "resumo": "Lothar tenta convencer um mercador de escravos a capturar Colthar; o resultado depende de um Teste de Sorte.",
+      "test": {
+        "type": "luck",
+        "successTarget": 149,
+        "failureTarget": 442
+      }
+    },
+    "88": {
+      "estado": "extraida",
+      "resumo": "Os irmãos enfrentam juntos uma Bruxa; quando ela vence uma série de ataque, ambos sofrem dano simultaneamente.",
+      "effects": [
+        {
+          "type": "change_stat",
+          "stat": "energia",
+          "delta": -2
+        }
+      ],
+      "encounter": {
+        "cooperative": true,
+        "specialRule": "enemy_hit_damages_both",
+        "enemies": [
+          {
+            "name": "Bruxa",
+            "habilidade": 10,
+            "energia": 6
+          }
+        ]
+      },
+      "choices": [
+        {
+          "label": "Vitória com Colthar ativo",
+          "target": 315,
+          "conditions": [
+            {
+              "type": "partner_active"
+            }
+          ]
+        },
+        {
+          "label": "Vitória após Colthar sair da aventura",
+          "target": 376,
+          "conditions": [
+            {
+              "type": "partner_removed"
+            }
+          ]
+        }
+      ]
+    },
+    "89": {
+      "estado": "extraida",
+      "resumo": "Lothar recupera os materiais roubados pelo Wight e retorna às Fadas.",
+      "choices": [
+        {
+          "label": "Voltar às Fadas",
+          "target": 7
+        }
+      ]
+    },
+    "90": {
+      "estado": "extraida",
+      "resumo": "Lothar decide evitar uma travessia pelo deserto e segue para o porto de Kalamandar.",
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 227
+        }
+      ]
+    },
+    "91": {
+      "estado": "extraida",
+      "resumo": "No pântano, Lothar pode escolher uma de duas trilhas ou abandonar o caminho e seguir uma luz.",
+      "choices": [
+        {
+          "label": "Caminho da esquerda",
+          "target": 276
+        },
+        {
+          "label": "Caminho da direita",
+          "target": 252
+        },
+        {
+          "label": "Ir em direção à luz",
+          "target": 231
+        }
+      ]
+    },
+    "92": {
+      "estado": "extraida",
+      "resumo": "Preso dentro de uma árvore que o esmaga, Lothar precisa escolher entre três feitiços.",
+      "spellOptions": [
+        {
+          "label": "Alargar o interior da árvore",
+          "cost": 1,
+          "successTarget": 320
+        },
+        {
+          "label": "Mandar a árvore parar",
+          "cost": 1,
+          "successTarget": 206
+        },
+        {
+          "label": "Dar força a si mesmo",
+          "cost": 2,
+          "successTarget": 24
+        }
+      ],
+      "failureTarget": 461
+    },
+    "93": {
+      "estado": "extraida",
+      "resumo": "Lothar encontra uma Pedra de Poder que permite recuperar um ponto de um atributo à escolha e então chega a uma bifurcação.",
+      "effects": [
+        {
+          "type": "add_item",
+          "item": "pedra_de_poder"
+        }
+      ],
+      "playerEffectChoice": {
+        "type": "restore_one_stat",
+        "stats": [
+          "habilidade",
+          "energia",
+          "sorte",
+          "magia"
+        ],
+        "amount": 1,
+        "cap": "initial"
+      },
+      "choices": [
+        {
+          "label": "Corredor da esquerda",
+          "target": 494
+        },
+        {
+          "label": "Corredor da direita",
+          "target": 111
+        }
+      ]
+    },
+    "94": {
+      "estado": "extraida",
+      "resumo": "Os irmãos escapam do saco e enfrentam juntos um Gigante; magia de combate é permitida.",
+      "partnerInstruction": {
+        "sendToReference": 94
+      },
+      "encounter": {
+        "cooperative": true,
+        "allowCombatMagic": true,
+        "enemies": [
+          {
+            "name": "Gigante",
+            "habilidade": 10,
+            "energia": 10
+          }
+        ]
+      },
+      "onVictory": 498
+    },
+    "95": {
+      "estado": "extraida",
+      "resumo": "Num pátio interno, Lothar conduz um tapete mágico em direção a uma porta ou janela.",
+      "choices": [
+        {
+          "label": "Ir para a porta",
+          "target": 208
+        },
+        {
+          "label": "Ir para a janela",
+          "target": 156
+        }
+      ]
+    },
+    "96": {
+      "estado": "extraida",
+      "resumo": "Um velho monge dá uma pista sobre a Gema Sagrada e quatro Discos de Conhecimento; depois Lothar escolhe uma trilha.",
+      "choices": [
+        {
+          "label": "Trilha da esquerda",
+          "target": 405
+        },
+        {
+          "label": "Trilha da direita",
+          "target": 437
+        }
+      ]
+    },
+    "97": {
+      "estado": "extraida",
+      "resumo": "Uma Sereia imobiliza Lothar magicamente após uma resposta errada.",
+      "ending": "death",
+      "afterDeathReference": 39
+    },
+    "98": {
+      "estado": "extraida",
+      "resumo": "Colthar corta uma raiz e provoca o desabamento do túnel sobre os dois.",
+      "ending": "death"
+    },
+    "99": {
+      "estado": "extraida",
+      "resumo": "Lothar enfrenta um Verme de Lava; um Feitiço de Combate é permitido.",
+      "encounter": {
+        "allowCombatMagic": true,
+        "enemies": [
+          {
+            "name": "Verme de Lava",
+            "habilidade": 8,
+            "energia": 8
+          }
+        ]
+      },
+      "onVictory": 282
+    },
+    "100": {
+      "estado": "extraida",
+      "resumo": "Um Cavaleiro Negro desafia Lothar; magia de combate é permitida.",
+      "encounter": {
+        "allowCombatMagic": true,
+        "enemies": [
+          {
+            "name": "Cavaleiro Negro",
+            "habilidade": 11,
+            "energia": 8
+          }
+        ]
+      },
+      "onVictory": 36
+    },
+    "101": {
+      "estado": "extraida",
+      "resumo": "Um Druida imobiliza Lothar, que acaba sacrificado.",
+      "ending": "death",
+      "afterDeathReference": 39
+    },
+    "102": {
+      "estado": "extraida",
+      "resumo": "Lothar encontra um bastão metálico com ponta rosqueada e depois Testa a Sorte.",
+      "effects": [
+        {
+          "type": "add_item",
+          "item": "bastao_metalico_rosqueado"
+        }
+      ],
+      "test": {
+        "type": "luck",
+        "successTarget": 415,
+        "failureTarget": 326
+      }
+    },
+    "103": {
+      "estado": "extraida",
+      "resumo": "Sem Colthar, Lothar chega à ponte de pedágio e decide pagar duas moedas ou enfrentar o Troll.",
+      "choices": [
+        {
+          "label": "Pagar 2 moedas",
+          "target": 277,
+          "conditions": [
+            {
+              "type": "gold_gte",
+              "value": 2
+            }
+          ],
+          "effects": [
+            {
+              "type": "change_gold",
+              "delta": -2
+            }
+          ]
+        },
+        {
+          "label": "Enfrentar o Troll",
+          "target": 316
+        }
+      ]
+    },
+    "104": {
+      "estado": "extraida",
+      "resumo": "A tentativa de roubar as chaves da Amazona falha e custa um ponto de HABILIDADE.",
+      "effects": [
+        {
+          "type": "change_stat",
+          "stat": "habilidade",
+          "delta": -1
+        }
+      ],
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 161
+        }
+      ]
+    },
+    "105": {
+      "estado": "extraida",
+      "resumo": "A Hidra oferece passagem em troca de tudo que Lothar possui, exceto o cajado; ele pode aceitar ou lutar.",
+      "choices": [
+        {
+          "label": "Entregar os bens",
+          "target": 26
+        },
+        {
+          "label": "Atacar a Hidra",
+          "target": 487
+        }
+      ]
+    },
+    "106": {
+      "estado": "extraida",
+      "resumo": "Os irmãos recolhem uma seda forte como corda; logo depois Lothar cai num alçapão e é separado de Colthar.",
+      "effects": [
+        {
+          "type": "add_item",
+          "item": "linha_de_seda"
+        }
+      ],
+      "choices": [
+        {
+          "label": "Seguir sozinho pela margem",
+          "target": 293
+        }
+      ]
+    },
+    "107": {
+      "estado": "extraida",
+      "resumo": "As três velhas perguntam qual delas é a mais bela; os irmãos precisam escolher uma resposta.",
+      "choices": [
+        {
+          "label": "A velha com um olho",
+          "target": 152
+        },
+        {
+          "label": "A velha com um dente",
+          "target": 247
+        },
+        {
+          "label": "A velha com uma garra",
+          "target": 351
+        },
+        {
+          "label": "As três juntas",
+          "target": 469
+        }
+      ]
+    },
+    "108": {
+      "estado": "extraida",
+      "resumo": "Ao atacar um navio pirata com magia, Lothar é morto por uma saraivada de flechas.",
+      "ending": "death",
+      "afterDeathReference": 39
+    },
+    "109": {
+      "estado": "extraida",
+      "resumo": "Lothar paga mais duas moedas aos barqueiros e chega à margem norte.",
+      "effects": [
+        {
+          "type": "change_gold",
+          "delta": -2
+        }
+      ],
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 209
+        }
+      ]
+    },
+    "110": {
+      "estado": "extraida",
+      "resumo": "Lothar escolhe qual de três pessoas próximas deve sacudir.",
+      "choices": [
+        {
+          "label": "Mulher gorda e sorridente",
+          "target": 16
+        },
+        {
+          "label": "Homem magro e sério",
+          "target": 40
+        },
+        {
+          "label": "Homem gordo e barbado",
+          "target": 68
+        }
+      ]
+    },
+    "111": {
+      "estado": "validada",
+      "resumo": "Ponto de sincronização: Lothar define AÇÃO 38 e aguarda STATUS.",
+      "effects": [
+        {
+          "type": "set_shared",
+          "key": "acao",
+          "value": 38
+        }
+      ]
+    },
+    "112": {
+      "estado": "extraida",
+      "resumo": "Num túnel estreito, Lothar enfrenta um Rato Gigante.",
+      "encounter": {
+        "enemies": [
+          {
+            "name": "Rato Gigante",
+            "habilidade": 7,
+            "energia": 6
+          }
+        ]
+      },
+      "onVictory": 234,
+      "onDefeat": 295
+    },
+    "113": {
+      "estado": "extraida",
+      "resumo": "Lothar provoca o Wight para fora da caverna e decide atraí-lo para a floresta ou para o alto da montanha.",
+      "choices": [
+        {
+          "label": "Levar o Wight para a floresta",
+          "target": 197
+        },
+        {
+          "label": "Levar o Wight montanha acima",
+          "target": 177
+        }
+      ]
+    },
+    "114": {
+      "estado": "extraida",
+      "resumo": "A trilha volta a se dividir dentro do pântano.",
+      "choices": [
+        {
+          "label": "Caminho da esquerda",
+          "target": 276
+        },
+        {
+          "label": "Caminho da direita",
+          "target": 252
+        }
+      ]
+    },
+    "115": {
+      "estado": "extraida",
+      "resumo": "Lothar manda Colthar para a referência indicada e aguarda instruções do outro jogador.",
+      "partnerInstruction": {
+        "sendToReference": 51,
+        "wait": true
+      }
+    },
+    "116": {
+      "estado": "extraida",
+      "resumo": "Depois de vencer o Duende, Lothar encontra uma garrafa de Seiva de Árvore que pode levar consigo antes de seguir.",
+      "choices": [
+        {
+          "label": "Levar a Seiva de Árvore",
+          "target": 60,
+          "effects": [
+            {
+              "type": "add_item",
+              "item": "seiva_de_arvore"
+            }
+          ]
+        },
+        {
+          "label": "Deixar a garrafa",
+          "target": 60
+        }
+      ]
+    },
     "148": {
       "estado": "validada",
       "resumo": "Ponto confirmado de sincronização: Lothar define AÇÃO 22 e aguarda STATUS.",
