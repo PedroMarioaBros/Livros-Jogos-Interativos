@@ -126,3 +126,23 @@ Este lote acrescentou:
 Total atual de Lothar: **300 de 500 referências (60%)**.
 
 A referência 217 continua marcada para revisão visual por ambiguidade de OCR. Referências como 246 e 250 permanecem parciais quando exigem estado histórico ou interação econômica que ainda será consolidada no motor.
+
+
+## Quarto lote de Lothar — referências 301 a 400
+
+A estrutura narrativa foi ampliada continuamente até a referência **400**.
+
+Foram acrescentados novos pontos de sincronização, combates cooperativos, rolagens contra atributos, objetos de uso especial, caminhos condicionais e uma habilidade permanente conquistada após a vitória sobre o Djinn.
+
+## Quinto lote de Lothar — referências 401 a 500
+
+A extração estrutural do volume **O Caminho do Feiticeiro** foi concluída.
+
+- total: **500 de 500 referências cadastradas**;
+- referência 500 identificada como final de sucesso de Lothar;
+- todos os números de 1 a 500 possuem uma entrada no banco;
+- pontos de AÇÃO conhecidos foram preservados;
+- mortes, remoções, combates, escolhas, magia, itens e instruções cooperativas foram representados estruturalmente;
+- situações cuja leitura do OCR é duvidosa continuam marcadas como `parcial` ou `needsManualReview`, em vez de serem adivinhadas.
+
+A conclusão da extração estrutural **não significa que o volume esteja totalmente validado ou testado**. As próximas etapas para Lothar são revisão visual das referências ambíguas, consolidação de exceções ainda parciais e teste automatizado do grafo completo.
