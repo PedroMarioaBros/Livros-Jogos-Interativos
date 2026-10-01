@@ -22,7 +22,7 @@
 - [x] Catalogar os 12 Feitiços de Combate
 - [x] Modelar custo, falha e limite de Feitiço de Combate
 - [ ] Aplicar automaticamente os 12 efeitos mágicos ao combate
-- [ ] Modelar combates cooperativos e múltiplos inimigos
+- [x] Modelar combates cooperativos e múltiplos inimigos
 - [ ] Consolidar regras especiais encontradas nas referências
 - [ ] Extrair referências de Colthar
 - [ ] Extrair referências de Lothar
