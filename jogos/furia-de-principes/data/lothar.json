@@ -394,9 +394,13 @@
           "target": 132,
           "conditions": [
             {
-              "type": "shared_gold_sufficient"
+              "type": "shared_gold_gte",
+              "value": 20
             }
-          ]
+          ],
+          "sharedPayment": {
+            "amount": 20
+          }
         },
         {
           "label": "Não conseguir pagar",
@@ -3464,9 +3468,13 @@
           "target": 458,
           "conditions": [
             {
-              "type": "shared_gold_sufficient"
+              "type": "shared_gold_gte",
+              "value": 10
             }
-          ]
+          ],
+          "sharedPayment": {
+            "amount": 10
+          }
         },
         {
           "label": "Não há ouro suficiente",
