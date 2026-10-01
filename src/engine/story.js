@@ -5,6 +5,51 @@ function hasItem(character, item) {
   return character.items.includes(item);
 }
 
+export function countItem(character, item) {
+  return (character?.items || []).filter(entry => entry === item).length;
+}
+
+function isStackableItem(item, context = {}) {
+  return (context.itemTags?.stackable || []).includes(item);
+}
+
+export function resolveDynamicDuoComparison(
+  comparison,
+  character,
+  partnerCharacter
+) {
+  if (!comparison || !character || !partnerCharacter) return null;
+
+  const resource = comparison.resource;
+  const selfCount = countItem(character, resource);
+  const partnerCount = countItem(partnerCharacter, resource);
+
+  if (selfCount > partnerCount) {
+    return {
+      target: comparison.selfGreaterTarget,
+      selfCount,
+      partnerCount,
+      outcome: "self-greater"
+    };
+  }
+
+  if (partnerCount > selfCount) {
+    return {
+      target: comparison.partnerGreaterTarget,
+      selfCount,
+      partnerCount,
+      outcome: "partner-greater"
+    };
+  }
+
+  return {
+    target: comparison.equalTarget,
+    selfCount,
+    partnerCount,
+    outcome: "equal"
+  };
+}
+
 function hasFlag(character, flag) {
   return character.flags.includes(flag);
 }
@@ -140,7 +185,12 @@ export function applyEffect(character, effect, context = {}, rng = Math.random) 
     }
 
     case "add_item": {
-      if (!hasItem(character, effect.item)) character.items.push(effect.item);
+      if (
+        isStackableItem(effect.item, context) ||
+        !hasItem(character, effect.item)
+      ) {
+        character.items.push(effect.item);
+      }
       const resolvedTemporary = resolveTemporaryEffects(character, context);
       return {
         type: effect.type,
