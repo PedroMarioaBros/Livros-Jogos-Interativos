@@ -160,3 +160,12 @@ Após a conclusão estrutural das 500 referências de Lothar, a extração volto
 - a rolagem compartilhada da referência 71 passou a ser executável na interface.
 
 A extração continua usando apenas estrutura, efeitos e resumos técnicos, sem copiar o texto integral da obra.
+
+
+### Revisão do início de Colthar e economia compartilhada
+
+A revisão do trecho já extraído confirmou a referência **7** como combate contra **Moscas Gigantes — HABILIDADE 5, ENERGIA 4**, com vitória levando à referência 386.
+
+Também foi consolidado o tratamento das finanças conjuntas nas referências em que os dois irmãos precisam reunir ouro. O motor agora soma o ouro dos dois personagens para verificar cobranças, permite definir quanto cada um paga e possui uma etapa interativa para dividir moedas e objetos encontrados em conjunto.
+
+O tesouro ainda não dividido também passa a fazer parte do salvamento da partida.
