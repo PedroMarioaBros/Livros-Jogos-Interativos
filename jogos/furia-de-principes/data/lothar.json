@@ -8,6 +8,11 @@
     "sorte": "1d6+6",
     "magia": "2d6+12"
   },
+  "startingResources": {
+    "provisions": 10,
+    "gold": 10,
+    "items": ["cavalo", "cajado", "mochila"]
+  },
   "references": {
     "1": {
       "estado": "validada",
