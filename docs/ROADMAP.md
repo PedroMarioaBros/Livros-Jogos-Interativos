@@ -40,6 +40,7 @@
   - [x] Penalidades temporárias até recuperar arma
   - [x] Condições STATUS/AÇÃO com múltiplos valores
   - [x] Dano simultâneo da Bruxa aos dois príncipes
+  - [x] Combate cooperativo do Coletor de Impostos com quatro adversários
 - [ ] Extrair referências de Colthar
   - [x] Primeira expansão estrutural: 77 referências cadastradas no banco
 - [x] Extrair referências de Lothar
