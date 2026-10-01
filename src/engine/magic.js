@@ -20,13 +20,30 @@ function spendMagic(character, amount) {
   return true;
 }
 
+export function combatSpellLimit(character) {
+  return character?.flags?.includes("dois_feiticos_de_combate")
+    ? 2
+    : 1;
+}
+
 export function castCombatSpell(character, spell, encounter, options = {}) {
   if (!encounter || typeof encounter !== "object") {
     throw new Error("O encontro de combate é obrigatório.");
   }
 
-  if (encounter.combatSpellAttempted) {
-    return { ok: false, reason: "combat-spell-already-attempted" };
+  const attempts = Number(
+    encounter.combatSpellsAttempted ??
+    (encounter.combatSpellAttempted ? 1 : 0)
+  );
+  const limit = combatSpellLimit(character);
+
+  if (attempts >= limit) {
+    return {
+      ok: false,
+      reason: "combat-spell-limit-reached",
+      attempts,
+      limit
+    };
   }
 
   const rng = options.rng || Math.random;
@@ -46,6 +63,7 @@ export function castCombatSpell(character, spell, encounter, options = {}) {
     return { ok: false, reason: "insufficient-magic" };
   }
 
+  encounter.combatSpellsAttempted = attempts + 1;
   encounter.combatSpellAttempted = true;
 
   const die = rollDie(6, rng);
@@ -56,6 +74,8 @@ export function castCombatSpell(character, spell, encounter, options = {}) {
     die,
     cost,
     magicAfter: character.stats.magia,
+    attempts: encounter.combatSpellsAttempted,
+    limit,
     effect: success ? spell.effect : null
   };
 
