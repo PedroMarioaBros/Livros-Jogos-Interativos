@@ -1,0 +1,34 @@
+{
+  "character": "colthar",
+  "displayName": "Colthar",
+  "class": "guerreiro",
+  "initialStats": {
+    "habilidade": "1d6+6",
+    "energia": "2d6+12",
+    "sorte": "1d6+6"
+  },
+  "references": {
+    "1": {
+      "estado": "validada",
+      "resumo": "Abertura da aventura e decisão entre seguir com o irmão ou partir sozinho.",
+      "choices": [
+        {
+          "label": "Viajar junto com o irmão",
+          "target": 199
+        },
+        {
+          "label": "Seguir sozinho",
+          "target": 148
+        }
+      ]
+    },
+    "148": {
+      "estado": "pendente",
+      "resumo": "Referência reservada para extração e validação."
+    },
+    "199": {
+      "estado": "pendente",
+      "resumo": "Referência reservada para extração e validação."
+    }
+  }
+}
