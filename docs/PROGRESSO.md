@@ -7,27 +7,27 @@ As porcentagens abaixo são estimativas de engenharia para um **Fúria de Prínc
 | Área | Progresso |
 | --- | ---: |
 | Fundação e arquitetura | 100% |
-| Motor genérico de livro-jogo | 95% |
-| Regras específicas de Fúria de Príncipes | 89% |
+| Motor genérico de livro-jogo | 96% |
+| Regras específicas de Fúria de Príncipes | 92% |
 | Conteúdo de Colthar | 8,8% |
-| Conteúdo de Lothar | 60,0% |
+| Conteúdo de Lothar | 100% estrutural |
 | STATUS/AÇÃO e sincronização | ~35% |
 | Combate individual | 95% |
-| Magia de Lothar | 90% |
+| Magia de Lothar | 95% |
 | Combate cooperativo | 80% |
-| Interface funcional | 79% |
+| Interface funcional | 82% |
 | Salvamento e histórico | 95% |
 | Dois jogadores no mesmo aparelho | 75% |
 | Sincronização entre dois aparelhos | 0% |
 | Camada instalável/offline | 55% |
 | Ilustrações e áudio finais | 0–5% |
-| Testes do motor | 86% |
-| Testes da aventura completa | ~15% |
+| Testes do motor | 88% |
+| Testes da aventura completa | ~22% |
 
 ## Medidas objetivas atuais
 
 - Colthar: 44 referências cadastradas de aproximadamente 500.
-- Lothar: 300 referências cadastradas de 500 (60,0%).
+- Lothar: 500 referências cadastradas de 500 (100% da estrutura narrativa).
 - Sincronização: 20 pontos STATUS/AÇÃO cadastrados.
 - Feitiços de Combate: 12 de 12 catalogados e com efeitos implementados.
 - Modo local em dupla: duas fichas independentes, passagem protegida do aparelho e estado compartilhado.
@@ -38,12 +38,12 @@ As porcentagens abaixo são estimativas de engenharia para um **Fúria de Prínc
 
 | Marco | Progresso estimado |
 | --- | ---: |
-| Motor reutilizável | ~95% |
-| Demonstração jogável de Fúria | ~85% |
+| Motor reutilizável | ~96% |
+| Demonstração jogável de Fúria | ~89% |
 | Colthar solo completo | ~20% |
-| Lothar solo completo | ~68% |
-| Fúria completo no mesmo aparelho | ~58% |
-| Aplicativo Android final | ~54% do caminho total |
+| Lothar solo completo | ~84% |
+| Fúria completo no mesmo aparelho | ~66% |
+| Aplicativo Android final | ~61% do caminho total |
 
 ## Critério
 
