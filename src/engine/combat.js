@@ -199,17 +199,53 @@ export function createCooperativeCombatState(
     alternateHero: null,
     mode: "parallel",
     step: 0,
-    log: []
+    log: [],
+    finished: false,
+    winner: null,
+    modifiersByHero: {
+      0: {},
+      1: {}
+    },
+    proxiesByHero: {}
   };
 
   refreshCooperativeMode(state, options.rng || Math.random);
   return state;
 }
 
+function cooperativeCombatant(state, heroIndex) {
+  const proxy = state.proxiesByHero?.[heroIndex];
+
+  if (proxy?.stats?.energia > 0) {
+    return {
+      combatant: proxy,
+      usedProxy: true
+    };
+  }
+
+  return {
+    combatant: state.heroes[heroIndex],
+    usedProxy: false
+  };
+}
+
 export function cooperativeCombatStep(state, options = {}) {
   const rng = options.rng || Math.random;
-  const modifiersByHero = options.modifiersByHero || {};
+  const modifiersByHero =
+    options.modifiersByHero ||
+    state.modifiersByHero ||
+    {};
   const events = [];
+
+  if (state.finished) {
+    return {
+      finished: true,
+      winner: state.winner,
+      events,
+      heroesAlive: livingHeroIndexes(state),
+      enemiesAlive: livingEnemyIndexes(state)
+    };
+  }
 
   refreshCooperativeMode(state, rng);
 
@@ -233,8 +269,9 @@ export function cooperativeCombatStep(state, options = {}) {
     }
 
     const heroIndex = state.alternateHero;
+    const active = cooperativeCombatant(state, heroIndex);
     const result = combatRound(
-      state.heroes[heroIndex],
+      active.combatant,
       state.enemies[enemyIndex],
       rng,
       modifiersByHero[heroIndex] || {}
@@ -244,6 +281,10 @@ export function cooperativeCombatStep(state, options = {}) {
       mode: "alternate",
       heroIndex,
       enemyIndex,
+      attackerName: active.combatant.name || state.heroes[heroIndex].name,
+      usedProxy: active.usedProxy,
+      proxyDefeated:
+        active.usedProxy && active.combatant.stats.energia <= 0,
       result
     });
 
@@ -268,8 +309,9 @@ export function cooperativeCombatStep(state, options = {}) {
       );
 
     for (const { heroIndex, enemyIndex } of pairs) {
+      const active = cooperativeCombatant(state, heroIndex);
       const result = combatRound(
-        state.heroes[heroIndex],
+        active.combatant,
         state.enemies[enemyIndex],
         rng,
         modifiersByHero[heroIndex] || {}
@@ -279,6 +321,10 @@ export function cooperativeCombatStep(state, options = {}) {
         mode: "parallel",
         heroIndex,
         enemyIndex,
+        attackerName: active.combatant.name || state.heroes[heroIndex].name,
+        usedProxy: active.usedProxy,
+        proxyDefeated:
+          active.usedProxy && active.combatant.stats.energia <= 0,
         result
       });
     }
@@ -290,11 +336,15 @@ export function cooperativeCombatStep(state, options = {}) {
   const heroesAlive = livingHeroIndexes(state);
   const enemiesAlive = livingEnemyIndexes(state);
   const finished = heroesAlive.length === 0 || enemiesAlive.length === 0;
+  const winner =
+    !finished ? null : enemiesAlive.length === 0 ? "heroes" : "enemies";
+
+  state.finished = finished;
+  state.winner = winner;
 
   return {
     finished,
-    winner:
-      !finished ? null : enemiesAlive.length === 0 ? "heroes" : "enemies",
+    winner,
     mode: state.mode,
     events,
     heroesAlive,
