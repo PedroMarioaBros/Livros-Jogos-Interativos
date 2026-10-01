@@ -56,6 +56,41 @@ export function applyEffect(character, effect, context = {}, rng = Math.random) 
       character.items = [];
       return { type: effect.type };
 
+    case "stash_and_clear_items":
+      character.stashedItems = [...character.items];
+      character.items = [];
+      return {
+        type: effect.type,
+        stashed: [...character.stashedItems]
+      };
+
+    case "stash_items_except": {
+      const keep = new Set(effect.items || []);
+      const removed = character.items.filter(item => !keep.has(item));
+      character.stashedItems = [
+        ...(character.stashedItems || []),
+        ...removed
+      ];
+      character.items = character.items.filter(item => keep.has(item));
+      return {
+        type: effect.type,
+        stashed: [...removed],
+        kept: [...character.items]
+      };
+    }
+
+    case "restore_stashed_items": {
+      const restored = [...(character.stashedItems || [])];
+      for (const item of restored) {
+        if (!hasItem(character, item)) character.items.push(item);
+      }
+      character.stashedItems = [];
+      return {
+        type: effect.type,
+        restored
+      };
+    }
+
     case "add_item":
       if (!hasItem(character, effect.item)) character.items.push(effect.item);
       return { type: effect.type, item: effect.item };
@@ -150,6 +185,24 @@ export function applyEffect(character, effect, context = {}, rng = Math.random) 
         stat: effect.stat,
         roll,
         before,
+        value
+      };
+    }
+
+    case "recover_fraction_last_combat_damage": {
+      const damage = Math.max(0, Number(character.lastCombatDamage || 0));
+      const amount = Math.floor(damage * Number(effect.fraction || 0));
+      const before = character.stats[effect.stat];
+      const value = modifyStat(
+        character,
+        effect.stat,
+        amount
+      );
+      return {
+        type: effect.type,
+        stat: effect.stat,
+        damage,
+        recovered: value - before,
         value
       };
     }
