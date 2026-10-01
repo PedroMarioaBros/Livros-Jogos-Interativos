@@ -1,0 +1,52 @@
+{
+  "version": 1,
+  "modes": {
+    "dupla": {
+      "sharedInitial": {
+        "status": 0,
+        "acao": 0
+      }
+    },
+    "solo": {
+      "sharedFixed": {
+        "status": 1,
+        "acao": 1
+      },
+      "ignoreSharedMutations": true
+    }
+  },
+  "luck": {
+    "dice": "2d6",
+    "success": "total <= sorte_atual",
+    "costAfterTest": 1,
+    "minimum": 0
+  },
+  "combat": {
+    "attackRoll": "2d6 + habilidade",
+    "normalDamage": 2,
+    "tieDamage": 0,
+    "multipleEnemiesSolo": "sequential",
+    "twoHeroesOneEnemy": "alternate-attacks"
+  },
+  "provisions": {
+    "initial": 10,
+    "energyPerPortion": 2,
+    "forbiddenContexts": [
+      "combat",
+      "casting-spell",
+      "hostilities"
+    ],
+    "energyCannotExceedInitial": true
+  },
+  "attributeCaps": {
+    "energia": "initial",
+    "habilidade": "initial",
+    "sorte": "initial"
+  },
+  "magic": {
+    "combatSpellTiming": "before-combat",
+    "combatSpellsPerEncounter": 1,
+    "failureDieResult": 6,
+    "costPaidBeforeFailureCheck": true
+  }
+}
