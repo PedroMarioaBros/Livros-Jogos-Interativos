@@ -30,6 +30,7 @@
       </div>
 
       <button id="start" class="primary" style="margin-top:18px">🎲 Gerar ficha e começar</button>
+      <button id="load-game" style="margin-top:10px">💾 Carregar partida salva</button>
       <p id="message" class="muted" style="margin-top:10px"></p>
     </section>
 
@@ -56,6 +57,16 @@
           <button id="test-luck">🍀 Testar Sorte</button>
         </div>
         <p id="game-message" class="muted" style="margin-top:12px"></p>
+
+        <div class="grid" style="margin-top:12px">
+          <button id="save-game">💾 Salvar partida</button>
+          <button id="restart-game">↻ Recomeçar</button>
+        </div>
+
+        <div class="card" style="margin-top:14px">
+          <strong>Histórico de decisões</strong>
+          <div id="history" class="history-list muted" style="margin-top:10px"></div>
+        </div>
 
         <div class="card dev-tools" style="margin-top:14px">
           <strong>Ferramenta de teste</strong>
