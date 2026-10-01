@@ -49,10 +49,12 @@
 - [ ] Sons e música opcionais
 
 ## Fase 4 — Dois jogadores
-- [ ] Turnos no mesmo aparelho
-- [ ] Ocultação de informações privadas
+- [x] Turnos no mesmo aparelho
+- [x] Ocultação de informações privadas
 - [x] Infraestrutura para pontos de sincronização entre os dois príncipes
 - [ ] Pontos de encontro narrativos entre os dois príncipes
+  - [x] Sessões independentes de Colthar e Lothar no mesmo aparelho
+  - [x] Passagem protegida do aparelho entre jogadores
 - [ ] Sincronização entre dois aparelhos
 
 ## Regra de qualidade
