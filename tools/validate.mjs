@@ -123,6 +123,26 @@ for (const character of ["colthar", "lothar"]) {
   }
 }
 
+const lotharComplete = await readJSON(
+  "jogos/furia-de-principes/data/lothar.json"
+);
+const lotharIds = Object.keys(lotharComplete.references || {})
+  .map(Number)
+  .sort((a, b) => a - b);
+
+if (lotharIds.length !== 500) {
+  log(
+    "error",
+    `Lothar possui ${lotharIds.length} referências; esperado: 500`
+  );
+}
+
+for (let id = 1; id <= 500; id += 1) {
+  if (!lotharComplete.references[String(id)]) {
+    log("error", `Lothar: referência ausente ${id}`);
+  }
+}
+
 const spellData = await readJSON("jogos/furia-de-principes/rules/spells.json");
 const spellIds = new Set();
 
