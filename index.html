@@ -82,6 +82,20 @@
         <div class="muted">Encontro</div>
         <h2 id="combat-title">Combate</h2>
         <p id="combat-opponents"></p>
+
+        <div id="spell-panel" class="spell-panel hidden">
+          <strong>✨ Feitiço de Combate</strong>
+          <div class="grid" style="margin-top:10px">
+            <select id="spell-select" aria-label="Feitiço de Combate"></select>
+            <div id="spell-variable-wrap" class="hidden">
+              <label for="spell-magic-spend">MAGIA para Recuperação</label>
+              <input id="spell-magic-spend" type="number" min="3" step="3" value="3">
+            </div>
+          </div>
+          <button id="cast-spell" style="margin-top:10px">🪄 Lançar feitiço</button>
+          <p id="spell-result" class="muted" style="margin-top:10px"></p>
+        </div>
+
         <div id="combat-log" class="combat-log"></div>
         <div class="grid" style="margin-top:12px">
           <button id="combat-round" class="primary">🎲 Rolar rodada</button>
