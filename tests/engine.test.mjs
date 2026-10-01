@@ -16,6 +16,7 @@ import { processSyncPoint, resolveSyncTarget } from "../src/engine/sync.js";
 import { applyEffects, availableChoices } from "../src/engine/story.js";
 import { createEncounter, playEncounterRound } from "../src/engine/encounter.js";
 import { createSaveSnapshot, serializeSave, parseSave } from "../src/engine/save.js";
+import { applyCombatSpell } from "../src/engine/spell-combat.js";
 
 function sequence(values) {
   let index = 0;
@@ -376,4 +377,121 @@ test("salvamento rejeita versão incompatível", () => {
     () => parseSave(JSON.stringify({ version: 999 })),
     /incompatível/
   );
+});
+
+
+const mageData = {
+  character: "lothar",
+  displayName: "Lothar",
+  class: "feiticeiro",
+  initialStats: {
+    habilidade: "1d6+4",
+    energia: "2d6+12",
+    sorte: "1d6+6",
+    magia: "2d6+12"
+  },
+  startingResources: {
+    provisions: 10,
+    gold: 10,
+    items: ["cavalo", "cajado", "mochila"]
+  }
+};
+
+test("Poder aumenta HABILIDADE apenas como modificador do encontro", () => {
+  const mage = createCharacter(mageData, sequence([0, 0, 0, 0, 0]));
+  const originalSkill = mage.stats.habilidade;
+  const encounter = createEncounter(1, {
+    enemies: [{ name: "Inimigo", habilidade: 8, energia: 8 }]
+  });
+
+  const result = applyCombatSpell(
+    mage,
+    encounter,
+    { id: "poder", name: "Poder", cost: 1, effect: { type: "hero-skill-delta", value: 1 } },
+    { rng: sequence([0]) }
+  );
+
+  assert.equal(result.success, true);
+  assert.equal(encounter.modifiers.heroSkill, 1);
+  assert.equal(mage.stats.habilidade, originalSkill);
+});
+
+test("Sono pode vencer o encontro sem iniciar combate", () => {
+  const mage = createCharacter(mageData, sequence([0, 0, 0, 0, 0]));
+  const encounter = createEncounter(1, {
+    enemies: [{ name: "Inimigo", habilidade: 8, energia: 2 }]
+  });
+
+  const result = applyCombatSpell(
+    mage,
+    encounter,
+    {
+      id: "sono",
+      name: "Sono",
+      cost: 1,
+      effect: {
+        type: "sleep-check-per-enemy",
+        failsIfAnyDieIs: 6
+      }
+    },
+    { rng: sequence([0, 0, 0]) }
+  );
+
+  assert.equal(result.success, true);
+  assert.equal(result.encounterVictory, true);
+  assert.equal(encounter.enemies[0].asleep, true);
+});
+
+test("Sombra luta primeiro e preserva a ENERGIA de Lothar ao cair", () => {
+  const mage = createCharacter(mageData, sequence([0, 0, 0, 0, 0]));
+  const originalEnergy = mage.stats.energia;
+  const encounter = createEncounter(1, {
+    enemies: [{ name: "Inimigo", habilidade: 20, energia: 20 }]
+  });
+
+  const spell = applyCombatSpell(
+    mage,
+    encounter,
+    {
+      id: "sombra",
+      name: "Sombra",
+      cost: 1,
+      effect: { type: "combat-proxy", habilidade: 7, energia: 4 }
+    },
+    { rng: sequence([0]) }
+  );
+
+  assert.equal(spell.success, true);
+
+  encounter.proxy.stats.energia = 2;
+  const round = playEncounterRound(encounter, mage, {
+    rng: sequence([0.9, 0.9, 0, 0])
+  });
+
+  assert.equal(round.round.usedProxy, true);
+  assert.equal(round.round.proxyDefeated, true);
+  assert.equal(mage.stats.energia, originalEnergy);
+});
+
+test("Estontear pode anular um golpe recebido", () => {
+  const hero = createCharacter(warriorData, sequence([0, 0, 0, 0]));
+  hero.stats.habilidade = 1;
+  const enemy = createOpponent({ name: "Forte", habilidade: 20, energia: 10 });
+
+  const result = combatRound(
+    hero,
+    enemy,
+    sequence([0.9, 0.9, 0, 0, 0]),
+    {
+      incomingHitSave: {
+        noDamageResults: [1, 2, 3],
+        normalDamageResults: [4, 5, 6]
+      }
+    }
+  );
+
+  assert.equal(result.outcome, "enemy-hit");
+  assert.equal(result.incomingSaveRoll, 1);
+  assert.equal(result.damagePrevented, true);
+  assert.equal(result.damage, 0);
 });
