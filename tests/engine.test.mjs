@@ -20,7 +20,10 @@ import { processSyncPoint, resolveSyncTarget } from "../src/engine/sync.js";
 import { applyEffects, availableChoices } from "../src/engine/story.js";
 import { createEncounter, playEncounterRound } from "../src/engine/encounter.js";
 import { createSaveSnapshot, serializeSave, parseSave } from "../src/engine/save.js";
-import { applyCombatSpell } from "../src/engine/spell-combat.js";
+import {
+  applyCombatSpell,
+  applyCooperativeCombatSpell
+} from "../src/engine/spell-combat.js";
 import { createDuoSession, beginHandoff, completeHandoff, updateDuoPlayer } from "../src/engine/duo.js";
 
 function sequence(values) {
@@ -270,6 +273,129 @@ test("quando sobra um único inimigo, os heróis alternam as séries de ataque",
   assert.equal(second.events[0].mode, "alternate");
 });
 
+
+test("Feitiço de Combate aplica modificadores aos dois príncipes", () => {
+  const colthar = createCharacter(warriorData, sequence([0, 0, 0, 0]));
+  const lothar = {
+    name: "Lothar",
+    initialStats: { habilidade: 7, energia: 14, sorte: 7, magia: 12 },
+    stats: { habilidade: 7, energia: 14, sorte: 7, magia: 12 },
+    flags: []
+  };
+  const enemy = createOpponent({ name: "Troll", habilidade: 9, energia: 10 });
+  const state = createCooperativeCombatState([colthar, lothar], [enemy], {
+    rng: sequence([0])
+  });
+
+  const result = applyCooperativeCombatSpell(
+    lothar,
+    state,
+    {
+      id: "aura-de-invencibilidade",
+      name: "Aura de Invencibilidade",
+      cost: 3,
+      effect: { type: "hero-and-ally-skill-delta", value: 1 }
+    },
+    {
+      heroIndex: 1,
+      rng: sequence([0])
+    }
+  );
+
+  assert.equal(result.ok, true);
+  assert.equal(result.success, true);
+  assert.equal(state.modifiersByHero[0].heroSkill, 1);
+  assert.equal(state.modifiersByHero[1].heroSkill, 1);
+  assert.equal(lothar.stats.magia, 9);
+});
+
+test("Sombra recebe o dano no lugar de Lothar em combate cooperativo", () => {
+  const colthar = createCharacter(warriorData, sequence([0, 0, 0, 0]));
+  const lothar = {
+    name: "Lothar",
+    initialStats: { habilidade: 7, energia: 14, sorte: 7, magia: 12 },
+    stats: { habilidade: 7, energia: 14, sorte: 7, magia: 12 },
+    flags: []
+  };
+  const enemies = [
+    createOpponent({ name: "A", habilidade: 20, energia: 8 }),
+    createOpponent({ name: "B", habilidade: 20, energia: 8 })
+  ];
+  const state = createCooperativeCombatState([colthar, lothar], enemies, {
+    rng: sequence([0])
+  });
+
+  const spellResult = applyCooperativeCombatSpell(
+    lothar,
+    state,
+    {
+      id: "sombra",
+      name: "Sombra",
+      cost: 1,
+      effect: { type: "combat-proxy", habilidade: 7, energia: 4 }
+    },
+    {
+      heroIndex: 1,
+      rng: sequence([0])
+    }
+  );
+
+  const before = lothar.stats.energia;
+  const round = cooperativeCombatStep(state, {
+    rng: sequence([
+      0.9, 0.9, 0, 0,
+      0.9, 0.9, 0, 0
+    ])
+  });
+  const lotharEvent = round.events.find(event => event.heroIndex === 1);
+
+  assert.equal(spellResult.success, true);
+  assert.equal(lotharEvent.usedProxy, true);
+  assert.equal(lotharEvent.attackerName, "Sombra");
+  assert.equal(state.proxiesByHero[1].stats.energia, 2);
+  assert.equal(lothar.stats.energia, before);
+});
+
+test("feitiço pode encerrar combate cooperativo antes da primeira série", () => {
+  const colthar = createCharacter(warriorData, sequence([0, 0, 0, 0]));
+  const lothar = {
+    name: "Lothar",
+    initialStats: { habilidade: 7, energia: 14, sorte: 7, magia: 12 },
+    stats: { habilidade: 7, energia: 14, sorte: 7, magia: 12 },
+    flags: []
+  };
+  const enemies = [
+    createOpponent({ name: "A", habilidade: 6, energia: 2 }),
+    createOpponent({ name: "B", habilidade: 6, energia: 2 })
+  ];
+  const state = createCooperativeCombatState([colthar, lothar], enemies, {
+    rng: sequence([0])
+  });
+
+  const result = applyCooperativeCombatSpell(
+    lothar,
+    state,
+    {
+      id: "zap",
+      name: "Zap (Atacar)",
+      cost: 3,
+      effect: {
+        type: "all-enemies-delta",
+        habilidade: -1,
+        energia: -2
+      }
+    },
+    {
+      heroIndex: 1,
+      rng: sequence([0])
+    }
+  );
+
+  assert.equal(result.encounterVictory, true);
+  assert.equal(state.finished, true);
+  assert.equal(state.winner, "heroes");
+  assert.deepEqual(state.enemies.map(enemy => enemy.energia), [0, 0]);
+});
 
 test("motor narrativo aplica ouro, itens, atributos e dano aleatório", () => {
   const hero = createCharacter(warriorData, sequence([0, 0, 0, 0]));

@@ -58,7 +58,8 @@
 - [x] Combate guiado individual
 - [x] Feitiços de Combate selecionáveis para Lothar
 - [x] Tela funcional de combate cooperativo
-- [ ] Polimento da tela de combate cooperativo e magia compartilhada
+- [x] Feitiços de Combate de Lothar em encontros cooperativos
+- [ ] Polimento visual da tela cooperativa e regras especiais remanescentes
 - [x] Inventário inicial e recursos na ficha
 - [x] Salvamento local
 - [x] Histórico de decisões
