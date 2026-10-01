@@ -3,7 +3,11 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#19131d">
+  <meta name="mobile-web-app-capable" content="yes">
   <title>Livros-Jogos Interativos</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="assets/app-icon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="src/style.css">
 </head>
 <body>
@@ -31,6 +35,7 @@
 
       <button id="start" class="primary" style="margin-top:18px">🎲 Gerar ficha e começar</button>
       <button id="load-game" style="margin-top:10px">💾 Carregar partida salva</button>
+      <button id="install-app" class="hidden" style="margin-top:10px">📲 Instalar aplicativo neste aparelho</button>
       <p id="message" class="muted" style="margin-top:10px"></p>
     </section>
 
