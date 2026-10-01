@@ -1,5 +1,7 @@
 import { createCharacter, consumeProvision } from "./engine/character.js";
 import { testLuck } from "./engine/luck.js";
+import { rollExpression } from "./engine/dice.js";
+import { castSituationalSpell } from "./engine/magic.js";
 import { processSyncPoint } from "./engine/sync.js";
 import { applyEffects as applyStoryEffects, availableChoices } from "./engine/story.js";
 import { createEncounter, playEncounterRound, currentOpponent } from "./engine/encounter.js";
@@ -424,6 +426,19 @@ function renderReference(reference, options = {}) {
 
     state.shared = context.shared;
 
+    if (context.pendingSharedLoot) {
+      const parts = [];
+      if (context.pendingSharedLoot.gold) {
+        parts.push(`${context.pendingSharedLoot.gold} moedas`);
+      }
+      if (context.pendingSharedLoot.items?.length) {
+        parts.push(context.pendingSharedLoot.items.join(", "));
+      }
+      showGameMessage(
+        `Tesouro compartilhado encontrado: ${parts.join(" + ")}. A divisão entre os dois jogadores ficará pendente.`
+      );
+    }
+
     const randomDamage = effectResults.find(
       result => result.type === "random_stat_damage"
     );
@@ -471,6 +486,23 @@ function renderReference(reference, options = {}) {
   $("scene").textContent = node.resumo || "Cena sem resumo.";
   $("choices").innerHTML = "";
   updateShared();
+
+  if (
+    node.partnerRemoved &&
+    state.mode === "dupla" &&
+    state.duo
+  ) {
+    const other =
+      state.character === "colthar" ? "lothar" : "colthar";
+
+    if (!state.duo.players[other].removed) {
+      updateDuoPlayer(state.duo, other, {
+        removed: true
+      });
+      updatePartnerState();
+      renderDuoStatus();
+    }
+  }
 
   if (node.encounter && !state.completedEncounters.has(state.ref)) {
     renderEncounter(node);
@@ -527,11 +559,118 @@ function renderReference(reference, options = {}) {
     $("choices").appendChild(button);
   }
 
+  if (node.roll) {
+    const button = document.createElement("button");
+    button.textContent = `🎲 Rolar ${node.roll.dice}`;
+    button.addEventListener("click", () => {
+      const result = rollExpression(node.roll.dice);
+      const route = (node.roll.routes || []).find(item => {
+        const [min, max] = item.range || [];
+        return result.total >= min && result.total <= max;
+      });
+
+      showGameMessage(
+        `Rolagem: ${result.rolls.join(" + ")} = ${result.total}.`
+      );
+
+      if (route) {
+        navigateTo(
+          route.target,
+          `Rolagem ${result.total}`
+        );
+      }
+    });
+    $("choices").appendChild(button);
+  }
+
+  if (node.spellOptions?.length) {
+    for (const option of node.spellOptions) {
+      const button = document.createElement("button");
+      button.textContent =
+        `🪄 ${option.label} — custo ${option.cost} MAGIA`;
+
+      button.addEventListener("click", () => {
+        const result = castSituationalSpell(
+          state.hero,
+          {
+            ...option,
+            failureTarget: node.failureTarget
+          }
+        );
+
+        renderSheet();
+
+        if (!result.ok) {
+          showGameMessage(
+            "MAGIA insuficiente para pagar o custo deste feitiço."
+          );
+          return;
+        }
+
+        const outcome = result.automaticFailure
+          ? "Falha automática: MAGIA igual a zero."
+          : result.success
+            ? `Feitiço funcionou (dado ${result.die}).`
+            : `Feitiço falhou (dado ${result.die}).`;
+
+        showGameMessage(outcome);
+
+        if (!result.success && node.partnerOnFailure) {
+          showGameMessage(
+            outcome +
+            ` O outro jogador também deve seguir para ${node.partnerOnFailure}.`
+          );
+        }
+
+        if (result.target) {
+          navigateTo(
+            result.target,
+            result.success
+              ? `Feitiço: ${option.label}`
+              : "Falha no feitiço"
+          );
+        }
+      });
+
+      $("choices").appendChild(button);
+    }
+  }
+
+  if (node.playerEffectChoice?.type === "restore_one_stat") {
+    const info = document.createElement("p");
+    info.className = "muted";
+    info.textContent =
+      "Escolha qual atributo recuperar antes de continuar:";
+    $("choices").appendChild(info);
+
+    for (const stat of node.playerEffectChoice.stats || []) {
+      const button = document.createElement("button");
+      button.textContent = `➕ Recuperar ${node.playerEffectChoice.amount} em ${stat.toUpperCase()}`;
+      button.addEventListener("click", () => {
+        applyStoryEffects(
+          state.hero,
+          [{
+            type: "change_stat",
+            stat,
+            delta: node.playerEffectChoice.amount,
+            cap: node.playerEffectChoice.cap
+          }]
+        );
+        renderSheet();
+        button.disabled = true;
+        showGameMessage(
+          `${stat.toUpperCase()} recuperada.`
+        );
+      });
+      $("choices").appendChild(button);
+    }
+  }
+
   if (node.ending) {
     if (
       state.mode === "dupla" &&
       state.duo &&
-      node.ending === "death" &&
+      ["death", "removed"].includes(node.ending) &&
       !state.duo.players[state.character].removed
     ) {
       updateDuoPlayer(state.duo, state.character, {
@@ -938,9 +1077,22 @@ function playCombatRound() {
   updateCombatOpponents();
 
   if (result.defeat) {
-    $("combat-title").textContent = "☠️ Derrota";
+    $("combat-title").textContent = node.onDefeat
+      ? "⚠️ Combate perdido"
+      : "☠️ Derrota";
     $("combat-round").classList.add("hidden");
-    showGameMessage("Sua ENERGIA chegou a zero.");
+
+    if (node.onDefeat) {
+      $("combat-continue").classList.remove("hidden");
+      $("combat-continue").dataset.target = node.onDefeat;
+      $("combat-continue").textContent =
+        `Continuar → ${node.onDefeat}`;
+      showGameMessage(
+        "O combate foi perdido, mas a aventura determina uma continuação específica."
+      );
+    } else {
+      showGameMessage("Sua ENERGIA chegou a zero.");
+    }
     return;
   }
 
