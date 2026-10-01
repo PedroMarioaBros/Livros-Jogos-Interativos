@@ -104,3 +104,25 @@ Neste lote foram incorporados:
 Total atual de Lothar: **200 de 500 referências (40%)**.
 
 Referências cujo comportamento exige histórico anterior de itens ou combate continuam marcadas como `parcial` até a cadeia completa ser testada de ponta a ponta.
+
+
+## Terceiro grande lote de Lothar — referências 201 a 300
+
+A árvore do Feiticeiro está agora estruturada continuamente da referência **1 até a 300**.
+
+Este lote acrescentou:
+
+- mais combates individuais e cooperativos;
+- condições por item;
+- escolhas conjuntas;
+- instruções condicionais para Colthar;
+- rotas por Teste de Sorte e rolagens simples;
+- perda e recuperação de equipamentos;
+- escolhas após vitória em combate;
+- feitiços com alternativas após falha;
+- efeitos diretos sobre HABILIDADE, ENERGIA e MAGIA;
+- finais e remoções da aventura.
+
+Total atual de Lothar: **300 de 500 referências (60%)**.
+
+A referência 217 continua marcada para revisão visual por ambiguidade de OCR. Referências como 246 e 250 permanecem parciais quando exigem estado histórico ou interação econômica que ainda será consolidada no motor.
