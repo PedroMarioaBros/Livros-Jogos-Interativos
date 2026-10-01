@@ -1,31 +1,184 @@
 {
   "sharedKeys": ["status", "acao"],
+  "schemaVersion": 2,
   "entries": [
     {
       "character": "lothar",
+      "reference": 31,
+      "verified": true,
+      "effects": [{"type": "set_shared", "key": "acao", "value": 39}],
+      "waitFor": "status",
+      "routes": [
+        {"status": [1], "target": 44},
+        {"status": [19], "target": 421}
+      ]
+    },
+    {
+      "character": "lothar",
+      "reference": 39,
+      "verified": true,
+      "type": "partner-removed-transition",
+      "effects": [{"type": "set_shared", "key": "acao", "value": 1}],
+      "notes": "Aplicar somente quando a instrução da referência exigir a transição para jogo solo."
+    },
+    {
+      "character": "lothar",
+      "reference": 42,
+      "verified": true,
+      "effects": [{"type": "set_shared", "key": "acao", "value": 25}],
+      "waitFor": "status",
+      "routes": [{"status": [1, 4, 5], "target": 165}]
+    },
+    {
+      "character": "lothar",
+      "reference": 51,
+      "verified": true,
+      "effects": [{"type": "set_shared", "key": "acao", "value": 36}],
+      "waitFor": "partner-instruction",
+      "routes": []
+    },
+    {
+      "character": "lothar",
+      "reference": 60,
+      "verified": true,
+      "effects": [{"type": "set_shared", "key": "acao", "value": 24}],
+      "waitFor": "status",
+      "routes": [
+        {"status": [1, 15], "target": 103},
+        {"status": [4], "target": 212}
+      ]
+    },
+    {
+      "character": "lothar",
+      "reference": 111,
+      "verified": true,
+      "effects": [{"type": "set_shared", "key": "acao", "value": 38}],
+      "waitFor": "status",
+      "routes": [
+        {"status": [1], "target": 218},
+        {"status": [18], "target": 235}
+      ]
+    },
+    {
+      "character": "lothar",
       "reference": 148,
-      "verified": false,
-      "effects": [
-        {
-          "type": "set_shared",
-          "key": "acao",
-          "value": 22
-        }
-      ],
-      "notes": "Valor registrado no protótipo; validar novamente durante a extração sistemática."
+      "verified": true,
+      "effects": [{"type": "set_shared", "key": "acao", "value": 22}],
+      "waitFor": "status",
+      "routes": [{"status": [1, 2, 3], "target": 325}]
+    },
+    {
+      "character": "lothar",
+      "reference": 185,
+      "verified": true,
+      "effects": [{"type": "set_shared", "key": "acao", "value": 40}],
+      "waitFor": "partner-instruction",
+      "routes": []
     },
     {
       "character": "lothar",
       "reference": 199,
+      "verified": true,
+      "effects": [{"type": "set_shared", "key": "acao", "value": 23}],
+      "waitFor": "status",
+      "routes": [
+        {"status": [1, 2], "target": 242},
+        {"status": [3], "target": 287}
+      ]
+    },
+    {
+      "character": "lothar",
+      "reference": 217,
       "verified": false,
-      "effects": [
-        {
-          "type": "set_shared",
-          "key": "acao",
-          "value": 23
-        }
+      "needsManualReview": true,
+      "effects": [{"type": "set_shared", "key": "acao", "value": 29}],
+      "waitFor": "status",
+      "routes": [
+        {"status": [9], "target": 493}
       ],
-      "notes": "Valor registrado no protótipo; validar novamente durante a extração sistemática."
+      "notes": "OCR ambíguo na outra condição: aparece como 'STATUS mudar de 1 para 10'. Conferir visualmente a página antes de codificar essa rota."
+    },
+    {
+      "character": "lothar",
+      "reference": 226,
+      "verified": true,
+      "effects": [{"type": "set_shared", "key": "acao", "value": 26}],
+      "waitFor": "status",
+      "routes": [{"status": [1, 4, 5], "target": 165}]
+    },
+    {
+      "character": "lothar",
+      "reference": 329,
+      "verified": true,
+      "effects": [{"type": "set_shared", "key": "acao", "value": 28}],
+      "waitFor": "status",
+      "routes": [
+        {"status": [1], "target": 96},
+        {"status": [9], "target": 142},
+        {"status": [10], "target": 289}
+      ]
+    },
+    {
+      "character": "lothar",
+      "reference": 344,
+      "verified": true,
+      "effects": [{"type": "set_shared", "key": "acao", "value": 35}],
+      "waitFor": "status",
+      "routes": [
+        {"status": [1], "target": 86},
+        {"status": [15], "target": 265}
+      ]
+    },
+    {
+      "character": "lothar",
+      "reference": 367,
+      "verified": true,
+      "effects": [{"type": "set_shared", "key": "acao", "value": 27}],
+      "waitFor": "status",
+      "routes": [
+        {"status": [1], "target": 2},
+        {"status": [7], "target": 27}
+      ]
+    },
+    {
+      "character": "lothar",
+      "reference": 451,
+      "verified": true,
+      "effects": [{"type": "set_shared", "key": "acao", "value": 31}],
+      "waitFor": "status",
+      "routes": [
+        {"status": [1, 14], "target": 90},
+        {"status": [11], "target": 366},
+        {"status": [12], "target": 490},
+        {"status": [13], "target": 470}
+      ]
+    },
+    {
+      "character": "lothar",
+      "reference": 453,
+      "verified": true,
+      "effects": [{"type": "set_shared", "key": "acao", "value": 30}],
+      "waitFor": "status",
+      "routes": [
+        {"status": [1], "target": 96},
+        {"status": [9, 10], "target": 289}
+      ]
+    },
+    {
+      "character": "lothar",
+      "reference": 465,
+      "verified": true,
+      "effects": [{"type": "set_shared", "key": "acao", "value": 32}],
+      "waitFor": "status",
+      "routes": [{"status": [1, 11, 12, 13, 14], "target": 227}]
+    },
+    {
+      "character": "lothar",
+      "reference": 494,
+      "verified": true,
+      "effects": [{"type": "set_shared", "key": "acao", "value": 37}],
+      "waitFor": "status",
+      "routes": [{"status": [1, 17, 18], "target": 22}]
     }
   ]
 }
