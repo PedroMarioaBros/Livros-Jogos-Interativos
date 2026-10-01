@@ -41,6 +41,7 @@
   - [x] Condições STATUS/AÇÃO com múltiplos valores
   - [x] Dano simultâneo da Bruxa aos dois príncipes
   - [x] Combate cooperativo do Coletor de Impostos com quatro adversários
+  - [x] Revisão de marcações obsoletas de suporte em cenas já implementadas
 - [ ] Extrair referências de Colthar
   - [x] Primeira expansão estrutural: 77 referências cadastradas no banco
 - [x] Extrair referências de Lothar

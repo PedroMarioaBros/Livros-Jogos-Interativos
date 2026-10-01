@@ -1306,3 +1306,21 @@ test("referência 47 de Colthar encaminha os dois resultados corretamente", () =
   ]);
   assert.equal(ref47.needsMoreExtraction, undefined);
 });
+
+
+test("cenas de Lothar com suporte implementado não ficam marcadas como parciais", () => {
+  const supportedReferences = [
+    "120", "122", "146", "159", "182",
+    "198", "285", "300", "381"
+  ];
+
+  for (const reference of supportedReferences) {
+    const node = mageBookData.references[reference];
+    assert.equal(node.estado, "extraida", `Referência ${reference}`);
+    assert.equal(
+      node.needsEngineSupport,
+      undefined,
+      `Referência ${reference} ainda marcada como needsEngineSupport`
+    );
+  }
+});
