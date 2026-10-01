@@ -1380,3 +1380,14 @@ test("referência 421 resolve comparação das Pedras de Poder", () => {
     44
   );
 });
+
+
+test("referência 59 de Lothar é um encaminhamento direto para 321", () => {
+  const ref59 = mageBookData.references["59"];
+
+  assert.equal(ref59.estado, "extraida");
+  assert.deepEqual(ref59.choices, [
+    { label: "Prosseguir", target: 321 }
+  ]);
+  assert.equal(ref59.needsManualReview, undefined);
+});
