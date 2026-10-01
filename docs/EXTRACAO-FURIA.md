@@ -177,3 +177,9 @@ O tesouro ainda não dividido também passa a fazer parte do salvamento da parti
 - O encontro da referência 43 foi corrigido para **Sr. Todd 9/6** e **Mulher 8/4**.
 - A referência 60 agora define **STATUS 4** e modela as rotas de AÇÃO: **1 ou 25 → 13**, **24 → 212**, **26 → 413**.
 - O analisador de grafo passou a medir também Colthar, informando cobertura, destinos ainda não extraídos, nós extraídos inalcançáveis e finais, sem exigir 500 referências enquanto a extração estiver incompleta.
+
+
+### Sincronizações revisadas — referências 31 e 41
+
+- Referência 31: Colthar define **STATUS 19**; **AÇÃO 1 → 44** e **AÇÃO 39 → 421**.
+- Referência 41: quando **AÇÃO = 1**, o motor também ajusta **STATUS para 1** antes da transição de aventura solo.
