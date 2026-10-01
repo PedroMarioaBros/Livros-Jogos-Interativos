@@ -7,27 +7,27 @@ As porcentagens abaixo são estimativas de engenharia para um **Fúria de Prínc
 | Área | Progresso |
 | --- | ---: |
 | Fundação e arquitetura | 100% |
-| Motor genérico de livro-jogo | 94% |
-| Regras específicas de Fúria de Príncipes | 83% |
+| Motor genérico de livro-jogo | 95% |
+| Regras específicas de Fúria de Príncipes | 86% |
 | Conteúdo de Colthar | 8,8% |
-| Conteúdo de Lothar | 23,6% |
+| Conteúdo de Lothar | 40,0% |
 | STATUS/AÇÃO e sincronização | ~35% |
 | Combate individual | 95% |
 | Magia de Lothar | 90% |
 | Combate cooperativo | 80% |
-| Interface funcional | 72% |
+| Interface funcional | 76% |
 | Salvamento e histórico | 95% |
 | Dois jogadores no mesmo aparelho | 75% |
 | Sincronização entre dois aparelhos | 0% |
 | Camada instalável/offline | 55% |
 | Ilustrações e áudio finais | 0–5% |
-| Testes do motor | 80% |
+| Testes do motor | 84% |
 | Testes da aventura completa | ~15% |
 
 ## Medidas objetivas atuais
 
 - Colthar: 44 referências cadastradas de aproximadamente 500.
-- Lothar: 118 referências cadastradas de aproximadamente 500 (23,6%).
+- Lothar: 200 referências cadastradas de 500 (40,0%).
 - Sincronização: 20 pontos STATUS/AÇÃO cadastrados.
 - Feitiços de Combate: 12 de 12 catalogados e com efeitos implementados.
 - Modo local em dupla: duas fichas independentes, passagem protegida do aparelho e estado compartilhado.
@@ -38,12 +38,12 @@ As porcentagens abaixo são estimativas de engenharia para um **Fúria de Prínc
 
 | Marco | Progresso estimado |
 | --- | ---: |
-| Motor reutilizável | ~94% |
-| Demonstração jogável de Fúria | ~78% |
+| Motor reutilizável | ~95% |
+| Demonstração jogável de Fúria | ~82% |
 | Colthar solo completo | ~20% |
-| Lothar solo completo | ~31% |
-| Fúria completo no mesmo aparelho | ~47% |
-| Aplicativo Android final | ~43% do caminho total |
+| Lothar solo completo | ~49% |
+| Fúria completo no mesmo aparelho | ~52% |
+| Aplicativo Android final | ~48% do caminho total |
 
 ## Critério
 
