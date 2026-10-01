@@ -1010,3 +1010,48 @@ test("dados revisados de Colthar mantêm encontro 43 e sincronização 60", () =
   const route = ref60.choices.find(choice => choice.target === 13);
   assert.deepEqual(route.conditions[0].values, [1, 25]);
 });
+
+
+test("referência 31 de Colthar define STATUS 19 e resolve AÇÃO 1 ou 39", () => {
+  const ref31 = warriorBookData.references["31"];
+
+  assert.equal(
+    ref31.effects.some(
+      effect =>
+        effect.type === "set_shared" &&
+        effect.key === "status" &&
+        effect.value === 19
+    ),
+    true
+  );
+
+  const hero = createCharacter(warriorData, sequence([0, 0, 0, 0]));
+
+  assert.deepEqual(
+    availableChoices(ref31, {
+      character: hero,
+      shared: { status: 19, acao: 1 },
+      partnerActive: true
+    }).map(choice => choice.target),
+    [44]
+  );
+
+  assert.deepEqual(
+    availableChoices(ref31, {
+      character: hero,
+      shared: { status: 19, acao: 39 },
+      partnerActive: true
+    }).map(choice => choice.target),
+    [421]
+  );
+});
+
+test("AÇÃO 1 na referência 41 converte STATUS para modo solo", () => {
+  const choice = warriorBookData.references["41"].choices.find(
+    item => item.target === 473
+  );
+
+  assert.deepEqual(choice.effects, [
+    { type: "set_shared", key: "status", value: 1 }
+  ]);
+});
