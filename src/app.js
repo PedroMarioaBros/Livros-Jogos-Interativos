@@ -2,6 +2,7 @@ import { createCharacter, consumeProvision } from "./engine/character.js";
 import { testLuck } from "./engine/luck.js";
 import { processSyncPoint } from "./engine/sync.js";
 import { applyEffects as applyStoryEffects, availableChoices } from "./engine/story.js";
+import { createEncounter, playEncounterRound, currentOpponent } from "./engine/encounter.js";
 
 const state = {
   config: null,
@@ -14,7 +15,9 @@ const state = {
   character: null,
   shared: { status: 0, acao: 0 },
   ref: 1,
-  partnerActive: false
+  partnerActive: false,
+  encounter: null,
+  completedEncounters: new Set()
 };
 
 const $ = (id) => document.getElementById(id);
@@ -66,6 +69,9 @@ async function init() {
   $("use-provision").addEventListener("click", useProvision);
   $("test-luck").addEventListener("click", runLuckTest);
   $("apply-sync").addEventListener("click", applyManualSync);
+  $("combat-round").addEventListener("click", playCombatRound);
+  $("combat-continue").addEventListener("click", continueAfterCombat);
+  $("dev-go").addEventListener("click", jumpToReference);
 }
 
 function selectGroup(selector, selected) {
@@ -90,6 +96,8 @@ function startGame() {
 
   state.hero = createCharacter(state.characterData);
   state.partnerActive = state.mode === "dupla";
+  state.encounter = null;
+  state.completedEncounters = new Set();
   $("setup").classList.add("hidden");
   $("game").classList.remove("hidden");
   renderSheet();
@@ -195,6 +203,13 @@ function renderReference(reference, options = {}) {
   $("choices").innerHTML = "";
   updateShared();
 
+  if (node.encounter && !state.completedEncounters.has(state.ref)) {
+    renderEncounter(node);
+    return;
+  }
+
+  hideCombat();
+
   const context = {
     character: state.hero,
     shared: state.shared,
@@ -258,6 +273,135 @@ function renderReference(reference, options = {}) {
     info.textContent = "Esse nó ainda aguarda extração/validação.";
     $("choices").appendChild(info);
   }
+}
+
+function hideCombat() {
+  $("combat-card").classList.add("hidden");
+  $("combat-continue").classList.add("hidden");
+}
+
+function renderEncounter(node) {
+  $("combat-card").classList.remove("hidden");
+
+  if (node.encounter.cooperative && state.mode === "dupla") {
+    state.encounter = null;
+    $("combat-title").textContent = "Combate cooperativo";
+    $("combat-opponents").textContent =
+      node.encounter.enemies
+        .map(enemy => `${enemy.name} — HABILIDADE ${enemy.habilidade}, ENERGIA ${enemy.energia}`)
+        .join(" • ");
+    $("combat-log").textContent =
+      "Este encontro exige os dois príncipes. O motor cooperativo já está implementado; a tela de controle dos dois personagens será ligada na próxima etapa.";
+    $("combat-round").classList.add("hidden");
+    $("combat-continue").classList.add("hidden");
+    return;
+  }
+
+  if (!state.encounter || state.encounter.reference !== state.ref) {
+    state.encounter = createEncounter(state.ref, node.encounter);
+  }
+
+  const enemy = currentOpponent(state.encounter);
+  $("combat-title").textContent = enemy
+    ? `⚔️ ${state.hero.name} x ${enemy.name}`
+    : "Combate concluído";
+  $("combat-opponents").textContent = state.encounter.enemies
+    .map(opponent =>
+      `${opponent.name}: HABILIDADE ${opponent.habilidade} • ENERGIA ${opponent.energia}/${opponent.initialEnergy}`
+    )
+    .join(" | ");
+
+  if (state.encounter.rounds.length === 0) {
+    $("combat-log").textContent =
+      "O combate está pronto. Cada toque em “Rolar rodada” executa uma série de ataque.";
+  }
+
+  $("combat-round").classList.remove("hidden");
+  $("combat-continue").classList.add("hidden");
+}
+
+function playCombatRound() {
+  if (!state.encounter || state.encounter.finished) return;
+
+  const node = state.characterData.references[String(state.ref)];
+  const result = playEncounterRound(state.encounter, state.hero);
+
+  if (result.round) {
+    const labels = {
+      "hero-hit": `${state.hero.name} acertou e causou ${result.round.damage} de dano.`,
+      "enemy-hit": `${result.round.enemyName} acertou e causou ${result.round.damage} de dano.`,
+      tie: "Empate: ninguém sofreu dano."
+    };
+
+    $("combat-log").textContent =
+      `Rodada ${result.round.round}: ` +
+      `${state.hero.name} ${result.round.heroRolls.join("+")} + HABILIDADE = ${result.round.heroAttack}; ` +
+      `${result.round.enemyName} ${result.round.enemyRolls.join("+")} + HABILIDADE = ${result.round.enemyAttack}. ` +
+      labels[result.round.outcome];
+  }
+
+  renderSheet();
+
+  const enemy = currentOpponent(state.encounter);
+  $("combat-opponents").textContent = state.encounter.enemies
+    .map(opponent =>
+      `${opponent.name}: HABILIDADE ${opponent.habilidade} • ENERGIA ${opponent.energia}/${opponent.initialEnergy}`
+    )
+    .join(" | ");
+
+  if (result.defeat) {
+    $("combat-title").textContent = "☠️ Derrota";
+    $("combat-round").classList.add("hidden");
+    showGameMessage("Sua ENERGIA chegou a zero.");
+    return;
+  }
+
+  if (result.victory) {
+    state.completedEncounters.add(state.ref);
+    applyStoryEffects(state.hero, node.rewards || [], {
+      shared: state.shared,
+      partnerActive: state.partnerActive
+    });
+    renderSheet();
+
+    $("combat-title").textContent = "🏆 Vitória";
+    $("combat-round").classList.add("hidden");
+    $("combat-continue").classList.remove("hidden");
+    $("combat-continue").dataset.target = node.onVictory ?? "";
+    $("combat-continue").textContent = node.onVictory
+      ? `Continuar → ${node.onVictory}`
+      : "Continuar";
+    return;
+  }
+
+  if (enemy) {
+    $("combat-title").textContent = `⚔️ ${state.hero.name} x ${enemy.name}`;
+  }
+}
+
+function continueAfterCombat() {
+  const target = Number($("combat-continue").dataset.target);
+  state.encounter = null;
+  hideCombat();
+
+  if (Number.isInteger(target) && target > 0) {
+    renderReference(target);
+  } else {
+    renderReference(state.ref, { applyEntryEffects: false });
+  }
+}
+
+function jumpToReference() {
+  if (!state.hero) return;
+
+  const target = Number($("dev-ref").value);
+  if (!Number.isInteger(target) || target < 1 || target > 500) {
+    showGameMessage("Informe uma referência entre 1 e 500.");
+    return;
+  }
+
+  state.encounter = null;
+  renderReference(target);
 }
 
 function useProvision() {
