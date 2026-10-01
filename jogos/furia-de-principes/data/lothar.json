@@ -3892,7 +3892,7 @@
       }
     },
     "250": {
-      "estado": "parcial",
+      "estado": "extraida",
       "resumo": "Um monge vende seis artefatos únicos por duas moedas cada; os irmãos decidem conjuntamente quem compra cada item.",
       "merchant": {
         "pricePerItem": 2,
@@ -3907,7 +3907,7 @@
         ],
         "continueTarget": 323
       },
-      "needsEngineSupport": true
+      "notes": "Loja compartilhada implementada com estoque único, preço por item e comprador escolhido."
     },
     "251": {
       "estado": "extraida",
