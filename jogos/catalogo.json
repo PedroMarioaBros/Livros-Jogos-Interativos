@@ -1,0 +1,11 @@
+{
+  "games": [
+    {
+      "id": "furia-de-principes",
+      "title": "Fúria de Príncipes",
+      "subtitle": "Primeiro projeto do motor",
+      "status": "em-desenvolvimento",
+      "config": "jogos/furia-de-principes/game.json"
+    }
+  ]
+}
