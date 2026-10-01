@@ -1251,3 +1251,18 @@ test("referência 70 usa o mesmo grupo completo nos dois volumes", () => {
   assert.equal(colthar70.needsManualReview, undefined);
   assert.equal(lothar70.needsManualReview, undefined);
 });
+
+
+test("referência 47 de Colthar encaminha os dois resultados corretamente", () => {
+  const ref47 = warriorBookData.references["47"];
+
+  assert.equal(ref47.estado, "extraida");
+  assert.equal(ref47.onVictory, 478);
+  assert.equal(ref47.partnerOnVictory, 478);
+  assert.equal(ref47.partnerOnDefeat, 6);
+  assert.deepEqual(ref47.encounter.enemies, [
+    { name: "Scuttlie Um", habilidade: 9, energia: 6 },
+    { name: "Scuttlie Dois", habilidade: 8, energia: 6 }
+  ]);
+  assert.equal(ref47.needsMoreExtraction, undefined);
+});

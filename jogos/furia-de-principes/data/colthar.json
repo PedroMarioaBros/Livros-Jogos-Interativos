@@ -786,8 +786,8 @@
       ]
     },
     "47": {
-      "estado": "parcial",
-      "resumo": "Colthar entra primeiro na toca e enfrenta dois guardas Scuttlies; o resultado também precisa ser comunicado a Lothar.",
+      "estado": "extraida",
+      "resumo": "Colthar entra primeiro na toca dos Scuttlies e enfrenta dois guardas; se vencer, os dois irmãos seguem para 478; se cair, Lothar é enviado para 6.",
       "encounter": {
         "enemies": [
           {
@@ -805,7 +805,7 @@
       "onVictory": 478,
       "partnerOnVictory": 478,
       "partnerOnDefeat": 6,
-      "needsMoreExtraction": true
+      "notes": "Desfechos do combate conferidos no volume do Guerreiro."
     },
     "48": {
       "estado": "extraida",
