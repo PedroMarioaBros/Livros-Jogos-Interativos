@@ -1,24 +1,19 @@
+import { createCharacter, consumeProvision } from "./engine/character.js";
+import { testLuck } from "./engine/luck.js";
+
 const state = {
   config: null,
+  rules: null,
+  spells: null,
   characterData: null,
+  hero: null,
   mode: null,
   character: null,
-  stats: null,
   shared: { status: 0, acao: 0 },
   ref: 1
 };
 
 const $ = (id) => document.getElementById(id);
-const d6 = () => 1 + Math.floor(Math.random() * 6);
-const roll = (expression) => {
-  const match = /^(\d+)d6\+(\d+)$/.exec(expression);
-  if (!match) return 0;
-  const count = Number(match[1]);
-  const bonus = Number(match[2]);
-  let total = bonus;
-  for (let i = 0; i < count; i++) total += d6();
-  return total;
-};
 
 async function loadJSON(path) {
   const response = await fetch(path);
@@ -31,15 +26,22 @@ async function init() {
   const game = catalog.games[0];
   state.config = await loadJSON(game.config);
 
+  const base = "jogos/furia-de-principes/";
+  [state.rules, state.spells] = await Promise.all([
+    loadJSON(base + state.config.rules.base),
+    loadJSON(base + state.config.rules.spells)
+  ]);
+
   $("game-title").textContent = state.config.title;
-  $("game-status").textContent = "Estrutura inicial carregada";
+  $("game-status").textContent =
+    `Motor modular carregado • ${state.spells.spells.length} feitiços catalogados`;
 
   document.querySelectorAll("[data-mode]").forEach((button) => {
     button.addEventListener("click", () => {
       state.mode = button.dataset.mode;
       state.shared = state.mode === "solo"
-        ? { status: 1, acao: 1 }
-        : { ...state.config.sharedState };
+        ? { ...state.rules.modes.solo.sharedFixed }
+        : { ...state.rules.modes.dupla.sharedInitial };
       selectGroup("[data-mode]", button);
       updateShared();
     });
@@ -49,12 +51,14 @@ async function init() {
     button.addEventListener("click", async () => {
       state.character = button.dataset.character;
       const config = state.config.characters.find(c => c.id === state.character);
-      state.characterData = await loadJSON(`jogos/furia-de-principes/${config.data}`);
+      state.characterData = await loadJSON(base + config.data);
       selectGroup("[data-character]", button);
     });
   });
 
   $("start").addEventListener("click", startGame);
+  $("use-provision").addEventListener("click", useProvision);
+  $("test-luck").addEventListener("click", runLuckTest);
 }
 
 function selectGroup(selector, selected) {
@@ -63,7 +67,12 @@ function selectGroup(selector, selected) {
 }
 
 function updateShared() {
-  $("shared").textContent = `STATUS ${state.shared.status} • AÇÃO ${state.shared.acao}`;
+  $("shared").textContent =
+    `STATUS ${state.shared.status} • AÇÃO ${state.shared.acao}`;
+}
+
+function showGameMessage(message) {
+  $("game-message").textContent = message;
 }
 
 function startGame() {
@@ -72,27 +81,37 @@ function startGame() {
     return;
   }
 
-  state.stats = {};
-  for (const [key, expression] of Object.entries(state.characterData.initialStats)) {
-    state.stats[key] = roll(expression);
-  }
-
+  state.hero = createCharacter(state.characterData);
   $("setup").classList.add("hidden");
   $("game").classList.remove("hidden");
-  renderStats();
-  renderReference(1);
+  renderSheet();
+  renderReference(state.config.startReference);
 }
 
-function renderStats() {
-  $("stats").innerHTML = Object.entries(state.stats)
-    .map(([key, value]) => `<div class="stat"><div class="muted">${key.toUpperCase()}</div><strong>${value}</strong></div>`)
+function renderSheet() {
+  const hero = state.hero;
+
+  $("stats").innerHTML = Object.entries(hero.stats)
+    .map(([key, value]) =>
+      `<div class="stat"><div class="muted">${key.toUpperCase()}</div><strong>${value}</strong><div class="muted">máx. ${hero.initialStats[key]}</div></div>`
+    )
     .join("");
+
+  $("resources").textContent =
+    `Provisões: ${hero.provisions} • Ouro: ${hero.gold}`;
+
+  $("inventory").textContent =
+    hero.items.length ? `Itens: ${hero.items.join(", ")}` : "Itens: nenhum";
+
   updateShared();
 }
 
 function applyEffects(node) {
   for (const effect of node.effects || []) {
     if (effect.type === "set_shared") {
+      if (state.mode === "solo" && state.rules.modes.solo.ignoreSharedMutations) {
+        continue;
+      }
       state.shared[effect.key] = effect.value;
     }
   }
@@ -103,9 +122,11 @@ function renderReference(reference) {
   const node = state.characterData.references[String(state.ref)];
 
   $("reference").textContent = `Referência ${state.ref}`;
+  showGameMessage("");
 
   if (!node) {
-    $("scene").textContent = "Esta referência ainda não foi extraída para o banco de dados.";
+    $("scene").textContent =
+      "Esta referência ainda não foi extraída para o banco de dados.";
     $("choices").innerHTML = "";
     return;
   }
@@ -128,6 +149,39 @@ function renderReference(reference) {
     info.textContent = "Esse nó ainda aguarda extração/validação.";
     $("choices").appendChild(info);
   }
+}
+
+function useProvision() {
+  if (!state.hero) return;
+
+  const result = consumeProvision(state.hero);
+
+  if (result.ok) {
+    showGameMessage(
+      `Provisão consumida: +${result.restored} de ENERGIA.`
+    );
+  } else {
+    const messages = {
+      "full-energy": "Sua ENERGIA já está no máximo.",
+      "no-provisions": "Você não possui mais provisões.",
+      blocked: "Não é possível consumir provisões neste momento."
+    };
+    showGameMessage(messages[result.reason] || "Não foi possível usar a provisão.");
+  }
+
+  renderSheet();
+}
+
+function runLuckTest() {
+  if (!state.hero) return;
+
+  const result = testLuck(state.hero);
+  showGameMessage(
+    `Teste de Sorte: ${result.rolls.join(" + ")} = ${result.total}. ` +
+    (result.success ? "SUCESSO." : "AZAR.") +
+    ` SORTE agora: ${result.luckAfter}.`
+  );
+  renderSheet();
 }
 
 init().catch((error) => {
