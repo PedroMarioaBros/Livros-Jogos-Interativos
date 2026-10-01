@@ -1,6 +1,7 @@
 import { createCharacter, consumeProvision } from "./engine/character.js";
 import { testLuck } from "./engine/luck.js";
 import { processSyncPoint } from "./engine/sync.js";
+import { applyEffects as applyStoryEffects, availableChoices } from "./engine/story.js";
 
 const state = {
   config: null,
@@ -12,7 +13,9 @@ const state = {
   mode: null,
   character: null,
   shared: { status: 0, acao: 0 },
-  ref: 1
+  ref: 1,
+  partnerActive: false,
+  visitedEffects: new Set()
 };
 
 const $ = (id) => document.getElementById(id);
@@ -45,6 +48,7 @@ async function init() {
       state.shared = state.mode === "solo"
         ? { ...state.rules.modes.solo.sharedFixed }
         : { ...state.rules.modes.dupla.sharedInitial };
+      state.partnerActive = state.mode === "dupla";
       selectGroup("[data-mode]", button);
       updateShared();
     });
@@ -86,6 +90,8 @@ function startGame() {
   }
 
   state.hero = createCharacter(state.characterData);
+  state.visitedEffects = new Set();
+  state.partnerActive = state.mode === "dupla";
   $("setup").classList.add("hidden");
   $("game").classList.remove("hidden");
   renderSheet();
@@ -110,17 +116,6 @@ function renderSheet() {
   updateShared();
 }
 
-function applyEffects(node) {
-  for (const effect of node.effects || []) {
-    if (effect.type === "set_shared") {
-      if (state.mode === "solo" && state.rules.modes.solo.ignoreSharedMutations) {
-        continue;
-      }
-      state.shared[effect.key] = effect.value;
-    }
-  }
-}
-
 function renderReference(reference) {
   state.ref = Number(reference);
   const node = state.characterData.references[String(state.ref)];
@@ -136,7 +131,36 @@ function renderReference(reference) {
     return;
   }
 
-  applyEffects(node);
+  const visitKey = `${state.character}:${state.ref}`;
+  if (!state.visitedEffects.has(visitKey)) {
+    const context = {
+      shared: state.shared,
+      partnerActive: state.partnerActive,
+      ignoreSharedMutations:
+        state.mode === "solo" &&
+        state.rules.modes.solo.ignoreSharedMutations
+    };
+
+    const effectResults = applyStoryEffects(
+      state.hero,
+      node.effects || [],
+      context
+    );
+
+    state.shared = context.shared;
+    state.visitedEffects.add(visitKey);
+
+    const randomDamage = effectResults.find(
+      result => result.type === "random_stat_damage"
+    );
+    if (randomDamage) {
+      showGameMessage(
+        `Efeito da cena: ${randomDamage.roll.rolls.join(" + ")} = ${randomDamage.roll.total} de dano em ${randomDamage.stat.toUpperCase()}.`
+      );
+    }
+
+    renderSheet();
+  }
 
   const syncResult = processSyncPoint(
     state.syncData,
@@ -174,14 +198,64 @@ function renderReference(reference) {
   $("choices").innerHTML = "";
   updateShared();
 
-  for (const choice of node.choices || []) {
+  const context = {
+    character: state.hero,
+    shared: state.shared,
+    partnerActive: state.partnerActive
+  };
+  const choices = availableChoices(node, context);
+
+  for (const choice of choices) {
     const button = document.createElement("button");
     button.textContent = `${choice.label} → ${choice.target}`;
-    button.addEventListener("click", () => renderReference(choice.target));
+    button.addEventListener("click", () => {
+      const effectContext = {
+        shared: state.shared,
+        partnerActive: state.partnerActive,
+        ignoreSharedMutations:
+          state.mode === "solo" &&
+          state.rules.modes.solo.ignoreSharedMutations
+      };
+      applyStoryEffects(
+        state.hero,
+        choice.effects || [],
+        effectContext
+      );
+      state.shared = effectContext.shared;
+      renderSheet();
+      renderReference(choice.target);
+    });
     $("choices").appendChild(button);
   }
 
-  if (!(node.choices || []).length) {
+  if (node.test?.type === "luck") {
+    const button = document.createElement("button");
+    button.textContent = "🍀 Testar a Sorte";
+    button.addEventListener("click", () => {
+      const result = testLuck(state.hero);
+      renderSheet();
+      showGameMessage(
+        `Teste de Sorte: ${result.rolls.join(" + ")} = ${result.total}. ` +
+        (result.success ? "SUCESSO." : "AZAR.")
+      );
+      renderReference(
+        result.success ? node.test.successTarget : node.test.failureTarget
+      );
+    });
+    $("choices").appendChild(button);
+  }
+
+  if (node.ending) {
+    const info = document.createElement("p");
+    info.className = "muted";
+    info.textContent = "Fim desta aventura.";
+    $("choices").appendChild(info);
+  } else if (
+    choices.length === 0 &&
+    !node.test &&
+    !node.encounter &&
+    !node.partnerInstruction
+  ) {
     const info = document.createElement("p");
     info.className = "muted";
     info.textContent = "Esse nó ainda aguarda extração/validação.";
