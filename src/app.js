@@ -1211,7 +1211,10 @@ function renderEncounter(node) {
           habilidade: enemy.habilidade,
           energia: enemy.energia,
           initialEnergy: enemy.energia
-        }))
+        })),
+        {
+          specialRule: encounterDefinition.specialRule || null
+        }
       );
       state.cooperativeEncounter.reference = state.ref;
     }
@@ -1402,16 +1405,25 @@ function playCooperativeCombatRound() {
       const shadowNote = event.proxyDefeated
         ? " A Sombra foi vencida; Lothar entra no combate."
         : "";
+      const collateralNote = event.collateralDamage?.length
+        ? " O golpe também atinge " +
+          event.collateralDamage
+            .map(entry =>
+              `${entry.heroIndex === 0 ? "Colthar" : "Lothar"} por ${entry.damage}`
+            )
+            .join(" e ") +
+          "."
+        : "";
 
       if (round.outcome === "hero-hit") {
-        return `${heroName} acerta ${enemy.name} e causa ${round.damage} de dano${shadowNote}`;
+        return `${heroName} acerta ${enemy.name} e causa ${round.damage} de dano${shadowNote}${collateralNote}`;
       }
 
       if (round.outcome === "enemy-hit") {
-        return `${enemy.name} acerta ${heroName} e causa ${round.damage} de dano${shadowNote}`;
+        return `${enemy.name} acerta ${heroName} e causa ${round.damage} de dano${shadowNote}${collateralNote}`;
       }
 
-      return `${heroName} e ${enemy.name} empatam${shadowNote}`;
+      return `${heroName} e ${enemy.name} empatam${shadowNote}${collateralNote}`;
     });
 
     $("combat-log").textContent =
@@ -1483,6 +1495,7 @@ function renderSpellPanel(node) {
     lotharAvailable &&
     Boolean(caster?.stats && "magia" in caster.stats) &&
     !node.encounter?.noCombatMagic &&
+    node.encounter?.allowCombatMagic !== false &&
     encounter &&
     !roundsStarted &&
     attempts < limit;
