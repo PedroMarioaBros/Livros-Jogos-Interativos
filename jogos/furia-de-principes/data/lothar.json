@@ -3349,8 +3349,8 @@
       ]
     },
     "217": {
-      "estado": "parcial",
-      "resumo": "Ponto de sincronização: Lothar define AÇÃO 29 e aguarda STATUS; uma das condições está ambígua no OCR.",
+      "estado": "validada",
+      "resumo": "Ponto de sincronização: Lothar define AÇÃO 29 e aguarda STATUS; STATUS 10 leva a 37 e STATUS 9 leva a 493.",
       "effects": [
         {
           "type": "set_shared",
@@ -3359,6 +3359,17 @@
         }
       ],
       "choices": [
+        {
+          "label": "STATUS = 10",
+          "target": 37,
+          "conditions": [
+            {
+              "type": "shared_equals",
+              "key": "status",
+              "value": 10
+            }
+          ]
+        },
         {
           "label": "STATUS = 9",
           "target": 493,
@@ -3371,8 +3382,7 @@
           ]
         }
       ],
-      "needsManualReview": true,
-      "notes": "O OCR registra a outra condição como 'STATUS mudar de 1 para 10' levando a 37; revisar visualmente antes de validar."
+      "notes": "Condição conferida no texto: STATUS muda de 1 para 10 → 37."
     },
     "218": {
       "estado": "extraida",
