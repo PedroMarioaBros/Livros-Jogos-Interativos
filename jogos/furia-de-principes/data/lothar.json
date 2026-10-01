@@ -6210,6 +6210,1619 @@
       "resumo": "Uma tentativa de atravessar o lago com um grande salto termina fatalmente por causa de peixes venenosos.",
       "ending": "death",
       "afterDeathReference": 39
+    },
+    "401": {
+      "estado": "extraida",
+      "resumo": "A travessia direta do deserto causa insolação e dano aleatório; o destino depende de Colthar ainda estar vivo.",
+      "effects": [
+        {
+          "type": "random_stat_damage",
+          "stat": "energia",
+          "dice": "1d6"
+        }
+      ],
+      "choices": [
+        {
+          "label": "Colthar morreu com o calor",
+          "target": 10,
+          "conditions": [
+            {
+              "type": "partner_removed"
+            }
+          ]
+        },
+        {
+          "label": "Colthar continua vivo",
+          "target": 462,
+          "conditions": [
+            {
+              "type": "partner_active"
+            }
+          ]
+        }
+      ]
+    },
+    "402": {
+      "estado": "extraida",
+      "resumo": "Após derrotar o mercador de escravos, Lothar liberta os cativos e pode ficar com a corda mágica.",
+      "choices": [
+        {
+          "label": "Levar a corda mágica",
+          "target": 453,
+          "effects": [
+            {
+              "type": "add_item",
+              "item": "corda_magica"
+            }
+          ]
+        },
+        {
+          "label": "Deixar a corda",
+          "target": 453
+        }
+      ]
+    },
+    "403": {
+      "estado": "extraida",
+      "resumo": "Lothar é preso por um laço do lado de fora da cabana e deve aguardar o resultado da luta de Colthar.",
+      "partnerInstruction": {
+        "wait": true,
+        "sourceCharacter": "colthar"
+      }
+    },
+    "404": {
+      "estado": "extraida",
+      "resumo": "O Pesadelo mata Lothar antes que ele consiga reagir.",
+      "ending": "death",
+      "afterDeathReference": 39
+    },
+    "405": {
+      "estado": "extraida",
+      "resumo": "Um pedregulho fere Lothar, reduzindo HABILIDADE antes de outra bifurcação.",
+      "effects": [
+        {
+          "type": "change_stat",
+          "stat": "habilidade",
+          "delta": -1
+        }
+      ],
+      "choices": [
+        {
+          "label": "Caminho da esquerda",
+          "target": 342
+        },
+        {
+          "label": "Caminho da direita",
+          "target": 271
+        }
+      ]
+    },
+    "406": {
+      "estado": "extraida",
+      "resumo": "Uma visão mostra Lothar morrendo num pântano.",
+      "choices": [
+        {
+          "label": "Prosseguir após a visão",
+          "target": 496
+        }
+      ]
+    },
+    "407": {
+      "estado": "extraida",
+      "resumo": "A Hidra rejeita a negociação e força o combate.",
+      "choices": [
+        {
+          "label": "Enfrentar a Hidra",
+          "target": 487
+        }
+      ]
+    },
+    "408": {
+      "estado": "extraida",
+      "resumo": "O Unicórnio restaura completamente a ENERGIA de Lothar.",
+      "effects": [
+        {
+          "type": "restore_stat_to_initial",
+          "stat": "energia"
+        }
+      ],
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 373
+        }
+      ]
+    },
+    "409": {
+      "estado": "extraida",
+      "resumo": "Lothar enfrenta o Djinn; magia de combate é permitida.",
+      "encounter": {
+        "allowCombatMagic": true,
+        "enemies": [
+          {
+            "name": "Djinn",
+            "habilidade": 12,
+            "energia": 10
+          }
+        ]
+      },
+      "onVictory": 362
+    },
+    "410": {
+      "estado": "extraida",
+      "resumo": "Uma Sereia pergunta quantas espirais possui uma concha.",
+      "choices": [
+        {
+          "label": "Nenhuma espiral",
+          "target": 97
+        },
+        {
+          "label": "Uma espiral",
+          "target": 117
+        },
+        {
+          "label": "Duas espirais",
+          "target": 144
+        }
+      ]
+    },
+    "411": {
+      "estado": "extraida",
+      "resumo": "Depois de vencer o Troll, Lothar encontra uma pequena arca e decide se a abre.",
+      "choices": [
+        {
+          "label": "Abrir a arca",
+          "target": 139
+        },
+        {
+          "label": "Deixar a arca",
+          "target": 72
+        }
+      ]
+    },
+    "412": {
+      "estado": "extraida",
+      "resumo": "Invisível entre os Kobolds, Lothar precisa Testar a Sorte para escapar.",
+      "test": {
+        "type": "luck",
+        "successTarget": 93,
+        "failureTarget": 460
+      }
+    },
+    "413": {
+      "estado": "extraida",
+      "resumo": "A travessia de um penhasco causa perda de ENERGIA e leva a dois túneis.",
+      "effects": [
+        {
+          "type": "change_stat",
+          "stat": "energia",
+          "delta": -1
+        }
+      ],
+      "choices": [
+        {
+          "label": "Túnel da esquerda",
+          "target": 53
+        },
+        {
+          "label": "Seguir em frente",
+          "target": 396
+        }
+      ]
+    },
+    "414": {
+      "estado": "extraida",
+      "resumo": "Lothar cai de grande altura e morre.",
+      "ending": "death",
+      "afterDeathReference": 39
+    },
+    "415": {
+      "estado": "extraida",
+      "resumo": "Lothar vê uma segunda peça metálica e decide se desce para buscá-la ou retorna à superfície.",
+      "choices": [
+        {
+          "label": "Descer para pegar a peça",
+          "target": 263
+        },
+        {
+          "label": "Voltar à superfície",
+          "target": 205
+        }
+      ]
+    },
+    "416": {
+      "estado": "extraida",
+      "resumo": "Lothar manda Colthar para outra referência e aguarda instruções.",
+      "partnerInstruction": {
+        "sendToReference": 190,
+        "wait": true
+      }
+    },
+    "417": {
+      "estado": "extraida",
+      "resumo": "Os irmãos decidem quem abrirá uma caixa perigosa.",
+      "choices": [
+        {
+          "label": "Colthar abre",
+          "target": 255
+        },
+        {
+          "label": "Lothar abre",
+          "target": 333
+        }
+      ]
+    },
+    "418": {
+      "estado": "extraida",
+      "resumo": "Depois da ponte, os irmãos ouvem duas vozes e escolhem entre investigar ou continuar a viagem.",
+      "choices": [
+        {
+          "label": "Investigar as vozes",
+          "target": 322
+        },
+        {
+          "label": "Continuar pelo caminho",
+          "target": 353
+        }
+      ]
+    },
+    "419": {
+      "estado": "extraida",
+      "resumo": "Lothar escolhe entre itens específicos contra as aves; sem eles, resta magia ou resistência.",
+      "choices": [
+        {
+          "label": "Usar Pássaro Mecânico",
+          "target": 253,
+          "conditions": [
+            {
+              "type": "has_item",
+              "item": "passaro_mecanico"
+            }
+          ]
+        },
+        {
+          "label": "Usar Cajado de Duas Peças",
+          "target": 297,
+          "conditions": [
+            {
+              "type": "has_item",
+              "item": "cajado_magico_reduz_habilidade"
+            }
+          ]
+        },
+        {
+          "label": "Usar Gema Vermelha",
+          "target": 349,
+          "conditions": [
+            {
+              "type": "has_item",
+              "item": "gema_vermelha"
+            }
+          ]
+        },
+        {
+          "label": "Lançar magia",
+          "target": 441
+        },
+        {
+          "label": "Permanecer firme",
+          "target": 479
+        }
+      ]
+    },
+    "420": {
+      "estado": "parcial",
+      "resumo": "Scuttlies roubam praticamente todos os pertences dos irmãos durante a noite; eles decidem entre magia e perseguição.",
+      "effects": [
+        {
+          "type": "stash_and_clear_items"
+        }
+      ],
+      "choices": [
+        {
+          "label": "Lothar tenta magia para recuperar os pertences",
+          "target": 83
+        },
+        {
+          "label": "Perseguir os Scuttlies",
+          "target": 47
+        }
+      ],
+      "needsEngineSupport": true,
+      "notes": "No modo dupla, a perda deve ser aplicada também ao inventário de Colthar."
+    },
+    "421": {
+      "estado": "parcial",
+      "resumo": "Os irmãos comparam a quantidade de Pedras de Poder e seguem para destinos diferentes conforme quem possui mais.",
+      "dynamicDuoComparison": {
+        "resource": "pedra_de_poder",
+        "partnerGreaterTarget": 44,
+        "selfGreaterTarget": 185,
+        "equalTarget": 71
+      },
+      "needsEngineSupport": true
+    },
+    "422": {
+      "estado": "extraida",
+      "resumo": "Lothar entrega um escudo a Colthar e aguarda instruções do outro jogador.",
+      "partnerInstruction": {
+        "sendToReference": 422,
+        "wait": true
+      },
+      "effects": [
+        {
+          "type": "remove_item_if_present",
+          "item": "escudo_para_colthar"
+        }
+      ]
+    },
+    "423": {
+      "estado": "extraida",
+      "resumo": "O feitiço permite a Lothar voar sobre o lago até a margem norte.",
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 209
+        }
+      ]
+    },
+    "424": {
+      "estado": "extraida",
+      "resumo": "O feitiço incendeia as estacas, permite a fuga e devolve os pertences aos irmãos.",
+      "partnerInstruction": {
+        "sendToReference": 125
+      },
+      "effects": [
+        {
+          "type": "restore_stashed_items"
+        }
+      ],
+      "choices": [
+        {
+          "label": "Fugir para o deserto",
+          "target": 346
+        }
+      ]
+    },
+    "425": {
+      "estado": "extraida",
+      "resumo": "Lothar aguarda Colthar resolver a situação do saco gigante.",
+      "partnerInstruction": {
+        "wait": true,
+        "sourceCharacter": "colthar"
+      }
+    },
+    "426": {
+      "estado": "extraida",
+      "resumo": "Diante da caravana, Lothar escolhe entre voar, invisibilidade ou transformação; falha obriga a fugir correndo.",
+      "spellOptions": [
+        {
+          "label": "Voar para longe",
+          "cost": 3,
+          "successTarget": 59
+        },
+        {
+          "label": "Ficar invisível",
+          "cost": 1,
+          "successTarget": 127
+        },
+        {
+          "label": "Transformar um lacaio em inseto",
+          "cost": 3,
+          "successTarget": 239
+        }
+      ],
+      "failureTarget": 450
+    },
+    "427": {
+      "estado": "extraida",
+      "resumo": "Lothar cai sobre o rio de lava e morre queimado.",
+      "ending": "death",
+      "afterDeathReference": 39
+    },
+    "428": {
+      "estado": "extraida",
+      "resumo": "Os irmãos encontram uma choupana e um portão e escolhem entre examinar objetos próximos ou atravessar o portão.",
+      "choices": [
+        {
+          "label": "Examinar os fardos",
+          "target": 79
+        },
+        {
+          "label": "Atravessar o portão",
+          "target": 315
+        }
+      ]
+    },
+    "429": {
+      "estado": "extraida",
+      "resumo": "Uma tempestade traz duas Bestas-Trovão; Lothar pode usar magia no combate.",
+      "encounter": {
+        "allowCombatMagic": true,
+        "enemies": [
+          {
+            "name": "Besta-Trovão Um",
+            "habilidade": 9,
+            "energia": 6
+          },
+          {
+            "name": "Besta-Trovão Dois",
+            "habilidade": 8,
+            "energia": 6
+          }
+        ]
+      },
+      "onVictory": 491
+    },
+    "430": {
+      "estado": "extraida",
+      "resumo": "Num ritual druídico, Lothar escolhe qual planta lançar ao fogo.",
+      "choices": [
+        {
+          "label": "Erva-de-passarinho",
+          "target": 75
+        },
+        {
+          "label": "Hera",
+          "target": 52
+        }
+      ]
+    },
+    "431": {
+      "estado": "extraida",
+      "resumo": "A Hidra acorda e bloqueia o portão; Lothar pode lutar ou tentar negociar.",
+      "choices": [
+        {
+          "label": "Atacar a Hidra",
+          "target": 487
+        },
+        {
+          "label": "Tentar negociar",
+          "target": 457
+        }
+      ]
+    },
+    "432": {
+      "estado": "extraida",
+      "resumo": "Numa floresta densa, Lothar ouve música e decide investigar ou permanecer na trilha.",
+      "choices": [
+        {
+          "label": "Investigar a música",
+          "target": 377
+        },
+        {
+          "label": "Continuar pela trilha",
+          "target": 340
+        }
+      ]
+    },
+    "433": {
+      "estado": "extraida",
+      "resumo": "Ao devolver o cálice a Peleus, Lothar recebe um anel-amuleto marcado INFERNO.",
+      "effects": [
+        {
+          "type": "add_item",
+          "item": "anel_inferno"
+        }
+      ],
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 180
+        }
+      ]
+    },
+    "434": {
+      "estado": "extraida",
+      "resumo": "Lothar congela o lago e atravessa em segurança, depois escolhe entre subir à villa ou continuar pelas montanhas.",
+      "choices": [
+        {
+          "label": "Subir à villa",
+          "target": 300
+        },
+        {
+          "label": "Continuar pelas montanhas",
+          "target": 210
+        }
+      ]
+    },
+    "435": {
+      "estado": "extraida",
+      "resumo": "O feitiço congela o Pesadelo e libera Lothar, que escolhe uma de duas portas.",
+      "choices": [
+        {
+          "label": "Porta da esquerda",
+          "target": 477
+        },
+        {
+          "label": "Porta da direita",
+          "target": 31
+        }
+      ]
+    },
+    "436": {
+      "estado": "extraida",
+      "resumo": "Os Ogres rejeitam a proposta de Lothar e o obrigam a lutar.",
+      "choices": [
+        {
+          "label": "Enfrentar os Ogres",
+          "target": 363
+        }
+      ]
+    },
+    "437": {
+      "estado": "extraida",
+      "resumo": "Uma trilha de montanha termina numa bifurcação.",
+      "choices": [
+        {
+          "label": "Trilha da esquerda",
+          "target": 271
+        },
+        {
+          "label": "Trilha da direita",
+          "target": 153
+        }
+      ]
+    },
+    "438": {
+      "estado": "extraida",
+      "resumo": "Colthar enfrenta guardas Scuttlies enquanto Lothar precisa aguardar o resultado.",
+      "partnerInstruction": {
+        "wait": true,
+        "sourceCharacter": "colthar"
+      }
+    },
+    "439": {
+      "estado": "extraida",
+      "resumo": "Uma gema aparentemente clara incendeia Lothar; se STATUS for 20, Colthar deve seguir para 44.",
+      "partnerInstruction": {
+        "conditionalSend": [
+          {
+            "condition": {
+              "type": "shared_equals",
+              "key": "status",
+              "value": 20
+            },
+            "target": 44
+          }
+        ]
+      },
+      "ending": "death",
+      "afterDeathReference": 39
+    },
+    "440": {
+      "estado": "extraida",
+      "resumo": "Lothar anda magicamente sobre a superfície do lago e chega em segurança à margem norte.",
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 209
+        }
+      ]
+    },
+    "441": {
+      "estado": "extraida",
+      "resumo": "Contra as aves, Lothar escolhe entre voar, bola de fogo ou Sono; falha é fatal.",
+      "spellOptions": [
+        {
+          "label": "Voar para longe",
+          "cost": 3,
+          "successTarget": 14
+        },
+        {
+          "label": "Lançar bola de fogo",
+          "cost": 2,
+          "successTarget": 67
+        },
+        {
+          "label": "Fazer as aves dormirem",
+          "cost": 1,
+          "successTarget": 216
+        }
+      ],
+      "failureTarget": 479
+    },
+    "442": {
+      "estado": "extraida",
+      "resumo": "O mercador percebe a tentativa de traição de Lothar e manda os capangas atacá-lo.",
+      "choices": [
+        {
+          "label": "Enfrentar os capangas",
+          "target": 347
+        }
+      ]
+    },
+    "443": {
+      "estado": "extraida",
+      "resumo": "Há piratas demais para um combate direto; Lothar precisa escolher entre magia e itens.",
+      "choices": [
+        {
+          "label": "Usar magia",
+          "target": 356
+        },
+        {
+          "label": "Procurar um item útil",
+          "target": 281
+        }
+      ]
+    },
+    "444": {
+      "estado": "extraida",
+      "resumo": "Uma transformação mágica falha de forma catastrófica e cria um Dragão de Fogo que mata os dois irmãos.",
+      "partnerInstruction": {
+        "sendToReference": 444
+      },
+      "ending": "death"
+    },
+    "445": {
+      "estado": "extraida",
+      "resumo": "A fruta oferecida ao Pesadelo é rejeitada.",
+      "effects": [
+        {
+          "type": "remove_item_if_present",
+          "item": "fruta_branca"
+        }
+      ],
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 404
+        }
+      ]
+    },
+    "446": {
+      "estado": "extraida",
+      "resumo": "Separado de Colthar, Lothar escolhe entre a floresta e as montanhas.",
+      "choices": [
+        {
+          "label": "Ir pela floresta",
+          "target": 257
+        },
+        {
+          "label": "Ir pelas montanhas",
+          "target": 167
+        }
+      ]
+    },
+    "447": {
+      "estado": "extraida",
+      "resumo": "Lothar consegue se agarrar à borda do abismo e retorna à passagem.",
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 337
+        }
+      ]
+    },
+    "448": {
+      "estado": "parcial",
+      "resumo": "O Unicórnio aumenta o valor inicial de SORTE de Lothar em 1 e restaura SORTE até o novo máximo.",
+      "effects": [
+        {
+          "type": "increase_initial_stat",
+          "stat": "sorte",
+          "delta": 1
+        },
+        {
+          "type": "restore_stat_to_initial",
+          "stat": "sorte"
+        }
+      ],
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 373
+        }
+      ],
+      "needsEngineSupport": true
+    },
+    "449": {
+      "estado": "extraida",
+      "resumo": "Uma criatura semelhante a serpente morde Lothar, reduz sua ENERGIA e o força a recuar.",
+      "effects": [
+        {
+          "type": "change_stat",
+          "stat": "energia",
+          "delta": -2
+        }
+      ],
+      "choices": [
+        {
+          "label": "Afastar-se do buraco",
+          "target": 398
+        }
+      ]
+    },
+    "450": {
+      "estado": "extraida",
+      "resumo": "Ao fugir do mercador de escravos, Lothar precisa Testar a Sorte para escapar da corda mágica.",
+      "test": {
+        "type": "luck",
+        "successTarget": 267,
+        "failureTarget": 466
+      }
+    },
+    "451": {
+      "estado": "validada",
+      "resumo": "Ponto de sincronização: Lothar define AÇÃO 31 e aguarda STATUS.",
+      "effects": [
+        {
+          "type": "set_shared",
+          "key": "acao",
+          "value": 31
+        }
+      ]
+    },
+    "452": {
+      "estado": "extraida",
+      "resumo": "A resposta de Lothar ao sábio leva à consequência fatal do culto.",
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 101
+        }
+      ]
+    },
+    "453": {
+      "estado": "validada",
+      "resumo": "Ponto de sincronização: Lothar define AÇÃO 30 e aguarda STATUS.",
+      "effects": [
+        {
+          "type": "set_shared",
+          "key": "acao",
+          "value": 30
+        }
+      ]
+    },
+    "454": {
+      "estado": "extraida",
+      "resumo": "Lothar descobre a Gema Sagrada azul; se STATUS for 20, Colthar deve ser informado antes da conclusão.",
+      "partnerInstruction": {
+        "conditionalSend": [
+          {
+            "condition": {
+              "type": "shared_equals",
+              "key": "status",
+              "value": 20
+            },
+            "target": 368
+          }
+        ]
+      },
+      "effects": [
+        {
+          "type": "add_item",
+          "item": "gema_sagrada_azul"
+        }
+      ],
+      "choices": [
+        {
+          "label": "Concluir a Prova de Realeza",
+          "target": 500
+        }
+      ]
+    },
+    "455": {
+      "estado": "extraida",
+      "resumo": "Colthar não entra pela janela e Lothar precisa enfrentar sozinho três Orcs.",
+      "encounter": {
+        "allowCombatMagic": true,
+        "enemies": [
+          {
+            "name": "Orc Um",
+            "habilidade": 8,
+            "energia": 6
+          },
+          {
+            "name": "Orc Dois",
+            "habilidade": 7,
+            "energia": 4
+          },
+          {
+            "name": "Orc Três",
+            "habilidade": 6,
+            "energia": 4
+          }
+        ]
+      },
+      "onVictory": 85
+    },
+    "456": {
+      "estado": "extraida",
+      "resumo": "Lothar encontra dois Tritões e escolhe se admite procurar a Concha Sagrada ou se diz estar buscando uma saída.",
+      "choices": [
+        {
+          "label": "Dizer que procura a Concha Sagrada",
+          "target": 158
+        },
+        {
+          "label": "Dizer que procura uma saída",
+          "target": 258
+        }
+      ]
+    },
+    "457": {
+      "estado": "extraida",
+      "resumo": "Lothar tenta negociar com a Hidra e precisa Testar a Sorte.",
+      "test": {
+        "type": "luck",
+        "successTarget": 105,
+        "failureTarget": 407
+      }
+    },
+    "458": {
+      "estado": "extraida",
+      "resumo": "O Coletor de Impostos leva o ouro e o cavalo de Lothar; os irmãos decidem continuar juntos ou separados.",
+      "effects": [
+        {
+          "type": "set_gold",
+          "value": 0
+        },
+        {
+          "type": "remove_item_if_present",
+          "item": "cavalo"
+        }
+      ],
+      "choices": [
+        {
+          "label": "Continuar juntos",
+          "target": 383
+        },
+        {
+          "label": "Separar-se",
+          "target": 318
+        }
+      ]
+    },
+    "459": {
+      "estado": "extraida",
+      "resumo": "Lothar enfrenta dois Hobgoblins que guardam prisioneiros; magia de combate é permitida.",
+      "encounter": {
+        "allowCombatMagic": true,
+        "enemies": [
+          {
+            "name": "Hobgoblin Um",
+            "habilidade": 8,
+            "energia": 6
+          },
+          {
+            "name": "Hobgoblin Dois",
+            "habilidade": 8,
+            "energia": 4
+          }
+        ]
+      },
+      "onVictory": 172
+    },
+    "460": {
+      "estado": "extraida",
+      "resumo": "A invisibilidade falha entre os Kobolds; Lothar pode lutar ou oferecer tributo.",
+      "choices": [
+        {
+          "label": "Lutar",
+          "target": 46
+        },
+        {
+          "label": "Oferecer tributo",
+          "target": 141
+        }
+      ]
+    },
+    "461": {
+      "estado": "extraida",
+      "resumo": "A árvore esmaga Lothar depois da falha do feitiço.",
+      "ending": "death",
+      "afterDeathReference": 39
+    },
+    "462": {
+      "estado": "extraida",
+      "resumo": "No oásis, os irmãos decidem quem investigará a caravana ou se ambos esperarão.",
+      "choices": [
+        {
+          "label": "Colthar vai ao oásis",
+          "target": 150
+        },
+        {
+          "label": "Lothar investiga à noite",
+          "target": 286
+        },
+        {
+          "label": "Os dois aguardam a caravana partir",
+          "target": 249
+        }
+      ]
+    },
+    "463": {
+      "estado": "extraida",
+      "resumo": "Depois dos guardas da villa, Lothar escolhe entre seguir pelo corredor ou entrar no jardim.",
+      "choices": [
+        {
+          "label": "Seguir pelo corredor",
+          "target": 243
+        },
+        {
+          "label": "Entrar no jardim",
+          "target": 378
+        }
+      ]
+    },
+    "464": {
+      "estado": "extraida",
+      "resumo": "Uma resposta errada ao gigante faz os irmãos serem colocados dentro de um saco; Lothar decide se usa magia.",
+      "choices": [
+        {
+          "label": "Lothar lança um feitiço",
+          "target": 394
+        },
+        {
+          "label": "Não usar magia",
+          "target": 425
+        }
+      ]
+    },
+    "465": {
+      "estado": "validada",
+      "resumo": "Ponto de sincronização: Lothar define AÇÃO 32 e aguarda STATUS.",
+      "effects": [
+        {
+          "type": "set_shared",
+          "key": "acao",
+          "value": 32
+        }
+      ]
+    },
+    "466": {
+      "estado": "extraida",
+      "resumo": "A corda mágica captura Lothar e ele é incorporado à caravana de escravos.",
+      "choices": [
+        {
+          "label": "Prosseguir como prisioneiro",
+          "target": 217
+        }
+      ]
+    },
+    "467": {
+      "estado": "extraida",
+      "resumo": "Os Ogres aceitam perseguir Colthar; Lothar paga uma moeda e segue para um ponto de sincronização.",
+      "effects": [
+        {
+          "type": "change_gold",
+          "delta": -1
+        }
+      ],
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 226
+        }
+      ]
+    },
+    "468": {
+      "estado": "extraida",
+      "resumo": "Os Diabinhos são imunes ao feitiço de frio e continuam o ataque.",
+      "choices": [
+        {
+          "label": "Enfrentar os Diabinhos",
+          "target": 80
+        }
+      ]
+    },
+    "469": {
+      "estado": "extraida",
+      "resumo": "Uma rolagem de um dado decide qual das consequências com as três velhas ocorre.",
+      "roll": {
+        "dice": "1d6",
+        "routes": [
+          {
+            "range": [
+              2,
+              2
+            ],
+            "target": 73
+          },
+          {
+            "range": [
+              4,
+              4
+            ],
+            "target": 73
+          },
+          {
+            "range": [
+              6,
+              6
+            ],
+            "target": 73
+          },
+          {
+            "range": [
+              1,
+              1
+            ],
+            "target": 3
+          },
+          {
+            "range": [
+              3,
+              3
+            ],
+            "target": 3
+          },
+          {
+            "range": [
+              5,
+              5
+            ],
+            "target": 3
+          }
+        ]
+      }
+    },
+    "470": {
+      "estado": "extraida",
+      "resumo": "Um Caçador de Bruxas ataca Lothar e suas armas impedem Feitiços de Combate.",
+      "encounter": {
+        "noCombatMagic": true,
+        "enemies": [
+          {
+            "name": "Caçador de Bruxas",
+            "habilidade": 11,
+            "energia": 6
+          }
+        ]
+      },
+      "onVictory": 90
+    },
+    "471": {
+      "estado": "extraida",
+      "resumo": "O velho monge desaparece e os irmãos caem numa armadilha da estalagem, ficando inconscientes; Lothar deve aguardar Colthar.",
+      "partnerInstruction": {
+        "wait": true,
+        "sourceCharacter": "colthar"
+      }
+    },
+    "472": {
+      "estado": "extraida",
+      "resumo": "Sob magia, os barqueiros revelam o perigo dos peixes invisíveis; Lothar escolhe entre pagar ou usar outro feitiço.",
+      "choices": [
+        {
+          "label": "Pagar aos barqueiros",
+          "target": 245
+        },
+        {
+          "label": "Usar outro feitiço",
+          "target": 386
+        }
+      ]
+    },
+    "473": {
+      "estado": "extraida",
+      "resumo": "Dentro da fortaleza, Kobolds exigem tributo; Lothar pode oferecer um item, lutar ou usar magia.",
+      "choices": [
+        {
+          "label": "Oferecer um pertence",
+          "target": 141
+        },
+        {
+          "label": "Lutar",
+          "target": 46
+        },
+        {
+          "label": "Lançar um feitiço",
+          "target": 211
+        }
+      ]
+    },
+    "474": {
+      "estado": "extraida",
+      "resumo": "Lothar foge do Djinn num tapete voador levando um cativo e escolhe entre três saídas.",
+      "effects": [
+        {
+          "type": "add_item",
+          "item": "tapete_voador"
+        }
+      ],
+      "choices": [
+        {
+          "label": "Janela",
+          "target": 95
+        },
+        {
+          "label": "Porta grande",
+          "target": 121
+        },
+        {
+          "label": "Porta pequena",
+          "target": 135
+        }
+      ]
+    },
+    "475": {
+      "estado": "extraida",
+      "resumo": "O Unicórnio restaura completamente a MAGIA de Lothar.",
+      "effects": [
+        {
+          "type": "restore_stat_to_initial",
+          "stat": "magia"
+        }
+      ],
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 373
+        }
+      ]
+    },
+    "476": {
+      "estado": "extraida",
+      "resumo": "A árvore do Duende captura Lothar; ele precisa escolher entre três feitiços, e a falha é fatal.",
+      "spellOptions": [
+        {
+          "label": "Incendiar a árvore",
+          "cost": 1,
+          "successTarget": 195
+        },
+        {
+          "label": "Diminuir os galhos",
+          "cost": 2,
+          "successTarget": 222
+        },
+        {
+          "label": "Enfraquecer a árvore",
+          "cost": 1,
+          "successTarget": 330
+        }
+      ],
+      "failureTarget": 39
+    },
+    "477": {
+      "estado": "extraida",
+      "resumo": "Lothar encontra outra Pedra de Poder e decide investigar musgo luminoso ou ignorá-lo.",
+      "effects": [
+        {
+          "type": "add_item",
+          "item": "pedra_de_poder"
+        }
+      ],
+      "choices": [
+        {
+          "label": "Investigar o musgo",
+          "target": 62
+        },
+        {
+          "label": "Ignorar o musgo",
+          "target": 393
+        }
+      ]
+    },
+    "478": {
+      "estado": "extraida",
+      "resumo": "Depois da vitória de Colthar na toca, os irmãos escolhem uma passagem ou permitem que Lothar volte para tentar magia.",
+      "choices": [
+        {
+          "label": "Passagem bem usada",
+          "target": 283
+        },
+        {
+          "label": "Passagem menos usada",
+          "target": 399
+        },
+        {
+          "label": "Voltar à superfície para tentar magia",
+          "target": 83
+        }
+      ]
+    },
+    "479": {
+      "estado": "extraida",
+      "resumo": "As aves atacam Lothar em massa e o matam.",
+      "ending": "death",
+      "afterDeathReference": 39
+    },
+    "480": {
+      "estado": "extraida",
+      "resumo": "Os irmãos enfrentam juntos uma Traça, alternando ataques.",
+      "partnerInstruction": {
+        "sendToReference": 480
+      },
+      "encounter": {
+        "cooperative": true,
+        "enemies": [
+          {
+            "name": "Traça",
+            "habilidade": 7,
+            "energia": 10
+          }
+        ]
+      },
+      "choices": [
+        {
+          "label": "Vitória com Colthar vivo",
+          "target": 202,
+          "conditions": [
+            {
+              "type": "partner_active"
+            }
+          ]
+        },
+        {
+          "label": "Vitória após Colthar cair",
+          "target": 497,
+          "conditions": [
+            {
+              "type": "partner_removed"
+            }
+          ]
+        }
+      ]
+    },
+    "481": {
+      "estado": "extraida",
+      "resumo": "Os irmãos descobrem que os estalajadeiros são canibais e escolhem como coordenar o ataque.",
+      "choices": [
+        {
+          "label": "Lothar ataca a esposa; Colthar usa o lustre",
+          "target": 138
+        },
+        {
+          "label": "Colthar ataca a esposa; Lothar usa o lustre",
+          "target": 43
+        }
+      ]
+    },
+    "482": {
+      "estado": "extraida",
+      "resumo": "Uma gema vermelha incendeia Lothar; se STATUS for 20, Colthar deve ir para 44.",
+      "partnerInstruction": {
+        "conditionalSend": [
+          {
+            "condition": {
+              "type": "shared_equals",
+              "key": "status",
+              "value": 20
+            },
+            "target": 44
+          }
+        ]
+      },
+      "ending": "death",
+      "afterDeathReference": 39
+    },
+    "483": {
+      "estado": "extraida",
+      "resumo": "A resposta ao gigante é aceita e os irmãos podem continuar viagem.",
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 224
+        }
+      ]
+    },
+    "484": {
+      "estado": "extraida",
+      "resumo": "A travessia mágica pelo lago queima os pés de Lothar, reduzindo HABILIDADE; depois ele escolhe entre a villa e as montanhas.",
+      "effects": [
+        {
+          "type": "change_stat",
+          "stat": "habilidade",
+          "delta": -1
+        }
+      ],
+      "choices": [
+        {
+          "label": "Subir à villa",
+          "target": 300
+        },
+        {
+          "label": "Continuar pelas montanhas",
+          "target": 210
+        }
+      ]
+    },
+    "485": {
+      "estado": "extraida",
+      "resumo": "Lothar alcança Colthar após a vitória sobre Homens-lagarto e os dois retornam ao deserto.",
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 249
+        }
+      ]
+    },
+    "486": {
+      "estado": "extraida",
+      "resumo": "Os irmãos enfrentam juntos três Orcs; Lothar pode usar magia.",
+      "encounter": {
+        "cooperative": true,
+        "allowCombatMagic": true,
+        "enemies": [
+          {
+            "name": "Orc Um",
+            "habilidade": 8,
+            "energia": 6
+          },
+          {
+            "name": "Orc Dois",
+            "habilidade": 7,
+            "energia": 4
+          },
+          {
+            "name": "Orc Três",
+            "habilidade": 6,
+            "energia": 4
+          }
+        ]
+      },
+      "choices": [
+        {
+          "label": "Vitória com Colthar vivo",
+          "target": 9,
+          "conditions": [
+            {
+              "type": "partner_active"
+            }
+          ]
+        },
+        {
+          "label": "Vitória após Colthar cair",
+          "target": 35,
+          "conditions": [
+            {
+              "type": "partner_removed"
+            }
+          ]
+        }
+      ]
+    },
+    "487": {
+      "estado": "extraida",
+      "resumo": "Lothar enfrenta as três cabeças da Hidra como oponentes sucessivos; magia de combate é permitida.",
+      "encounter": {
+        "allowCombatMagic": true,
+        "enemies": [
+          {
+            "name": "Cabeça Um",
+            "habilidade": 11,
+            "energia": 4
+          },
+          {
+            "name": "Cabeça Dois",
+            "habilidade": 10,
+            "energia": 4
+          },
+          {
+            "name": "Cabeça Três",
+            "habilidade": 9,
+            "energia": 4
+          }
+        ]
+      },
+      "onVictory": 41,
+      "onDefeat": 294
+    },
+    "488": {
+      "estado": "extraida",
+      "resumo": "Três Amazonas descobrem os irmãos; cada príncipe enfrenta as adversárias de forma cooperativa e Lothar pode usar magia.",
+      "encounter": {
+        "cooperative": true,
+        "allowCombatMagic": true,
+        "enemies": [
+          {
+            "name": "Amazona Um",
+            "habilidade": 10,
+            "energia": 6
+          },
+          {
+            "name": "Amazona Dois",
+            "habilidade": 9,
+            "energia": 4
+          },
+          {
+            "name": "Amazona Três",
+            "habilidade": 9,
+            "energia": 4
+          }
+        ]
+      },
+      "choices": [
+        {
+          "label": "Vitória com Colthar vivo",
+          "target": 315,
+          "conditions": [
+            {
+              "type": "partner_active"
+            }
+          ]
+        },
+        {
+          "label": "Vitória após Colthar cair",
+          "target": 376,
+          "conditions": [
+            {
+              "type": "partner_removed"
+            }
+          ]
+        }
+      ]
+    },
+    "489": {
+      "estado": "extraida",
+      "resumo": "Lothar recupera os materiais roubados pelo Wight e retorna às Fadas.",
+      "effects": [
+        {
+          "type": "restore_stashed_items"
+        }
+      ],
+      "choices": [
+        {
+          "label": "Voltar às Fadas",
+          "target": 7
+        }
+      ]
+    },
+    "490": {
+      "estado": "extraida",
+      "resumo": "Um Caçador de Bruxas intercepta Lothar; magia de combate é anulada. Se Lothar perder, Colthar deve ser encaminhado.",
+      "encounter": {
+        "noCombatMagic": true,
+        "enemies": [
+          {
+            "name": "Caçador de Bruxas",
+            "habilidade": 11,
+            "energia": 6
+          }
+        ]
+      },
+      "onVictory": 200,
+      "onDefeat": 282,
+      "partnerOnDefeat": 282
+    },
+    "491": {
+      "estado": "extraida",
+      "resumo": "Electron oferece um enigma com três faixas elétricas de cores diferentes.",
+      "choices": [
+        {
+          "label": "Faixa vermelha",
+          "target": 118
+        },
+        {
+          "label": "Faixa amarela",
+          "target": 163
+        },
+        {
+          "label": "Faixa azul",
+          "target": 201
+        }
+      ]
+    },
+    "492": {
+      "estado": "parcial",
+      "resumo": "Um cálice amaldiçoa Lothar para nunca mais recuperar ENERGIA perdida.",
+      "effects": [
+        {
+          "type": "set_flag",
+          "flag": "sem_recuperacao_energia"
+        }
+      ],
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 180
+        }
+      ],
+      "needsEngineSupport": true
+    },
+    "493": {
+      "estado": "extraida",
+      "resumo": "A caravana de escravos encontra Colthar; o destino de Lothar depende de o irmão vencer ou ser capturado.",
+      "partnerOutcomeRoutes": [
+        {
+          "condition": "partner_defeated",
+          "target": 298
+        },
+        {
+          "condition": "partner_victory",
+          "target": 381
+        }
+      ],
+      "partnerInstruction": {
+        "wait": true,
+        "sourceCharacter": "colthar"
+      }
+    },
+    "494": {
+      "estado": "validada",
+      "resumo": "Ponto de sincronização: Lothar define AÇÃO 37 e aguarda STATUS 1, 17 ou 18.",
+      "effects": [
+        {
+          "type": "set_shared",
+          "key": "acao",
+          "value": 37
+        }
+      ]
+    },
+    "495": {
+      "estado": "extraida",
+      "resumo": "Um Hobgoblin da montanha ataca Lothar; magia de combate é permitida.",
+      "encounter": {
+        "allowCombatMagic": true,
+        "enemies": [
+          {
+            "name": "Hobgoblin",
+            "habilidade": 8,
+            "energia": 6
+          }
+        ]
+      },
+      "onVictory": 4
+    },
+    "496": {
+      "estado": "extraida",
+      "resumo": "Depois das visões apresentadas pela Morte, os irmãos decidem se continuam juntos ou se separam.",
+      "choices": [
+        {
+          "label": "Continuar juntos",
+          "target": 107
+        },
+        {
+          "label": "Separar-se",
+          "target": 63
+        }
+      ]
+    },
+    "497": {
+      "estado": "extraida",
+      "resumo": "Com Colthar morto, Lothar atravessa o hall sozinho e escolhe uma das duas trilhas da floresta.",
+      "partnerRemoved": true,
+      "choices": [
+        {
+          "label": "Trilha da esquerda",
+          "target": 432
+        },
+        {
+          "label": "Trilha da direita",
+          "target": 340
+        }
+      ]
+    },
+    "498": {
+      "estado": "extraida",
+      "resumo": "Após derrotar o Gigante, Lothar segue por um caminho diferente conforme Colthar esteja vivo ou morto.",
+      "choices": [
+        {
+          "label": "Colthar morreu",
+          "target": 2,
+          "conditions": [
+            {
+              "type": "partner_removed"
+            }
+          ]
+        },
+        {
+          "label": "Colthar está vivo",
+          "target": 224,
+          "conditions": [
+            {
+              "type": "partner_active"
+            }
+          ]
+        }
+      ]
+    },
+    "499": {
+      "estado": "extraida",
+      "resumo": "Após as visões do Druida, Lothar acorda sozinho na clareira e retorna à trilha.",
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 367
+        }
+      ]
+    },
+    "500": {
+      "estado": "validada",
+      "resumo": "A Gema Sagrada escolhe Lothar como sucessor legítimo; ele retorna a Gundobad como rei.",
+      "ending": "success"
     }
   }
 }
