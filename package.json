@@ -7,6 +7,6 @@
     "validate": "node tools/validate.mjs",
     "test": "node --test tests/*.test.mjs",
     "check": "npm run syntax && npm run validate && npm test",
-    "syntax": "node --check src/app.js && node --check src/engine/dice.js && node --check src/engine/character.js && node --check src/engine/luck.js && node --check src/engine/combat.js && node --check src/engine/magic.js && node --check src/engine/sync.js && node --check src/engine/story.js && node --check src/engine/encounter.js"
+    "syntax": "node --check src/app.js && node --check src/engine/dice.js && node --check src/engine/character.js && node --check src/engine/luck.js && node --check src/engine/combat.js && node --check src/engine/magic.js && node --check src/engine/sync.js && node --check src/engine/story.js && node --check src/engine/encounter.js && node --check src/engine/save.js"
   }
 }
