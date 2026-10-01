@@ -929,15 +929,15 @@
       "partnerOnFailure": 361
     },
     "59": {
-      "estado": "parcial",
-      "resumo": "Referência com OCR incompleto; o trecho legível direciona para 321.",
+      "estado": "extraida",
+      "resumo": "A referência apenas encaminha Lothar diretamente para 321.",
       "choices": [
         {
           "label": "Prosseguir",
           "target": 321
         }
       ],
-      "needsManualReview": true
+      "notes": "Texto conferido em duas fontes digitalizadas: a referência contém somente o encaminhamento para 321."
     },
     "60": {
       "estado": "validada",
