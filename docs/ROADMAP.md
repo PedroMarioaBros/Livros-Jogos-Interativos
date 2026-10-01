@@ -41,7 +41,8 @@
 - [ ] Dados animados
 - [x] Combate guiado individual
 - [x] Feitiços de Combate selecionáveis para Lothar
-- [ ] Tela completa de combate cooperativo
+- [x] Tela funcional de combate cooperativo
+- [ ] Polimento da tela de combate cooperativo e magia compartilhada
 - [x] Inventário inicial e recursos na ficha
 - [x] Salvamento local
 - [x] Histórico de decisões
