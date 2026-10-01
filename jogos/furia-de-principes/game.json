@@ -1,0 +1,26 @@
+{
+  "id": "furia-de-principes",
+  "title": "Fúria de Príncipes",
+  "language": "pt-BR",
+  "modes": ["solo", "dupla"],
+  "sharedState": {
+    "status": 0,
+    "acao": 0
+  },
+  "characters": [
+    {
+      "id": "colthar",
+      "name": "Colthar",
+      "role": "Príncipe-Guerreiro",
+      "data": "data/colthar.json"
+    },
+    {
+      "id": "lothar",
+      "name": "Lothar",
+      "role": "Príncipe-Feiticeiro",
+      "data": "data/lothar.json"
+    }
+  ],
+  "sync": "data/sincronizacao.json",
+  "startReference": 1
+}
