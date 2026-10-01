@@ -20,6 +20,7 @@ export function createCharacter(data, rng = Math.random) {
     items: [...(resources.items || [])],
     flags: [],
     stashedItems: [],
+    temporaryEffects: [],
     lastCombatDamage: 0
   };
 }
