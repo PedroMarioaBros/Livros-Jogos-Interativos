@@ -39,7 +39,8 @@
 - [ ] Biblioteca de aventuras
 - [x] Ficha básica de personagem
 - [ ] Dados animados
-- [ ] Combate guiado
+- [x] Combate guiado individual
+- [ ] Tela completa de combate cooperativo
 - [x] Inventário inicial e recursos na ficha
 - [ ] Salvamento local
 - [ ] Histórico de decisões
