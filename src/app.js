@@ -5,6 +5,13 @@ import { applyEffects as applyStoryEffects, availableChoices } from "./engine/st
 import { createEncounter, playEncounterRound, currentOpponent } from "./engine/encounter.js";
 import { serializeSave, parseSave } from "./engine/save.js";
 import { applyCombatSpell } from "./engine/spell-combat.js";
+import {
+  createDuoSession,
+  beginHandoff,
+  completeHandoff,
+  updateDuoPlayer,
+  restoreDuoSession
+} from "./engine/duo.js";
 
 const state = {
   config: null,
@@ -12,6 +19,7 @@ const state = {
   spells: null,
   syncData: null,
   characterData: null,
+  characterDataCache: {},
   hero: null,
   mode: null,
   character: null,
@@ -20,7 +28,8 @@ const state = {
   partnerActive: false,
   encounter: null,
   completedEncounters: new Set(),
-  history: []
+  history: [],
+  duo: null
 };
 
 const SAVE_KEY = "livros-jogos-interativos:furia-de-principes";
@@ -31,6 +40,23 @@ async function loadJSON(path) {
   const response = await fetch(path);
   if (!response.ok) throw new Error(`Falha ao carregar ${path}`);
   return response.json();
+}
+
+async function loadCharacterData(characterId) {
+  if (state.characterDataCache[characterId]) {
+    return state.characterDataCache[characterId];
+  }
+
+  const base = "jogos/furia-de-principes/";
+  const config = state.config.characters.find(
+    character => character.id === characterId
+  );
+
+  if (!config) throw new Error("Personagem desconhecido.");
+
+  const data = await loadJSON(base + config.data);
+  state.characterDataCache[characterId] = data;
+  return data;
 }
 
 async function init() {
@@ -64,8 +90,7 @@ async function init() {
   document.querySelectorAll("[data-character]").forEach((button) => {
     button.addEventListener("click", async () => {
       state.character = button.dataset.character;
-      const config = state.config.characters.find(c => c.id === state.character);
-      state.characterData = await loadJSON(base + config.data);
+      state.characterData = await loadCharacterData(state.character);
       selectGroup("[data-character]", button);
     });
   });
@@ -82,6 +107,8 @@ async function init() {
   $("restart-game").addEventListener("click", restartGame);
   $("cast-spell").addEventListener("click", castSelectedSpell);
   $("spell-select").addEventListener("change", updateSpellCostUI);
+  $("handoff-player").addEventListener("click", startPlayerHandoff);
+  $("handoff-confirm").addEventListener("click", finishPlayerHandoff);
 }
 
 function selectGroup(selector, selected) {
@@ -98,22 +125,159 @@ function showGameMessage(message) {
   $("game-message").textContent = message;
 }
 
-function startGame() {
-  if (!state.mode || !state.characterData) {
-    $("message").textContent = "Escolha o modo e o personagem antes de começar.";
+async function startGame() {
+  if (!state.mode || !state.character) {
+    $("message").textContent =
+      state.mode === "dupla"
+        ? "Escolha quem ficará com o aparelho primeiro."
+        : "Escolha o modo e o personagem antes de começar.";
     return;
   }
 
-  state.hero = createCharacter(state.characterData);
-  state.partnerActive = state.mode === "dupla";
-  state.encounter = null;
-  state.completedEncounters = new Set();
-  state.history = [];
+  if (state.mode === "dupla") {
+    const [coltharData, lotharData] = await Promise.all([
+      loadCharacterData("colthar"),
+      loadCharacterData("lothar")
+    ]);
+
+    state.shared = { ...state.rules.modes.dupla.sharedInitial };
+    state.duo = createDuoSession(
+      {
+        colthar: {
+          hero: createCharacter(coltharData),
+          reference: state.config.startReference
+        },
+        lothar: {
+          hero: createCharacter(lotharData),
+          reference: state.config.startReference
+        }
+      },
+      state.character
+    );
+
+    await activateDuoCharacter(state.character, {
+      render: false
+    });
+  } else {
+    state.characterData = await loadCharacterData(state.character);
+    state.hero = createCharacter(state.characterData);
+    state.partnerActive = false;
+    state.duo = null;
+    state.ref = state.config.startReference;
+    state.encounter = null;
+    state.completedEncounters = new Set();
+    state.history = [];
+  }
+
   $("setup").classList.add("hidden");
   $("game").classList.remove("hidden");
   renderSheet();
   renderHistory();
-  renderReference(state.config.startReference);
+  renderReference(state.ref);
+}
+
+function persistActiveDuoPlayer() {
+  if (state.mode !== "dupla" || !state.duo || !state.character) return;
+
+  updateDuoPlayer(state.duo, state.character, {
+    hero: state.hero,
+    reference: state.ref,
+    history: state.history,
+    encounter: state.encounter,
+    completedEncounters: state.completedEncounters
+  });
+}
+
+function updatePartnerState() {
+  if (state.mode !== "dupla" || !state.duo) {
+    state.partnerActive = false;
+    return;
+  }
+
+  const other = state.character === "colthar" ? "lothar" : "colthar";
+  state.partnerActive = !state.duo.players[other].removed;
+}
+
+async function activateDuoCharacter(characterId, options = {}) {
+  if (!state.duo) throw new Error("Sessão em dupla inexistente.");
+
+  const player = state.duo.players[characterId];
+  if (!player) throw new Error("Jogador inexistente.");
+
+  state.character = characterId;
+  state.characterData = await loadCharacterData(characterId);
+  state.hero = player.hero;
+  state.ref = Number(player.reference);
+  state.history = [...(player.history || [])];
+  state.encounter = player.encounter || null;
+  state.completedEncounters = new Set(player.completedEncounters || []);
+  state.duo.activeCharacter = characterId;
+  updatePartnerState();
+
+  if (options.render !== false) {
+    renderSheet();
+    renderHistory();
+    renderReference(state.ref, { applyEntryEffects: false });
+  }
+}
+
+function renderDuoStatus() {
+  const bar = $("duo-bar");
+  if (!bar) return;
+
+  if (state.mode !== "dupla" || !state.duo) {
+    bar.classList.add("hidden");
+    return;
+  }
+
+  bar.classList.remove("hidden");
+  const other = state.character === "colthar" ? "lothar" : "colthar";
+  const otherName = other === "colthar" ? "Colthar" : "Lothar";
+  const currentName = state.character === "colthar" ? "Colthar" : "Lothar";
+
+  $("duo-current").textContent =
+    `Jogador atual: ${currentName} • sua referência ${state.ref}`;
+  $("handoff-player").textContent =
+    state.duo.players[other].removed
+      ? `${otherName} está fora da aventura`
+      : `🔒 Entregar aparelho para ${otherName}`;
+  $("handoff-player").disabled = state.duo.players[other].removed;
+}
+
+function startPlayerHandoff() {
+  if (state.mode !== "dupla" || !state.duo) return;
+
+  persistActiveDuoPlayer();
+  const result = beginHandoff(state.duo);
+
+  if (!result.ok) {
+    showGameMessage("O outro príncipe já está fora da aventura.");
+    return;
+  }
+
+  const targetName =
+    result.targetCharacter === "colthar" ? "Colthar" : "Lothar";
+
+  $("handoff-target").textContent = targetName;
+  $("handoff-confirm").textContent =
+    `Sou ${targetName} — abrir minha aventura`;
+  $("handoff-overlay").classList.remove("hidden");
+}
+
+async function finishPlayerHandoff() {
+  if (!state.duo) return;
+
+  const result = completeHandoff(state.duo);
+  if (!result.ok) return;
+
+  await activateDuoCharacter(result.activeCharacter, {
+    render: false
+  });
+
+  $("handoff-overlay").classList.add("hidden");
+  renderSheet();
+  renderHistory();
+  renderReference(state.ref, { applyEntryEffects: false });
 }
 
 function renderSheet() {
@@ -132,6 +296,7 @@ function renderSheet() {
     hero.items.length ? `Itens: ${hero.items.join(", ")}` : "Itens: nenhum";
 
   updateShared();
+  renderDuoStatus();
 }
 
 function navigateTo(target, label = "Avançar", options = {}) {
@@ -305,9 +470,30 @@ function renderReference(reference, options = {}) {
   }
 
   if (node.ending) {
+    if (
+      state.mode === "dupla" &&
+      state.duo &&
+      node.ending === "death" &&
+      !state.duo.players[state.character].removed
+    ) {
+      updateDuoPlayer(state.duo, state.character, {
+        hero: state.hero,
+        reference: state.ref,
+        history: state.history,
+        encounter: state.encounter,
+        completedEncounters: state.completedEncounters,
+        removed: true
+      });
+      updatePartnerState();
+      renderDuoStatus();
+    }
+
     const info = document.createElement("p");
     info.className = "muted";
-    info.textContent = "Fim desta aventura.";
+    info.textContent =
+      state.mode === "dupla" && state.partnerActive
+        ? "Fim da aventura deste príncipe. O outro jogador pode continuar."
+        : "Fim desta aventura.";
     $("choices").appendChild(info);
   } else if (
     choices.length === 0 &&
@@ -585,6 +771,7 @@ function saveGame() {
     return;
   }
 
+  persistActiveDuoPlayer();
   localStorage.setItem(SAVE_KEY, serializeSave(state));
   showGameMessage(`Partida salva na referência ${state.ref}.`);
 }
@@ -599,20 +786,31 @@ async function loadGame() {
   try {
     const snapshot = parseSave(serialized);
     state.mode = snapshot.mode;
-    state.character = snapshot.character;
-    state.hero = snapshot.hero;
     state.shared = snapshot.shared;
-    state.ref = snapshot.reference;
-    state.partnerActive = snapshot.partnerActive;
-    state.completedEncounters = new Set(snapshot.completedEncounters || []);
-    state.encounter = snapshot.encounter;
-    state.history = snapshot.history || [];
 
-    const base = "jogos/furia-de-principes/";
-    const config = state.config.characters.find(
-      character => character.id === state.character
-    );
-    state.characterData = await loadJSON(base + config.data);
+    if (snapshot.mode === "dupla" && snapshot.duo) {
+      await Promise.all([
+        loadCharacterData("colthar"),
+        loadCharacterData("lothar")
+      ]);
+      state.duo = restoreDuoSession(snapshot.duo);
+      await activateDuoCharacter(
+        state.duo.activeCharacter,
+        { render: false }
+      );
+    } else {
+      state.duo = null;
+      state.character = snapshot.character;
+      state.hero = snapshot.hero;
+      state.ref = snapshot.reference;
+      state.partnerActive = snapshot.partnerActive;
+      state.completedEncounters = new Set(
+        snapshot.completedEncounters || []
+      );
+      state.encounter = snapshot.encounter;
+      state.history = snapshot.history || [];
+      state.characterData = await loadCharacterData(state.character);
+    }
 
     $("setup").classList.add("hidden");
     $("game").classList.remove("hidden");
@@ -636,6 +834,7 @@ function restartGame() {
   state.encounter = null;
   state.completedEncounters = new Set();
   state.history = [];
+  state.duo = null;
 
   hideCombat();
   $("game").classList.add("hidden");
