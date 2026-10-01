@@ -189,7 +189,7 @@
       "resumo": "Os irmãos são capturados por Amazonas e ficam sem seus pertences; sem arma, Colthar sofre penalidade temporária de HABILIDADE.",
       "effects": [
         {
-          "type": "clear_items"
+          "type": "stash_and_clear_items"
         },
         {
           "type": "change_stat",
@@ -674,8 +674,8 @@
             "energia": 6
           },
           {
-            "name": "Esposa",
-            "habilidade": 7,
+            "name": "Mulher",
+            "habilidade": 8,
             "energia": 4
           }
         ]
@@ -1013,7 +1013,52 @@
     },
     "60": {
       "estado": "validada",
-      "resumo": "Ponto de sincronização: Colthar define STATUS 4 e aguarda uma mudança de AÇÃO."
+      "resumo": "Ponto de sincronização: Colthar define STATUS 4 e segue conforme o valor atual de AÇÃO.",
+      "effects": [
+        {
+          "type": "set_shared",
+          "key": "status",
+          "value": 4
+        }
+      ],
+      "choices": [
+        {
+          "label": "AÇÃO = 1 ou 25",
+          "target": 13,
+          "conditions": [
+            {
+              "type": "shared_in",
+              "key": "acao",
+              "values": [
+                1,
+                25
+              ]
+            }
+          ]
+        },
+        {
+          "label": "AÇÃO = 24",
+          "target": 212,
+          "conditions": [
+            {
+              "type": "shared_equals",
+              "key": "acao",
+              "value": 24
+            }
+          ]
+        },
+        {
+          "label": "AÇÃO = 26",
+          "target": 413,
+          "conditions": [
+            {
+              "type": "shared_equals",
+              "key": "acao",
+              "value": 26
+            }
+          ]
+        }
+      ]
     },
     "61": {
       "estado": "extraida",
