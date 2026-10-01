@@ -28,6 +28,7 @@
 - [ ] Extrair referências de Colthar
   - [x] Primeiro lote estrutural: 44 referências cadastradas no banco
 - [ ] Extrair referências de Lothar
+  - [x] Primeiro grande lote: referências 1–116 estruturadas, além de 148 e 199
 - [ ] Mapear todas as sincronizações STATUS/AÇÃO
   - [x] Motor genérico de sincronização
   - [x] Primeira varredura de AÇÃO de Lothar
