@@ -11,7 +11,10 @@ import {
   createCooperativeCombatState,
   cooperativeCombatStep
 } from "../src/engine/combat.js";
-import { castCombatSpell } from "../src/engine/magic.js";
+import {
+  castCombatSpell,
+  combatSpellLimit
+} from "../src/engine/magic.js";
 import { processSyncPoint, resolveSyncTarget } from "../src/engine/sync.js";
 import { applyEffects, availableChoices } from "../src/engine/story.js";
 import { createEncounter, playEncounterRound } from "../src/engine/encounter.js";
@@ -739,4 +742,64 @@ test("set_stat define atributo sem ultrapassar o valor inicial", () => {
   }]);
 
   assert.equal(mage.stats.magia, mage.initialStats.magia);
+});
+
+
+test("vitória sobre o Djinn permite dois Feitiços de Combate", () => {
+  const mage = createCharacter(mageData, sequence([0, 0, 0, 0, 0]));
+  mage.flags.push("dois_feiticos_de_combate");
+  const encounter = createEncounter(362, {
+    enemies: [{ name: "Inimigo", habilidade: 8, energia: 20 }]
+  });
+  const spell = {
+    id: "poder",
+    cost: 1,
+    effect: { type: "hero-skill-delta", value: 1 }
+  };
+
+  assert.equal(combatSpellLimit(mage), 2);
+
+  const first = castCombatSpell(mage, spell, encounter, {
+    rng: sequence([0])
+  });
+  const second = castCombatSpell(mage, spell, encounter, {
+    rng: sequence([0])
+  });
+  const third = castCombatSpell(mage, spell, encounter, {
+    rng: sequence([0])
+  });
+
+  assert.equal(first.ok, true);
+  assert.equal(second.ok, true);
+  assert.equal(third.ok, false);
+  assert.equal(third.reason, "combat-spell-limit-reached");
+});
+
+test("maldição do cálice impede recuperação de ENERGIA", () => {
+  const mage = createCharacter(mageData, sequence([0, 0, 0, 0, 0]));
+  mage.stats.energia -= 4;
+  mage.flags.push("sem_recuperacao_energia");
+  const before = mage.stats.energia;
+
+  applyEffects(mage, [{
+    type: "change_stat",
+    stat: "energia",
+    delta: 3
+  }]);
+
+  assert.equal(mage.stats.energia, before);
+  assert.equal(consumeProvision(mage).reason, "energy-recovery-blocked");
+});
+
+test("efeito pode aumentar o valor inicial de SORTE", () => {
+  const mage = createCharacter(mageData, sequence([0, 0, 0, 0, 0]));
+  const before = mage.initialStats.sorte;
+
+  applyEffects(mage, [{
+    type: "increase_initial_stat",
+    stat: "sorte",
+    delta: 1
+  }]);
+
+  assert.equal(mage.initialStats.sorte, before + 1);
 });
