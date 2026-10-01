@@ -55,6 +55,16 @@ const mageBookData = JSON.parse(
   )
 );
 
+const syncBookData = JSON.parse(
+  await fs.readFile(
+    new URL(
+      "../jogos/furia-de-principes/data/sincronizacao.json",
+      import.meta.url
+    ),
+    "utf8"
+  )
+);
+
 const warriorData = {
   character: "colthar",
   displayName: "Colthar",
@@ -184,6 +194,36 @@ test("sincronização de Lothar escolhe rota pelo STATUS", () => {
   };
 
   assert.equal(resolveSyncTarget(entry, { status: 3, acao: 23 }), 287);
+});
+
+test("sincronização 217 de Lothar resolve STATUS 10 e 9", () => {
+  const entry = syncBookData.entries.find(
+    item => item.character === "lothar" && item.reference === 217
+  );
+  const ref217 = mageBookData.references["217"];
+
+  assert.equal(entry.verified, true);
+  assert.equal(entry.needsManualReview, undefined);
+  assert.equal(resolveSyncTarget(entry, { status: 10, acao: 29 }), 37);
+  assert.equal(resolveSyncTarget(entry, { status: 9, acao: 29 }), 493);
+
+  const mage = createCharacter(mageData, sequence([0, 0, 0, 0, 0]));
+  assert.deepEqual(
+    availableChoices(ref217, {
+      character: mage,
+      shared: { status: 10, acao: 29 },
+      partnerActive: true
+    }).map(choice => choice.target),
+    [37]
+  );
+  assert.deepEqual(
+    availableChoices(ref217, {
+      character: mage,
+      shared: { status: 9, acao: 29 },
+      partnerActive: true
+    }).map(choice => choice.target),
+    [493]
+  );
 });
 
 test("modo solo pode ignorar mutações cooperativas", () => {

@@ -269,8 +269,7 @@
     {
       "character": "lothar",
       "reference": 217,
-      "verified": false,
-      "needsManualReview": true,
+      "verified": true,
       "effects": [
         {
           "type": "set_shared",
@@ -282,12 +281,18 @@
       "routes": [
         {
           "status": [
+            10
+          ],
+          "target": 37
+        },
+        {
+          "status": [
             9
           ],
           "target": 493
         }
       ],
-      "notes": "OCR ambíguo na outra condição: aparece como 'STATUS mudar de 1 para 10'. Conferir visualmente a página antes de codificar essa rota."
+      "notes": "Texto conferido: STATUS muda de 1 para 10 → 37; STATUS 9 → 493."
     },
     {
       "character": "lothar",

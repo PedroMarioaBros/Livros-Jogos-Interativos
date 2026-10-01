@@ -49,6 +49,7 @@
   - [x] Motor genérico de sincronização
   - [x] Primeira varredura de AÇÃO de Lothar
   - [x] Primeiros pontos verificados de STATUS de Colthar (31 e 60)
+  - [x] 20 pontos atualmente catalogados conferidos individualmente
 - [ ] Classificar finais, mortes e encontros
 - [ ] Testar todos os caminhos alcançáveis
   - [x] Análise automática dos grafos de ambos os volumes
