@@ -155,6 +155,30 @@ export function applyEffect(character, effect, context = {}, rng = Math.random) 
       );
       return { type: effect.type, value: character.provisions };
 
+    case "set_stat": {
+      if (!(effect.stat in character.stats)) {
+        return {
+          type: effect.type,
+          stat: effect.stat,
+          unsupported: true
+        };
+      }
+
+      const before = character.stats[effect.stat];
+      const maximum = character.initialStats[effect.stat];
+      character.stats[effect.stat] = Math.max(
+        0,
+        Math.min(maximum, Number(effect.value || 0))
+      );
+
+      return {
+        type: effect.type,
+        stat: effect.stat,
+        before,
+        value: character.stats[effect.stat]
+      };
+    }
+
     case "change_stat": {
       const before = character.stats[effect.stat];
       const value = modifyStat(
