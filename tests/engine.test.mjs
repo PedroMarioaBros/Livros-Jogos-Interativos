@@ -718,3 +718,25 @@ test("itens preservados podem excluir objetos mantidos com o personagem", () => 
     ["anel", "cajado", "cavalo", "mochila"].sort()
   );
 });
+
+
+test("set_stat define atributo sem ultrapassar o valor inicial", () => {
+  const mage = createCharacter(mageData, sequence([0, 0, 0, 0, 0]));
+  mage.stats.magia = 5;
+
+  applyEffects(mage, [{
+    type: "set_stat",
+    stat: "magia",
+    value: 0
+  }]);
+
+  assert.equal(mage.stats.magia, 0);
+
+  applyEffects(mage, [{
+    type: "set_stat",
+    stat: "magia",
+    value: 999
+  }]);
+
+  assert.equal(mage.stats.magia, mage.initialStats.magia);
+});
