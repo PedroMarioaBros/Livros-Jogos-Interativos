@@ -8,21 +8,21 @@ As porcentagens abaixo são estimativas de engenharia para um **Fúria de Prínc
 | --- | ---: |
 | Fundação e arquitetura | 100% |
 | Motor genérico de livro-jogo | 96% |
-| Regras específicas de Fúria de Príncipes | 92% |
+| Regras específicas de Fúria de Príncipes | 93% |
 | Conteúdo de Colthar | 15,4% |
 | Conteúdo de Lothar | 100% estrutural |
-| STATUS/AÇÃO e sincronização | ~35% |
+| STATUS/AÇÃO e sincronização | ~37% |
 | Combate individual | 95% |
 | Magia de Lothar | 95% |
 | Combate cooperativo | 80% |
-| Interface funcional | 84% |
+| Interface funcional | 85% |
 | Salvamento e histórico | 95% |
-| Dois jogadores no mesmo aparelho | 82% |
+| Dois jogadores no mesmo aparelho | 83% |
 | Sincronização entre dois aparelhos | 0% |
 | Camada instalável/offline | 55% |
 | Ilustrações e áudio finais | 0–5% |
-| Testes do motor | 88% |
-| Testes da aventura completa | ~23% |
+| Testes do motor | 90% |
+| Testes da aventura completa | ~24% |
 
 ## Medidas objetivas atuais
 
@@ -42,8 +42,8 @@ As porcentagens abaixo são estimativas de engenharia para um **Fúria de Prínc
 | Demonstração jogável de Fúria | ~89% |
 | Colthar solo completo | ~27% |
 | Lothar solo completo | ~84% |
-| Fúria completo no mesmo aparelho | ~69% |
-| Aplicativo Android final | ~64% do caminho total |
+| Fúria completo no mesmo aparelho | ~70% |
+| Aplicativo Android final | ~65% do caminho total |
 
 ## Critério
 
