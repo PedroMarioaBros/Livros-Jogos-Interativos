@@ -28,10 +28,12 @@
   - [x] Rolagens genéricas e feitiços situacionais
   - [x] Recuperação de pertences confiscados
   - [x] Modificadores especiais de combate por referência
+  - [x] Escolhas pós-combate e encaminhamento condicional entre jogadores
+  - [x] Perda seletiva de itens e definição direta de atributos
 - [ ] Extrair referências de Colthar
   - [x] Primeiro lote estrutural: 44 referências cadastradas no banco
 - [ ] Extrair referências de Lothar
-  - [x] Referências 1–200 estruturadas continuamente
+  - [x] Referências 1–300 estruturadas continuamente
 - [ ] Mapear todas as sincronizações STATUS/AÇÃO
   - [x] Motor genérico de sincronização
   - [x] Primeira varredura de AÇÃO de Lothar
