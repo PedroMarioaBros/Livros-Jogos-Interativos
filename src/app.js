@@ -363,6 +363,7 @@ function storyContext(extra = {}) {
     partnerCharacter: getPartnerHero(),
     shared: state.shared,
     partnerActive: state.partnerActive,
+    itemTags: state.config?.itemTags || {},
     ...extra
   };
 }
@@ -601,6 +602,7 @@ function renderReference(reference, options = {}) {
     const context = {
       shared: state.shared,
       partnerActive: state.partnerActive,
+      itemTags: state.config?.itemTags || {},
       ignoreSharedMutations:
         state.mode === "solo" &&
         state.rules.modes.solo.ignoreSharedMutations
@@ -722,6 +724,7 @@ function renderReference(reference, options = {}) {
       const effectContext = {
         shared: state.shared,
         partnerActive: state.partnerActive,
+        itemTags: state.config?.itemTags || {},
         ignoreSharedMutations:
           state.mode === "solo" &&
           state.rules.modes.solo.ignoreSharedMutations
@@ -988,7 +991,8 @@ function renderReference(reference, options = {}) {
             stat,
             delta: node.playerEffectChoice.amount,
             cap: node.playerEffectChoice.cap
-          }]
+          }],
+          { itemTags: state.config?.itemTags || {} }
         );
         renderSheet();
         document
@@ -1017,7 +1021,8 @@ function renderReference(reference, options = {}) {
       button.addEventListener("click", () => {
         applyStoryEffects(
           state.hero,
-          [{ type: "remove_item", item }]
+          [{ type: "remove_item", item }],
+          { itemTags: state.config?.itemTags || {} }
         );
         renderSheet();
         document
@@ -1348,7 +1353,8 @@ function playCooperativeCombatRound() {
 
       applyStoryEffects(state.hero, node.rewards || [], {
         shared: state.shared,
-        partnerActive: state.partnerActive
+        partnerActive: state.partnerActive,
+        itemTags: state.config?.itemTags || {}
       });
 
       $("combat-continue").classList.remove("hidden");
@@ -1515,7 +1521,8 @@ function completeCombatVictory(node) {
     state.completedEncounters.add(state.ref);
     applyStoryEffects(state.hero, node.rewards || [], {
       shared: state.shared,
-      partnerActive: state.partnerActive
+      partnerActive: state.partnerActive,
+      itemTags: state.config?.itemTags || {}
     });
     renderSheet();
   }
