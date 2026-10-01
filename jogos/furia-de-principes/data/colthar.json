@@ -81,14 +81,13 @@
       ]
     },
     "5": {
-      "estado": "parcial",
+      "estado": "extraida",
       "resumo": "Um espelho mágico cria um reflexo de Colthar com os mesmos valores de HABILIDADE e ENERGIA.",
       "encounterDynamic": {
         "type": "mirror_character_stats",
         "name": "Reflexo"
       },
-      "onVictory": 404,
-      "needsEngineSupport": true
+      "onVictory": 404
     },
     "6": {
       "estado": "extraida",
@@ -1189,7 +1188,7 @@
       "needsManualReview": true
     },
     "71": {
-      "estado": "parcial",
+      "estado": "extraida",
       "resumo": "Uma rolagem realizada em conjunto com o outro jogador define a próxima referência.",
       "partnerInstruction": {
         "wait": true,
@@ -1210,8 +1209,7 @@
           ],
           "target": 44
         }
-      ],
-      "needsEngineSupport": true
+      ]
     },
     "72": {
       "estado": "extraida",
