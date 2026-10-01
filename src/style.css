@@ -122,3 +122,68 @@ select {
   border-radius: 14px;
   background: #181521;
 }
+
+
+.duo-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  border-color: #4e6f78;
+}
+
+.duo-bar.hidden {
+  display: none;
+}
+
+.handoff-button {
+  width: auto;
+  min-width: 210px;
+  text-align: center;
+}
+
+button:disabled {
+  opacity: .55;
+  cursor: not-allowed;
+}
+
+.privacy-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: #090a0eeF;
+  backdrop-filter: blur(12px);
+}
+
+.privacy-overlay.hidden {
+  display: none;
+}
+
+.privacy-card {
+  width: min(460px, 100%);
+  padding: 28px;
+  border: 1px solid #4e5260;
+  border-radius: 22px;
+  background: #191b22;
+  text-align: center;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, .45);
+}
+
+.privacy-lock {
+  font-size: 54px;
+  margin-bottom: 10px;
+}
+
+@media (max-width: 640px) {
+  .duo-bar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .handoff-button {
+    width: 100%;
+  }
+}
