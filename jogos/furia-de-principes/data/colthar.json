@@ -10,7 +10,11 @@
   "startingResources": {
     "provisions": 10,
     "gold": 10,
-    "items": ["cavalo", "espada", "mochila"]
+    "items": [
+      "cavalo",
+      "espada",
+      "mochila"
+    ]
   },
   "references": {
     "1": {
@@ -26,6 +30,14 @@
           "target": 148
         }
       ]
+    },
+    "31": {
+      "estado": "validada",
+      "resumo": "Ponto de sincronização: Colthar define STATUS 19 e aguarda uma mudança de AÇÃO."
+    },
+    "60": {
+      "estado": "validada",
+      "resumo": "Ponto de sincronização: Colthar define STATUS 4 e aguarda uma mudança de AÇÃO."
     },
     "148": {
       "estado": "pendente",
