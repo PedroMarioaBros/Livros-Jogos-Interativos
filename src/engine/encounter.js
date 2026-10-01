@@ -13,7 +13,17 @@ export function createEncounter(reference, definition) {
     rounds: [],
     finished: false,
     victory: false,
-    defeat: false
+    defeat: false,
+    combatSpellAttempted: false,
+    modifiers: {
+      heroSkill: 0,
+      enemySkill: 0,
+      heroDamage: 2,
+      incomingDamage: 2,
+      incomingHitSave: null,
+      allyHeroSkill: 0
+    },
+    proxy: null
   };
 }
 
@@ -68,17 +78,31 @@ export function playEncounterRound(
     return encounterStatus(encounter, character);
   }
 
+  const activeCharacter =
+    encounter.proxy?.stats?.energia > 0
+      ? encounter.proxy
+      : character;
+
   const result = combatRound(
-    character,
+    activeCharacter,
     opponent,
     options.rng || Math.random,
-    options.modifiers || {}
+    {
+      ...(encounter.modifiers || {}),
+      ...(options.modifiers || {})
+    }
   );
+
+  const usedProxy = activeCharacter !== character;
 
   const record = {
     round: encounter.rounds.length + 1,
     enemyIndex: encounter.currentEnemyIndex,
     enemyName: opponent.name,
+    attackerName: usedProxy ? "Sombra" : character.name,
+    usedProxy,
+    proxyDefeated:
+      usedProxy && activeCharacter.stats.energia <= 0,
     ...result
   };
 
