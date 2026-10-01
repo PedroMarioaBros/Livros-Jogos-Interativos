@@ -39,6 +39,7 @@
   - [x] Divisão interativa de tesouro entre os dois príncipes
   - [x] Penalidades temporárias até recuperar arma
   - [x] Condições STATUS/AÇÃO com múltiplos valores
+  - [x] Dano simultâneo da Bruxa aos dois príncipes
 - [ ] Extrair referências de Colthar
   - [x] Primeira expansão estrutural: 77 referências cadastradas no banco
 - [x] Extrair referências de Lothar
