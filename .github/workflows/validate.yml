@@ -1,4 +1,4 @@
-name: Validar dados dos livros-jogos
+name: Validar motor e dados dos livros-jogos
 
 on:
   push:
@@ -17,5 +17,5 @@ jobs:
         with:
           node-version: "22"
 
-      - name: Validar JSON e referências
-        run: node tools/validate.mjs
+      - name: Validar dados e executar testes
+        run: npm run check
