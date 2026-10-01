@@ -15,6 +15,7 @@ import { castCombatSpell } from "../src/engine/magic.js";
 import { processSyncPoint, resolveSyncTarget } from "../src/engine/sync.js";
 import { applyEffects, availableChoices } from "../src/engine/story.js";
 import { createEncounter, playEncounterRound } from "../src/engine/encounter.js";
+import { createSaveSnapshot, serializeSave, parseSave } from "../src/engine/save.js";
 
 function sequence(values) {
   let index = 0;
@@ -341,4 +342,38 @@ test("controlador de encontro encerra quando o herói cai", () => {
   assert.equal(result.finished, true);
   assert.equal(result.defeat, true);
   assert.equal(hero.stats.energia, 0);
+});
+
+
+test("salvamento preserva ficha, referência, sincronização e histórico", () => {
+  const hero = createCharacter(warriorData, sequence([0, 0, 0, 0]));
+
+  const state = {
+    config: { id: "furia-de-principes" },
+    mode: "solo",
+    character: "colthar",
+    hero,
+    shared: { status: 1, acao: 1 },
+    ref: 34,
+    partnerActive: false,
+    completedEncounters: new Set([12, 20]),
+    encounter: null,
+    history: [{ from: 1, to: 34, label: "Teste" }]
+  };
+
+  const snapshot = createSaveSnapshot(state);
+  assert.equal(snapshot.reference, 34);
+  assert.deepEqual(snapshot.completedEncounters, [12, 20]);
+
+  const restored = parseSave(serializeSave(state));
+  assert.equal(restored.character, "colthar");
+  assert.equal(restored.hero.gold, 10);
+  assert.equal(restored.history[0].to, 34);
+});
+
+test("salvamento rejeita versão incompatível", () => {
+  assert.throws(
+    () => parseSave(JSON.stringify({ version: 999 })),
+    /incompatível/
+  );
 });
