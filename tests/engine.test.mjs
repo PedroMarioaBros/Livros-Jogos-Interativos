@@ -695,3 +695,26 @@ test("dano de combate fica disponível para recuperação posterior", () => {
   }]);
   assert.equal(hero.stats.energia, Math.min(hero.initialStats.energia, before + 1));
 });
+
+
+test("itens preservados podem excluir objetos mantidos com o personagem", () => {
+  const mage = createCharacter(mageData, sequence([0, 0, 0, 0, 0]));
+  mage.items.push("anel");
+
+  applyEffects(mage, [{
+    type: "stash_items_except",
+    items: ["cajado"]
+  }]);
+
+  assert.deepEqual(mage.items, ["cajado"]);
+  assert.deepEqual(
+    mage.stashedItems.sort(),
+    ["anel", "cavalo", "mochila"].sort()
+  );
+
+  applyEffects(mage, [{ type: "restore_stashed_items" }]);
+  assert.deepEqual(
+    mage.items.sort(),
+    ["anel", "cajado", "cavalo", "mochila"].sort()
+  );
+});
