@@ -34,6 +34,7 @@ import {
   merchantItemSold,
   purchaseMerchantItem
 } from "../src/engine/merchant.js";
+import { useInstantKillItem } from "../src/engine/combat-item.js";
 
 function sequence(values) {
   let index = 0;
@@ -1459,4 +1460,78 @@ test("referência 250 está pronta para a loja compartilhada", () => {
   assert.equal(ref250.merchant.items.length, 6);
   assert.equal(ref250.merchant.continueTarget, 323);
   assert.equal(ref250.needsEngineSupport, undefined);
+});
+
+
+test("Raio de Dizimação destrói o inimigo e é consumido", () => {
+  const mage = createCharacter(mageData, sequence([0, 0, 0, 0, 0]));
+  mage.items.push("raio_de_electron");
+  const encounter = createEncounter(314, {
+    enemies: [{ name: "Gigante", habilidade: 12, energia: 99 }]
+  });
+
+  const result = useInstantKillItem(
+    mage,
+    encounter,
+    "raio_de_electron"
+  );
+
+  assert.equal(result.ok, true);
+  assert.equal(result.energyBefore, 99);
+  assert.equal(result.energyAfter, 0);
+  assert.equal(result.victory, true);
+  assert.equal(encounter.finished, true);
+  assert.equal(encounter.victory, true);
+  assert.equal(mage.items.includes("raio_de_electron"), false);
+
+  const second = useInstantKillItem(
+    mage,
+    encounter,
+    "raio_de_electron"
+  );
+  assert.equal(second.ok, false);
+  assert.equal(second.reason, "missing-item");
+});
+
+test("Raio de Dizimação pode escolher alvo em combate cooperativo", () => {
+  const colthar = createCharacter(warriorData, sequence([0, 0, 0, 0]));
+  const lothar = createCharacter(mageData, sequence([0, 0, 0, 0, 0]));
+  lothar.items.push("raio_de_electron");
+
+  const encounter = createCooperativeCombatState(
+    [colthar, lothar],
+    [
+      createOpponent({ name: "Um", habilidade: 8, energia: 6 }),
+      createOpponent({ name: "Dois", habilidade: 8, energia: 10 })
+    ],
+    { rng: sequence([0]) }
+  );
+
+  const result = useInstantKillItem(
+    lothar,
+    encounter,
+    "raio_de_electron",
+    { enemyIndex: 1 }
+  );
+
+  assert.equal(result.ok, true);
+  assert.equal(encounter.enemies[0].energia, 6);
+  assert.equal(encounter.enemies[1].energia, 0);
+  assert.equal(result.victory, false);
+  assert.equal(encounter.finished, false);
+});
+
+test("referência 314 habilita o Raio de Dizimação identificado", () => {
+  const ref314 = mageBookData.references["314"];
+
+  assert.equal(ref314.estado, "extraida");
+  assert.equal(
+    ref314.effects.some(
+      effect =>
+        effect.type === "set_flag" &&
+        effect.flag === "raio_de_electron_identificado"
+    ),
+    true
+  );
+  assert.equal(ref314.needsEngineSupport, undefined);
 });
