@@ -17,7 +17,10 @@ import {
   cooperativeCombatStep
 } from "./engine/combat.js";
 import { serializeSave, parseSave } from "./engine/save.js";
-import { applyCombatSpell } from "./engine/spell-combat.js";
+import {
+  applyCombatSpell,
+  applyCooperativeCombatSpell
+} from "./engine/spell-combat.js";
 import {
   createDuoSession,
   beginHandoff,
@@ -1242,7 +1245,6 @@ function renderEncounter(node) {
 
 function renderCooperativeEncounter(node) {
   $("combat-card").classList.remove("hidden");
-  $("spell-panel").classList.add("hidden");
   $("combat-continue").classList.add("hidden");
   $("combat-round").classList.remove("hidden");
   $("combat-round").textContent = "🎲 Rolar rodada cooperativa";
@@ -1255,6 +1257,7 @@ function renderCooperativeEncounter(node) {
       "Os dois príncipes estão no mesmo confronto. Com vários inimigos, cada um enfrenta um adversário; contra um único inimigo, os ataques se alternam.";
   }
 
+  renderSpellPanel(node);
   renderDuoStatus();
 }
 
@@ -1264,15 +1267,22 @@ function updateCooperativeCombatDisplay() {
   const heroes = state.cooperativeEncounter.heroes;
   const enemies = state.cooperativeEncounter.enemies;
 
+  const shadow = state.cooperativeEncounter.proxiesByHero?.[1];
+  const shadowText =
+    shadow?.stats?.energia > 0
+      ? ` | Sombra: HABILIDADE ${shadow.stats.habilidade} • ENERGIA ${shadow.stats.energia}/${shadow.initialStats.energia}`
+      : "";
+
   const heroText = [
     `Colthar: ENERGIA ${heroes[0].stats.energia}/${heroes[0].initialStats.energia}`,
     `Lothar: ENERGIA ${heroes[1].stats.energia}/${heroes[1].initialStats.energia}`
-  ].join(" | ");
+  ].join(" | ") + shadowText;
 
   const enemyText = enemies
-    .map(enemy =>
-      `${enemy.name}: HABILIDADE ${enemy.habilidade} • ENERGIA ${enemy.energia}/${enemy.initialEnergy}`
-    )
+    .map(enemy => {
+      const stateLabel = enemy.asleep ? " • ADORMECIDO" : "";
+      return `${enemy.name}: HABILIDADE ${enemy.habilidade} • ENERGIA ${enemy.energia}/${enemy.initialEnergy}${stateLabel}`;
+    })
     .join(" | ");
 
   $("combat-opponents").textContent =
@@ -1301,6 +1311,70 @@ function markFallenDuoHeroes() {
   updatePartnerState();
 }
 
+function completeCooperativeCombatVictory(node) {
+  if (!state.completedEncounters.has(state.ref)) {
+    state.completedEncounters.add(state.ref);
+    applyStoryEffects(state.hero, node.rewards || [], {
+      shared: state.shared,
+      partnerActive: state.partnerActive,
+      itemTags: state.config?.itemTags || {}
+    });
+    renderSheet();
+  }
+
+  state.cooperativeEncounter.finished = true;
+  state.cooperativeEncounter.winner = "heroes";
+  $("combat-title").textContent = "🏆 Vitória dos príncipes";
+  $("combat-round").classList.add("hidden");
+  $("spell-panel").classList.add("hidden");
+
+  const choices = availableChoices(node, storyContext());
+
+  if (choices.length) {
+    $("combat-continue").classList.add("hidden");
+    $("choices").innerHTML = "";
+
+    const info = document.createElement("p");
+    info.className = "muted";
+    info.textContent = "Escolha como continuar após a vitória:";
+    $("choices").appendChild(info);
+
+    for (const choice of choices) {
+      const button = document.createElement("button");
+      button.textContent = `${choice.label} → ${choice.target}`;
+      button.addEventListener("click", () => {
+        if (!resolveSharedPayment(choice)) return;
+
+        const effectContext = {
+          shared: state.shared,
+          partnerActive: state.partnerActive,
+          itemTags: state.config?.itemTags || {},
+          ignoreSharedMutations: false
+        };
+        applyStoryEffects(
+          state.hero,
+          choice.effects || [],
+          effectContext
+        );
+        state.shared = effectContext.shared;
+        state.cooperativeEncounter = null;
+        hideCombat();
+        navigateTo(choice.target, choice.label);
+      });
+      $("choices").appendChild(button);
+    }
+  } else {
+    $("combat-continue").classList.remove("hidden");
+    $("combat-continue").dataset.target = node.onVictory ?? "";
+    $("combat-continue").textContent = node.onVictory
+      ? `Continuar → ${node.onVictory}`
+      : "Continuar";
+  }
+
+  persistActiveDuoPlayer();
+  renderDuoStatus();
+}
+
 function playCooperativeCombatRound() {
   if (
     !state.cooperativeEncounter ||
@@ -1320,20 +1394,24 @@ function playCooperativeCombatRound() {
   if (result.events.length) {
     const descriptions = result.events.map(event => {
       const heroName =
-        event.heroIndex === 0 ? "Colthar" : "Lothar";
+        event.attackerName ||
+        (event.heroIndex === 0 ? "Colthar" : "Lothar");
       const enemy =
         state.cooperativeEncounter.enemies[event.enemyIndex];
       const round = event.result;
+      const shadowNote = event.proxyDefeated
+        ? " A Sombra foi vencida; Lothar entra no combate."
+        : "";
 
       if (round.outcome === "hero-hit") {
-        return `${heroName} acerta ${enemy.name} e causa ${round.damage} de dano`;
+        return `${heroName} acerta ${enemy.name} e causa ${round.damage} de dano${shadowNote}`;
       }
 
       if (round.outcome === "enemy-hit") {
-        return `${enemy.name} acerta ${heroName} e causa ${round.damage} de dano`;
+        return `${enemy.name} acerta ${heroName} e causa ${round.damage} de dano${shadowNote}`;
       }
 
-      return `${heroName} e ${enemy.name} empatam`;
+      return `${heroName} e ${enemy.name} empatam${shadowNote}`;
     });
 
     $("combat-log").textContent =
@@ -1344,26 +1422,13 @@ function playCooperativeCombatRound() {
   renderSheet();
 
   if (result.finished) {
-    state.cooperativeEncounter.finished = true;
-    $("combat-round").classList.add("hidden");
-
     if (result.winner === "heroes") {
-      state.completedEncounters.add(state.ref);
-      $("combat-title").textContent = "🏆 Vitória dos príncipes";
-
-      applyStoryEffects(state.hero, node.rewards || [], {
-        shared: state.shared,
-        partnerActive: state.partnerActive,
-        itemTags: state.config?.itemTags || {}
-      });
-
-      $("combat-continue").classList.remove("hidden");
-      $("combat-continue").dataset.target =
-        node.onVictory ?? "";
-      $("combat-continue").textContent = node.onVictory
-        ? `Continuar → ${node.onVictory}`
-        : "Continuar";
+      completeCooperativeCombatVictory(node);
     } else {
+      state.cooperativeEncounter.finished = true;
+      state.cooperativeEncounter.winner = "enemies";
+      $("combat-round").classList.add("hidden");
+      $("spell-panel").classList.add("hidden");
       $("combat-title").textContent = "☠️ Os dois príncipes foram derrotados";
       showGameMessage(
         "A ENERGIA dos dois personagens chegou a zero."
@@ -1393,18 +1458,33 @@ function updateCombatOpponents() {
 
 function renderSpellPanel(node) {
   const panel = $("spell-panel");
-
-  const limit = combatSpellLimit(state.hero);
+  const cooperative =
+    state.cooperativeEncounter &&
+    !state.cooperativeEncounter.finished;
+  const encounter = cooperative
+    ? state.cooperativeEncounter
+    : state.encounter;
+  const caster = cooperative
+    ? state.cooperativeEncounter.heroes?.[1]
+    : state.hero;
+  const lotharAvailable = cooperative
+    ? Boolean(caster && caster.stats.energia > 0)
+    : state.character === "lothar";
+  const roundsStarted = cooperative
+    ? Number(encounter?.step || 0) > 0
+    : Boolean(encounter?.rounds?.length);
+  const limit = caster ? combatSpellLimit(caster) : 1;
   const attempts = Number(
-    state.encounter?.combatSpellsAttempted ??
-    (state.encounter?.combatSpellAttempted ? 1 : 0)
+    encounter?.combatSpellsAttempted ??
+    (encounter?.combatSpellAttempted ? 1 : 0)
   );
 
   const canCast =
-    state.character === "lothar" &&
-    !node.encounter.noCombatMagic &&
-    state.encounter &&
-    state.encounter.rounds.length === 0 &&
+    lotharAvailable &&
+    Boolean(caster?.stats && "magia" in caster.stats) &&
+    !node.encounter?.noCombatMagic &&
+    encounter &&
+    !roundsStarted &&
     attempts < limit;
 
   if (!canCast) {
@@ -1474,7 +1554,23 @@ function describeSpellResult(result) {
 }
 
 function castSelectedSpell() {
-  if (!state.encounter || state.character !== "lothar") return;
+  const cooperative =
+    state.cooperativeEncounter &&
+    !state.cooperativeEncounter.finished;
+  const encounter = cooperative
+    ? state.cooperativeEncounter
+    : state.encounter;
+  const caster = cooperative
+    ? state.cooperativeEncounter.heroes?.[1]
+    : state.hero;
+
+  if (
+    !encounter ||
+    !caster ||
+    (!cooperative && state.character !== "lothar")
+  ) {
+    return;
+  }
 
   const spell = state.spells.spells.find(
     item => item.id === $("spell-select").value
@@ -1482,21 +1578,33 @@ function castSelectedSpell() {
   if (!spell) return;
 
   const magicSpend = Number($("spell-magic-spend").value);
-  const result = applyCombatSpell(
-    state.hero,
-    state.encounter,
-    spell,
-    { magicSpend }
-  );
+  const result = cooperative
+    ? applyCooperativeCombatSpell(
+        caster,
+        encounter,
+        spell,
+        { magicSpend, heroIndex: 1 }
+      )
+    : applyCombatSpell(
+        caster,
+        encounter,
+        spell,
+        { magicSpend }
+      );
 
   $("spell-result").textContent = describeSpellResult(result);
   renderSheet();
-  updateCombatOpponents();
+
+  if (cooperative) {
+    updateCooperativeCombatDisplay();
+  } else {
+    updateCombatOpponents();
+  }
 
   if (result.ok) {
-    const limit = combatSpellLimit(state.hero);
+    const limit = combatSpellLimit(caster);
     const attempts = Number(
-      state.encounter.combatSpellsAttempted || 0
+      encounter.combatSpellsAttempted || 0
     );
 
     if (attempts >= limit || result.encounterVictory) {
@@ -1512,7 +1620,16 @@ function castSelectedSpell() {
 
   if (result.encounterVictory) {
     const node = state.characterData.references[String(state.ref)];
-    completeCombatVictory(node);
+    if (cooperative) {
+      completeCooperativeCombatVictory(node);
+    } else {
+      completeCombatVictory(node);
+    }
+  }
+
+  if (cooperative) {
+    persistActiveDuoPlayer();
+    renderDuoStatus();
   }
 }
 
