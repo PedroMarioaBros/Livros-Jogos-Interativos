@@ -17,6 +17,8 @@ export function conditionMet(condition, context) {
       return hasFlag(character, condition.flag);
     case "flag_not":
       return !hasFlag(character, condition.flag);
+    case "flag_any":
+      return (condition.flags || []).some(flag => hasFlag(character, flag));
     case "gold_gte":
       return character.gold >= Number(condition.value);
     case "has_item":
@@ -119,13 +121,42 @@ export function applyEffect(character, effect, context = {}, rng = Math.random) 
       }
 
       const before = character.stats[effect.stat];
-      character.stats[effect.stat] = character.initialStats[effect.stat];
+      const delta = character.initialStats[effect.stat] - before;
+      const value = modifyStat(character, effect.stat, Math.max(0, delta));
 
       return {
         type: effect.type,
         stat: effect.stat,
         before,
-        value: character.stats[effect.stat]
+        value,
+        blocked:
+          effect.stat === "energia" &&
+          before < character.initialStats[effect.stat] &&
+          value === before &&
+          character.flags?.includes("sem_recuperacao_energia")
+      };
+    }
+
+    case "increase_initial_stat": {
+      if (!(effect.stat in character.initialStats)) {
+        return {
+          type: effect.type,
+          stat: effect.stat,
+          unsupported: true
+        };
+      }
+
+      const before = character.initialStats[effect.stat];
+      character.initialStats[effect.stat] = Math.max(
+        0,
+        before + Number(effect.delta || 0)
+      );
+
+      return {
+        type: effect.type,
+        stat: effect.stat,
+        before,
+        value: character.initialStats[effect.stat]
       };
     }
 
