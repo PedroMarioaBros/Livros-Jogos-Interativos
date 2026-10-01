@@ -622,7 +622,57 @@ function renderReference(reference, options = {}) {
           );
         }
 
+        if (
+          !result.success &&
+          node.failureChoices?.length
+        ) {
+          $("choices").innerHTML = "";
+
+          const info = document.createElement("p");
+          info.className = "muted";
+          info.textContent =
+            outcome + " Escolha como continuar após a falha.";
+          $("choices").appendChild(info);
+
+          for (const failureChoice of node.failureChoices) {
+            const failureButton = document.createElement("button");
+            failureButton.textContent =
+              `${failureChoice.label} → ${failureChoice.target}`;
+            failureButton.addEventListener("click", () => {
+              navigateTo(
+                failureChoice.target,
+                "Alternativa após falha de feitiço"
+              );
+            });
+            $("choices").appendChild(failureButton);
+          }
+
+          return;
+        }
+
         if (result.target) {
+          if (
+            !result.success &&
+            node.partnerOnFailure &&
+            state.mode === "dupla" &&
+            state.duo
+          ) {
+            const other =
+              state.character === "colthar" ? "lothar" : "colthar";
+            const partner = state.duo.players[other];
+            updateDuoPlayer(state.duo, other, {
+              reference: node.partnerOnFailure,
+              history: [
+                ...(partner.history || []),
+                {
+                  from: partner.reference,
+                  to: node.partnerOnFailure,
+                  label: "Falha compartilhada"
+                }
+              ]
+            });
+          }
+
           navigateTo(
             result.target,
             result.success
@@ -645,6 +695,7 @@ function renderReference(reference, options = {}) {
 
     for (const stat of node.playerEffectChoice.stats || []) {
       const button = document.createElement("button");
+      button.dataset.playerEffectChoice = "true";
       button.textContent = `➕ Recuperar ${node.playerEffectChoice.amount} em ${stat.toUpperCase()}`;
       button.addEventListener("click", () => {
         applyStoryEffects(
@@ -657,12 +708,70 @@ function renderReference(reference, options = {}) {
           }]
         );
         renderSheet();
-        button.disabled = true;
+        document
+          .querySelectorAll("[data-player-effect-choice]")
+          .forEach(item => {
+            item.disabled = true;
+          });
         showGameMessage(
           `${stat.toUpperCase()} recuperada.`
         );
       });
       $("choices").appendChild(button);
+    }
+  }
+
+  if (node.partnerInstruction) {
+    const info = document.createElement("p");
+    info.className = "muted";
+
+    if (state.mode === "dupla" && state.duo) {
+      const other =
+        state.character === "colthar" ? "lothar" : "colthar";
+      const otherName =
+        other === "colthar" ? "Colthar" : "Lothar";
+      const partner = state.duo.players[other];
+
+      if (
+        Number.isInteger(node.partnerInstruction.sendToReference) &&
+        !partner.removed
+      ) {
+        const target = node.partnerInstruction.sendToReference;
+
+        if (partner.reference !== target) {
+          updateDuoPlayer(state.duo, other, {
+            reference: target,
+            history: [
+              ...(partner.history || []),
+              {
+                from: partner.reference,
+                to: target,
+                label: `Instrução de ${state.hero.name}`
+              }
+            ]
+          });
+        }
+
+        info.textContent =
+          `${otherName} foi encaminhado para a referência ${target}.`;
+      } else if (node.partnerInstruction.wait) {
+        info.textContent =
+          `A aventura de ${state.hero.name} deve aguardar uma instrução de ${otherName}.`;
+      }
+
+      $("choices").appendChild(info);
+
+      if (!partner.removed) {
+        const button = document.createElement("button");
+        button.textContent =
+          `🔒 Entregar aparelho para ${otherName}`;
+        button.addEventListener("click", startPlayerHandoff);
+        $("choices").appendChild(button);
+      }
+    } else {
+      info.textContent =
+        "Esta referência contém uma instrução do modo para dois jogadores.";
+      $("choices").appendChild(info);
     }
   }
 
