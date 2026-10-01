@@ -3,6 +3,7 @@ import { testLuck } from "./engine/luck.js";
 import { processSyncPoint } from "./engine/sync.js";
 import { applyEffects as applyStoryEffects, availableChoices } from "./engine/story.js";
 import { createEncounter, playEncounterRound, currentOpponent } from "./engine/encounter.js";
+import { serializeSave, parseSave } from "./engine/save.js";
 
 const state = {
   config: null,
@@ -17,8 +18,11 @@ const state = {
   ref: 1,
   partnerActive: false,
   encounter: null,
-  completedEncounters: new Set()
+  completedEncounters: new Set(),
+  history: []
 };
+
+const SAVE_KEY = "livros-jogos-interativos:furia-de-principes";
 
 const $ = (id) => document.getElementById(id);
 
@@ -72,6 +76,9 @@ async function init() {
   $("combat-round").addEventListener("click", playCombatRound);
   $("combat-continue").addEventListener("click", continueAfterCombat);
   $("dev-go").addEventListener("click", jumpToReference);
+  $("save-game").addEventListener("click", saveGame);
+  $("load-game").addEventListener("click", loadGame);
+  $("restart-game").addEventListener("click", restartGame);
 }
 
 function selectGroup(selector, selected) {
@@ -98,9 +105,11 @@ function startGame() {
   state.partnerActive = state.mode === "dupla";
   state.encounter = null;
   state.completedEncounters = new Set();
+  state.history = [];
   $("setup").classList.add("hidden");
   $("game").classList.remove("hidden");
   renderSheet();
+  renderHistory();
   renderReference(state.config.startReference);
 }
 
@@ -120,6 +129,40 @@ function renderSheet() {
     hero.items.length ? `Itens: ${hero.items.join(", ")}` : "Itens: nenhum";
 
   updateShared();
+}
+
+function navigateTo(target, label = "Avançar", options = {}) {
+  const from = state.ref;
+  const to = Number(target);
+
+  if (Number.isInteger(from) && Number.isInteger(to) && from !== to) {
+    state.history.push({
+      from,
+      to,
+      label
+    });
+    renderHistory();
+  }
+
+  renderReference(to, options);
+}
+
+function renderHistory() {
+  const box = $("history");
+  if (!box) return;
+
+  if (!state.history.length) {
+    box.textContent = "Nenhuma decisão registrada ainda.";
+    return;
+  }
+
+  box.innerHTML = state.history
+    .slice(-8)
+    .reverse()
+    .map(entry =>
+      `<div class="history-item"><strong>${entry.from} → ${entry.to}</strong> <span class="muted">${entry.label}</span></div>`
+    )
+    .join("");
 }
 
 function renderReference(reference, options = {}) {
@@ -190,7 +233,7 @@ function renderReference(reference, options = {}) {
 
       if (syncResult.target !== state.ref) {
         updateShared();
-        setTimeout(() => renderReference(syncResult.target), 0);
+        setTimeout(() => navigateTo(syncResult.target, "Sincronização", { applyEntryEffects: true }), 0);
         return;
       }
     } else if (syncResult.waitingFor) {
@@ -235,7 +278,7 @@ function renderReference(reference, options = {}) {
       );
       state.shared = effectContext.shared;
       renderSheet();
-      renderReference(choice.target);
+      navigateTo(choice.target, choice.label);
     });
     $("choices").appendChild(button);
   }
@@ -250,8 +293,9 @@ function renderReference(reference, options = {}) {
         `Teste de Sorte: ${result.rolls.join(" + ")} = ${result.total}. ` +
         (result.success ? "SUCESSO." : "AZAR.")
       );
-      renderReference(
-        result.success ? node.test.successTarget : node.test.failureTarget
+      navigateTo(
+        result.success ? node.test.successTarget : node.test.failureTarget,
+        result.success ? "Teste de Sorte: sucesso" : "Teste de Sorte: azar"
       );
     });
     $("choices").appendChild(button);
@@ -385,7 +429,7 @@ function continueAfterCombat() {
   hideCombat();
 
   if (Number.isInteger(target) && target > 0) {
-    renderReference(target);
+    navigateTo(target, "Vitória no combate");
   } else {
     renderReference(state.ref, { applyEntryEffects: false });
   }
@@ -402,6 +446,73 @@ function jumpToReference() {
 
   state.encounter = null;
   renderReference(target);
+}
+
+function saveGame() {
+  if (!state.hero) {
+    showGameMessage("Não há partida ativa para salvar.");
+    return;
+  }
+
+  localStorage.setItem(SAVE_KEY, serializeSave(state));
+  showGameMessage(`Partida salva na referência ${state.ref}.`);
+}
+
+async function loadGame() {
+  const serialized = localStorage.getItem(SAVE_KEY);
+  if (!serialized) {
+    $("message").textContent = "Nenhuma partida salva neste aparelho.";
+    return;
+  }
+
+  try {
+    const snapshot = parseSave(serialized);
+    state.mode = snapshot.mode;
+    state.character = snapshot.character;
+    state.hero = snapshot.hero;
+    state.shared = snapshot.shared;
+    state.ref = snapshot.reference;
+    state.partnerActive = snapshot.partnerActive;
+    state.completedEncounters = new Set(snapshot.completedEncounters || []);
+    state.encounter = snapshot.encounter;
+    state.history = snapshot.history || [];
+
+    const base = "jogos/furia-de-principes/";
+    const config = state.config.characters.find(
+      character => character.id === state.character
+    );
+    state.characterData = await loadJSON(base + config.data);
+
+    $("setup").classList.add("hidden");
+    $("game").classList.remove("hidden");
+    renderSheet();
+    renderHistory();
+    renderReference(state.ref, { applyEntryEffects: false });
+    showGameMessage("Partida carregada.");
+  } catch (error) {
+    $("message").textContent = `Falha ao carregar: ${error.message}`;
+  }
+}
+
+function restartGame() {
+  state.hero = null;
+  state.characterData = null;
+  state.character = null;
+  state.mode = null;
+  state.shared = { status: 0, acao: 0 };
+  state.ref = 1;
+  state.partnerActive = false;
+  state.encounter = null;
+  state.completedEncounters = new Set();
+  state.history = [];
+
+  hideCombat();
+  $("game").classList.add("hidden");
+  $("setup").classList.remove("hidden");
+  $("message").textContent = "Nova partida pronta para configurar.";
+  document.querySelectorAll(".selected").forEach(
+    element => element.classList.remove("selected")
+  );
 }
 
 function useProvision() {
