@@ -2,7 +2,10 @@
   "id": "furia-de-principes",
   "title": "Fúria de Príncipes",
   "language": "pt-BR",
-  "modes": ["solo", "dupla"],
+  "modes": [
+    "solo",
+    "dupla"
+  ],
   "sharedState": {
     "status": 0,
     "acao": 0
@@ -26,5 +29,13 @@
     }
   ],
   "sync": "data/sincronizacao.json",
-  "startReference": 1
+  "startReference": 1,
+  "itemTags": {
+    "weapons": [
+      "espada",
+      "cajado",
+      "martelo_do_trovao",
+      "cajado_magico_reduz_habilidade"
+    ]
+  }
 }
