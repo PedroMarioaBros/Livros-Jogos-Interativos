@@ -568,3 +568,42 @@ test("salvamento pode preservar uma sessão em dupla completa", () => {
   assert.equal(restored.shared.status, 19);
   assert.equal(restored.shared.acao, 23);
 });
+
+
+test("salvamento preserva combate cooperativo em andamento", () => {
+  const colthar = createCharacter(warriorData, sequence([0, 0, 0, 0]));
+  const lothar = createCharacter(mageData, sequence([0, 0, 0, 0, 0]));
+  const duo = createDuoSession({
+    colthar: { hero: colthar, reference: 43 },
+    lothar: { hero: lothar, reference: 43 }
+  });
+
+  const cooperativeEncounter = createCooperativeCombatState(
+    [duo.players.colthar.hero, duo.players.lothar.hero],
+    [
+      createOpponent({ name: "A", habilidade: 8, energia: 6 }),
+      createOpponent({ name: "B", habilidade: 7, energia: 4 })
+    ]
+  );
+  cooperativeEncounter.reference = 43;
+
+  const state = {
+    config: { id: "furia-de-principes" },
+    mode: "dupla",
+    character: "colthar",
+    hero: duo.players.colthar.hero,
+    shared: { status: 0, acao: 0 },
+    ref: 43,
+    partnerActive: true,
+    completedEncounters: new Set(),
+    encounter: null,
+    history: [],
+    duo,
+    cooperativeEncounter
+  };
+
+  const restored = parseSave(serializeSave(state));
+  assert.equal(restored.cooperativeEncounter.reference, 43);
+  assert.equal(restored.cooperativeEncounter.enemies.length, 2);
+  assert.equal(restored.cooperativeEncounter.heroes.length, 2);
+});
