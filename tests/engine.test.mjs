@@ -360,7 +360,8 @@ test("salvamento preserva ficha, referência, sincronização e histórico", () 
     partnerActive: false,
     completedEncounters: new Set([12, 20]),
     encounter: null,
-    history: [{ from: 1, to: 34, label: "Teste" }]
+    history: [{ from: 1, to: 34, label: "Teste" }],
+    duo: null
   };
 
   const snapshot = createSaveSnapshot(state);
@@ -536,4 +537,34 @@ test("passar o aparelho oculta a troca até o outro jogador confirmar", () => {
   assert.equal(completed.ok, true);
   assert.equal(session.activeCharacter, "lothar");
   assert.equal(session.handoffPending, false);
+});
+
+
+test("salvamento pode preservar uma sessão em dupla completa", () => {
+  const colthar = createCharacter(warriorData, sequence([0, 0, 0, 0]));
+  const lothar = createCharacter(mageData, sequence([0, 0, 0, 0, 0]));
+  const duo = createDuoSession({
+    colthar: { hero: colthar, reference: 31 },
+    lothar: { hero: lothar, reference: 199 }
+  }, "lothar");
+
+  const state = {
+    config: { id: "furia-de-principes" },
+    mode: "dupla",
+    character: "lothar",
+    hero: lothar,
+    shared: { status: 19, acao: 23 },
+    ref: 199,
+    partnerActive: true,
+    completedEncounters: new Set(),
+    encounter: null,
+    history: [],
+    duo
+  };
+
+  const restored = parseSave(serializeSave(state));
+  assert.equal(restored.duo.activeCharacter, "lothar");
+  assert.equal(restored.duo.players.colthar.reference, 31);
+  assert.equal(restored.shared.status, 19);
+  assert.equal(restored.shared.acao, 23);
 });
