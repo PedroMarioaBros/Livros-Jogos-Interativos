@@ -607,3 +607,45 @@ test("salvamento preserva combate cooperativo em andamento", () => {
   assert.equal(restored.cooperativeEncounter.enemies.length, 2);
   assert.equal(restored.cooperativeEncounter.heroes.length, 2);
 });
+
+
+test("efeitos narrativos novos restauram atributo e preservam item excluído", () => {
+  const mage = createCharacter(mageData, sequence([0, 0, 0, 0, 0]));
+  mage.items.push("anel");
+  mage.stats.magia = 1;
+
+  const context = {};
+  const result = applyEffects(
+    mage,
+    [
+      { type: "remove_item_if_present", item: "cavalo" },
+      { type: "clear_items_except", items: ["cajado"] },
+      { type: "restore_stat_to_initial", stat: "magia" },
+      { type: "add_shared_loot", gold: 10, items: ["joia"] }
+    ],
+    context
+  );
+
+  assert.deepEqual(mage.items, ["cajado"]);
+  assert.equal(mage.stats.magia, mage.initialStats.magia);
+  assert.equal(context.pendingSharedLoot.gold, 10);
+  assert.deepEqual(context.pendingSharedLoot.items, ["joia"]);
+  assert.equal(result[3].pending, true);
+});
+
+test("feitiço situacional falha automaticamente quando MAGIA é zero", async () => {
+  const { castSituationalSpell } = await import("../src/engine/magic.js");
+  const mage = createCharacter(mageData, sequence([0, 0, 0, 0, 0]));
+  mage.stats.magia = 0;
+
+  const result = castSituationalSpell(
+    mage,
+    { cost: 2, successTarget: 100, failureTarget: 200 },
+    sequence([0])
+  );
+
+  assert.equal(result.ok, true);
+  assert.equal(result.success, false);
+  assert.equal(result.automaticFailure, true);
+  assert.equal(result.target, 200);
+});
