@@ -17,6 +17,7 @@ import { applyEffects, availableChoices } from "../src/engine/story.js";
 import { createEncounter, playEncounterRound } from "../src/engine/encounter.js";
 import { createSaveSnapshot, serializeSave, parseSave } from "../src/engine/save.js";
 import { applyCombatSpell } from "../src/engine/spell-combat.js";
+import { createDuoSession, beginHandoff, completeHandoff, updateDuoPlayer } from "../src/engine/duo.js";
 
 function sequence(values) {
   let index = 0;
@@ -494,4 +495,45 @@ test("Estontear pode anular um golpe recebido", () => {
   assert.equal(result.incomingSaveRoll, 1);
   assert.equal(result.damagePrevented, true);
   assert.equal(result.damage, 0);
+});
+
+
+test("sessão em dupla preserva estados independentes dos dois príncipes", () => {
+  const colthar = createCharacter(warriorData, sequence([0, 0, 0, 0]));
+  const lothar = createCharacter(mageData, sequence([0, 0, 0, 0, 0]));
+
+  const session = createDuoSession({
+    colthar: { hero: colthar, reference: 31 },
+    lothar: { hero: lothar, reference: 199 }
+  });
+
+  updateDuoPlayer(session, "colthar", {
+    reference: 44,
+    history: [{ from: 31, to: 44, label: "Sincronização" }]
+  });
+
+  assert.equal(session.players.colthar.reference, 44);
+  assert.equal(session.players.lothar.reference, 199);
+  assert.equal(session.players.lothar.history.length, 0);
+});
+
+test("passar o aparelho oculta a troca até o outro jogador confirmar", () => {
+  const colthar = createCharacter(warriorData, sequence([0, 0, 0, 0]));
+  const lothar = createCharacter(mageData, sequence([0, 0, 0, 0, 0]));
+
+  const session = createDuoSession({
+    colthar: { hero: colthar, reference: 1 },
+    lothar: { hero: lothar, reference: 1 }
+  });
+
+  const handoff = beginHandoff(session);
+  assert.equal(handoff.ok, true);
+  assert.equal(handoff.targetCharacter, "lothar");
+  assert.equal(session.activeCharacter, "colthar");
+  assert.equal(session.handoffPending, true);
+
+  const completed = completeHandoff(session);
+  assert.equal(completed.ok, true);
+  assert.equal(session.activeCharacter, "lothar");
+  assert.equal(session.handoffPending, false);
 });
