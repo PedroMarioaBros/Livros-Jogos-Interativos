@@ -56,6 +56,26 @@
           <button id="test-luck">🍀 Testar Sorte</button>
         </div>
         <p id="game-message" class="muted" style="margin-top:12px"></p>
+
+        <div class="card dev-tools" style="margin-top:14px">
+          <strong>Ferramenta de teste</strong>
+          <p class="muted">Permite abrir diretamente uma referência já cadastrada.</p>
+          <div class="grid">
+            <input id="dev-ref" type="number" min="1" max="500" value="34" aria-label="Referência">
+            <button id="dev-go">🧭 Ir para referência</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="combat-card" class="card combat-card hidden">
+        <div class="muted">Encontro</div>
+        <h2 id="combat-title">Combate</h2>
+        <p id="combat-opponents"></p>
+        <div id="combat-log" class="combat-log"></div>
+        <div class="grid" style="margin-top:12px">
+          <button id="combat-round" class="primary">🎲 Rolar rodada</button>
+          <button id="combat-continue" class="primary hidden">Continuar</button>
+        </div>
       </div>
 
       <div class="card">
