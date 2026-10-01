@@ -1250,10 +1250,8 @@
       ]
     },
     "70": {
-      "estado": "parcial",
-      "resumo": "O Coletor de Impostos manda seus capangas atacar os irmãos; o combate é cooperativo e os atributos dos inimigos ficam no volume de Lothar.",
-      "encounterNeedsReview": true,
-      "cooperative": true,
+      "estado": "extraida",
+      "resumo": "O Coletor de Impostos manda seus três capangas atacar os irmãos; os quatro adversários são enfrentados em combate cooperativo.",
       "choices": [
         {
           "label": "Vitória com Lothar vivo",
@@ -1274,7 +1272,33 @@
           ]
         }
       ],
-      "needsManualReview": true
+      "encounter": {
+        "cooperative": true,
+        "allowCombatMagic": true,
+        "enemies": [
+          {
+            "name": "Capanga Um",
+            "habilidade": 8,
+            "energia": 8
+          },
+          {
+            "name": "Capanga Dois",
+            "habilidade": 8,
+            "energia": 6
+          },
+          {
+            "name": "Capanga Três",
+            "habilidade": 7,
+            "energia": 6
+          },
+          {
+            "name": "Coletor de Impostos",
+            "habilidade": 7,
+            "energia": 6
+          }
+        ]
+      },
+      "notes": "Atributos do grupo confirmados no volume de Lothar."
     },
     "71": {
       "estado": "extraida",

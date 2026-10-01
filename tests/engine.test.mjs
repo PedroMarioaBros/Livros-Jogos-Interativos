@@ -45,6 +45,16 @@ const warriorBookData = JSON.parse(
   )
 );
 
+const mageBookData = JSON.parse(
+  await fs.readFile(
+    new URL(
+      "../jogos/furia-de-principes/data/lothar.json",
+      import.meta.url
+    ),
+    "utf8"
+  )
+);
+
 const warriorData = {
   character: "colthar",
   displayName: "Colthar",
@@ -1216,4 +1226,28 @@ test("AÇÃO 1 na referência 41 converte STATUS para modo solo", () => {
   assert.deepEqual(choice.effects, [
     { type: "set_shared", key: "status", value: 1 }
   ]);
+});
+
+
+test("referência 70 usa o mesmo grupo completo nos dois volumes", () => {
+  const colthar70 = warriorBookData.references["70"];
+  const lothar70 = mageBookData.references["70"];
+
+  const expectedEnemies = [
+    { name: "Capanga Um", habilidade: 8, energia: 8 },
+    { name: "Capanga Dois", habilidade: 8, energia: 6 },
+    { name: "Capanga Três", habilidade: 7, energia: 6 },
+    { name: "Coletor de Impostos", habilidade: 7, energia: 6 }
+  ];
+
+  assert.equal(colthar70.estado, "extraida");
+  assert.equal(lothar70.estado, "extraida");
+  assert.equal(colthar70.encounter.cooperative, true);
+  assert.equal(lothar70.encounter.cooperative, true);
+  assert.equal(colthar70.encounter.allowCombatMagic, true);
+  assert.equal(lothar70.encounter.allowCombatMagic, true);
+  assert.deepEqual(colthar70.encounter.enemies, expectedEnemies);
+  assert.deepEqual(lothar70.encounter.enemies, expectedEnemies);
+  assert.equal(colthar70.needsManualReview, undefined);
+  assert.equal(lothar70.needsManualReview, undefined);
 });

@@ -1071,26 +1071,8 @@
       ]
     },
     "70": {
-      "estado": "parcial",
-      "resumo": "Os irmãos enfrentam juntos o Coletor de Impostos e seus capangas; o OCR não permite confirmar todos os atributos do grupo com segurança.",
-      "encounterNeedsReview": true,
-      "knownEnemies": [
-        {
-          "name": "Capanga Um",
-          "habilidade": 8,
-          "energia": 8
-        },
-        {
-          "name": "Capanga Dois",
-          "habilidade": 8,
-          "energia": 6
-        },
-        {
-          "name": "Capanga Três",
-          "habilidade": 7,
-          "energia": 6
-        }
-      ],
+      "estado": "extraida",
+      "resumo": "Os irmãos enfrentam juntos o Coletor de Impostos e seus três capangas; Lothar pode usar Feitiço de Combate.",
       "allowCombatMagic": true,
       "choices": [
         {
@@ -1112,7 +1094,33 @@
           ]
         }
       ],
-      "needsManualReview": true
+      "encounter": {
+        "cooperative": true,
+        "allowCombatMagic": true,
+        "enemies": [
+          {
+            "name": "Capanga Um",
+            "habilidade": 8,
+            "energia": 8
+          },
+          {
+            "name": "Capanga Dois",
+            "habilidade": 8,
+            "energia": 6
+          },
+          {
+            "name": "Capanga Três",
+            "habilidade": 7,
+            "energia": 6
+          },
+          {
+            "name": "Coletor de Impostos",
+            "habilidade": 7,
+            "energia": 6
+          }
+        ]
+      },
+      "notes": "Atributos do grupo confirmados no volume de Lothar."
     },
     "71": {
       "estado": "extraida",
