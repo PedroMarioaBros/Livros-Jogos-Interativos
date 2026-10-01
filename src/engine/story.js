@@ -61,8 +61,49 @@ export function applyEffect(character, effect, context = {}, rng = Math.random) 
       return { type: effect.type, item: effect.item };
 
     case "remove_item":
+    case "remove_item_if_present":
       character.items = character.items.filter(item => item !== effect.item);
       return { type: effect.type, item: effect.item };
+
+    case "clear_items_except": {
+      const keep = new Set(effect.items || []);
+      character.items = character.items.filter(item => keep.has(item));
+      return {
+        type: effect.type,
+        items: [...character.items]
+      };
+    }
+
+    case "restore_stat_to_initial": {
+      if (!(effect.stat in character.stats)) {
+        return {
+          type: effect.type,
+          stat: effect.stat,
+          unsupported: true
+        };
+      }
+
+      const before = character.stats[effect.stat];
+      character.stats[effect.stat] = character.initialStats[effect.stat];
+
+      return {
+        type: effect.type,
+        stat: effect.stat,
+        before,
+        value: character.stats[effect.stat]
+      };
+    }
+
+    case "add_shared_loot":
+      context.pendingSharedLoot = {
+        gold: Number(effect.gold || 0),
+        items: [...(effect.items || [])]
+      };
+      return {
+        type: effect.type,
+        pending: true,
+        ...context.pendingSharedLoot
+      };
 
     case "set_gold":
       character.gold = Math.max(0, Number(effect.value) || 0);
