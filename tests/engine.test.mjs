@@ -6,6 +6,7 @@ import { createCharacter, consumeProvision } from "../src/engine/character.js";
 import { testLuck } from "../src/engine/luck.js";
 import { createOpponent, combatRound } from "../src/engine/combat.js";
 import { castCombatSpell } from "../src/engine/magic.js";
+import { processSyncPoint, resolveSyncTarget } from "../src/engine/sync.js";
 
 function sequence(values) {
   let index = 0;
@@ -108,4 +109,65 @@ test("feitiço de combate gasta MAGIA mesmo quando falha", () => {
   assert.equal(result.success, false);
   assert.equal(mage.stats.magia, 17);
   assert.equal(encounter.combatSpellAttempted, true);
+});
+
+
+test("sincronização de Colthar 31 define STATUS 19 e reage à AÇÃO 39", () => {
+  const syncData = {
+    entries: [{
+      character: "colthar",
+      reference: 31,
+      effects: [{ type: "set_shared", key: "status", value: 19 }],
+      waitFor: "acao",
+      routes: [
+        { acao: [1], target: 44 },
+        { acao: [39], target: 421 }
+      ]
+    }]
+  };
+
+  const result = processSyncPoint(syncData, {
+    character: "colthar",
+    reference: 31,
+    shared: { status: 0, acao: 39 }
+  });
+
+  assert.equal(result.shared.status, 19);
+  assert.equal(result.target, 421);
+  assert.equal(result.waitingFor, "acao");
+});
+
+test("sincronização de Lothar escolhe rota pelo STATUS", () => {
+  const entry = {
+    routes: [
+      { status: [1, 2], target: 242 },
+      { status: [3], target: 287 }
+    ]
+  };
+
+  assert.equal(resolveSyncTarget(entry, { status: 3, acao: 23 }), 287);
+});
+
+test("modo solo pode ignorar mutações cooperativas", () => {
+  const syncData = {
+    entries: [{
+      character: "colthar",
+      reference: 31,
+      effects: [{ type: "set_shared", key: "status", value: 19 }],
+      routes: [{ acao: [1], target: 44 }]
+    }]
+  };
+
+  const result = processSyncPoint(
+    syncData,
+    {
+      character: "colthar",
+      reference: 31,
+      shared: { status: 1, acao: 1 }
+    },
+    { ignoreMutations: true }
+  );
+
+  assert.deepEqual(result.shared, { status: 1, acao: 1 });
+  assert.equal(result.target, 44);
 });
