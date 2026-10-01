@@ -20,7 +20,10 @@ export function createSaveSnapshot(state) {
       : null,
     history: Array.isArray(state.history)
       ? JSON.parse(JSON.stringify(state.history))
-      : []
+      : [],
+    duo: state.duo
+      ? JSON.parse(JSON.stringify(state.duo))
+      : null
   };
 }
 
