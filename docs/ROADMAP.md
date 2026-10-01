@@ -25,10 +25,13 @@
 - [x] Modelar combates cooperativos e múltiplos inimigos
 - [ ] Consolidar regras especiais encontradas nas referências
   - [x] Motor genérico de condições e efeitos narrativos
+  - [x] Rolagens genéricas e feitiços situacionais
+  - [x] Recuperação de pertences confiscados
+  - [x] Modificadores especiais de combate por referência
 - [ ] Extrair referências de Colthar
   - [x] Primeiro lote estrutural: 44 referências cadastradas no banco
 - [ ] Extrair referências de Lothar
-  - [x] Primeiro grande lote: referências 1–116 estruturadas, além de 148 e 199
+  - [x] Referências 1–200 estruturadas continuamente
 - [ ] Mapear todas as sincronizações STATUS/AÇÃO
   - [x] Motor genérico de sincronização
   - [x] Primeira varredura de AÇÃO de Lothar
