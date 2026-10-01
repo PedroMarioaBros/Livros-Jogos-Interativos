@@ -1,0 +1,31 @@
+{
+  "sharedKeys": ["status", "acao"],
+  "entries": [
+    {
+      "character": "lothar",
+      "reference": 148,
+      "verified": false,
+      "effects": [
+        {
+          "type": "set_shared",
+          "key": "acao",
+          "value": 22
+        }
+      ],
+      "notes": "Valor registrado no protótipo; validar novamente durante a extração sistemática."
+    },
+    {
+      "character": "lothar",
+      "reference": 199,
+      "verified": false,
+      "effects": [
+        {
+          "type": "set_shared",
+          "key": "acao",
+          "value": 23
+        }
+      ],
+      "notes": "Valor registrado no protótipo; validar novamente durante a extração sistemática."
+    }
+  ]
+}
