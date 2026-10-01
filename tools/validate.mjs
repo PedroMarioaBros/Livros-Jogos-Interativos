@@ -2,6 +2,7 @@ import fs from "node:fs/promises";
 
 const root = new URL("../", import.meta.url);
 const jsonFiles = [
+  "manifest.webmanifest",
   "jogos/catalogo.json",
   "jogos/furia-de-principes/game.json",
   "jogos/furia-de-principes/data/colthar.json",
