@@ -1,5 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import fs from "node:fs/promises";
 
 import { rollExpression } from "../src/engine/dice.js";
 import { createCharacter, consumeProvision } from "../src/engine/character.js";
@@ -30,6 +31,16 @@ function sequence(values) {
     return value;
   };
 }
+
+const warriorBookData = JSON.parse(
+  await fs.readFile(
+    new URL(
+      "../jogos/furia-de-principes/data/colthar.json",
+      import.meta.url
+    ),
+    "utf8"
+  )
+);
 
 const warriorData = {
   character: "colthar",
@@ -981,11 +992,11 @@ test("recuperar item que não é arma mantém penalidade temporária", () => {
 
 test("dados revisados de Colthar mantêm encontro 43 e sincronização 60", () => {
   assert.deepEqual(
-    warriorData.references["43"].encounter.enemies[1],
+    warriorBookData.references["43"].encounter.enemies[1],
     { name: "Mulher", habilidade: 8, energia: 4 }
   );
 
-  const ref60 = warriorData.references["60"];
+  const ref60 = warriorBookData.references["60"];
   assert.equal(
     ref60.effects.some(
       effect =>
