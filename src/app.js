@@ -43,7 +43,8 @@ const state = {
   completedEncounters: new Set(),
   history: [],
   duo: null,
-  cooperativeEncounter: null
+  cooperativeEncounter: null,
+  pendingSharedLoot: null
 };
 
 const SAVE_KEY = "livros-jogos-interativos:furia-de-principes";
@@ -217,6 +218,7 @@ async function startGame() {
     state.history = [];
   }
 
+  state.pendingSharedLoot = null;
   $("setup").classList.add("hidden");
   $("game").classList.remove("hidden");
   renderSheet();
@@ -346,6 +348,174 @@ async function finishPlayerHandoff() {
   renderReference(state.ref, { applyEntryEffects: false });
 }
 
+function getPartnerHero() {
+  if (state.mode !== "dupla" || !state.duo || !state.character) {
+    return null;
+  }
+
+  const other = state.character === "colthar" ? "lothar" : "colthar";
+  return state.duo.players[other]?.hero || null;
+}
+
+function storyContext(extra = {}) {
+  return {
+    character: state.hero,
+    partnerCharacter: getPartnerHero(),
+    shared: state.shared,
+    partnerActive: state.partnerActive,
+    ...extra
+  };
+}
+
+function resolveSharedPayment(choice) {
+  const amount = Number(choice.sharedPayment?.amount || 0);
+  if (!amount) return true;
+
+  const partner = getPartnerHero();
+
+  if (!partner) {
+    if (state.hero.gold < amount) {
+      showGameMessage("Ouro insuficiente para esse pagamento.");
+      return false;
+    }
+    state.hero.gold -= amount;
+    renderSheet();
+    return true;
+  }
+
+  const combined = state.hero.gold + partner.gold;
+  if (combined < amount) {
+    showGameMessage("Os dois príncipes juntos não possuem ouro suficiente.");
+    return false;
+  }
+
+  const minCurrent = Math.max(0, amount - partner.gold);
+  const maxCurrent = Math.min(amount, state.hero.gold);
+  const suggested = Math.min(
+    maxCurrent,
+    Math.max(minCurrent, Math.floor(amount / 2))
+  );
+
+  const answer = window.prompt(
+    `Pagamento conjunto de ${amount} moedas. ` +
+    `Quantas moedas ${state.hero.name} vai pagar? ` +
+    `Escolha de ${minCurrent} a ${maxCurrent}; o restante será pago por ${partner.name}.`,
+    String(suggested)
+  );
+
+  if (answer === null) return false;
+
+  const currentShare = Number(answer);
+  if (
+    !Number.isInteger(currentShare) ||
+    currentShare < minCurrent ||
+    currentShare > maxCurrent
+  ) {
+    showGameMessage(
+      `Informe um valor inteiro entre ${minCurrent} e ${maxCurrent}.`
+    );
+    return false;
+  }
+
+  const partnerShare = amount - currentShare;
+  state.hero.gold -= currentShare;
+  partner.gold -= partnerShare;
+  persistActiveDuoPlayer();
+  renderSheet();
+
+  showGameMessage(
+    `Pagamento realizado: ${state.hero.name} pagou ${currentShare} e ${partner.name} pagou ${partnerShare} moedas.`
+  );
+  return true;
+}
+
+function renderPendingSharedLoot() {
+  const loot = state.pendingSharedLoot;
+  if (!loot || loot.reference !== state.ref) return false;
+
+  $("choices").innerHTML = "";
+  const info = document.createElement("p");
+  info.className = "muted";
+
+  const parts = [];
+  if (loot.gold) parts.push(`${loot.gold} moedas`);
+  if (loot.items?.length) parts.push(loot.items.join(", "));
+
+  info.textContent =
+    `Tesouro compartilhado: ${parts.join(" + ")}. ` +
+    "Defina a divisão antes de continuar.";
+  $("choices").appendChild(info);
+
+  const button = document.createElement("button");
+  button.textContent = "🤝 Dividir tesouro";
+  button.addEventListener("click", resolvePendingSharedLoot);
+  $("choices").appendChild(button);
+  return true;
+}
+
+function resolvePendingSharedLoot() {
+  const loot = state.pendingSharedLoot;
+  if (!loot) return;
+
+  const partner = getPartnerHero();
+
+  if (!partner) {
+    state.hero.gold += Number(loot.gold || 0);
+    for (const item of loot.items || []) {
+      if (!state.hero.items.includes(item)) state.hero.items.push(item);
+    }
+  } else {
+    const totalGold = Number(loot.gold || 0);
+
+    if (totalGold > 0) {
+      const answer = window.prompt(
+        `Foram encontradas ${totalGold} moedas. Quantas ficam com ${state.hero.name}? O restante ficará com ${partner.name}.`,
+        String(Math.floor(totalGold / 2))
+      );
+
+      if (answer === null) return;
+
+      const currentGold = Number(answer);
+      if (
+        !Number.isInteger(currentGold) ||
+        currentGold < 0 ||
+        currentGold > totalGold
+      ) {
+        showGameMessage(
+          `Informe um número inteiro entre 0 e ${totalGold}.`
+        );
+        return;
+      }
+
+      state.hero.gold += currentGold;
+      partner.gold += totalGold - currentGold;
+    }
+
+    for (const item of loot.items || []) {
+      const answer = window.prompt(
+        `Quem fica com “${item}”? Digite 1 para ${state.hero.name} ou 2 para ${partner.name}.`,
+        "1"
+      );
+
+      if (answer === null) return;
+
+      const recipient = String(answer).trim() === "2"
+        ? partner
+        : state.hero;
+
+      if (!recipient.items.includes(item)) {
+        recipient.items.push(item);
+      }
+    }
+  }
+
+  state.pendingSharedLoot = null;
+  persistActiveDuoPlayer();
+  renderSheet();
+  renderReference(state.ref, { applyEntryEffects: false });
+  showGameMessage("Tesouro dividido e registrado nas fichas.");
+}
+
 function renderSheet() {
   const hero = state.hero;
 
@@ -434,16 +604,19 @@ function renderReference(reference, options = {}) {
     state.shared = context.shared;
 
     if (context.pendingSharedLoot) {
-      const parts = [];
-      if (context.pendingSharedLoot.gold) {
-        parts.push(`${context.pendingSharedLoot.gold} moedas`);
+      if (state.mode === "dupla" && state.duo) {
+        state.pendingSharedLoot = {
+          reference: state.ref,
+          gold: Number(context.pendingSharedLoot.gold || 0),
+          items: [...(context.pendingSharedLoot.items || [])]
+        };
+      } else {
+        state.hero.gold += Number(context.pendingSharedLoot.gold || 0);
+        for (const item of context.pendingSharedLoot.items || []) {
+          if (!state.hero.items.includes(item)) state.hero.items.push(item);
+        }
+        showGameMessage("Tesouro acrescentado à ficha.");
       }
-      if (context.pendingSharedLoot.items?.length) {
-        parts.push(context.pendingSharedLoot.items.join(", "));
-      }
-      showGameMessage(
-        `Tesouro compartilhado encontrado: ${parts.join(" + ")}. A divisão entre os dois jogadores ficará pendente.`
-      );
     }
 
     const randomDamage = effectResults.find(
@@ -511,6 +684,11 @@ function renderReference(reference, options = {}) {
     }
   }
 
+  if (renderPendingSharedLoot()) {
+    hideCombat();
+    return;
+  }
+
   if (
     (node.encounter || node.encounterDynamic) &&
     !state.completedEncounters.has(state.ref)
@@ -521,17 +699,15 @@ function renderReference(reference, options = {}) {
 
   hideCombat();
 
-  const context = {
-    character: state.hero,
-    shared: state.shared,
-    partnerActive: state.partnerActive
-  };
+  const context = storyContext();
   const choices = availableChoices(node, context);
 
   for (const choice of choices) {
     const button = document.createElement("button");
     button.textContent = `${choice.label} → ${choice.target}`;
     button.addEventListener("click", () => {
+      if (!resolveSharedPayment(choice)) return;
+
       const effectContext = {
         shared: state.shared,
         partnerActive: state.partnerActive,
@@ -1516,6 +1692,8 @@ async function loadGame() {
     state.shared = snapshot.shared;
     state.cooperativeEncounter =
       snapshot.cooperativeEncounter || null;
+    state.pendingSharedLoot =
+      snapshot.pendingSharedLoot || null;
 
     if (snapshot.mode === "dupla" && snapshot.duo) {
       await Promise.all([
@@ -1573,6 +1751,7 @@ function restartGame() {
   state.history = [];
   state.duo = null;
   state.cooperativeEncounter = null;
+  state.pendingSharedLoot = null;
 
   hideCombat();
   $("game").classList.add("hidden");
