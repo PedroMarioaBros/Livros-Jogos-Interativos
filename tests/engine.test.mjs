@@ -883,3 +883,119 @@ test("salvamento preserva tesouro compartilhado ainda não dividido", () => {
     ["joia_vermelha"]
   );
 });
+
+
+test("shared_in aceita múltiplos valores de STATUS ou AÇÃO", () => {
+  const hero = createCharacter(warriorData, sequence([0, 0, 0, 0]));
+  const node = {
+    choices: [{
+      target: 13,
+      conditions: [{
+        type: "shared_in",
+        key: "acao",
+        values: [1, 25]
+      }]
+    }]
+  };
+
+  assert.equal(
+    availableChoices(node, {
+      character: hero,
+      shared: { acao: 25 },
+      partnerActive: true
+    }).length,
+    1
+  );
+
+  assert.equal(
+    availableChoices(node, {
+      character: hero,
+      shared: { acao: 24 },
+      partnerActive: true
+    }).length,
+    0
+  );
+});
+
+test("penalidade temporária de HABILIDADE some ao recuperar uma arma", () => {
+  const hero = createCharacter(warriorData, sequence([0, 0, 0, 0]));
+  const initialSkill = hero.stats.habilidade;
+  const itemTags = {
+    weapons: ["espada", "cajado", "martelo_do_trovao"]
+  };
+
+  applyEffects(
+    hero,
+    [
+      { type: "stash_and_clear_items" },
+      {
+        type: "change_stat",
+        stat: "habilidade",
+        delta: -2,
+        temporaryUntil: "has_weapon"
+      }
+    ],
+    { itemTags }
+  );
+
+  assert.equal(hero.stats.habilidade, initialSkill - 2);
+  assert.equal(hero.temporaryEffects.length, 1);
+
+  applyEffects(
+    hero,
+    [{ type: "restore_stashed_items" }],
+    { itemTags }
+  );
+
+  assert.equal(hero.items.includes("espada"), true);
+  assert.equal(hero.stats.habilidade, initialSkill);
+  assert.equal(hero.temporaryEffects.length, 0);
+});
+
+test("recuperar item que não é arma mantém penalidade temporária", () => {
+  const hero = createCharacter(warriorData, sequence([0, 0, 0, 0]));
+  const initialSkill = hero.stats.habilidade;
+  const itemTags = { weapons: ["espada"] };
+
+  hero.items = [];
+  applyEffects(
+    hero,
+    [{
+      type: "change_stat",
+      stat: "habilidade",
+      delta: -2,
+      temporaryUntil: "has_weapon"
+    }],
+    { itemTags }
+  );
+
+  applyEffects(
+    hero,
+    [{ type: "add_item", item: "anel" }],
+    { itemTags }
+  );
+
+  assert.equal(hero.stats.habilidade, initialSkill - 2);
+  assert.equal(hero.temporaryEffects.length, 1);
+});
+
+test("dados revisados de Colthar mantêm encontro 43 e sincronização 60", () => {
+  assert.deepEqual(
+    warriorData.references["43"].encounter.enemies[1],
+    { name: "Mulher", habilidade: 8, energia: 4 }
+  );
+
+  const ref60 = warriorData.references["60"];
+  assert.equal(
+    ref60.effects.some(
+      effect =>
+        effect.type === "set_shared" &&
+        effect.key === "status" &&
+        effect.value === 4
+    ),
+    true
+  );
+
+  const route = ref60.choices.find(choice => choice.target === 13);
+  assert.deepEqual(route.conditions[0].values, [1, 25]);
+});
