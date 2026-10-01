@@ -9,13 +9,13 @@ As porcentagens abaixo são estimativas de engenharia para um **Fúria de Prínc
 | Fundação e arquitetura | 100% |
 | Motor genérico de livro-jogo | 96% |
 | Regras específicas de Fúria de Príncipes | 92% |
-| Conteúdo de Colthar | 8,8% |
+| Conteúdo de Colthar | 15,4% |
 | Conteúdo de Lothar | 100% estrutural |
 | STATUS/AÇÃO e sincronização | ~35% |
 | Combate individual | 95% |
 | Magia de Lothar | 95% |
 | Combate cooperativo | 80% |
-| Interface funcional | 82% |
+| Interface funcional | 83% |
 | Salvamento e histórico | 95% |
 | Dois jogadores no mesmo aparelho | 75% |
 | Sincronização entre dois aparelhos | 0% |
@@ -26,7 +26,7 @@ As porcentagens abaixo são estimativas de engenharia para um **Fúria de Prínc
 
 ## Medidas objetivas atuais
 
-- Colthar: 44 referências cadastradas de aproximadamente 500.
+- Colthar: 77 referências cadastradas de 500 (15,4%).
 - Lothar: 500 referências cadastradas de 500 (100% da estrutura narrativa).
 - Sincronização: 20 pontos STATUS/AÇÃO cadastrados.
 - Feitiços de Combate: 12 de 12 catalogados e com efeitos implementados.
@@ -40,10 +40,10 @@ As porcentagens abaixo são estimativas de engenharia para um **Fúria de Prínc
 | --- | ---: |
 | Motor reutilizável | ~96% |
 | Demonstração jogável de Fúria | ~89% |
-| Colthar solo completo | ~20% |
+| Colthar solo completo | ~27% |
 | Lothar solo completo | ~84% |
-| Fúria completo no mesmo aparelho | ~66% |
-| Aplicativo Android final | ~61% do caminho total |
+| Fúria completo no mesmo aparelho | ~68% |
+| Aplicativo Android final | ~63% do caminho total |
 
 ## Critério
 
