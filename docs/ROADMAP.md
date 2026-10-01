@@ -43,6 +43,7 @@
   - [x] Combate cooperativo do Coletor de Impostos com quatro adversários
   - [x] Revisão de marcações obsoletas de suporte em cenas já implementadas
   - [x] Itens empilháveis e comparação de Pedras de Poder entre os príncipes
+  - [x] Loja compartilhada com estoque único entre os dois príncipes
 - [ ] Extrair referências de Colthar
   - [x] Primeira expansão estrutural: 77 referências cadastradas no banco
 - [x] Extrair referências de Lothar

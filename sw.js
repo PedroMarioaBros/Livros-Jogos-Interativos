@@ -1,4 +1,4 @@
-const CACHE_NAME = "livros-jogos-v17";
+const CACHE_NAME = "livros-jogos-v18";
 
 const APP_SHELL = [
   "./",
@@ -18,6 +18,7 @@ const APP_SHELL = [
   "./src/engine/save.js",
   "./src/engine/spell-combat.js",
   "./src/engine/duo.js",
+  "./src/engine/merchant.js",
   "./jogos/catalogo.json",
   "./jogos/furia-de-principes/game.json",
   "./jogos/furia-de-principes/data/colthar.json",

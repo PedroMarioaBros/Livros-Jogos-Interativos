@@ -19,6 +19,10 @@ import {
 } from "./engine/combat.js";
 import { serializeSave, parseSave } from "./engine/save.js";
 import {
+  merchantItemSold,
+  purchaseMerchantItem
+} from "./engine/merchant.js";
+import {
   applyCombatSpell,
   applyCooperativeCombatSpell
 } from "./engine/spell-combat.js";
@@ -434,6 +438,108 @@ function resolveSharedPayment(choice) {
   return true;
 }
 
+function displayItemName(item) {
+  return String(item)
+    .split("_")
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+}
+
+function renderMerchant(node) {
+  const merchant = node.merchant;
+  const partner =
+    state.mode === "dupla" && state.partnerActive
+      ? getPartnerHero()
+      : null;
+  const participants = partner
+    ? [state.hero, partner]
+    : [state.hero];
+
+  $("choices").innerHTML = "";
+
+  const info = document.createElement("p");
+  info.className = "muted";
+  info.textContent =
+    "Cada artefato custa " + merchant.pricePerItem + " moedas. " +
+    (merchant.sharedUniqueStock && partner
+      ? "Existe apenas um exemplar de cada item para os dois príncipes."
+      : "Escolha o que deseja comprar.");
+  $("choices").appendChild(info);
+
+  for (const item of merchant.items || []) {
+    const sold = merchantItemSold(
+      state.ref,
+      item,
+      participants
+    );
+
+    const row = document.createElement("div");
+    row.className = "merchant-item";
+
+    const label = document.createElement("p");
+    label.className = "muted";
+    label.textContent = sold
+      ? displayItemName(item) + " — vendido"
+      : displayItemName(item);
+    row.appendChild(label);
+
+    if (!sold) {
+      for (const buyer of participants) {
+        const button = document.createElement("button");
+        button.textContent =
+          "Comprar para " + buyer.name + " — " + merchant.pricePerItem + " moedas";
+        button.disabled =
+          buyer.gold < Number(merchant.pricePerItem || 0) ||
+          buyer.items.includes(item);
+        button.addEventListener("click", () => {
+          const result = purchaseMerchantItem({
+            reference: state.ref,
+            item,
+            price: merchant.pricePerItem,
+            buyer,
+            participants,
+            sharedUniqueStock: merchant.sharedUniqueStock
+          });
+
+          if (!result.ok) {
+            const messages = {
+              sold: "Esse artefato já foi comprado.",
+              "insufficient-gold": "Ouro insuficiente.",
+              "already-owned": "Esse personagem já possui o artefato."
+            };
+            showGameMessage(
+              messages[result.reason] || "Compra não realizada."
+            );
+            return;
+          }
+
+          persistActiveDuoPlayer();
+          renderSheet();
+          showGameMessage(
+            buyer.name + " comprou " + displayItemName(item) +
+            " por " + result.price + " moedas."
+          );
+          renderMerchant(node);
+        });
+        row.appendChild(button);
+      }
+    }
+
+    $("choices").appendChild(row);
+  }
+
+  const continueButton = document.createElement("button");
+  continueButton.textContent =
+    "Encerrar compras → " + merchant.continueTarget;
+  continueButton.addEventListener("click", () => {
+    navigateTo(
+      merchant.continueTarget,
+      "Encerrar compras"
+    );
+  });
+  $("choices").appendChild(continueButton);
+}
+
 function renderPendingSharedLoot() {
   const loot = state.pendingSharedLoot;
   if (!loot || loot.reference !== state.ref) return false;
@@ -703,6 +809,12 @@ function renderReference(reference, options = {}) {
 
   if (renderPendingSharedLoot()) {
     hideCombat();
+    return;
+  }
+
+  if (node.merchant) {
+    hideCombat();
+    renderMerchant(node);
     return;
   }
 

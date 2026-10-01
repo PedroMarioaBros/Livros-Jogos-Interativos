@@ -30,6 +30,10 @@ import {
   applyCooperativeCombatSpell
 } from "../src/engine/spell-combat.js";
 import { createDuoSession, beginHandoff, completeHandoff, updateDuoPlayer } from "../src/engine/duo.js";
+import {
+  merchantItemSold,
+  purchaseMerchantItem
+} from "../src/engine/merchant.js";
 
 function sequence(values) {
   let index = 0;
@@ -1390,4 +1394,69 @@ test("referência 59 de Lothar é um encaminhamento direto para 321", () => {
     { label: "Prosseguir", target: 321 }
   ]);
   assert.equal(ref59.needsManualReview, undefined);
+});
+
+
+test("loja compartilhada vende cada artefato uma única vez", () => {
+  const lothar = createCharacter(mageData, sequence([0, 0, 0, 0, 0]));
+  const colthar = createCharacter(warriorData, sequence([0, 0, 0, 0]));
+  const participants = [lothar, colthar];
+
+  const first = purchaseMerchantItem({
+    reference: 250,
+    item: "estatua_de_jade",
+    price: 2,
+    buyer: lothar,
+    participants,
+    sharedUniqueStock: true
+  });
+
+  assert.equal(first.ok, true);
+  assert.equal(lothar.gold, 8);
+  assert.equal(lothar.items.includes("estatua_de_jade"), true);
+  assert.equal(
+    merchantItemSold(250, "estatua_de_jade", participants),
+    true
+  );
+
+  const second = purchaseMerchantItem({
+    reference: 250,
+    item: "estatua_de_jade",
+    price: 2,
+    buyer: colthar,
+    participants,
+    sharedUniqueStock: true
+  });
+
+  assert.equal(second.ok, false);
+  assert.equal(second.reason, "sold");
+  assert.equal(colthar.gold, 10);
+});
+
+test("loja bloqueia compra sem ouro suficiente", () => {
+  const lothar = createCharacter(mageData, sequence([0, 0, 0, 0, 0]));
+  lothar.gold = 1;
+
+  const result = purchaseMerchantItem({
+    reference: 250,
+    item: "anel",
+    price: 2,
+    buyer: lothar,
+    participants: [lothar],
+    sharedUniqueStock: true
+  });
+
+  assert.equal(result.ok, false);
+  assert.equal(result.reason, "insufficient-gold");
+});
+
+test("referência 250 está pronta para a loja compartilhada", () => {
+  const ref250 = mageBookData.references["250"];
+
+  assert.equal(ref250.estado, "extraida");
+  assert.equal(ref250.merchant.pricePerItem, 2);
+  assert.equal(ref250.merchant.sharedUniqueStock, true);
+  assert.equal(ref250.merchant.items.length, 6);
+  assert.equal(ref250.merchant.continueTarget, 323);
+  assert.equal(ref250.needsEngineSupport, undefined);
 });
