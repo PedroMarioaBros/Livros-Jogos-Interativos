@@ -42,8 +42,8 @@
 - [x] Combate guiado individual
 - [ ] Tela completa de combate cooperativo
 - [x] Inventário inicial e recursos na ficha
-- [ ] Salvamento local
-- [ ] Histórico de decisões
+- [x] Salvamento local
+- [x] Histórico de decisões
 - [ ] Ilustrações originais por cena
 - [ ] Sons e música opcionais
 
