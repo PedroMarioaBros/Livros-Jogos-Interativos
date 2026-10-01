@@ -24,7 +24,9 @@
 - [ ] Aplicar automaticamente os 12 efeitos mágicos ao combate
 - [x] Modelar combates cooperativos e múltiplos inimigos
 - [ ] Consolidar regras especiais encontradas nas referências
+  - [x] Motor genérico de condições e efeitos narrativos
 - [ ] Extrair referências de Colthar
+  - [x] Primeiro lote estrutural: 44 referências cadastradas no banco
 - [ ] Extrair referências de Lothar
 - [ ] Mapear todas as sincronizações STATUS/AÇÃO
   - [x] Motor genérico de sincronização
