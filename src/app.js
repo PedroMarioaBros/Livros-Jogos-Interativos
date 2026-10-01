@@ -335,6 +335,7 @@ function renderHistory() {
 
 function renderReference(reference, options = {}) {
   state.ref = Number(reference);
+  renderDuoStatus();
   const node = state.characterData.references[String(state.ref)];
 
   $("reference").textContent = `Referência ${state.ref}`;
