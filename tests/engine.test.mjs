@@ -4,7 +4,13 @@ import assert from "node:assert/strict";
 import { rollExpression } from "../src/engine/dice.js";
 import { createCharacter, consumeProvision } from "../src/engine/character.js";
 import { testLuck } from "../src/engine/luck.js";
-import { createOpponent, combatRound } from "../src/engine/combat.js";
+import {
+  createOpponent,
+  combatRound,
+  resolveSequentialCombat,
+  createCooperativeCombatState,
+  cooperativeCombatStep
+} from "../src/engine/combat.js";
 import { castCombatSpell } from "../src/engine/magic.js";
 import { processSyncPoint, resolveSyncTarget } from "../src/engine/sync.js";
 
@@ -170,4 +176,77 @@ test("modo solo pode ignorar mutações cooperativas", () => {
 
   assert.deepEqual(result.shared, { status: 1, acao: 1 });
   assert.equal(result.target, 44);
+});
+
+
+test("combate solo contra vários inimigos é resolvido em sequência", () => {
+  const hero = createCharacter(warriorData, sequence([0.5, 0.5, 0.5, 0.5]));
+  hero.stats.habilidade = 20;
+
+  const enemies = [
+    createOpponent({ name: "Um", habilidade: 1, energia: 2 }),
+    createOpponent({ name: "Dois", habilidade: 1, energia: 2 })
+  ];
+
+  const result = resolveSequentialCombat(hero, enemies, {
+    rng: sequence([0, 0, 0.9, 0.9]),
+    maxRounds: 5
+  });
+
+  assert.equal(result.winner, "hero");
+  assert.equal(result.encounters.length, 2);
+  assert.equal(enemies[0].energia, 0);
+  assert.equal(enemies[1].energia, 0);
+});
+
+test("dois heróis enfrentam oponentes diferentes quando há vários inimigos", () => {
+  const heroA = createCharacter(warriorData, sequence([0, 0, 0, 0]));
+  const heroB = createCharacter(warriorData, sequence([0, 0, 0, 0]));
+  heroA.stats.habilidade = 20;
+  heroB.stats.habilidade = 20;
+
+  const enemies = [
+    createOpponent({ name: "A", habilidade: 1, energia: 4 }),
+    createOpponent({ name: "B", habilidade: 1, energia: 4 })
+  ];
+
+  const state = createCooperativeCombatState([heroA, heroB], enemies, {
+    rng: sequence([0])
+  });
+
+  const result = cooperativeCombatStep(state, {
+    rng: sequence([0, 0, 0.9, 0.9, 0, 0, 0.9, 0.9])
+  });
+
+  assert.equal(result.events.length, 2);
+  assert.equal(result.events[0].enemyIndex, 0);
+  assert.equal(result.events[1].enemyIndex, 1);
+  assert.equal(enemies[0].energia, 2);
+  assert.equal(enemies[1].energia, 2);
+});
+
+test("quando sobra um único inimigo, os heróis alternam as séries de ataque", () => {
+  const heroA = createCharacter(warriorData, sequence([0, 0, 0, 0]));
+  const heroB = createCharacter(warriorData, sequence([0, 0, 0, 0]));
+  heroA.stats.habilidade = 20;
+  heroB.stats.habilidade = 20;
+
+  const enemy = createOpponent({ name: "Chefe", habilidade: 1, energia: 8 });
+  const state = createCooperativeCombatState([heroA, heroB], [enemy], {
+    rng: sequence([0])
+  });
+
+  const first = cooperativeCombatStep(state, {
+    rng: sequence([0, 0, 0.9, 0.9])
+  });
+  const firstHero = first.events[0].heroIndex;
+
+  const second = cooperativeCombatStep(state, {
+    rng: sequence([0, 0, 0.9, 0.9])
+  });
+  const secondHero = second.events[0].heroIndex;
+
+  assert.notEqual(firstHero, secondHero);
+  assert.equal(first.events[0].mode, "alternate");
+  assert.equal(second.events[0].mode, "alternate");
 });
