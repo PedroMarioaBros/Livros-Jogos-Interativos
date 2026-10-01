@@ -4,6 +4,7 @@ import { processSyncPoint } from "./engine/sync.js";
 import { applyEffects as applyStoryEffects, availableChoices } from "./engine/story.js";
 import { createEncounter, playEncounterRound, currentOpponent } from "./engine/encounter.js";
 import { serializeSave, parseSave } from "./engine/save.js";
+import { applyCombatSpell } from "./engine/spell-combat.js";
 
 const state = {
   config: null,
@@ -79,6 +80,8 @@ async function init() {
   $("save-game").addEventListener("click", saveGame);
   $("load-game").addEventListener("click", loadGame);
   $("restart-game").addEventListener("click", restartGame);
+  $("cast-spell").addEventListener("click", castSelectedSpell);
+  $("spell-select").addEventListener("change", updateSpellCostUI);
 }
 
 function selectGroup(selector, selected) {
@@ -322,6 +325,7 @@ function renderReference(reference, options = {}) {
 function hideCombat() {
   $("combat-card").classList.add("hidden");
   $("combat-continue").classList.add("hidden");
+  $("spell-panel").classList.add("hidden");
 }
 
 function renderEncounter(node) {
@@ -349,19 +353,156 @@ function renderEncounter(node) {
   $("combat-title").textContent = enemy
     ? `⚔️ ${state.hero.name} x ${enemy.name}`
     : "Combate concluído";
-  $("combat-opponents").textContent = state.encounter.enemies
-    .map(opponent =>
-      `${opponent.name}: HABILIDADE ${opponent.habilidade} • ENERGIA ${opponent.energia}/${opponent.initialEnergy}`
-    )
-    .join(" | ");
+
+  updateCombatOpponents();
 
   if (state.encounter.rounds.length === 0) {
     $("combat-log").textContent =
       "O combate está pronto. Cada toque em “Rolar rodada” executa uma série de ataque.";
   }
 
+  renderSpellPanel(node);
   $("combat-round").classList.remove("hidden");
   $("combat-continue").classList.add("hidden");
+}
+
+function updateCombatOpponents() {
+  if (!state.encounter) return;
+
+  const shadow = state.encounter.proxy?.stats?.energia > 0
+    ? ` | Sombra: HABILIDADE ${state.encounter.proxy.stats.habilidade} • ENERGIA ${state.encounter.proxy.stats.energia}/${state.encounter.proxy.initialStats.energia}`
+    : "";
+
+  $("combat-opponents").textContent =
+    state.encounter.enemies
+      .map(opponent => {
+        const stateLabel = opponent.asleep ? " • ADORMECIDO" : "";
+        return `${opponent.name}: HABILIDADE ${opponent.habilidade} • ENERGIA ${opponent.energia}/${opponent.initialEnergy}${stateLabel}`;
+      })
+      .join(" | ") + shadow;
+}
+
+function renderSpellPanel(node) {
+  const panel = $("spell-panel");
+
+  const canCast =
+    state.character === "lothar" &&
+    !node.encounter.noCombatMagic &&
+    state.encounter &&
+    state.encounter.rounds.length === 0 &&
+    !state.encounter.combatSpellAttempted;
+
+  if (!canCast) {
+    panel.classList.add("hidden");
+    return;
+  }
+
+  panel.classList.remove("hidden");
+
+  const select = $("spell-select");
+  select.innerHTML = state.spells.spells
+    .map(spell => {
+      const cost = spell.cost === "variable" ? "variável" : spell.cost;
+      return `<option value="${spell.id}">${spell.name} — custo ${cost}</option>`;
+    })
+    .join("");
+
+  updateSpellCostUI();
+  $("spell-result").textContent =
+    "Lothar pode lançar um Feitiço de Combate antes da primeira série de ataque.";
+}
+
+function updateSpellCostUI() {
+  const spell = state.spells?.spells?.find(
+    item => item.id === $("spell-select").value
+  );
+  const variable = spell?.cost === "variable";
+  $("spell-variable-wrap").classList.toggle("hidden", !variable);
+}
+
+function describeSpellResult(result) {
+  if (!result.ok) {
+    const reasons = {
+      "combat-spell-already-attempted": "Um Feitiço de Combate já foi tentado neste encontro.",
+      "invalid-variable-cost": "Informe um custo válido de MAGIA.",
+      "recovery-cost-must-be-multiple-of-3": "Recuperação exige um múltiplo de 3 pontos de MAGIA.",
+      "insufficient-magic": "MAGIA insuficiente."
+    };
+    return reasons[result.reason] || "Não foi possível lançar o feitiço.";
+  }
+
+  if (!result.success) {
+    return `${result.spellName}: o dado marcou 6. O feitiço falhou, mas o custo de MAGIA foi gasto.`;
+  }
+
+  if (result.spellId === "recuperacao") {
+    return `${result.spellName}: +${result.recoveredEnergy || 0} de ENERGIA.`;
+  }
+
+  if (result.spellId === "sono") {
+    const sleeping = result.details.filter(detail => detail.asleep).length;
+    return `${result.spellName}: ${sleeping} oponente(s) adormeceram.`;
+  }
+
+  if (result.spellId === "sombra") {
+    return "Sombra: um guerreiro espiritual com HABILIDADE 7 e ENERGIA 4 lutará primeiro.";
+  }
+
+  if (result.spellId === "rajada-mortal" && result.details[0]?.roll) {
+    return `${result.spellName}: ${result.details[0].roll.total} de dano mágico.`;
+  }
+
+  return `${result.spellName} foi lançado com sucesso.`;
+}
+
+function castSelectedSpell() {
+  if (!state.encounter || state.character !== "lothar") return;
+
+  const spell = state.spells.spells.find(
+    item => item.id === $("spell-select").value
+  );
+  if (!spell) return;
+
+  const magicSpend = Number($("spell-magic-spend").value);
+  const result = applyCombatSpell(
+    state.hero,
+    state.encounter,
+    spell,
+    { magicSpend }
+  );
+
+  $("spell-result").textContent = describeSpellResult(result);
+  renderSheet();
+  updateCombatOpponents();
+
+  if (result.ok) {
+    $("spell-panel").classList.add("hidden");
+  }
+
+  if (result.encounterVictory) {
+    const node = state.characterData.references[String(state.ref)];
+    completeCombatVictory(node);
+  }
+}
+
+function completeCombatVictory(node) {
+  if (!state.completedEncounters.has(state.ref)) {
+    state.completedEncounters.add(state.ref);
+    applyStoryEffects(state.hero, node.rewards || [], {
+      shared: state.shared,
+      partnerActive: state.partnerActive
+    });
+    renderSheet();
+  }
+
+  $("combat-title").textContent = "🏆 Vitória";
+  $("combat-round").classList.add("hidden");
+  $("spell-panel").classList.add("hidden");
+  $("combat-continue").classList.remove("hidden");
+  $("combat-continue").dataset.target = node.onVictory ?? "";
+  $("combat-continue").textContent = node.onVictory
+    ? `Continuar → ${node.onVictory}`
+    : "Continuar";
 }
 
 function playCombatRound() {
@@ -371,27 +512,30 @@ function playCombatRound() {
   const result = playEncounterRound(state.encounter, state.hero);
 
   if (result.round) {
+    const attacker = result.round.attackerName || state.hero.name;
     const labels = {
-      "hero-hit": `${state.hero.name} acertou e causou ${result.round.damage} de dano.`,
-      "enemy-hit": `${result.round.enemyName} acertou e causou ${result.round.damage} de dano.`,
+      "hero-hit": `${attacker} acertou e causou ${result.round.damage} de dano.`,
+      "enemy-hit": result.round.damagePrevented
+        ? `${result.round.enemyName} acertou, mas Estontear anulou o dano (dado ${result.round.incomingSaveRoll}).`
+        : `${result.round.enemyName} acertou e causou ${result.round.damage} de dano.`,
       tie: "Empate: ninguém sofreu dano."
     };
 
+    const shadowNote = result.round.proxyDefeated
+      ? " A Sombra foi vencida; Lothar continuará o combate pessoalmente."
+      : "";
+
     $("combat-log").textContent =
       `Rodada ${result.round.round}: ` +
-      `${state.hero.name} ${result.round.heroRolls.join("+")} + HABILIDADE = ${result.round.heroAttack}; ` +
+      `${attacker} ${result.round.heroRolls.join("+")} + HABILIDADE = ${result.round.heroAttack}; ` +
       `${result.round.enemyName} ${result.round.enemyRolls.join("+")} + HABILIDADE = ${result.round.enemyAttack}. ` +
-      labels[result.round.outcome];
+      labels[result.round.outcome] + shadowNote;
   }
 
   renderSheet();
 
   const enemy = currentOpponent(state.encounter);
-  $("combat-opponents").textContent = state.encounter.enemies
-    .map(opponent =>
-      `${opponent.name}: HABILIDADE ${opponent.habilidade} • ENERGIA ${opponent.energia}/${opponent.initialEnergy}`
-    )
-    .join(" | ");
+  updateCombatOpponents();
 
   if (result.defeat) {
     $("combat-title").textContent = "☠️ Derrota";
@@ -401,20 +545,7 @@ function playCombatRound() {
   }
 
   if (result.victory) {
-    state.completedEncounters.add(state.ref);
-    applyStoryEffects(state.hero, node.rewards || [], {
-      shared: state.shared,
-      partnerActive: state.partnerActive
-    });
-    renderSheet();
-
-    $("combat-title").textContent = "🏆 Vitória";
-    $("combat-round").classList.add("hidden");
-    $("combat-continue").classList.remove("hidden");
-    $("combat-continue").dataset.target = node.onVictory ?? "";
-    $("combat-continue").textContent = node.onVictory
-      ? `Continuar → ${node.onVictory}`
-      : "Continuar";
+    completeCombatVictory(node);
     return;
   }
 
