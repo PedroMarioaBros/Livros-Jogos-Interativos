@@ -23,6 +23,9 @@ export function createSaveSnapshot(state) {
       : [],
     duo: state.duo
       ? JSON.parse(JSON.stringify(state.duo))
+      : null,
+    cooperativeEncounter: state.cooperativeEncounter
+      ? JSON.parse(JSON.stringify(state.cooperativeEncounter))
       : null
   };
 }
