@@ -274,6 +274,42 @@ test("quando sobra um único inimigo, os heróis alternam as séries de ataque",
 });
 
 
+test("regra especial pode fazer um acerto atingir os dois príncipes", () => {
+  const colthar = createCharacter(warriorData, sequence([0, 0, 0, 0]));
+  const lothar = createCharacter(warriorData, sequence([0, 0, 0, 0]));
+  const enemy = createOpponent({
+    name: "Bruxa",
+    habilidade: 20,
+    energia: 6
+  });
+  const state = createCooperativeCombatState(
+    [colthar, lothar],
+    [enemy],
+    {
+      rng: sequence([0]),
+      specialRule: "enemy_hit_damages_both"
+    }
+  );
+
+  const beforeColthar = colthar.stats.energia;
+  const beforeLothar = lothar.stats.energia;
+  const result = cooperativeCombatStep(state, {
+    rng: sequence([0.9, 0.9, 0, 0])
+  });
+  const event = result.events[0];
+
+  assert.equal(event.result.outcome, "enemy-hit");
+  assert.equal(colthar.stats.energia, beforeColthar - 2);
+  assert.equal(lothar.stats.energia, beforeLothar - 2);
+  assert.deepEqual(event.collateralDamage, [
+    {
+      heroIndex: 1,
+      damage: 2,
+      energyAfter: beforeLothar - 2
+    }
+  ]);
+});
+
 test("Feitiço de Combate aplica modificadores aos dois príncipes", () => {
   const colthar = createCharacter(warriorData, sequence([0, 0, 0, 0]));
   const lothar = {
