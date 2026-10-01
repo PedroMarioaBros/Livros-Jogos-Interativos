@@ -38,6 +38,7 @@ const state = {
 };
 
 const SAVE_KEY = "livros-jogos-interativos:furia-de-principes";
+let deferredInstallPrompt = null;
 
 const $ = (id) => document.getElementById(id);
 
@@ -114,6 +115,39 @@ async function init() {
   $("spell-select").addEventListener("change", updateSpellCostUI);
   $("handoff-player").addEventListener("click", startPlayerHandoff);
   $("handoff-confirm").addEventListener("click", finishPlayerHandoff);
+  $("install-app").addEventListener("click", installApp);
+
+  window.addEventListener("beforeinstallprompt", event => {
+    event.preventDefault();
+    deferredInstallPrompt = event;
+    $("install-app").classList.remove("hidden");
+  });
+
+  window.addEventListener("appinstalled", () => {
+    deferredInstallPrompt = null;
+    $("install-app").classList.add("hidden");
+  });
+
+  registerServiceWorker();
+}
+
+async function registerServiceWorker() {
+  if (!("serviceWorker" in navigator)) return;
+
+  try {
+    await navigator.serviceWorker.register("./sw.js");
+  } catch (error) {
+    console.warn("Service Worker não pôde ser registrado:", error);
+  }
+}
+
+async function installApp() {
+  if (!deferredInstallPrompt) return;
+
+  deferredInstallPrompt.prompt();
+  await deferredInstallPrompt.userChoice;
+  deferredInstallPrompt = null;
+  $("install-app").classList.add("hidden");
 }
 
 function selectGroup(selector, selected) {
