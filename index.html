@@ -40,6 +40,17 @@
         <p id="inventory" class="muted"></p>
         <p id="shared" class="muted"></p>
 
+        <div class="card" style="margin-top:14px">
+          <strong>Teste de sincronização em dupla</strong>
+          <p class="muted">Enquanto os dois aparelhos ainda não estão conectados, estes campos simulam o valor recebido do outro jogador.</p>
+          <div class="grid">
+            <label>STATUS<input id="manual-status" type="number" min="0" value="0"></label>
+            <label>AÇÃO<input id="manual-action" type="number" min="0" value="0"></label>
+          </div>
+          <button id="apply-sync" style="margin-top:10px">🔗 Aplicar STATUS/AÇÃO</button>
+          <p id="sync-message" class="muted" style="margin-top:10px"></p>
+        </div>
+
         <div class="grid" style="margin-top:14px">
           <button id="use-provision">🥖 Consumir provisão</button>
           <button id="test-luck">🍀 Testar Sorte</button>
