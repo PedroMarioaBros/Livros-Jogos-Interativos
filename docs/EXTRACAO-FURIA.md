@@ -81,3 +81,26 @@ Foi concluída uma varredura estrutural do início do volume do Feiticeiro.
 - o texto integral da obra não foi copiado para o repositório.
 
 O motor também passou a interpretar rolagens genéricas e opções de feitiços situacionais encontradas nesse lote.
+
+
+## Segundo grande lote de Lothar — referências 117 a 200
+
+A árvore do Feiticeiro agora está estruturada continuamente da referência **1 até a 200**.
+
+Neste lote foram incorporados:
+
+- combates individuais e cooperativos;
+- Testes de Sorte;
+- escolhas dependentes de itens;
+- rolagens de 1d6 com múltiplas rotas;
+- feitiços situacionais com custo de MAGIA;
+- falhas mágicas com alternativas de continuação;
+- instruções de passagem para Colthar;
+- perda e posterior recuperação de pertences;
+- penalidades temporárias de combate;
+- mortes e remoções da aventura;
+- pontos de sincronização já conhecidos preservados.
+
+Total atual de Lothar: **200 de 500 referências (40%)**.
+
+Referências cujo comportamento exige histórico anterior de itens ou combate continuam marcadas como `parcial` até a cadeia completa ser testada de ponta a ponta.
