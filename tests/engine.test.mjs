@@ -649,3 +649,49 @@ test("feitiço situacional falha automaticamente quando MAGIA é zero", async ()
   assert.equal(result.automaticFailure, true);
   assert.equal(result.target, 200);
 });
+
+
+test("itens podem ser guardados como roubados e restaurados depois", () => {
+  const mage = createCharacter(mageData, sequence([0, 0, 0, 0, 0]));
+  applyEffects(mage, [{ type: "stash_and_clear_items" }]);
+
+  assert.deepEqual(mage.items, []);
+  assert.deepEqual(mage.stashedItems, ["cavalo", "cajado", "mochila"]);
+
+  applyEffects(mage, [{ type: "restore_stashed_items" }]);
+  assert.deepEqual(mage.items, ["cavalo", "cajado", "mochila"]);
+  assert.deepEqual(mage.stashedItems, []);
+});
+
+test("encontro aplica modificador de HABILIDADE definido pela referência", () => {
+  const mage = createCharacter(mageData, sequence([0, 0, 0, 0, 0]));
+  const encounter = createEncounter(197, {
+    modifiers: { heroSkill: -3 },
+    enemies: [{ name: "Wight", habilidade: 1, energia: 2 }]
+  });
+
+  assert.equal(encounter.modifiers.heroSkill, -3);
+});
+
+test("dano de combate fica disponível para recuperação posterior", () => {
+  const hero = createCharacter(warriorData, sequence([0, 0, 0, 0]));
+  hero.stats.habilidade = 1;
+  const encounter = createEncounter(122, {
+    enemies: [{ name: "Ogre", habilidade: 20, energia: 10 }]
+  });
+
+  playEncounterRound(encounter, hero, {
+    rng: sequence([0.9, 0.9, 0, 0])
+  });
+
+  assert.equal(hero.lastCombatDamage, 2);
+  hero.stats.energia = Math.max(1, hero.stats.energia);
+
+  const before = hero.stats.energia;
+  applyEffects(hero, [{
+    type: "recover_fraction_last_combat_damage",
+    stat: "energia",
+    fraction: 0.5
+  }]);
+  assert.equal(hero.stats.energia, Math.min(hero.initialStats.energia, before + 1));
+});
