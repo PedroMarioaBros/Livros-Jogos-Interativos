@@ -803,3 +803,49 @@ test("efeito pode aumentar o valor inicial de SORTE", () => {
 
   assert.equal(mage.initialStats.sorte, before + 1);
 });
+
+
+test("condição de ouro conjunto soma recursos dos dois príncipes", () => {
+  const colthar = createCharacter(warriorData, sequence([0, 0, 0, 0]));
+  const lothar = createCharacter(mageData, sequence([0, 0, 0, 0, 0]));
+  colthar.gold = 7;
+  lothar.gold = 13;
+
+  assert.equal(
+    availableChoices(
+      {
+        choices: [{
+          target: 132,
+          conditions: [{ type: "shared_gold_gte", value: 20 }]
+        }]
+      },
+      {
+        character: colthar,
+        partnerCharacter: lothar,
+        shared: {},
+        partnerActive: true
+      }
+    ).length,
+    1
+  );
+
+  lothar.gold = 12;
+
+  assert.equal(
+    availableChoices(
+      {
+        choices: [{
+          target: 132,
+          conditions: [{ type: "shared_gold_gte", value: 20 }]
+        }]
+      },
+      {
+        character: colthar,
+        partnerCharacter: lothar,
+        shared: {},
+        partnerActive: true
+      }
+    ).length,
+    0
+  );
+});
