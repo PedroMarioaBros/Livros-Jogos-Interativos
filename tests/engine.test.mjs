@@ -14,6 +14,7 @@ import {
 import { castCombatSpell } from "../src/engine/magic.js";
 import { processSyncPoint, resolveSyncTarget } from "../src/engine/sync.js";
 import { applyEffects, availableChoices } from "../src/engine/story.js";
+import { createEncounter, playEncounterRound } from "../src/engine/encounter.js";
 
 function sequence(values) {
   let index = 0;
@@ -294,4 +295,50 @@ test("motor narrativo filtra escolhas por inventário, ouro e estado do parceiro
   });
 
   assert.deepEqual(choices.map(choice => choice.target), [1, 3]);
+});
+
+
+test("controlador de encontro avança para o próximo inimigo", () => {
+  const hero = createCharacter(warriorData, sequence([0, 0, 0, 0]));
+  hero.stats.habilidade = 20;
+
+  const encounter = createEncounter(47, {
+    enemies: [
+      { name: "Primeiro", habilidade: 1, energia: 2 },
+      { name: "Segundo", habilidade: 1, energia: 2 }
+    ]
+  });
+
+  const first = playEncounterRound(encounter, hero, {
+    rng: sequence([0, 0, 0.9, 0.9])
+  });
+
+  assert.equal(first.victory, false);
+  assert.equal(first.nextOpponent.name, "Segundo");
+
+  const second = playEncounterRound(encounter, hero, {
+    rng: sequence([0, 0, 0.9, 0.9])
+  });
+
+  assert.equal(second.finished, true);
+  assert.equal(second.victory, true);
+  assert.equal(encounter.rounds.length, 2);
+});
+
+test("controlador de encontro encerra quando o herói cai", () => {
+  const hero = createCharacter(warriorData, sequence([0, 0, 0, 0]));
+  hero.stats.energia = 2;
+  hero.stats.habilidade = 1;
+
+  const encounter = createEncounter(999, {
+    enemies: [{ name: "Forte", habilidade: 20, energia: 10 }]
+  });
+
+  const result = playEncounterRound(encounter, hero, {
+    rng: sequence([0.9, 0.9, 0, 0])
+  });
+
+  assert.equal(result.finished, true);
+  assert.equal(result.defeat, true);
+  assert.equal(hero.stats.energia, 0);
 });
