@@ -227,7 +227,7 @@
       "resumo": "Os irmãos são capturados pelas Amazonas e perdem os pertences; sem arma, Lothar sofre penalidade temporária de HABILIDADE.",
       "effects": [
         {
-          "type": "clear_items"
+          "type": "stash_and_clear_items"
         },
         {
           "type": "change_stat",
