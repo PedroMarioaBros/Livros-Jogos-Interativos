@@ -31,9 +31,685 @@
         }
       ]
     },
+    "10": {
+      "estado": "extraida",
+      "resumo": "Colthar segue sozinho em direção a Kalamandar.",
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 282
+        }
+      ]
+    },
+    "11": {
+      "estado": "extraida",
+      "resumo": "Os irmãos decidem se ainda vão investigar a forca ou continuar a viagem.",
+      "choices": [
+        {
+          "label": "Inspecionar a forca",
+          "target": 236,
+          "conditions": [
+            {
+              "type": "flag_not",
+              "flag": "forca_inspecionada"
+            }
+          ]
+        },
+        {
+          "label": "Prosseguir a viagem",
+          "target": 179
+        }
+      ]
+    },
+    "12": {
+      "estado": "extraida",
+      "resumo": "Os irmãos são capturados por Amazonas e ficam sem seus pertences; sem arma, Colthar sofre penalidade temporária de HABILIDADE.",
+      "effects": [
+        {
+          "type": "clear_items"
+        },
+        {
+          "type": "change_stat",
+          "stat": "habilidade",
+          "delta": -2,
+          "temporaryUntil": "has_weapon"
+        }
+      ],
+      "choices": [
+        {
+          "label": "Lothar tenta pegar as chaves",
+          "target": 104
+        },
+        {
+          "label": "Colthar tenta forçar a fuga",
+          "target": 161
+        }
+      ]
+    },
+    "13": {
+      "estado": "extraida",
+      "resumo": "Um Troll cobra pedágio para atravessar a ponte.",
+      "choices": [
+        {
+          "label": "Pagar 2 moedas de ouro",
+          "target": 385,
+          "conditions": [
+            {
+              "type": "gold_gte",
+              "value": 2
+            }
+          ],
+          "effects": [
+            {
+              "type": "change_gold",
+              "delta": -2
+            }
+          ]
+        },
+        {
+          "label": "Enfrentar o Troll",
+          "target": 228
+        }
+      ]
+    },
+    "14": {
+      "estado": "extraida",
+      "resumo": "Após a conversa hostil com os anões, Colthar precisa escolher entre a Serpente e a outra saída.",
+      "choices": [
+        {
+          "label": "Enfrentar a Serpente",
+          "target": 398
+        },
+        {
+          "label": "Usar a outra saída",
+          "target": 476
+        }
+      ]
+    },
+    "15": {
+      "estado": "extraida",
+      "resumo": "O feitiço usado dentro do saco termina de forma fatal para os dois irmãos.",
+      "ending": "death"
+    },
+    "16": {
+      "estado": "extraida",
+      "resumo": "Colthar perde a espada durante o voo e é morto pela criatura.",
+      "ending": "death",
+      "afterDeathReference": 39
+    },
+    "17": {
+      "estado": "extraida",
+      "resumo": "Lothar cai mortalmente ferido e Colthar também é atingido ao tentar socorrê-lo.",
+      "ending": "death"
+    },
+    "18": {
+      "estado": "extraida",
+      "resumo": "Colthar avista uma torre negra e decide se vai investigá-la ou contorná-la.",
+      "choices": [
+        {
+          "label": "Aproximar-se da torre",
+          "target": 260
+        },
+        {
+          "label": "Passar a uma distância segura",
+          "target": 144
+        }
+      ]
+    },
+    "20": {
+      "estado": "extraida",
+      "resumo": "Após ser arrastado pela corrente, Colthar escolhe em qual margem do rio desembarcar.",
+      "choices": [
+        {
+          "label": "Descer na margem leste",
+          "target": 157
+        },
+        {
+          "label": "Ir para a margem oeste",
+          "target": 207
+        }
+      ]
+    },
+    "21": {
+      "estado": "extraida",
+      "resumo": "A tentativa de negociar com o gigante termina de forma fatal para os dois irmãos.",
+      "ending": "death"
+    },
+    "22": {
+      "estado": "extraida",
+      "resumo": "Em uma câmara redonda, Colthar encontra um esqueleto segurando uma ferramenta e uma escada descendente.",
+      "choices": [
+        {
+          "label": "Pegar o furador",
+          "target": 76
+        },
+        {
+          "label": "Continuar pela escada",
+          "target": 166
+        }
+      ]
+    },
+    "23": {
+      "estado": "extraida",
+      "resumo": "Após uma noite difícil, Colthar descobre que cavalo, mochila e ouro foram roubados e decide se vai à estalagem ou deixa a vila.",
+      "effects": [
+        {
+          "type": "remove_item",
+          "item": "cavalo"
+        },
+        {
+          "type": "remove_item",
+          "item": "mochila"
+        },
+        {
+          "type": "set_gold",
+          "value": 0
+        }
+      ],
+      "choices": [
+        {
+          "label": "Ir para a estalagem",
+          "target": 364
+        },
+        {
+          "label": "Deixar a vila",
+          "target": 367
+        }
+      ]
+    },
+    "24": {
+      "estado": "extraida",
+      "resumo": "Depois de derrotar a Bruxa e sair das ruínas, Colthar retoma a busca.",
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 430
+        }
+      ]
+    },
+    "25": {
+      "estado": "parcial",
+      "resumo": "Na estalagem, os irmãos voltam a encontrar o Coletor de Impostos e podem vender itens para tentar pagar a cobrança.",
+      "choices": [
+        {
+          "label": "Pagar o imposto se houver ouro suficiente",
+          "target": 132,
+          "conditions": [
+            {
+              "type": "shared_gold_sufficient"
+            }
+          ]
+        }
+      ],
+      "needsMoreExtraction": true
+    },
+    "27": {
+      "estado": "extraida",
+      "resumo": "Colthar reencontra Lothar na trilha; os irmãos seguem juntos.",
+      "choices": [
+        {
+          "label": "Seguir juntos",
+          "target": 224
+        }
+      ]
+    },
+    "28": {
+      "estado": "extraida",
+      "resumo": "A corrente leva Colthar para cavernas; ele perde ouro e itens, sofre dano, mas recupera a espada antes de seguir.",
+      "effects": [
+        {
+          "type": "clear_items"
+        },
+        {
+          "type": "set_gold",
+          "value": 0
+        },
+        {
+          "type": "change_stat",
+          "stat": "energia",
+          "delta": -2
+        },
+        {
+          "type": "add_item",
+          "item": "espada"
+        }
+      ],
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 382
+        }
+      ]
+    },
+    "29": {
+      "estado": "extraida",
+      "resumo": "A ponte não suporta o peso dos dois irmãos e desaba.",
+      "ending": "death"
+    },
+    "30": {
+      "estado": "extraida",
+      "resumo": "Colthar perde o ouro no poço e escolhe entre um túnel ou duas estradas.",
+      "effects": [
+        {
+          "type": "set_gold",
+          "value": 0
+        }
+      ],
+      "choices": [
+        {
+          "label": "Entrar no túnel",
+          "target": 108
+        },
+        {
+          "label": "Seguir pela estrada norte",
+          "target": 391
+        },
+        {
+          "label": "Seguir pela estrada sul",
+          "target": 384
+        }
+      ]
+    },
     "31": {
       "estado": "validada",
       "resumo": "Ponto de sincronização: Colthar define STATUS 19 e aguarda uma mudança de AÇÃO."
+    },
+    "32": {
+      "estado": "extraida",
+      "resumo": "Um Cockatrice salta da cesta e mata os dois irmãos.",
+      "ending": "death"
+    },
+    "33": {
+      "estado": "extraida",
+      "resumo": "Duas esferas luminosas aparecem e Colthar precisa escolher qual tocar.",
+      "choices": [
+        {
+          "label": "Tocar a esfera verde",
+          "target": 151
+        },
+        {
+          "label": "Tocar a esfera laranja",
+          "target": 352
+        }
+      ]
+    },
+    "34": {
+      "estado": "extraida",
+      "resumo": "Colthar enfrenta um javali.",
+      "encounter": {
+        "enemies": [
+          {
+            "name": "Javali",
+            "habilidade": 9,
+            "energia": 6
+          }
+        ]
+      },
+      "onVictory": 238
+    },
+    "35": {
+      "estado": "extraida",
+      "resumo": "Ao ver Lothar cair, Colthar se distrai e é mortalmente ferido.",
+      "ending": "death"
+    },
+    "36": {
+      "estado": "extraida",
+      "resumo": "Depois de salvar uma mulher, Colthar recebe um pé de coelho e precisa Testar a Sorte ao sair da cidade.",
+      "effects": [
+        {
+          "type": "add_item",
+          "item": "pe_de_coelho"
+        },
+        {
+          "type": "change_stat",
+          "stat": "sorte",
+          "delta": 2,
+          "cap": "initial"
+        }
+      ],
+      "test": {
+        "type": "luck",
+        "successTarget": 135,
+        "failureTarget": 468
+      }
+    },
+    "37": {
+      "estado": "extraida",
+      "resumo": "Colthar evita os ferrões do Peixe-pedra e continua pela trilha.",
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 197
+        }
+      ]
+    },
+    "38": {
+      "estado": "extraida",
+      "resumo": "Um casulo lança líquido venenoso; o dano é determinado por um dado e o destino muda conforme Lothar ainda esteja na aventura.",
+      "effects": [
+        {
+          "type": "random_stat_damage",
+          "stat": "energia",
+          "dice": "1d6"
+        }
+      ],
+      "choices": [
+        {
+          "label": "Lothar está fora da aventura",
+          "target": 497,
+          "conditions": [
+            {
+              "type": "partner_removed"
+            }
+          ]
+        },
+        {
+          "label": "Lothar continua vivo",
+          "target": 106,
+          "conditions": [
+            {
+              "type": "partner_active"
+            }
+          ]
+        }
+      ]
+    },
+    "41": {
+      "estado": "extraida",
+      "resumo": "Após abrir o portão, o destino depende do valor de AÇÃO; se o parceiro tiver sido removido, a aventura deve passar às regras solo.",
+      "choices": [
+        {
+          "label": "AÇÃO = 1",
+          "target": 473,
+          "conditions": [
+            {
+              "type": "shared_equals",
+              "key": "acao",
+              "value": 1
+            }
+          ]
+        },
+        {
+          "label": "AÇÃO = 36",
+          "target": 246,
+          "conditions": [
+            {
+              "type": "shared_equals",
+              "key": "acao",
+              "value": 36
+            }
+          ]
+        },
+        {
+          "label": "Outro valor de AÇÃO",
+          "target": 155,
+          "conditions": [
+            {
+              "type": "shared_not_in",
+              "key": "acao",
+              "values": [
+                1,
+                36
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "42": {
+      "estado": "extraida",
+      "resumo": "Uma armadilha de pedras desaba sobre Colthar.",
+      "ending": "death",
+      "afterDeathReference": 39
+    },
+    "43": {
+      "estado": "extraida",
+      "resumo": "Os irmãos enfrentam juntos o Sr. Todd e uma mulher da estalagem.",
+      "encounter": {
+        "cooperative": true,
+        "enemies": [
+          {
+            "name": "Sr. Todd",
+            "habilidade": 9,
+            "energia": 6
+          },
+          {
+            "name": "Mulher",
+            "habilidade": 8,
+            "energia": 4
+          }
+        ]
+      },
+      "choices": [
+        {
+          "label": "Vitória com Lothar ainda ativo",
+          "target": 213,
+          "conditions": [
+            {
+              "type": "partner_active"
+            }
+          ]
+        },
+        {
+          "label": "Vitória após Lothar ser removido",
+          "target": 261,
+          "conditions": [
+            {
+              "type": "partner_removed"
+            }
+          ]
+        }
+      ]
+    },
+    "44": {
+      "estado": "extraida",
+      "resumo": "Um demônio pergunta sobre o peso da maldade; possuir um pergaminho marrom altera o caminho.",
+      "choices": [
+        {
+          "label": "Possui pergaminho marrom",
+          "target": 433,
+          "conditions": [
+            {
+              "type": "has_item",
+              "item": "pergaminho_marrom"
+            }
+          ]
+        },
+        {
+          "label": "Não possui pergaminho marrom",
+          "target": 311,
+          "conditions": [
+            {
+              "type": "not_has_item",
+              "item": "pergaminho_marrom"
+            }
+          ]
+        }
+      ]
+    },
+    "45": {
+      "estado": "extraida",
+      "resumo": "O Guerreiro lança o martelo e atinge Colthar fatalmente.",
+      "ending": "death",
+      "afterDeathReference": 39
+    },
+    "46": {
+      "estado": "extraida",
+      "resumo": "No cemitério, Colthar decide se segue um som metálico ou continua pela trilha entre as lápides.",
+      "choices": [
+        {
+          "label": "Seguir o som",
+          "target": 288
+        },
+        {
+          "label": "Continuar pela trilha",
+          "target": 122
+        }
+      ]
+    },
+    "47": {
+      "estado": "parcial",
+      "resumo": "Colthar entra primeiro na toca e enfrenta dois guardas Scuttlies; o resultado também precisa ser comunicado a Lothar.",
+      "encounter": {
+        "enemies": [
+          {
+            "name": "Scuttlie Um",
+            "habilidade": 9,
+            "energia": 6
+          },
+          {
+            "name": "Scuttlie Dois",
+            "habilidade": 8,
+            "energia": 6
+          }
+        ]
+      },
+      "onVictory": 478,
+      "partnerOnVictory": 478,
+      "partnerOnDefeat": 6,
+      "needsMoreExtraction": true
+    },
+    "49": {
+      "estado": "extraida",
+      "resumo": "Após derrotar a criatura, Colthar encontra um pergaminho marrom com runas.",
+      "effects": [
+        {
+          "type": "add_item",
+          "item": "pergaminho_marrom"
+        }
+      ],
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 217
+        }
+      ]
+    },
+    "54": {
+      "estado": "extraida",
+      "resumo": "Colthar encontra um Amuleto de Proteção, recupera ENERGIA e aumenta SORTE.",
+      "effects": [
+        {
+          "type": "add_item",
+          "item": "amuleto_de_protecao"
+        },
+        {
+          "type": "change_stat",
+          "stat": "sorte",
+          "delta": 1,
+          "cap": "initial"
+        },
+        {
+          "type": "change_stat",
+          "stat": "energia",
+          "delta": 2,
+          "cap": "initial"
+        }
+      ],
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 78
+        }
+      ]
+    },
+    "55": {
+      "estado": "extraida",
+      "resumo": "Lothar tenta atravessar a ponte, que desaba com ele.",
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 99
+        }
+      ]
+    },
+    "56": {
+      "estado": "extraida",
+      "resumo": "Colthar enfrenta um Guerreiro do Gelo e, vencendo, pode ficar com um poderoso martelo.",
+      "encounter": {
+        "enemies": [
+          {
+            "name": "Guerreiro do Gelo",
+            "habilidade": 11,
+            "energia": 12
+          }
+        ]
+      },
+      "onVictory": 280,
+      "rewards": [
+        {
+          "type": "add_item",
+          "item": "martelo_do_trovao"
+        },
+        {
+          "type": "change_stat",
+          "stat": "habilidade",
+          "delta": 2,
+          "cap": "initial"
+        },
+        {
+          "type": "change_stat",
+          "stat": "energia",
+          "delta": 2,
+          "cap": "initial"
+        },
+        {
+          "type": "change_stat",
+          "stat": "sorte",
+          "delta": 1,
+          "cap": "initial"
+        }
+      ]
+    },
+    "58": {
+      "estado": "extraida",
+      "resumo": "Colthar ajuda Lothar a acordar e deve aguardar instruções do outro jogador.",
+      "partnerInstruction": {
+        "sendToReference": 58,
+        "wait": true
+      }
+    },
+    "59": {
+      "estado": "extraida",
+      "resumo": "Uma armadura aumenta atributos, mas limita a quantidade de itens carregados.",
+      "effects": [
+        {
+          "type": "add_item",
+          "item": "armadura_pesada"
+        },
+        {
+          "type": "change_stat",
+          "stat": "habilidade",
+          "delta": 2,
+          "cap": "initial"
+        },
+        {
+          "type": "change_stat",
+          "stat": "energia",
+          "delta": 3,
+          "cap": "initial"
+        },
+        {
+          "type": "change_stat",
+          "stat": "sorte",
+          "delta": 1,
+          "cap": "initial"
+        },
+        {
+          "type": "set_inventory_limit",
+          "value": 5,
+          "exclude": [
+            "gold",
+            "provisions"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 87
+        }
+      ]
     },
     "60": {
       "estado": "validada",
