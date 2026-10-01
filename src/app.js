@@ -9,7 +9,8 @@ import { processSyncPoint } from "./engine/sync.js";
 import {
   applyEffects as applyStoryEffects,
   availableChoices,
-  conditionMet
+  conditionMet,
+  resolveDynamicDuoComparison
 } from "./engine/story.js";
 import { createEncounter, playEncounterRound, currentOpponent } from "./engine/encounter.js";
 import {
@@ -703,6 +704,41 @@ function renderReference(reference, options = {}) {
   if (renderPendingSharedLoot()) {
     hideCombat();
     return;
+  }
+
+  if (
+    node.dynamicDuoComparison &&
+    state.mode === "dupla" &&
+    state.duo
+  ) {
+    const partner = getPartnerHero();
+    const result = resolveDynamicDuoComparison(
+      node.dynamicDuoComparison,
+      state.hero,
+      partner
+    );
+
+    if (result?.target) {
+      const outcomeLabel = {
+        "self-greater": state.hero.name + " possui mais Pedras de Poder",
+        "partner-greater": partner.name + " possui mais Pedras de Poder",
+        equal: "Os dois possuem a mesma quantidade de Pedras de Poder"
+      }[result.outcome];
+
+      $("sync-message").textContent =
+        outcomeLabel + ": " + result.selfCount + " x " + result.partnerCount + ". " +
+        "Destino automático → " + result.target;
+
+      setTimeout(
+        () => navigateTo(
+          result.target,
+          "Comparação de Pedras de Poder",
+          { applyEntryEffects: true }
+        ),
+        0
+      );
+      return;
+    }
   }
 
   if (
