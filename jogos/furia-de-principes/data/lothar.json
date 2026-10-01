@@ -3803,7 +3803,7 @@
       ]
     },
     "246": {
-      "estado": "parcial",
+      "estado": "extraida",
       "resumo": "O caminho depende de a Hidra ter sido morta ou transformada.",
       "dynamicCondition": {
         "type": "flag_any",
@@ -3813,8 +3813,7 @@
         ],
         "trueTarget": 416,
         "falseTarget": 115
-      },
-      "needsEngineSupport": true
+      }
     },
     "247": {
       "estado": "extraida",
@@ -5165,7 +5164,7 @@
       ]
     },
     "330": {
-      "estado": "parcial",
+      "estado": "extraida",
       "resumo": "Um feitiço contra a árvore exige rolar 3d6 e comparar o total com a ENERGIA atual de Lothar.",
       "rollAgainstStat": {
         "dice": "3d6",
@@ -5173,8 +5172,7 @@
         "successWhen": "lte",
         "successTarget": 5,
         "failureTarget": 126
-      },
-      "needsEngineSupport": true
+      }
     },
     "331": {
       "estado": "extraida",
@@ -5675,7 +5673,7 @@
       ]
     },
     "362": {
-      "estado": "parcial",
+      "estado": "extraida",
       "resumo": "Ao matar o Djinn, Lothar passa a poder lançar até dois Feitiços de Combate quando a magia é permitida e recebe um anel com o número 8.",
       "effects": [
         {
@@ -5692,8 +5690,7 @@
           "label": "Prosseguir",
           "target": 453
         }
-      ],
-      "needsEngineSupport": true
+      ]
     },
     "363": {
       "estado": "extraida",
@@ -6895,7 +6892,7 @@
       ]
     },
     "448": {
-      "estado": "parcial",
+      "estado": "extraida",
       "resumo": "O Unicórnio aumenta o valor inicial de SORTE de Lothar em 1 e restaura SORTE até o novo máximo.",
       "effects": [
         {
@@ -6913,8 +6910,7 @@
           "label": "Prosseguir",
           "target": 373
         }
-      ],
-      "needsEngineSupport": true
+      ]
     },
     "449": {
       "estado": "extraida",
@@ -7696,7 +7692,7 @@
       ]
     },
     "492": {
-      "estado": "parcial",
+      "estado": "extraida",
       "resumo": "Um cálice amaldiçoa Lothar para nunca mais recuperar ENERGIA perdida.",
       "effects": [
         {
@@ -7709,8 +7705,7 @@
           "label": "Prosseguir",
           "target": 180
         }
-      ],
-      "needsEngineSupport": true
+      ]
     },
     "493": {
       "estado": "extraida",
