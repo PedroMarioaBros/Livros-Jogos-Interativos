@@ -1858,7 +1858,7 @@
       ]
     },
     "120": {
-      "estado": "parcial",
+      "estado": "extraida",
       "resumo": "A resposta correta ao enigma permite recuperar os pertences e armas que haviam sido roubados.",
       "effects": [
         {
@@ -1871,7 +1871,7 @@
           "target": 315
         }
       ],
-      "needsEngineSupport": true
+      "notes": "Suporte técnico correspondente já implementado no motor."
     },
     "121": {
       "estado": "extraida",
@@ -1888,7 +1888,7 @@
       ]
     },
     "122": {
-      "estado": "parcial",
+      "estado": "extraida",
       "resumo": "Depois de ser vencido por Ogres, Lothar perde todo o ouro, recupera metade da ENERGIA perdida no confronto e escolhe entre seguir sozinho ou reencontrar Colthar.",
       "effects": [
         {
@@ -1911,7 +1911,7 @@
           "target": 181
         }
       ],
-      "needsEngineSupport": true
+      "notes": "Suporte técnico correspondente já implementado no motor."
     },
     "123": {
       "estado": "extraida",
@@ -2254,7 +2254,7 @@
       ]
     },
     "146": {
-      "estado": "parcial",
+      "estado": "extraida",
       "resumo": "Os irmãos recuperam os pertences roubados dos Scuttlies e decidem se continuam juntos ou se separam.",
       "effects": [
         {
@@ -2271,7 +2271,7 @@
           "target": 446
         }
       ],
-      "needsEngineSupport": true
+      "notes": "Suporte técnico correspondente já implementado no motor."
     },
     "147": {
       "estado": "extraida",
@@ -2437,7 +2437,7 @@
       ]
     },
     "159": {
-      "estado": "parcial",
+      "estado": "extraida",
       "resumo": "Um feitiço recupera os pertences roubados; os irmãos decidem se seguem juntos ou se separam.",
       "partnerInstruction": {
         "sendToReference": 159
@@ -2457,7 +2457,7 @@
           "target": 446
         }
       ],
-      "needsEngineSupport": true
+      "notes": "Suporte técnico correspondente já implementado no motor."
     },
     "160": {
       "estado": "extraida",
@@ -2794,7 +2794,7 @@
       ]
     },
     "182": {
-      "estado": "parcial",
+      "estado": "extraida",
       "resumo": "Depois de uma resposta errada, os irmãos recuperam seus pertences roubados e são enviados para um confronto.",
       "effects": [
         {
@@ -2807,7 +2807,7 @@
           "target": 88
         }
       ],
-      "needsEngineSupport": true
+      "notes": "Suporte técnico correspondente já implementado no motor."
     },
     "183": {
       "estado": "extraida",
@@ -3063,7 +3063,7 @@
       "onVictory": 489
     },
     "198": {
-      "estado": "parcial",
+      "estado": "extraida",
       "resumo": "Um feitiço destrói a toca dos Scuttlies e recupera os pertences roubados; os irmãos decidem se seguem juntos ou separados.",
       "partnerInstruction": {
         "sendToReference": 198
@@ -3083,7 +3083,7 @@
           "target": 446
         }
       ],
-      "needsEngineSupport": true
+      "notes": "Suporte técnico correspondente já implementado no motor."
     },
     "199": {
       "estado": "validada",
@@ -4479,7 +4479,7 @@
       "onVictory": 338
     },
     "285": {
-      "estado": "parcial",
+      "estado": "extraida",
       "resumo": "Os Leprechauns desaparecem levando todo o ouro e mais um item escolhido pelo jogador.",
       "effects": [
         {
@@ -4496,7 +4496,7 @@
           "target": 353
         }
       ],
-      "needsEngineSupport": true
+      "notes": "Suporte técnico correspondente já implementado no motor."
     },
     "286": {
       "estado": "extraida",
@@ -4745,7 +4745,7 @@
       ]
     },
     "300": {
-      "estado": "parcial",
+      "estado": "extraida",
       "resumo": "Dois guardas javali atacam Lothar na entrada de uma villa; depois da vitória ele pode entrar ou continuar pelas montanhas.",
       "encounter": {
         "allowCombatMagic": true,
@@ -4772,7 +4772,7 @@
           "target": 210
         }
       ],
-      "needsEngineSupport": true
+      "notes": "Suporte técnico correspondente já implementado no motor."
     },
     "301": {
       "estado": "extraida",
@@ -5958,7 +5958,7 @@
       "afterDeathReference": 39
     },
     "381": {
-      "estado": "parcial",
+      "estado": "extraida",
       "resumo": "Colthar derrota o mercador de escravos, liberta Lothar e os irmãos decidem quem ficará com a corda mágica.",
       "effects": [
         {
@@ -5975,7 +5975,7 @@
           "target": 25
         }
       ],
-      "needsEngineSupport": true
+      "notes": "Suporte técnico correspondente já implementado no motor."
     },
     "382": {
       "estado": "extraida",
