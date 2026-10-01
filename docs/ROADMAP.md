@@ -61,3 +61,14 @@
 ## Regra de qualidade
 
 Nenhuma referência será marcada como `validada` sem conferência explícita. O motor deve aceitar conteúdo incompleto sem inventar destinos inexistentes.
+
+
+## Fase 5 — Aplicativo instalável
+- [x] Manifesto PWA
+- [x] Service Worker
+- [x] Cache do motor e dados para funcionamento offline
+- [x] Fluxo de instalação pelo navegador quando suportado
+- [x] Salvamento local compatível com uso offline
+- [ ] Ícones finais em múltiplos tamanhos
+- [ ] Empacotamento Android/APK
+- [ ] Testes de instalação e atualização em aparelho real
