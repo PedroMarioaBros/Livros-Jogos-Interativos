@@ -206,11 +206,52 @@ export function createCooperativeCombatState(
       0: {},
       1: {}
     },
-    proxiesByHero: {}
+    proxiesByHero: {},
+    specialRule: options.specialRule || null
   };
 
   refreshCooperativeMode(state, options.rng || Math.random);
   return state;
+}
+
+function cooperativeCollateralDamage(
+  state,
+  heroIndex,
+  result,
+  usedProxy
+) {
+  if (
+    state.specialRule !== "enemy_hit_damages_both" ||
+    usedProxy ||
+    result.outcome !== "enemy-hit" ||
+    Number(result.damage || 0) <= 0
+  ) {
+    return [];
+  }
+
+  const collateral = [];
+
+  for (let index = 0; index < state.heroes.length; index += 1) {
+    if (
+      index === heroIndex ||
+      state.heroes[index].stats.energia <= 0
+    ) {
+      continue;
+    }
+
+    const damage = Number(result.damage || 0);
+    state.heroes[index].stats.energia = Math.max(
+      0,
+      state.heroes[index].stats.energia - damage
+    );
+    collateral.push({
+      heroIndex: index,
+      damage,
+      energyAfter: state.heroes[index].stats.energia
+    });
+  }
+
+  return collateral;
 }
 
 function cooperativeCombatant(state, heroIndex) {
@@ -285,6 +326,12 @@ export function cooperativeCombatStep(state, options = {}) {
       usedProxy: active.usedProxy,
       proxyDefeated:
         active.usedProxy && active.combatant.stats.energia <= 0,
+      collateralDamage: cooperativeCollateralDamage(
+        state,
+        heroIndex,
+        result,
+        active.usedProxy
+      ),
       result
     });
 
@@ -325,6 +372,12 @@ export function cooperativeCombatStep(state, options = {}) {
         usedProxy: active.usedProxy,
         proxyDefeated:
           active.usedProxy && active.combatant.stats.energia <= 0,
+        collateralDamage: cooperativeCollateralDamage(
+          state,
+          heroIndex,
+          result,
+          active.usedProxy
+        ),
         result
       });
     }
