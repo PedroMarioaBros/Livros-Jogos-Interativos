@@ -849,3 +849,37 @@ test("condição de ouro conjunto soma recursos dos dois príncipes", () => {
     0
   );
 });
+
+
+test("salvamento preserva tesouro compartilhado ainda não dividido", () => {
+  const hero = createCharacter(warriorData, sequence([0, 0, 0, 0]));
+
+  const state = {
+    config: { id: "furia-de-principes" },
+    mode: "solo",
+    character: "colthar",
+    hero,
+    shared: { status: 1, acao: 1 },
+    ref: 9,
+    partnerActive: false,
+    completedEncounters: new Set(),
+    encounter: null,
+    cooperativeEncounter: null,
+    history: [],
+    duo: null,
+    pendingSharedLoot: {
+      reference: 9,
+      gold: 10,
+      items: ["joia_vermelha"]
+    }
+  };
+
+  const restored = parseSave(serializeSave(state));
+
+  assert.equal(restored.pendingSharedLoot.reference, 9);
+  assert.equal(restored.pendingSharedLoot.gold, 10);
+  assert.deepEqual(
+    restored.pendingSharedLoot.items,
+    ["joia_vermelha"]
+  );
+});
