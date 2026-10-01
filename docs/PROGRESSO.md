@@ -11,7 +11,7 @@ As porcentagens abaixo são estimativas de engenharia para um **Fúria de Prínc
 | Regras específicas de Fúria de Príncipes | 93% |
 | Conteúdo de Colthar | 15,4% |
 | Conteúdo de Lothar | 100% estrutural |
-| STATUS/AÇÃO e sincronização | ~37% |
+| STATUS/AÇÃO e sincronização | ~40% |
 | Combate individual | 95% |
 | Magia de Lothar | 95% |
 | Combate cooperativo | 80% |
@@ -42,7 +42,7 @@ As porcentagens abaixo são estimativas de engenharia para um **Fúria de Prínc
 | Demonstração jogável de Fúria | ~89% |
 | Colthar solo completo | ~27% |
 | Lothar solo completo | ~84% |
-| Fúria completo no mesmo aparelho | ~70% |
+| Fúria completo no mesmo aparelho | ~71% |
 | Aplicativo Android final | ~65% do caminho total |
 
 ## Critério
