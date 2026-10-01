@@ -27,6 +27,9 @@
 - [ ] Extrair referências de Colthar
 - [ ] Extrair referências de Lothar
 - [ ] Mapear todas as sincronizações STATUS/AÇÃO
+  - [x] Motor genérico de sincronização
+  - [x] Primeira varredura de AÇÃO de Lothar
+  - [x] Primeiros pontos verificados de STATUS de Colthar (31 e 60)
 - [ ] Classificar finais, mortes e encontros
 - [ ] Testar todos os caminhos alcançáveis
 
@@ -44,7 +47,8 @@
 ## Fase 4 — Dois jogadores
 - [ ] Turnos no mesmo aparelho
 - [ ] Ocultação de informações privadas
-- [ ] Pontos de encontro entre os dois príncipes
+- [x] Infraestrutura para pontos de sincronização entre os dois príncipes
+- [ ] Pontos de encontro narrativos entre os dois príncipes
 - [ ] Sincronização entre dois aparelhos
 
 ## Regra de qualidade
