@@ -35,6 +35,8 @@
   - [x] Maldição que impede recuperação de ENERGIA
   - [x] Reflexo com atributos dinâmicos do próprio herói
   - [x] Rolagem compartilhada simples entre os jogadores
+  - [x] Ouro conjunto para cobranças compartilhadas
+  - [x] Divisão interativa de tesouro entre os dois príncipes
 - [ ] Extrair referências de Colthar
   - [x] Primeira expansão estrutural: 77 referências cadastradas no banco
 - [x] Extrair referências de Lothar
