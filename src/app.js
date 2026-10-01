@@ -1,7 +1,10 @@
 import { createCharacter, consumeProvision } from "./engine/character.js";
 import { testLuck } from "./engine/luck.js";
 import { rollExpression } from "./engine/dice.js";
-import { castSituationalSpell } from "./engine/magic.js";
+import {
+  castSituationalSpell,
+  combatSpellLimit
+} from "./engine/magic.js";
 import { processSyncPoint } from "./engine/sync.js";
 import {
   applyEffects as applyStoryEffects,
@@ -563,6 +566,61 @@ function renderReference(reference, options = {}) {
     $("choices").appendChild(button);
   }
 
+  if (node.dynamicCondition) {
+    const condition = {
+      type: node.dynamicCondition.type,
+      flags: node.dynamicCondition.flags
+    };
+    const matched = conditionMet(condition, {
+      character: state.hero,
+      shared: state.shared,
+      partnerActive: state.partnerActive
+    });
+    const target = matched
+      ? node.dynamicCondition.trueTarget
+      : node.dynamicCondition.falseTarget;
+
+    const button = document.createElement("button");
+    button.textContent = `Continuar → ${target}`;
+    button.addEventListener("click", () => {
+      navigateTo(target, "Condição histórica");
+    });
+    $("choices").appendChild(button);
+  }
+
+  if (node.rollAgainstStat) {
+    const button = document.createElement("button");
+    button.textContent =
+      `🎲 Rolar ${node.rollAgainstStat.dice} contra ${node.rollAgainstStat.stat.toUpperCase()}`;
+
+    button.addEventListener("click", () => {
+      const result = rollExpression(node.rollAgainstStat.dice);
+      const statValue =
+        state.hero.stats[node.rollAgainstStat.stat];
+      const success =
+        node.rollAgainstStat.successWhen === "lte"
+          ? result.total <= statValue
+          : result.total >= statValue;
+
+      showGameMessage(
+        `Rolagem: ${result.rolls.join(" + ")} = ${result.total}; ` +
+        `${node.rollAgainstStat.stat.toUpperCase()} = ${statValue}. ` +
+        (success ? "SUCESSO." : "FALHA.")
+      );
+
+      navigateTo(
+        success
+          ? node.rollAgainstStat.successTarget
+          : node.rollAgainstStat.failureTarget,
+        success
+          ? "Teste de atributo: sucesso"
+          : "Teste de atributo: falha"
+      );
+    });
+
+    $("choices").appendChild(button);
+  }
+
   if (node.roll) {
     const button = document.createElement("button");
     button.textContent = `🎲 Rolar ${node.roll.dice}`;
@@ -1087,12 +1145,18 @@ function updateCombatOpponents() {
 function renderSpellPanel(node) {
   const panel = $("spell-panel");
 
+  const limit = combatSpellLimit(state.hero);
+  const attempts = Number(
+    state.encounter?.combatSpellsAttempted ??
+    (state.encounter?.combatSpellAttempted ? 1 : 0)
+  );
+
   const canCast =
     state.character === "lothar" &&
     !node.encounter.noCombatMagic &&
     state.encounter &&
     state.encounter.rounds.length === 0 &&
-    !state.encounter.combatSpellAttempted;
+    attempts < limit;
 
   if (!canCast) {
     panel.classList.add("hidden");
@@ -1111,7 +1175,9 @@ function renderSpellPanel(node) {
 
   updateSpellCostUI();
   $("spell-result").textContent =
-    "Lothar pode lançar um Feitiço de Combate antes da primeira série de ataque.";
+    limit > 1
+      ? `Lothar pode lançar até ${limit} Feitiços de Combate antes da primeira série. Restam ${limit - attempts}.`
+      : "Lothar pode lançar um Feitiço de Combate antes da primeira série de ataque.";
 }
 
 function updateSpellCostUI() {
@@ -1126,6 +1192,7 @@ function describeSpellResult(result) {
   if (!result.ok) {
     const reasons = {
       "combat-spell-already-attempted": "Um Feitiço de Combate já foi tentado neste encontro.",
+      "combat-spell-limit-reached": "O limite de Feitiços de Combate deste encontro foi atingido.",
       "invalid-variable-cost": "Informe um custo válido de MAGIA.",
       "recovery-cost-must-be-multiple-of-3": "Recuperação exige um múltiplo de 3 pontos de MAGIA.",
       "insufficient-magic": "MAGIA insuficiente."
@@ -1178,7 +1245,20 @@ function castSelectedSpell() {
   updateCombatOpponents();
 
   if (result.ok) {
-    $("spell-panel").classList.add("hidden");
+    const limit = combatSpellLimit(state.hero);
+    const attempts = Number(
+      state.encounter.combatSpellsAttempted || 0
+    );
+
+    if (attempts >= limit || result.encounterVictory) {
+      $("spell-panel").classList.add("hidden");
+    } else {
+      renderSpellPanel(
+        state.characterData.references[String(state.ref)]
+      );
+      $("spell-result").textContent =
+        `Feitiço lançado. Ainda resta ${limit - attempts} tentativa(s) antes do combate.`;
+    }
   }
 
   if (result.encounterVictory) {
@@ -1275,6 +1355,30 @@ function playCombatRound() {
       ? "⚠️ Combate perdido"
       : "☠️ Derrota";
     $("combat-round").classList.add("hidden");
+
+    if (
+      node.partnerOnDefeat &&
+      state.mode === "dupla" &&
+      state.duo
+    ) {
+      const other =
+        state.character === "colthar" ? "lothar" : "colthar";
+      const partner = state.duo.players[other];
+
+      if (!partner.removed) {
+        updateDuoPlayer(state.duo, other, {
+          reference: node.partnerOnDefeat,
+          history: [
+            ...(partner.history || []),
+            {
+              from: partner.reference,
+              to: node.partnerOnDefeat,
+              label: "Derrota do outro príncipe"
+            }
+          ]
+        });
+      }
+    }
 
     if (node.onDefeat) {
       $("combat-continue").classList.remove("hidden");
@@ -1436,6 +1540,7 @@ function useProvision() {
     const messages = {
       "full-energy": "Sua ENERGIA já está no máximo.",
       "no-provisions": "Você não possui mais provisões.",
+      "energy-recovery-blocked": "Uma maldição impede qualquer recuperação de ENERGIA.",
       blocked: "Não é possível consumir provisões neste momento."
     };
     showGameMessage(messages[result.reason] || "Não foi possível usar a provisão.");
