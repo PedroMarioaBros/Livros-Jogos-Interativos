@@ -50,19 +50,75 @@ for (const character of ["colthar", "lothar"]) {
       log("error", `${character}: referência fora do intervalo 1–500: ${id}`);
     }
 
+    const checkTarget = (target, label) => {
+      if (!Number.isInteger(target)) {
+        log("error", `${character} ${id}: ${label} não inteiro`);
+        return;
+      }
+
+      if (target < 1 || target > 500) {
+        log("error", `${character} ${id}: ${label} fora de 1–500: ${target}`);
+        return;
+      }
+
+      if (!refs[String(target)]) {
+        log("warning", `${character} ${id}: ${label} ${target} ainda não foi cadastrado`);
+      }
+    };
+
     for (const choice of node.choices ?? []) {
-      if (!Number.isInteger(choice.target)) {
-        log("error", `${character} ${id}: destino não inteiro`);
-        continue;
-      }
+      checkTarget(choice.target, "destino");
+    }
 
-      if (choice.target < 1 || choice.target > 500) {
-        log("error", `${character} ${id}: destino fora de 1–500: ${choice.target}`);
-      }
+    if (node.test?.successTarget) {
+      checkTarget(node.test.successTarget, "sucesso do teste");
+    }
+    if (node.test?.failureTarget) {
+      checkTarget(node.test.failureTarget, "falha do teste");
+    }
+    if (node.onVictory) {
+      checkTarget(node.onVictory, "vitória");
+    }
+    if (node.onDefeat) {
+      checkTarget(node.onDefeat, "derrota");
+    }
+    if (node.failureTarget) {
+      checkTarget(node.failureTarget, "falha de feitiço");
+    }
 
-      if (!refs[String(choice.target)]) {
-        log("warning", `${character} ${id}: destino ${choice.target} ainda não foi cadastrado`);
+    for (const spell of node.spellOptions ?? []) {
+      if (!Number.isInteger(spell.cost) || spell.cost < 1) {
+        log("error", `${character} ${id}: custo inválido em feitiço situacional`);
       }
+      checkTarget(spell.successTarget, "sucesso de feitiço");
+    }
+
+    for (const route of node.roll?.routes ?? []) {
+      checkTarget(route.target, "rota de dado");
+    }
+
+    for (const enemy of node.encounter?.enemies ?? []) {
+      if (
+        !Number.isFinite(Number(enemy.habilidade)) ||
+        !Number.isFinite(Number(enemy.energia)) ||
+        Number(enemy.habilidade) <= 0 ||
+        Number(enemy.energia) <= 0
+      ) {
+        log("error", `${character} ${id}: atributos inválidos no encontro ${enemy.name || "sem nome"}`);
+      }
+    }
+
+    const allowedStates = new Set([
+      "pendente",
+      "parcial",
+      "extraida",
+      "validada",
+      "implementada",
+      "testada"
+    ]);
+
+    if (!allowedStates.has(node.estado)) {
+      log("error", `${character} ${id}: estado inválido ${node.estado}`);
     }
   }
 }
