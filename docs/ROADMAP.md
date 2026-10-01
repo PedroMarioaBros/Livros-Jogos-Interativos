@@ -21,7 +21,7 @@
 - [x] Modelar provisões e recuperação de ENERGIA
 - [x] Catalogar os 12 Feitiços de Combate
 - [x] Modelar custo, falha e limite de Feitiço de Combate
-- [ ] Aplicar automaticamente os 12 efeitos mágicos ao combate
+- [x] Aplicar automaticamente os 12 efeitos mágicos ao combate
 - [x] Modelar combates cooperativos e múltiplos inimigos
 - [ ] Consolidar regras especiais encontradas nas referências
   - [x] Motor genérico de condições e efeitos narrativos
@@ -40,6 +40,7 @@
 - [x] Ficha básica de personagem
 - [ ] Dados animados
 - [x] Combate guiado individual
+- [x] Feitiços de Combate selecionáveis para Lothar
 - [ ] Tela completa de combate cooperativo
 - [x] Inventário inicial e recursos na ficha
 - [x] Salvamento local
