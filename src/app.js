@@ -511,7 +511,10 @@ function renderReference(reference, options = {}) {
     }
   }
 
-  if (node.encounter && !state.completedEncounters.has(state.ref)) {
+  if (
+    (node.encounter || node.encounterDynamic) &&
+    !state.completedEncounters.has(state.ref)
+  ) {
     renderEncounter(node);
     return;
   }
@@ -585,6 +588,37 @@ function renderReference(reference, options = {}) {
     button.addEventListener("click", () => {
       navigateTo(target, "Condição histórica");
     });
+    $("choices").appendChild(button);
+  }
+
+  if (node.partnerRollRoutes?.length) {
+    const info = document.createElement("p");
+    info.className = "muted";
+    info.textContent =
+      "Esta decisão depende de uma rolagem compartilhada com o outro jogador.";
+    $("choices").appendChild(info);
+
+    const button = document.createElement("button");
+    button.textContent = "🎲 Rolar 1d6 em conjunto";
+    button.addEventListener("click", () => {
+      const result = rollExpression("1d6");
+      const route = node.partnerRollRoutes.find(item => {
+        const [min, max] = item.range || [];
+        return result.total >= min && result.total <= max;
+      });
+
+      showGameMessage(
+        `Rolagem compartilhada: ${result.total}.`
+      );
+
+      if (route) {
+        navigateTo(
+          route.target,
+          `Rolagem compartilhada ${result.total}`
+        );
+      }
+    });
+
     $("choices").appendChild(button);
   }
 
@@ -943,7 +977,29 @@ function hideCombat() {
 function renderEncounter(node) {
   $("combat-card").classList.remove("hidden");
 
-  if (node.encounter.cooperative && state.mode === "dupla") {
+  let encounterDefinition = node.encounter;
+
+  if (node.encounterDynamic?.type === "mirror_character_stats") {
+    encounterDefinition = {
+      enemies: [{
+        name: node.encounterDynamic.name || "Reflexo",
+        habilidade: state.hero.stats.habilidade,
+        energia: state.hero.stats.energia
+      }]
+    };
+  }
+
+  if (!encounterDefinition) {
+    $("combat-title").textContent = "Encontro ainda não suportado";
+    $("combat-opponents").textContent = "";
+    $("combat-log").textContent =
+      "Esta referência contém um encontro estrutural ainda não convertido para combate jogável.";
+    $("combat-round").classList.add("hidden");
+    $("combat-continue").classList.add("hidden");
+    return;
+  }
+
+  if (encounterDefinition.cooperative && state.mode === "dupla") {
     state.encounter = null;
 
     if (
@@ -955,7 +1011,7 @@ function renderEncounter(node) {
 
       state.cooperativeEncounter = createCooperativeCombatState(
         [colthar, lothar],
-        node.encounter.enemies.map(enemy => ({
+        encounterDefinition.enemies.map(enemy => ({
           name: enemy.name,
           habilidade: enemy.habilidade,
           energia: enemy.energia,
@@ -972,7 +1028,7 @@ function renderEncounter(node) {
   state.cooperativeEncounter = null;
 
   if (!state.encounter || state.encounter.reference !== state.ref) {
-    state.encounter = createEncounter(state.ref, node.encounter);
+    state.encounter = createEncounter(state.ref, encounterDefinition);
   }
 
   const enemy = currentOpponent(state.encounter);
