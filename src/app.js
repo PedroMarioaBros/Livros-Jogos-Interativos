@@ -466,6 +466,8 @@ function resolvePendingSharedLoot() {
     }
   } else {
     const totalGold = Number(loot.gold || 0);
+    let currentGold = 0;
+    const itemRecipients = [];
 
     if (totalGold > 0) {
       const answer = window.prompt(
@@ -475,7 +477,7 @@ function resolvePendingSharedLoot() {
 
       if (answer === null) return;
 
-      const currentGold = Number(answer);
+      currentGold = Number(answer);
       if (
         !Number.isInteger(currentGold) ||
         currentGold < 0 ||
@@ -486,9 +488,6 @@ function resolvePendingSharedLoot() {
         );
         return;
       }
-
-      state.hero.gold += currentGold;
-      partner.gold += totalGold - currentGold;
     }
 
     for (const item of loot.items || []) {
@@ -499,10 +498,22 @@ function resolvePendingSharedLoot() {
 
       if (answer === null) return;
 
-      const recipient = String(answer).trim() === "2"
-        ? partner
-        : state.hero;
+      const normalized = String(answer).trim();
+      if (!["1", "2"].includes(normalized)) {
+        showGameMessage("Digite apenas 1 ou 2 para escolher o personagem.");
+        return;
+      }
 
+      itemRecipients.push({
+        item,
+        recipient: normalized === "2" ? partner : state.hero
+      });
+    }
+
+    state.hero.gold += currentGold;
+    partner.gold += totalGold - currentGold;
+
+    for (const { item, recipient } of itemRecipients) {
       if (!recipient.items.includes(item)) {
         recipient.items.push(item);
       }
