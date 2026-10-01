@@ -14,8 +14,7 @@ const state = {
   character: null,
   shared: { status: 0, acao: 0 },
   ref: 1,
-  partnerActive: false,
-  visitedEffects: new Set()
+  partnerActive: false
 };
 
 const $ = (id) => document.getElementById(id);
@@ -90,7 +89,6 @@ function startGame() {
   }
 
   state.hero = createCharacter(state.characterData);
-  state.visitedEffects = new Set();
   state.partnerActive = state.mode === "dupla";
   $("setup").classList.add("hidden");
   $("game").classList.remove("hidden");
@@ -116,7 +114,7 @@ function renderSheet() {
   updateShared();
 }
 
-function renderReference(reference) {
+function renderReference(reference, options = {}) {
   state.ref = Number(reference);
   const node = state.characterData.references[String(state.ref)];
 
@@ -131,8 +129,8 @@ function renderReference(reference) {
     return;
   }
 
-  const visitKey = `${state.character}:${state.ref}`;
-  if (!state.visitedEffects.has(visitKey)) {
+  const applyEntryEffects = options.applyEntryEffects !== false;
+  if (applyEntryEffects) {
     const context = {
       shared: state.shared,
       partnerActive: state.partnerActive,
@@ -148,7 +146,6 @@ function renderReference(reference) {
     );
 
     state.shared = context.shared;
-    state.visitedEffects.add(visitKey);
 
     const randomDamage = effectResults.find(
       result => result.type === "random_stat_damage"
@@ -300,7 +297,7 @@ function applyManualSync() {
 
   state.shared = { status, acao };
   updateShared();
-  renderReference(state.ref);
+  renderReference(state.ref, { applyEntryEffects: false });
 }
 
 function runLuckTest() {
