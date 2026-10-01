@@ -15,14 +15,14 @@ As porcentagens abaixo são estimativas de engenharia para um **Fúria de Prínc
 | Combate individual | 95% |
 | Magia de Lothar | 95% |
 | Combate cooperativo | 80% |
-| Interface funcional | 83% |
+| Interface funcional | 84% |
 | Salvamento e histórico | 95% |
-| Dois jogadores no mesmo aparelho | 75% |
+| Dois jogadores no mesmo aparelho | 82% |
 | Sincronização entre dois aparelhos | 0% |
 | Camada instalável/offline | 55% |
 | Ilustrações e áudio finais | 0–5% |
 | Testes do motor | 88% |
-| Testes da aventura completa | ~22% |
+| Testes da aventura completa | ~23% |
 
 ## Medidas objetivas atuais
 
@@ -42,8 +42,8 @@ As porcentagens abaixo são estimativas de engenharia para um **Fúria de Prínc
 | Demonstração jogável de Fúria | ~89% |
 | Colthar solo completo | ~27% |
 | Lothar solo completo | ~84% |
-| Fúria completo no mesmo aparelho | ~68% |
-| Aplicativo Android final | ~63% do caminho total |
+| Fúria completo no mesmo aparelho | ~69% |
+| Aplicativo Android final | ~64% do caminho total |
 
 ## Critério
 
