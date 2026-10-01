@@ -36,6 +36,9 @@
       "cajado",
       "martelo_do_trovao",
       "cajado_magico_reduz_habilidade"
+    ],
+    "stackable": [
+      "pedra_de_poder"
     ]
   }
 }
