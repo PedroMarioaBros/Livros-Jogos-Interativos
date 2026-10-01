@@ -31,6 +31,128 @@
         }
       ]
     },
+    "2": {
+      "estado": "extraida",
+      "resumo": "Durante a viagem, Colthar perde o ouro e também o cavalo, caso ainda o possua, e precisa escolher entre as colinas e a floresta.",
+      "effects": [
+        {
+          "type": "set_gold",
+          "value": 0
+        },
+        {
+          "type": "remove_item_if_present",
+          "item": "cavalo"
+        }
+      ],
+      "choices": [
+        {
+          "label": "Seguir para as colinas baixas",
+          "target": 256
+        },
+        {
+          "label": "Caminhar para oeste pela floresta",
+          "target": 140
+        }
+      ],
+      "notes": "Os destinos foram corrigidos conforme errata conhecida do volume original."
+    },
+    "3": {
+      "estado": "extraida",
+      "resumo": "Lothar responde às três velhas e o encontro conduz os irmãos para a próxima consequência.",
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 389
+        }
+      ]
+    },
+    "4": {
+      "estado": "extraida",
+      "resumo": "Colthar chega a uma ponte velha e decide entre atravessá-la ou abandonar a estrada.",
+      "choices": [
+        {
+          "label": "Atravessar a ponte",
+          "target": 52
+        },
+        {
+          "label": "Atravessar os campos",
+          "target": 176
+        }
+      ]
+    },
+    "5": {
+      "estado": "parcial",
+      "resumo": "Um espelho mágico cria um reflexo de Colthar com os mesmos valores de HABILIDADE e ENERGIA.",
+      "encounterDynamic": {
+        "type": "mirror_character_stats",
+        "name": "Reflexo"
+      },
+      "onVictory": 404,
+      "needsEngineSupport": true
+    },
+    "6": {
+      "estado": "extraida",
+      "resumo": "Lobos cercam Colthar ao anoitecer; ele pode fugir, atravessar o rio ou permanecer para lutar.",
+      "choices": [
+        {
+          "label": "Fugir para a floresta",
+          "target": 292
+        },
+        {
+          "label": "Tentar atravessar o rio",
+          "target": 330
+        },
+        {
+          "label": "Permanecer e lutar",
+          "target": 274
+        }
+      ]
+    },
+    "7": {
+      "estado": "parcial",
+      "resumo": "Moscas Gigantes atacam atraídas pela carcaça do cavalo.",
+      "encounterNeedsReview": true,
+      "knownEnemy": {
+        "name": "Moscas Gigantes",
+        "energia": 4
+      },
+      "onVictory": 386,
+      "needsManualReview": true,
+      "notes": "O OCR não permite confirmar com segurança o valor de HABILIDADE."
+    },
+    "8": {
+      "estado": "extraida",
+      "resumo": "Uma transformação temporária deixa Colthar com aparência monstruosa; os habitantes o prendem no tronco.",
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 23
+        }
+      ]
+    },
+    "9": {
+      "estado": "extraida",
+      "resumo": "Os irmãos encontram uma joia vermelha e dez moedas de ouro e depois escolhem entre uma escada e uma passagem estreita.",
+      "effects": [
+        {
+          "type": "add_shared_loot",
+          "gold": 10,
+          "items": [
+            "joia_vermelha"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "label": "Subir as escadas",
+          "target": 306
+        },
+        {
+          "label": "Seguir pela passagem",
+          "target": 186
+        }
+      ]
+    },
     "10": {
       "estado": "extraida",
       "resumo": "Colthar segue sozinho em direção a Kalamandar.",
@@ -156,6 +278,11 @@
         }
       ]
     },
+    "19": {
+      "estado": "parcial",
+      "resumo": "Referência com OCR corrompido; há ao menos duas rotas de continuação, mas os destinos precisam de revisão visual.",
+      "needsManualReview": true
+    },
     "20": {
       "estado": "extraida",
       "resumo": "Após ser arrastado pela corrente, Colthar escolhe em qual margem do rio desembarcar.",
@@ -228,7 +355,7 @@
       ]
     },
     "25": {
-      "estado": "parcial",
+      "estado": "extraida",
       "resumo": "Na estalagem, os irmãos voltam a encontrar o Coletor de Impostos e podem vender itens para tentar pagar a cobrança.",
       "choices": [
         {
@@ -239,9 +366,59 @@
               "type": "shared_gold_sufficient"
             }
           ]
+        },
+        {
+          "label": "Não conseguir pagar",
+          "target": 70
+        }
+      ]
+    },
+    "26": {
+      "estado": "extraida",
+      "resumo": "Os irmãos entregam todos os seus bens à Hidra e o próximo destino depende do valor de AÇÃO.",
+      "effects": [
+        {
+          "type": "clear_items"
         }
       ],
-      "needsMoreExtraction": true
+      "choices": [
+        {
+          "label": "AÇÃO = 1",
+          "target": 473,
+          "conditions": [
+            {
+              "type": "shared_equals",
+              "key": "acao",
+              "value": 1
+            }
+          ]
+        },
+        {
+          "label": "AÇÃO = 36",
+          "target": 115,
+          "conditions": [
+            {
+              "type": "shared_equals",
+              "key": "acao",
+              "value": 36
+            }
+          ]
+        },
+        {
+          "label": "Outro valor de AÇÃO",
+          "target": 155,
+          "conditions": [
+            {
+              "type": "shared_not_in",
+              "key": "acao",
+              "values": [
+                1,
+                36
+              ]
+            }
+          ]
+        }
+      ]
     },
     "27": {
       "estado": "extraida",
@@ -414,6 +591,24 @@
         }
       ]
     },
+    "39": {
+      "estado": "validada",
+      "resumo": "Transição para aventura solo após a saída de Colthar; STATUS passa a 1 quando necessário.",
+      "effects": [
+        {
+          "type": "set_shared",
+          "key": "status",
+          "value": 1
+        }
+      ],
+      "ending": "removed-transition"
+    },
+    "40": {
+      "estado": "extraida",
+      "resumo": "Colthar é enganado por uma figura presa numa árvore e termina aprisionado para sempre em um mundo sem cor.",
+      "ending": "removed",
+      "afterDeathReference": 39
+    },
     "41": {
       "estado": "extraida",
       "resumo": "Após abrir o portão, o destino depende do valor de AÇÃO; se o parceiro tiver sido removido, a aventura deve passar às regras solo.",
@@ -569,6 +764,24 @@
       "partnerOnDefeat": 6,
       "needsMoreExtraction": true
     },
+    "48": {
+      "estado": "extraida",
+      "resumo": "Depois de derrotar o Troll, os irmãos encontram uma arca e decidem quem deve abri-la ou se vão deixá-la.",
+      "choices": [
+        {
+          "label": "Colthar abre a arca",
+          "target": 248
+        },
+        {
+          "label": "Lothar abre a arca",
+          "target": 143
+        },
+        {
+          "label": "Deixar a arca e atravessar a ponte",
+          "target": 418
+        }
+      ]
+    },
     "49": {
       "estado": "extraida",
       "resumo": "Após derrotar a criatura, Colthar encontra um pergaminho marrom com runas.",
@@ -582,6 +795,78 @@
         {
           "label": "Prosseguir",
           "target": 217
+        }
+      ]
+    },
+    "50": {
+      "estado": "extraida",
+      "resumo": "Leprechauns aparecem junto a um cofre de ouro, levam o tesouro e desaparecem.",
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 224
+        }
+      ]
+    },
+    "51": {
+      "estado": "extraida",
+      "resumo": "Na Ilha de Orcmoot, Colthar encontra uma Hidra adormecida com a chave do portão presa ao pescoço.",
+      "choices": [
+        {
+          "label": "Atacar a Hidra",
+          "target": 164
+        },
+        {
+          "label": "Tentar roubar a chave sem acordá-la",
+          "target": 305
+        },
+        {
+          "label": "Passar furtivamente pela Hidra",
+          "target": 431
+        }
+      ]
+    },
+    "52": {
+      "estado": "extraida",
+      "resumo": "Uma capela sinistra se fecha atrás de Colthar; ele escolhe entre duas portas cobertas ou um sarcófago.",
+      "choices": [
+        {
+          "label": "Olhar pela primeira porta",
+          "target": 220
+        },
+        {
+          "label": "Olhar pela segunda porta",
+          "target": 141
+        },
+        {
+          "label": "Examinar o sarcófago",
+          "target": 167
+        }
+      ]
+    },
+    "53": {
+      "estado": "extraida",
+      "resumo": "Colthar se aproxima demais de um Urso; o resultado depende de ter bebido uma poção anteriormente.",
+      "choices": [
+        {
+          "label": "Bebeu a poção",
+          "target": 210,
+          "conditions": [
+            {
+              "type": "flag",
+              "flag": "bebeu_pocao"
+            }
+          ]
+        },
+        {
+          "label": "Não bebeu a poção",
+          "target": 334,
+          "conditions": [
+            {
+              "type": "flag_not",
+              "flag": "bebeu_pocao"
+            }
+          ]
         }
       ]
     },
@@ -661,6 +946,16 @@
         }
       ]
     },
+    "57": {
+      "estado": "extraida",
+      "resumo": "Uma ilusão de Lothar faz o gigante acreditar que o saco está vazio e os irmãos escapam.",
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 224
+        }
+      ]
+    },
     "58": {
       "estado": "extraida",
       "resumo": "Colthar ajuda Lothar a acordar e deve aguardar instruções do outro jogador.",
@@ -714,6 +1009,270 @@
     "60": {
       "estado": "validada",
       "resumo": "Ponto de sincronização: Colthar define STATUS 4 e aguarda uma mudança de AÇÃO."
+    },
+    "61": {
+      "estado": "extraida",
+      "resumo": "O destino depende de Colthar já ter encontrado Dragesima, a Caçadora de Bruxas.",
+      "choices": [
+        {
+          "label": "Já encontrou Dragesima",
+          "target": 490,
+          "conditions": [
+            {
+              "type": "flag",
+              "flag": "encontrou_dragesima"
+            }
+          ]
+        },
+        {
+          "label": "Ainda não encontrou Dragesima",
+          "target": 451,
+          "conditions": [
+            {
+              "type": "flag_not",
+              "flag": "encontrou_dragesima"
+            }
+          ]
+        }
+      ]
+    },
+    "62": {
+      "estado": "extraida",
+      "resumo": "Colthar perde uma partida de cartas e precisa entregar um de seus pertences.",
+      "playerEffectChoice": {
+        "type": "discard_one_item"
+      },
+      "choices": [
+        {
+          "label": "Deixar a vila",
+          "target": 367
+        }
+      ]
+    },
+    "63": {
+      "estado": "extraida",
+      "resumo": "Colthar encontra uma Duende da Floresta chorando ao lado de uma coroa mágica.",
+      "choices": [
+        {
+          "label": "Conversar com a Duende",
+          "target": 414
+        },
+        {
+          "label": "Pegar a coroa",
+          "target": 158
+        }
+      ]
+    },
+    "64": {
+      "estado": "extraida",
+      "resumo": "Uma queda num arbusto espinhoso fere Colthar seriamente.",
+      "effects": [
+        {
+          "type": "change_stat",
+          "stat": "habilidade",
+          "delta": -2
+        },
+        {
+          "type": "change_stat",
+          "stat": "energia",
+          "delta": -2
+        }
+      ],
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 171
+        }
+      ]
+    },
+    "65": {
+      "estado": "extraida",
+      "resumo": "Depois de derrotar Homens das Cavernas, Colthar é perseguido pelo restante da tribo.",
+      "choices": [
+        {
+          "label": "Tentar escalar o poço",
+          "target": 355
+        },
+        {
+          "label": "Tentar correr mais que a tribo",
+          "target": 170
+        }
+      ]
+    },
+    "66": {
+      "estado": "extraida",
+      "resumo": "A bola de fogo de Lothar destrói a Traça, mas Colthar é atingido no processo.",
+      "effects": [
+        {
+          "type": "change_stat",
+          "stat": "energia",
+          "delta": -1
+        }
+      ],
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 202
+        }
+      ]
+    },
+    "67": {
+      "estado": "extraida",
+      "resumo": "Uma onda repentina arrasta Colthar por longa distância e lhe causa ferimentos.",
+      "effects": [
+        {
+          "type": "change_stat",
+          "stat": "energia",
+          "delta": -2
+        }
+      ],
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 232
+        }
+      ]
+    },
+    "68": {
+      "estado": "extraida",
+      "resumo": "O próximo destino é determinado por um Teste de Sorte.",
+      "test": {
+        "type": "luck",
+        "successTarget": 337,
+        "failureTarget": 154
+      }
+    },
+    "69": {
+      "estado": "extraida",
+      "resumo": "Os irmãos distraem um gigante de duas cabeças com vinho e escapam enquanto ele briga consigo mesmo.",
+      "partnerInstruction": {
+        "sendToReference": 69
+      },
+      "effects": [
+        {
+          "type": "remove_item_if_present",
+          "item": "garrafa_de_vinho"
+        }
+      ],
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 224
+        }
+      ]
+    },
+    "70": {
+      "estado": "parcial",
+      "resumo": "O Coletor de Impostos manda seus capangas atacar os irmãos; o combate é cooperativo e os atributos dos inimigos ficam no volume de Lothar.",
+      "encounterNeedsReview": true,
+      "cooperative": true,
+      "choices": [
+        {
+          "label": "Vitória com Lothar vivo",
+          "target": 132,
+          "conditions": [
+            {
+              "type": "partner_active"
+            }
+          ]
+        },
+        {
+          "label": "Vitória após Lothar cair",
+          "target": 189,
+          "conditions": [
+            {
+              "type": "partner_removed"
+            }
+          ]
+        }
+      ],
+      "needsManualReview": true
+    },
+    "71": {
+      "estado": "parcial",
+      "resumo": "Uma rolagem realizada em conjunto com o outro jogador define a próxima referência.",
+      "partnerInstruction": {
+        "wait": true,
+        "sourceCharacter": "lothar"
+      },
+      "partnerRollRoutes": [
+        {
+          "range": [
+            1,
+            3
+          ],
+          "target": 185
+        },
+        {
+          "range": [
+            4,
+            6
+          ],
+          "target": 44
+        }
+      ],
+      "needsEngineSupport": true
+    },
+    "72": {
+      "estado": "extraida",
+      "resumo": "Numa capela rica, Colthar escolhe entre examinar um espelho de prata ou recolher Água Benta.",
+      "choices": [
+        {
+          "label": "Pegar o espelho",
+          "target": 117
+        },
+        {
+          "label": "Encher o cantil com Água Benta",
+          "target": 429
+        }
+      ]
+    },
+    "73": {
+      "estado": "extraida",
+      "resumo": "Uma resposta às três velhas faz Colthar perder HABILIDADE e SORTE.",
+      "effects": [
+        {
+          "type": "change_stat",
+          "stat": "habilidade",
+          "delta": -2
+        },
+        {
+          "type": "change_stat",
+          "stat": "sorte",
+          "delta": -2
+        }
+      ],
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 389
+        }
+      ]
+    },
+    "74": {
+      "estado": "extraida",
+      "resumo": "Depois de matar uma criatura, Colthar encontra um pergaminho marrom com runas e escolhe entre duas estradas.",
+      "effects": [
+        {
+          "type": "add_item",
+          "item": "pergaminho_marrom"
+        }
+      ],
+      "choices": [
+        {
+          "label": "Estrada do norte",
+          "target": 391
+        },
+        {
+          "label": "Estrada do sul",
+          "target": 384
+        }
+      ]
+    },
+    "75": {
+      "estado": "parcial",
+      "resumo": "Uma besta surpreende Colthar antes que ele consiga reagir; o restante da referência precisa de revisão visual.",
+      "needsManualReview": true
     },
     "148": {
       "estado": "pendente",
