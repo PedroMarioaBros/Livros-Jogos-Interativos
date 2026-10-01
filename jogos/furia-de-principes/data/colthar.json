@@ -108,16 +108,18 @@
       ]
     },
     "7": {
-      "estado": "parcial",
+      "estado": "extraida",
       "resumo": "Moscas Gigantes atacam atraídas pela carcaça do cavalo.",
-      "encounterNeedsReview": true,
-      "knownEnemy": {
-        "name": "Moscas Gigantes",
-        "energia": 4
+      "encounter": {
+        "enemies": [
+          {
+            "name": "Moscas Gigantes",
+            "habilidade": 5,
+            "energia": 4
+          }
+        ]
       },
-      "onVictory": 386,
-      "needsManualReview": true,
-      "notes": "O OCR não permite confirmar com segurança o valor de HABILIDADE."
+      "onVictory": 386
     },
     "8": {
       "estado": "extraida",
@@ -362,9 +364,13 @@
           "target": 132,
           "conditions": [
             {
-              "type": "shared_gold_sufficient"
+              "type": "shared_gold_gte",
+              "value": 20
             }
-          ]
+          ],
+          "sharedPayment": {
+            "amount": 20
+          }
         },
         {
           "label": "Não conseguir pagar",
