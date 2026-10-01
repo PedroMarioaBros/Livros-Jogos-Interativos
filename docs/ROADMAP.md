@@ -30,10 +30,13 @@
   - [x] Modificadores especiais de combate por referência
   - [x] Escolhas pós-combate e encaminhamento condicional entre jogadores
   - [x] Perda seletiva de itens e definição direta de atributos
+  - [x] Testes de atributo contra rolagens de dados
+  - [x] Dois Feitiços de Combate após o Djinn
+  - [x] Maldição que impede recuperação de ENERGIA
 - [ ] Extrair referências de Colthar
   - [x] Primeiro lote estrutural: 44 referências cadastradas no banco
-- [ ] Extrair referências de Lothar
-  - [x] Referências 1–300 estruturadas continuamente
+- [x] Extrair referências de Lothar
+  - [x] Referências 1–500 estruturadas continuamente
 - [ ] Mapear todas as sincronizações STATUS/AÇÃO
   - [x] Motor genérico de sincronização
   - [x] Primeira varredura de AÇÃO de Lothar
