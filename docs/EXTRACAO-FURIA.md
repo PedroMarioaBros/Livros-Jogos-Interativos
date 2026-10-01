@@ -169,3 +169,11 @@ A revisão do trecho já extraído confirmou a referência **7** como combate co
 Também foi consolidado o tratamento das finanças conjuntas nas referências em que os dois irmãos precisam reunir ouro. O motor agora soma o ouro dos dois personagens para verificar cobranças, permite definir quanto cada um paga e possui uma etapa interativa para dividir moedas e objetos encontrados em conjunto.
 
 O tesouro ainda não dividido também passa a fazer parte do salvamento da partida.
+
+
+### Revisão de regras — referências 12, 43 e 60 de Colthar
+
+- A captura pelas Amazonas agora guarda os pertences para recuperação posterior e aplica a penalidade temporária de HABILIDADE até uma arma ser recuperada.
+- O encontro da referência 43 foi corrigido para **Sr. Todd 9/6** e **Mulher 8/4**.
+- A referência 60 agora define **STATUS 4** e modela as rotas de AÇÃO: **1 ou 25 → 13**, **24 → 212**, **26 → 413**.
+- O analisador de grafo passou a medir também Colthar, informando cobertura, destinos ainda não extraídos, nós extraídos inalcançáveis e finais, sem exigir 500 referências enquanto a extração estiver incompleta.
