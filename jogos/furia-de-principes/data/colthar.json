@@ -494,7 +494,38 @@
     },
     "31": {
       "estado": "validada",
-      "resumo": "Ponto de sincronização: Colthar define STATUS 19 e aguarda uma mudança de AÇÃO."
+      "resumo": "Ponto de sincronização: Colthar define STATUS 19 e aguarda AÇÃO 1 ou 39.",
+      "effects": [
+        {
+          "type": "set_shared",
+          "key": "status",
+          "value": 19
+        }
+      ],
+      "choices": [
+        {
+          "label": "AÇÃO = 1",
+          "target": 44,
+          "conditions": [
+            {
+              "type": "shared_equals",
+              "key": "acao",
+              "value": 1
+            }
+          ]
+        },
+        {
+          "label": "AÇÃO = 39",
+          "target": 421,
+          "conditions": [
+            {
+              "type": "shared_equals",
+              "key": "acao",
+              "value": 39
+            }
+          ]
+        }
+      ]
     },
     "32": {
       "estado": "extraida",
@@ -625,6 +656,13 @@
             {
               "type": "shared_equals",
               "key": "acao",
+              "value": 1
+            }
+          ],
+          "effects": [
+            {
+              "type": "set_shared",
+              "key": "status",
               "value": 1
             }
           ]
