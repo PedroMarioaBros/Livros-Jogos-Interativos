@@ -37,6 +37,8 @@
   - [x] Rolagem compartilhada simples entre os jogadores
   - [x] Ouro conjunto para cobranças compartilhadas
   - [x] Divisão interativa de tesouro entre os dois príncipes
+  - [x] Penalidades temporárias até recuperar arma
+  - [x] Condições STATUS/AÇÃO com múltiplos valores
 - [ ] Extrair referências de Colthar
   - [x] Primeira expansão estrutural: 77 referências cadastradas no banco
 - [x] Extrair referências de Lothar
@@ -47,6 +49,7 @@
   - [x] Primeiros pontos verificados de STATUS de Colthar (31 e 60)
 - [ ] Classificar finais, mortes e encontros
 - [ ] Testar todos os caminhos alcançáveis
+  - [x] Análise automática dos grafos de ambos os volumes
 
 ## Fase 3 — Interface
 - [ ] Biblioteca de aventuras
