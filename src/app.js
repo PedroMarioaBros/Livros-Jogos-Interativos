@@ -3,7 +3,11 @@ import { testLuck } from "./engine/luck.js";
 import { rollExpression } from "./engine/dice.js";
 import { castSituationalSpell } from "./engine/magic.js";
 import { processSyncPoint } from "./engine/sync.js";
-import { applyEffects as applyStoryEffects, availableChoices } from "./engine/story.js";
+import {
+  applyEffects as applyStoryEffects,
+  availableChoices,
+  conditionMet
+} from "./engine/story.js";
 import { createEncounter, playEncounterRound, currentOpponent } from "./engine/encounter.js";
 import {
   createCooperativeCombatState,
@@ -721,6 +725,33 @@ function renderReference(reference, options = {}) {
     }
   }
 
+  if (node.playerEffectChoice?.type === "discard_one_item") {
+    const info = document.createElement("p");
+    info.className = "muted";
+    info.textContent = "Escolha um item para perder:";
+    $("choices").appendChild(info);
+
+    for (const item of state.hero.items) {
+      const button = document.createElement("button");
+      button.dataset.playerEffectChoice = "true";
+      button.textContent = `🗑️ Perder ${item}`;
+      button.addEventListener("click", () => {
+        applyStoryEffects(
+          state.hero,
+          [{ type: "remove_item", item }]
+        );
+        renderSheet();
+        document
+          .querySelectorAll("[data-player-effect-choice]")
+          .forEach(entry => {
+            entry.disabled = true;
+          });
+        showGameMessage(`Item perdido: ${item}.`);
+      });
+      $("choices").appendChild(button);
+    }
+  }
+
   if (node.partnerInstruction) {
     const info = document.createElement("p");
     info.className = "muted";
@@ -733,6 +764,37 @@ function renderReference(reference, options = {}) {
       const partner = state.duo.players[other];
 
       if (
+        Array.isArray(node.partnerInstruction.conditionalSend) &&
+        !partner.removed
+      ) {
+        const matched = node.partnerInstruction.conditionalSend.find(
+          route => conditionMet(route.condition, {
+            character: state.hero,
+            shared: state.shared,
+            partnerActive: state.partnerActive
+          })
+        );
+
+        if (matched) {
+          const target = matched.target;
+          updateDuoPlayer(state.duo, other, {
+            reference: target,
+            history: [
+              ...(partner.history || []),
+              {
+                from: partner.reference,
+                to: target,
+                label: `Instrução condicional de ${state.hero.name}`
+              }
+            ]
+          });
+          info.textContent =
+            `${otherName} foi encaminhado para a referência ${target} conforme STATUS/AÇÃO.`;
+        } else {
+          info.textContent =
+            "Nenhuma condição de encaminhamento foi satisfeita.";
+        }
+      } else if (
         Number.isInteger(node.partnerInstruction.sendToReference) &&
         !partner.removed
       ) {
@@ -1138,6 +1200,29 @@ function completeCombatVictory(node) {
   $("combat-title").textContent = "🏆 Vitória";
   $("combat-round").classList.add("hidden");
   $("spell-panel").classList.add("hidden");
+
+  if (node.postVictoryChoices?.length) {
+    $("combat-continue").classList.add("hidden");
+    $("choices").innerHTML = "";
+
+    const info = document.createElement("p");
+    info.className = "muted";
+    info.textContent = "Escolha como continuar após a vitória:";
+    $("choices").appendChild(info);
+
+    for (const choice of node.postVictoryChoices) {
+      const button = document.createElement("button");
+      button.textContent = `${choice.label} → ${choice.target}`;
+      button.addEventListener("click", () => {
+        state.encounter = null;
+        hideCombat();
+        navigateTo(choice.target, choice.label);
+      });
+      $("choices").appendChild(button);
+    }
+    return;
+  }
+
   $("combat-continue").classList.remove("hidden");
   $("combat-continue").dataset.target = node.onVictory ?? "";
   $("combat-continue").textContent = node.onVictory
