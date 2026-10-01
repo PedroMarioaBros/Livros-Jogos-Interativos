@@ -11,7 +11,11 @@
   "startingResources": {
     "provisions": 10,
     "gold": 10,
-    "items": ["cavalo", "cajado", "mochila"]
+    "items": [
+      "cavalo",
+      "cajado",
+      "mochila"
+    ]
   },
   "references": {
     "1": {
@@ -29,8 +33,8 @@
       ]
     },
     "148": {
-      "estado": "parcial",
-      "resumo": "Ponto de sincronização em validação.",
+      "estado": "validada",
+      "resumo": "Ponto confirmado de sincronização: Lothar define AÇÃO 22 e aguarda STATUS.",
       "effects": [
         {
           "type": "set_shared",
@@ -40,8 +44,8 @@
       ]
     },
     "199": {
-      "estado": "parcial",
-      "resumo": "Ponto de sincronização em validação.",
+      "estado": "validada",
+      "resumo": "Ponto confirmado de sincronização: Lothar define AÇÃO 23 e aguarda STATUS.",
       "effects": [
         {
           "type": "set_shared",
