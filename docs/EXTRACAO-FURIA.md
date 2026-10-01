@@ -146,3 +146,17 @@ A extração estrutural do volume **O Caminho do Feiticeiro** foi concluída.
 - situações cuja leitura do OCR é duvidosa continuam marcadas como `parcial` ou `needsManualReview`, em vez de serem adivinhadas.
 
 A conclusão da extração estrutural **não significa que o volume esteja totalmente validado ou testado**. As próximas etapas para Lothar são revisão visual das referências ambíguas, consolidação de exceções ainda parciais e teste automatizado do grafo completo.
+
+
+## Retomada de Colthar — referências iniciais
+
+Após a conclusão estrutural das 500 referências de Lothar, a extração voltou para **O Caminho do Guerreiro**.
+
+- total de Colthar passou de **44 para 77 referências cadastradas**;
+- lacunas do início do volume foram preenchidas até a faixa da referência 75;
+- a referência 2 usa a correção conhecida da edição original: **256 para as colinas** e **140 para a floresta**, em vez dos destinos trocados na impressão;
+- referências com OCR insuficiente, como 7, 19 e 75, continuam marcadas para revisão;
+- o Reflexo da referência 5 passou a usar dinamicamente os valores atuais de HABILIDADE e ENERGIA de Colthar;
+- a rolagem compartilhada da referência 71 passou a ser executável na interface.
+
+A extração continua usando apenas estrutura, efeitos e resumos técnicos, sem copiar o texto integral da obra.
