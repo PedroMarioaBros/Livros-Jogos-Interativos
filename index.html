@@ -23,7 +23,7 @@
         <button data-mode="dupla">👥 Dois jogadores</button>
       </div>
 
-      <p style="margin-top:18px"><strong>Personagem</strong></p>
+      <p style="margin-top:18px"><strong>Personagem <span class="muted">/ quem começa no modo dupla</span></strong></p>
       <div class="grid">
         <button data-character="colthar">⚔️ Colthar<br><span class="muted">Príncipe-Guerreiro</span></button>
         <button data-character="lothar">🪄 Lothar<br><span class="muted">Príncipe-Feiticeiro</span></button>
@@ -35,6 +35,14 @@
     </section>
 
     <section id="game" class="hidden">
+      <div id="duo-bar" class="card duo-bar hidden">
+        <div>
+          <strong>👥 Modo dupla no mesmo aparelho</strong>
+          <div id="duo-current" class="muted" style="margin-top:4px"></div>
+        </div>
+        <button id="handoff-player" class="handoff-button">🔒 Entregar aparelho</button>
+      </div>
+
       <div class="card">
         <div id="stats" class="stats"></div>
         <p id="resources" style="margin-top:12px"></p>
@@ -111,6 +119,16 @@
       </div>
     </section>
   </main>
+
+  <div id="handoff-overlay" class="privacy-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="handoff-title">
+    <div class="privacy-card">
+      <div class="privacy-lock">🔒</div>
+      <h2 id="handoff-title">Tela protegida</h2>
+      <p>Entregue o aparelho para <strong id="handoff-target">o outro jogador</strong>.</p>
+      <p class="muted">A aventura anterior ficou escondida para preservar as informações privadas de cada príncipe.</p>
+      <button id="handoff-confirm" class="primary">Abrir minha aventura</button>
+    </div>
+  </div>
 
   <script type="module" src="src/app.js"></script>
 </body>
