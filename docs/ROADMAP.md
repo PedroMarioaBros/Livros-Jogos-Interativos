@@ -33,8 +33,10 @@
   - [x] Testes de atributo contra rolagens de dados
   - [x] Dois Feitiços de Combate após o Djinn
   - [x] Maldição que impede recuperação de ENERGIA
+  - [x] Reflexo com atributos dinâmicos do próprio herói
+  - [x] Rolagem compartilhada simples entre os jogadores
 - [ ] Extrair referências de Colthar
-  - [x] Primeiro lote estrutural: 44 referências cadastradas no banco
+  - [x] Primeira expansão estrutural: 77 referências cadastradas no banco
 - [x] Extrair referências de Lothar
   - [x] Referências 1–500 estruturadas continuamente
 - [ ] Mapear todas as sincronizações STATUS/AÇÃO
