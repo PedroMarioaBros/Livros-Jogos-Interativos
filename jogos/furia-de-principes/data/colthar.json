@@ -7,6 +7,11 @@
     "energia": "2d6+12",
     "sorte": "1d6+6"
   },
+  "startingResources": {
+    "provisions": 10,
+    "gold": 10,
+    "items": ["cavalo", "espada", "mochila"]
+  },
   "references": {
     "1": {
       "estado": "validada",
