@@ -1,10 +1,12 @@
 import { createCharacter, consumeProvision } from "./engine/character.js";
 import { testLuck } from "./engine/luck.js";
+import { processSyncPoint } from "./engine/sync.js";
 
 const state = {
   config: null,
   rules: null,
   spells: null,
+  syncData: null,
   characterData: null,
   hero: null,
   mode: null,
@@ -27,9 +29,10 @@ async function init() {
   state.config = await loadJSON(game.config);
 
   const base = "jogos/furia-de-principes/";
-  [state.rules, state.spells] = await Promise.all([
+  [state.rules, state.spells, state.syncData] = await Promise.all([
     loadJSON(base + state.config.rules.base),
-    loadJSON(base + state.config.rules.spells)
+    loadJSON(base + state.config.rules.spells),
+    loadJSON(base + state.config.sync)
   ]);
 
   $("game-title").textContent = state.config.title;
@@ -59,6 +62,7 @@ async function init() {
   $("start").addEventListener("click", startGame);
   $("use-provision").addEventListener("click", useProvision);
   $("test-luck").addEventListener("click", runLuckTest);
+  $("apply-sync").addEventListener("click", applyManualSync);
 }
 
 function selectGroup(selector, selected) {
@@ -123,6 +127,7 @@ function renderReference(reference) {
 
   $("reference").textContent = `Referência ${state.ref}`;
   showGameMessage("");
+  $("sync-message").textContent = "";
 
   if (!node) {
     $("scene").textContent =
@@ -132,6 +137,39 @@ function renderReference(reference) {
   }
 
   applyEffects(node);
+
+  const syncResult = processSyncPoint(
+    state.syncData,
+    {
+      character: state.character,
+      reference: state.ref,
+      shared: state.shared
+    },
+    {
+      ignoreMutations:
+        state.mode === "solo" &&
+        state.rules.modes.solo.ignoreSharedMutations
+    }
+  );
+
+  state.shared = syncResult.shared;
+
+  if (syncResult.entry) {
+    if (syncResult.target) {
+      $("sync-message").textContent =
+        `Sincronização resolvida automaticamente → ${syncResult.target}`;
+
+      if (syncResult.target !== state.ref) {
+        updateShared();
+        setTimeout(() => renderReference(syncResult.target), 0);
+        return;
+      }
+    } else if (syncResult.waitingFor) {
+      $("sync-message").textContent =
+        `Aguardando o outro jogador alterar ${syncResult.waitingFor.toUpperCase()}.`;
+    }
+  }
+
   $("scene").textContent = node.resumo || "Cena sem resumo.";
   $("choices").innerHTML = "";
   updateShared();
@@ -170,6 +208,25 @@ function useProvision() {
   }
 
   renderSheet();
+}
+
+function applyManualSync() {
+  if (!state.hero || state.mode !== "dupla") {
+    showGameMessage("A edição manual de STATUS/AÇÃO só é usada no protótipo do modo em dupla.");
+    return;
+  }
+
+  const status = Number($("manual-status").value);
+  const acao = Number($("manual-action").value);
+
+  if (!Number.isInteger(status) || status < 0 || !Number.isInteger(acao) || acao < 0) {
+    showGameMessage("Informe valores inteiros não negativos para STATUS e AÇÃO.");
+    return;
+  }
+
+  state.shared = { status, acao };
+  updateShared();
+  renderReference(state.ref);
 }
 
 function runLuckTest() {
