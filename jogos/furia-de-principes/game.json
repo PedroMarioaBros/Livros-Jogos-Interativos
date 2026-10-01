@@ -7,6 +7,10 @@
     "status": 0,
     "acao": 0
   },
+  "rules": {
+    "base": "rules/base.json",
+    "spells": "rules/spells.json"
+  },
   "characters": [
     {
       "id": "colthar",
