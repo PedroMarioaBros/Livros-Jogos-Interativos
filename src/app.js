@@ -1547,6 +1547,7 @@ function playCooperativeCombatRound() {
 
   markFallenDuoHeroes();
   updateCooperativeCombatDisplay();
+  renderCombatItemPanel(node);
 
   if (result.events.length) {
     const descriptions = result.events.map(event => {
@@ -1595,6 +1596,7 @@ function playCooperativeCombatRound() {
       state.cooperativeEncounter.winner = "enemies";
       $("combat-round").classList.add("hidden");
       $("spell-panel").classList.add("hidden");
+      $("combat-item-panel").classList.add("hidden");
       $("combat-title").textContent = "☠️ Os dois príncipes foram derrotados";
       showGameMessage(
         "A ENERGIA dos dois personagens chegou a zero."
@@ -1994,12 +1996,14 @@ function playCombatRound() {
 
   const enemy = currentOpponent(state.encounter);
   updateCombatOpponents();
+  renderCombatItemPanel(node);
 
   if (result.defeat) {
     $("combat-title").textContent = node.onDefeat
       ? "⚠️ Combate perdido"
       : "☠️ Derrota";
     $("combat-round").classList.add("hidden");
+    $("combat-item-panel").classList.add("hidden");
 
     if (
       node.partnerOnDefeat &&
