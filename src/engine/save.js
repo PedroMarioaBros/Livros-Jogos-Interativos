@@ -26,6 +26,9 @@ export function createSaveSnapshot(state) {
       : null,
     cooperativeEncounter: state.cooperativeEncounter
       ? JSON.parse(JSON.stringify(state.cooperativeEncounter))
+      : null,
+    pendingSharedLoot: state.pendingSharedLoot
+      ? JSON.parse(JSON.stringify(state.pendingSharedLoot))
       : null
   };
 }
