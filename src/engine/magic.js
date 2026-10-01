@@ -75,8 +75,24 @@ export function castCombatSpell(character, spell, encounter, options = {}) {
 export function castSituationalSpell(character, option, rng = Math.random) {
   const cost = Number(option.cost);
 
-  if (getMagic(character) === 0 || !spendMagic(character, cost)) {
-    return { ok: false, reason: "insufficient-magic" };
+  if (getMagic(character) === 0) {
+    return {
+      ok: true,
+      success: false,
+      automaticFailure: true,
+      die: null,
+      cost: 0,
+      magicAfter: 0,
+      target: option.failureTarget
+    };
+  }
+
+  if (!spendMagic(character, cost)) {
+    return {
+      ok: false,
+      reason: "insufficient-magic",
+      target: null
+    };
   }
 
   const die = rollDie(6, rng);
