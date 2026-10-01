@@ -45,3 +45,25 @@ Pontos detectados:
 ## Regra de validação
 
 Quando o OCR for ambíguo, o dado não é adivinhado. Ele é marcado para conferência visual antes de receber o estado `validada`.
+
+
+### Colthar — O Caminho do Guerreiro
+
+A varredura do lado de STATUS foi iniciada e dois pontos foram confirmados diretamente no texto:
+
+- referência **31**: define STATUS = 19 e aguarda AÇÃO; AÇÃO 1 leva à referência 44 e AÇÃO 39 leva à 421;
+- referência **60**: define STATUS = 4 e aguarda AÇÃO; AÇÃO 1 ou 25 leva à 13, AÇÃO 24 leva à 212 e AÇÃO 26 leva à 413.
+
+Esses dois pontos já estão no banco de sincronização e cobertos por testes automatizados.
+
+### Motor cooperativo
+
+Foi criado `src/engine/sync.js`, responsável por:
+
+- localizar o ponto de sincronização de cada personagem;
+- aplicar alterações de STATUS/AÇÃO;
+- manter STATUS/AÇÃO fixos em 1 no modo solo;
+- resolver automaticamente um destino quando o valor recebido do outro jogador satisfaz uma rota;
+- deixar a cena em espera quando a outra metade da aventura ainda não produziu o valor necessário.
+
+O protótipo web possui temporariamente um painel de teste manual de STATUS/AÇÃO. Ele será substituído pela comunicação entre os dois jogadores quando a camada de multiplayer for implementada.
