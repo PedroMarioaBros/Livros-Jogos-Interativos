@@ -67,3 +67,17 @@ Foi criado `src/engine/sync.js`, responsável por:
 - deixar a cena em espera quando a outra metade da aventura ainda não produziu o valor necessário.
 
 O protótipo web possui temporariamente um painel de teste manual de STATUS/AÇÃO. Ele será substituído pela comunicação entre os dois jogadores quando a camada de multiplayer for implementada.
+
+
+## Lote narrativo de Lothar — referências 1 a 116
+
+Foi concluída uma varredura estrutural do início do volume do Feiticeiro.
+
+- referências 1–116 cadastradas no banco, com resumos técnicos próprios;
+- referências 148 e 199 já existentes foram preservadas;
+- total atual no arquivo de Lothar: **118 referências**;
+- escolhas, Testes de Sorte, combates, mortes, itens, custos de MAGIA, feitiços situacionais e instruções entre jogadores foram convertidos em dados;
+- referências com OCR duvidoso permanecem marcadas como `parcial` ou `needsManualReview`;
+- o texto integral da obra não foi copiado para o repositório.
+
+O motor também passou a interpretar rolagens genéricas e opções de feitiços situacionais encontradas nesse lote.
