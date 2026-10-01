@@ -4969,7 +4969,7 @@
       ]
     },
     "314": {
-      "estado": "parcial",
+      "estado": "extraida",
       "resumo": "Electron identifica o objeto como um Raio de Dizimação de uso único capaz de destruir instantaneamente um inimigo em combate.",
       "effects": [
         {
@@ -4983,7 +4983,7 @@
           "target": 395
         }
       ],
-      "needsEngineSupport": true
+      "notes": "Raio de Dizimação implementado como item consumível que elimina instantaneamente um inimigo em combate."
     },
     "315": {
       "estado": "extraida",
