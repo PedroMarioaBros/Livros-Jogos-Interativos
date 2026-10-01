@@ -18,7 +18,9 @@ export function createCharacter(data, rng = Math.random) {
     provisions: Number(resources.provisions || 0),
     gold: Number(resources.gold || 0),
     items: [...(resources.items || [])],
-    flags: []
+    flags: [],
+    stashedItems: [],
+    lastCombatDamage: 0
   };
 }
 
