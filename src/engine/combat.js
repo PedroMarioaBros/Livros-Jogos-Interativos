@@ -32,6 +32,8 @@ export function combatRound(character, opponent, rng = Math.random, modifiers = 
 
   let outcome = "tie";
   let damage = 0;
+  let incomingSaveRoll = null;
+  let damagePrevented = false;
 
   if (heroAttack > enemyAttack) {
     outcome = "hero-hit";
@@ -40,30 +42,24 @@ export function combatRound(character, opponent, rng = Math.random, modifiers = 
   } else if (enemyAttack > heroAttack) {
     outcome = "enemy-hit";
 
-    let prevented = false;
-    let incomingSaveRoll = null;
     const save = modifiers.incomingHitSave;
 
     if (save) {
       incomingSaveRoll = rollDie(6, rng);
-      prevented = (save.noDamageResults || []).includes(incomingSaveRoll);
+      damagePrevented =
+        (save.noDamageResults || []).includes(incomingSaveRoll);
     }
 
-    damage = prevented ? 0 : incomingDamage;
+    damage = damagePrevented ? 0 : incomingDamage;
     character.stats.energia = Math.max(0, character.stats.energia - damage);
-
-    if (incomingSaveRoll !== null) {
-      modifiers.lastIncomingSaveRoll = incomingSaveRoll;
-      modifiers.lastIncomingSavePrevented = prevented;
-    }
   }
 
   return {
     finished: character.stats.energia <= 0 || opponent.energia <= 0,
     outcome,
     damage,
-    incomingSaveRoll: modifiers.lastIncomingSaveRoll ?? null,
-    damagePrevented: modifiers.lastIncomingSavePrevented ?? false,
+    incomingSaveRoll,
+    damagePrevented,
     heroAttack,
     enemyAttack,
     heroRolls: heroRoll.rolls,
