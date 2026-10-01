@@ -13,6 +13,7 @@ import {
 } from "../src/engine/combat.js";
 import { castCombatSpell } from "../src/engine/magic.js";
 import { processSyncPoint, resolveSyncTarget } from "../src/engine/sync.js";
+import { applyEffects, availableChoices } from "../src/engine/story.js";
 
 function sequence(values) {
   let index = 0;
@@ -249,4 +250,48 @@ test("quando sobra um único inimigo, os heróis alternam as séries de ataque",
   assert.notEqual(firstHero, secondHero);
   assert.equal(first.events[0].mode, "alternate");
   assert.equal(second.events[0].mode, "alternate");
+});
+
+
+test("motor narrativo aplica ouro, itens, atributos e dano aleatório", () => {
+  const hero = createCharacter(warriorData, sequence([0, 0, 0, 0]));
+  hero.stats.energia = 10;
+
+  const results = applyEffects(
+    hero,
+    [
+      { type: "change_gold", delta: -2 },
+      { type: "add_item", item: "amuleto" },
+      { type: "change_stat", stat: "energia", delta: 2, cap: "initial" },
+      { type: "random_stat_damage", stat: "energia", dice: "1d6" }
+    ],
+    {},
+    sequence([0])
+  );
+
+  assert.equal(hero.gold, 8);
+  assert.equal(hero.items.includes("amuleto"), true);
+  assert.equal(hero.stats.energia, 11);
+  assert.equal(results[3].roll.total, 1);
+});
+
+test("motor narrativo filtra escolhas por inventário, ouro e estado do parceiro", () => {
+  const hero = createCharacter(warriorData, sequence([0, 0, 0, 0]));
+  hero.items.push("chave");
+
+  const node = {
+    choices: [
+      { label: "A", target: 1, conditions: [{ type: "has_item", item: "chave" }] },
+      { label: "B", target: 2, conditions: [{ type: "gold_gte", value: 20 }] },
+      { label: "C", target: 3, conditions: [{ type: "partner_active" }] }
+    ]
+  };
+
+  const choices = availableChoices(node, {
+    character: hero,
+    shared: { status: 0, acao: 0 },
+    partnerActive: true
+  });
+
+  assert.deepEqual(choices.map(choice => choice.target), [1, 3]);
 });
