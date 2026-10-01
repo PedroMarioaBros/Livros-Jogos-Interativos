@@ -35,6 +35,10 @@ export function conditionMet(condition, context) {
       return !condition.values.includes(shared[condition.key]);
     case "shared_gold_sufficient":
       return Boolean(context.sharedGoldSufficient);
+    case "shared_gold_gte": {
+      const partnerGold = Number(context.partnerCharacter?.gold || 0);
+      return character.gold + partnerGold >= Number(condition.value || 0);
+    }
     default:
       return false;
   }
