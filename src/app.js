@@ -983,6 +983,14 @@ async function loadGame() {
         loadCharacterData("lothar")
       ]);
       state.duo = restoreDuoSession(snapshot.duo);
+
+      if (state.cooperativeEncounter) {
+        state.cooperativeEncounter.heroes = [
+          state.duo.players.colthar.hero,
+          state.duo.players.lothar.hero
+        ];
+      }
+
       await activateDuoCharacter(
         state.duo.activeCharacter,
         { render: false }
