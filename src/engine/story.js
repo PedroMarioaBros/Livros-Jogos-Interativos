@@ -9,6 +9,44 @@ function hasFlag(character, flag) {
   return character.flags.includes(flag);
 }
 
+function hasTaggedItem(character, context, tag) {
+  const tagged = new Set(context.itemTags?.[tag] || []);
+  return character.items.some(item => tagged.has(item));
+}
+
+export function resolveTemporaryEffects(character, context = {}) {
+  character.temporaryEffects ||= [];
+  const remaining = [];
+  const resolved = [];
+
+  for (const temporary of character.temporaryEffects) {
+    const shouldResolve =
+      temporary.until === "has_weapon" &&
+      hasTaggedItem(character, context, "weapons");
+
+    if (!shouldResolve) {
+      remaining.push(temporary);
+      continue;
+    }
+
+    const before = character.stats[temporary.stat];
+    const value = modifyStat(
+      character,
+      temporary.stat,
+      -Number(temporary.delta || 0)
+    );
+
+    resolved.push({
+      ...temporary,
+      before,
+      value
+    });
+  }
+
+  character.temporaryEffects = remaining;
+  return resolved;
+}
+
 export function conditionMet(condition, context) {
   const { character, shared = {}, partnerActive = false } = context;
 
@@ -33,6 +71,8 @@ export function conditionMet(condition, context) {
       return shared[condition.key] === condition.value;
     case "shared_not_in":
       return !condition.values.includes(shared[condition.key]);
+    case "shared_in":
+      return (condition.values || []).includes(shared[condition.key]);
     case "shared_gold_sufficient":
       return Boolean(context.sharedGoldSufficient);
     case "shared_gold_gte": {
@@ -91,15 +131,23 @@ export function applyEffect(character, effect, context = {}, rng = Math.random) 
         if (!hasItem(character, item)) character.items.push(item);
       }
       character.stashedItems = [];
+      const resolvedTemporary = resolveTemporaryEffects(character, context);
       return {
         type: effect.type,
-        restored
+        restored,
+        resolvedTemporary
       };
     }
 
-    case "add_item":
+    case "add_item": {
       if (!hasItem(character, effect.item)) character.items.push(effect.item);
-      return { type: effect.type, item: effect.item };
+      const resolvedTemporary = resolveTemporaryEffects(character, context);
+      return {
+        type: effect.type,
+        item: effect.item,
+        resolvedTemporary
+      };
+    }
 
     case "remove_item":
     case "remove_item_if_present":
@@ -215,18 +263,52 @@ export function applyEffect(character, effect, context = {}, rng = Math.random) 
     }
 
     case "change_stat": {
+      const delta = Number(effect.delta || 0);
+
+      if (
+        effect.temporaryUntil === "has_weapon" &&
+        hasTaggedItem(character, context, "weapons")
+      ) {
+        return {
+          type: effect.type,
+          stat: effect.stat,
+          skipped: true,
+          reason: "temporary-condition-already-resolved",
+          value: character.stats[effect.stat]
+        };
+      }
+
       const before = character.stats[effect.stat];
       const value = modifyStat(
         character,
         effect.stat,
-        Number(effect.delta || 0),
+        delta,
         { allowAboveInitial: effect.cap === "none" }
       );
+
+      if (effect.temporaryUntil && value !== before) {
+        character.temporaryEffects ||= [];
+        const duplicate = character.temporaryEffects.some(
+          temporary =>
+            temporary.stat === effect.stat &&
+            temporary.until === effect.temporaryUntil
+        );
+
+        if (!duplicate) {
+          character.temporaryEffects.push({
+            stat: effect.stat,
+            delta: value - before,
+            until: effect.temporaryUntil
+          });
+        }
+      }
+
       return {
         type: effect.type,
         stat: effect.stat,
         before,
-        value
+        value,
+        temporaryUntil: effect.temporaryUntil || null
       };
     }
 
