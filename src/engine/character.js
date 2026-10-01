@@ -30,6 +30,15 @@ export function modifyStat(character, stat, delta, options = {}) {
   }
 
   const { allowAboveInitial = false } = options;
+
+  if (
+    delta > 0 &&
+    stat === "energia" &&
+    character.flags?.includes("sem_recuperacao_energia")
+  ) {
+    return character.stats[stat];
+  }
+
   const maximum = allowAboveInitial
     ? Number.POSITIVE_INFINITY
     : character.initialStats[stat];
@@ -47,6 +56,10 @@ export function consumeProvision(character, context = {}) {
 
   if (character.provisions <= 0) {
     return { ok: false, reason: "no-provisions" };
+  }
+
+  if (character.flags?.includes("sem_recuperacao_energia")) {
+    return { ok: false, reason: "energy-recovery-blocked" };
   }
 
   if (character.stats.energia >= character.initialStats.energia) {
