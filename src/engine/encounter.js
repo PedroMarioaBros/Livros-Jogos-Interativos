@@ -16,13 +16,14 @@ export function createEncounter(reference, definition) {
     defeat: false,
     combatSpellAttempted: false,
     modifiers: {
-      heroSkill: 0,
-      enemySkill: 0,
-      heroDamage: 2,
-      incomingDamage: 2,
-      incomingHitSave: null,
-      allyHeroSkill: 0
+      heroSkill: Number(definition.modifiers?.heroSkill || 0),
+      enemySkill: Number(definition.modifiers?.enemySkill || 0),
+      heroDamage: Number(definition.modifiers?.heroDamage ?? 2),
+      incomingDamage: Number(definition.modifiers?.incomingDamage ?? 2),
+      incomingHitSave: definition.modifiers?.incomingHitSave || null,
+      allyHeroSkill: Number(definition.modifiers?.allyHeroSkill || 0)
     },
+    heroDamageTaken: 0,
     proxy: null
   };
 }
@@ -107,6 +108,11 @@ export function playEncounterRound(
   };
 
   encounter.rounds.push(record);
+
+  if (!usedProxy && result.outcome === "enemy-hit") {
+    encounter.heroDamageTaken += Number(result.damage || 0);
+    character.lastCombatDamage = encounter.heroDamageTaken;
+  }
 
   if (opponent.energia <= 0) {
     encounter.currentEnemyIndex += 1;
