@@ -1,16 +1,98 @@
 {
-  "sharedKeys": ["status", "acao"],
+  "sharedKeys": [
+    "status",
+    "acao"
+  ],
   "schemaVersion": 2,
   "entries": [
+    {
+      "character": "colthar",
+      "reference": 31,
+      "verified": true,
+      "effects": [
+        {
+          "type": "set_shared",
+          "key": "status",
+          "value": 19
+        }
+      ],
+      "waitFor": "acao",
+      "routes": [
+        {
+          "acao": [
+            1
+          ],
+          "target": 44
+        },
+        {
+          "acao": [
+            39
+          ],
+          "target": 421
+        }
+      ],
+      "notes": "Sincronização confirmada no texto do volume do Guerreiro."
+    },
+    {
+      "character": "colthar",
+      "reference": 60,
+      "verified": true,
+      "effects": [
+        {
+          "type": "set_shared",
+          "key": "status",
+          "value": 4
+        }
+      ],
+      "waitFor": "acao",
+      "routes": [
+        {
+          "acao": [
+            1,
+            25
+          ],
+          "target": 13
+        },
+        {
+          "acao": [
+            24
+          ],
+          "target": 212
+        },
+        {
+          "acao": [
+            26
+          ],
+          "target": 413
+        }
+      ],
+      "notes": "Sincronização confirmada no texto do volume do Guerreiro."
+    },
     {
       "character": "lothar",
       "reference": 31,
       "verified": true,
-      "effects": [{"type": "set_shared", "key": "acao", "value": 39}],
+      "effects": [
+        {
+          "type": "set_shared",
+          "key": "acao",
+          "value": 39
+        }
+      ],
       "waitFor": "status",
       "routes": [
-        {"status": [1], "target": 44},
-        {"status": [19], "target": 421}
+        {
+          "status": [
+            1
+          ],
+          "target": 44
+        },
+        {
+          "status": [
+            19
+          ],
+          "target": 421
+        }
       ]
     },
     {
@@ -18,22 +100,49 @@
       "reference": 39,
       "verified": true,
       "type": "partner-removed-transition",
-      "effects": [{"type": "set_shared", "key": "acao", "value": 1}],
+      "effects": [
+        {
+          "type": "set_shared",
+          "key": "acao",
+          "value": 1
+        }
+      ],
       "notes": "Aplicar somente quando a instrução da referência exigir a transição para jogo solo."
     },
     {
       "character": "lothar",
       "reference": 42,
       "verified": true,
-      "effects": [{"type": "set_shared", "key": "acao", "value": 25}],
+      "effects": [
+        {
+          "type": "set_shared",
+          "key": "acao",
+          "value": 25
+        }
+      ],
       "waitFor": "status",
-      "routes": [{"status": [1, 4, 5], "target": 165}]
+      "routes": [
+        {
+          "status": [
+            1,
+            4,
+            5
+          ],
+          "target": 165
+        }
+      ]
     },
     {
       "character": "lothar",
       "reference": 51,
       "verified": true,
-      "effects": [{"type": "set_shared", "key": "acao", "value": 36}],
+      "effects": [
+        {
+          "type": "set_shared",
+          "key": "acao",
+          "value": 36
+        }
+      ],
       "waitFor": "partner-instruction",
       "routes": []
     },
@@ -41,37 +150,91 @@
       "character": "lothar",
       "reference": 60,
       "verified": true,
-      "effects": [{"type": "set_shared", "key": "acao", "value": 24}],
+      "effects": [
+        {
+          "type": "set_shared",
+          "key": "acao",
+          "value": 24
+        }
+      ],
       "waitFor": "status",
       "routes": [
-        {"status": [1, 15], "target": 103},
-        {"status": [4], "target": 212}
+        {
+          "status": [
+            1,
+            15
+          ],
+          "target": 103
+        },
+        {
+          "status": [
+            4
+          ],
+          "target": 212
+        }
       ]
     },
     {
       "character": "lothar",
       "reference": 111,
       "verified": true,
-      "effects": [{"type": "set_shared", "key": "acao", "value": 38}],
+      "effects": [
+        {
+          "type": "set_shared",
+          "key": "acao",
+          "value": 38
+        }
+      ],
       "waitFor": "status",
       "routes": [
-        {"status": [1], "target": 218},
-        {"status": [18], "target": 235}
+        {
+          "status": [
+            1
+          ],
+          "target": 218
+        },
+        {
+          "status": [
+            18
+          ],
+          "target": 235
+        }
       ]
     },
     {
       "character": "lothar",
       "reference": 148,
       "verified": true,
-      "effects": [{"type": "set_shared", "key": "acao", "value": 22}],
+      "effects": [
+        {
+          "type": "set_shared",
+          "key": "acao",
+          "value": 22
+        }
+      ],
       "waitFor": "status",
-      "routes": [{"status": [1, 2, 3], "target": 325}]
+      "routes": [
+        {
+          "status": [
+            1,
+            2,
+            3
+          ],
+          "target": 325
+        }
+      ]
     },
     {
       "character": "lothar",
       "reference": 185,
       "verified": true,
-      "effects": [{"type": "set_shared", "key": "acao", "value": 40}],
+      "effects": [
+        {
+          "type": "set_shared",
+          "key": "acao",
+          "value": 40
+        }
+      ],
       "waitFor": "partner-instruction",
       "routes": []
     },
@@ -79,11 +242,28 @@
       "character": "lothar",
       "reference": 199,
       "verified": true,
-      "effects": [{"type": "set_shared", "key": "acao", "value": 23}],
+      "effects": [
+        {
+          "type": "set_shared",
+          "key": "acao",
+          "value": 23
+        }
+      ],
       "waitFor": "status",
       "routes": [
-        {"status": [1, 2], "target": 242},
-        {"status": [3], "target": 287}
+        {
+          "status": [
+            1,
+            2
+          ],
+          "target": 242
+        },
+        {
+          "status": [
+            3
+          ],
+          "target": 287
+        }
       ]
     },
     {
@@ -91,10 +271,21 @@
       "reference": 217,
       "verified": false,
       "needsManualReview": true,
-      "effects": [{"type": "set_shared", "key": "acao", "value": 29}],
+      "effects": [
+        {
+          "type": "set_shared",
+          "key": "acao",
+          "value": 29
+        }
+      ],
       "waitFor": "status",
       "routes": [
-        {"status": [9], "target": 493}
+        {
+          "status": [
+            9
+          ],
+          "target": 493
+        }
       ],
       "notes": "OCR ambíguo na outra condição: aparece como 'STATUS mudar de 1 para 10'. Conferir visualmente a página antes de codificar essa rota."
     },
@@ -102,83 +293,227 @@
       "character": "lothar",
       "reference": 226,
       "verified": true,
-      "effects": [{"type": "set_shared", "key": "acao", "value": 26}],
+      "effects": [
+        {
+          "type": "set_shared",
+          "key": "acao",
+          "value": 26
+        }
+      ],
       "waitFor": "status",
-      "routes": [{"status": [1, 4, 5], "target": 165}]
+      "routes": [
+        {
+          "status": [
+            1,
+            4,
+            5
+          ],
+          "target": 165
+        }
+      ]
     },
     {
       "character": "lothar",
       "reference": 329,
       "verified": true,
-      "effects": [{"type": "set_shared", "key": "acao", "value": 28}],
+      "effects": [
+        {
+          "type": "set_shared",
+          "key": "acao",
+          "value": 28
+        }
+      ],
       "waitFor": "status",
       "routes": [
-        {"status": [1], "target": 96},
-        {"status": [9], "target": 142},
-        {"status": [10], "target": 289}
+        {
+          "status": [
+            1
+          ],
+          "target": 96
+        },
+        {
+          "status": [
+            9
+          ],
+          "target": 142
+        },
+        {
+          "status": [
+            10
+          ],
+          "target": 289
+        }
       ]
     },
     {
       "character": "lothar",
       "reference": 344,
       "verified": true,
-      "effects": [{"type": "set_shared", "key": "acao", "value": 35}],
+      "effects": [
+        {
+          "type": "set_shared",
+          "key": "acao",
+          "value": 35
+        }
+      ],
       "waitFor": "status",
       "routes": [
-        {"status": [1], "target": 86},
-        {"status": [15], "target": 265}
+        {
+          "status": [
+            1
+          ],
+          "target": 86
+        },
+        {
+          "status": [
+            15
+          ],
+          "target": 265
+        }
       ]
     },
     {
       "character": "lothar",
       "reference": 367,
       "verified": true,
-      "effects": [{"type": "set_shared", "key": "acao", "value": 27}],
+      "effects": [
+        {
+          "type": "set_shared",
+          "key": "acao",
+          "value": 27
+        }
+      ],
       "waitFor": "status",
       "routes": [
-        {"status": [1], "target": 2},
-        {"status": [7], "target": 27}
+        {
+          "status": [
+            1
+          ],
+          "target": 2
+        },
+        {
+          "status": [
+            7
+          ],
+          "target": 27
+        }
       ]
     },
     {
       "character": "lothar",
       "reference": 451,
       "verified": true,
-      "effects": [{"type": "set_shared", "key": "acao", "value": 31}],
+      "effects": [
+        {
+          "type": "set_shared",
+          "key": "acao",
+          "value": 31
+        }
+      ],
       "waitFor": "status",
       "routes": [
-        {"status": [1, 14], "target": 90},
-        {"status": [11], "target": 366},
-        {"status": [12], "target": 490},
-        {"status": [13], "target": 470}
+        {
+          "status": [
+            1,
+            14
+          ],
+          "target": 90
+        },
+        {
+          "status": [
+            11
+          ],
+          "target": 366
+        },
+        {
+          "status": [
+            12
+          ],
+          "target": 490
+        },
+        {
+          "status": [
+            13
+          ],
+          "target": 470
+        }
       ]
     },
     {
       "character": "lothar",
       "reference": 453,
       "verified": true,
-      "effects": [{"type": "set_shared", "key": "acao", "value": 30}],
+      "effects": [
+        {
+          "type": "set_shared",
+          "key": "acao",
+          "value": 30
+        }
+      ],
       "waitFor": "status",
       "routes": [
-        {"status": [1], "target": 96},
-        {"status": [9, 10], "target": 289}
+        {
+          "status": [
+            1
+          ],
+          "target": 96
+        },
+        {
+          "status": [
+            9,
+            10
+          ],
+          "target": 289
+        }
       ]
     },
     {
       "character": "lothar",
       "reference": 465,
       "verified": true,
-      "effects": [{"type": "set_shared", "key": "acao", "value": 32}],
+      "effects": [
+        {
+          "type": "set_shared",
+          "key": "acao",
+          "value": 32
+        }
+      ],
       "waitFor": "status",
-      "routes": [{"status": [1, 11, 12, 13, 14], "target": 227}]
+      "routes": [
+        {
+          "status": [
+            1,
+            11,
+            12,
+            13,
+            14
+          ],
+          "target": 227
+        }
+      ]
     },
     {
       "character": "lothar",
       "reference": 494,
       "verified": true,
-      "effects": [{"type": "set_shared", "key": "acao", "value": 37}],
+      "effects": [
+        {
+          "type": "set_shared",
+          "key": "acao",
+          "value": 37
+        }
+      ],
       "waitFor": "status",
-      "routes": [{"status": [1, 17, 18], "target": 22}]
+      "routes": [
+        {
+          "status": [
+            1,
+            17,
+            18
+          ],
+          "target": 22
+        }
+      ]
     }
   ]
 }
