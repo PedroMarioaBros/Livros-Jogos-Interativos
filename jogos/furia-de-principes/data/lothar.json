@@ -6555,7 +6555,7 @@
       "notes": "No modo dupla, a perda deve ser aplicada também ao inventário de Colthar."
     },
     "421": {
-      "estado": "parcial",
+      "estado": "extraida",
       "resumo": "Os irmãos comparam a quantidade de Pedras de Poder e seguem para destinos diferentes conforme quem possui mais.",
       "dynamicDuoComparison": {
         "resource": "pedra_de_poder",
@@ -6563,7 +6563,7 @@
         "selfGreaterTarget": 185,
         "equalTarget": 71
       },
-      "needsEngineSupport": true
+      "notes": "Comparação automática de quantidade implementada no motor; Pedras de Poder são empilháveis."
     },
     "422": {
       "estado": "extraida",

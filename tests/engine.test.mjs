@@ -17,7 +17,12 @@ import {
   combatSpellLimit
 } from "../src/engine/magic.js";
 import { processSyncPoint, resolveSyncTarget } from "../src/engine/sync.js";
-import { applyEffects, availableChoices } from "../src/engine/story.js";
+import {
+  applyEffects,
+  availableChoices,
+  countItem,
+  resolveDynamicDuoComparison
+} from "../src/engine/story.js";
 import { createEncounter, playEncounterRound } from "../src/engine/encounter.js";
 import { createSaveSnapshot, serializeSave, parseSave } from "../src/engine/save.js";
 import {
@@ -1323,4 +1328,55 @@ test("cenas de Lothar com suporte implementado não ficam marcadas como parciais
       `Referência ${reference} ainda marcada como needsEngineSupport`
     );
   }
+});
+
+
+test("Pedra de Poder é empilhável e pode ser contada", () => {
+  const mage = createCharacter(mageData, sequence([0, 0, 0, 0, 0]));
+  const context = {
+    itemTags: { stackable: ["pedra_de_poder"] }
+  };
+
+  applyEffects(mage, [
+    { type: "add_item", item: "pedra_de_poder" },
+    { type: "add_item", item: "pedra_de_poder" }
+  ], context);
+
+  assert.equal(countItem(mage, "pedra_de_poder"), 2);
+
+  applyEffects(mage, [
+    { type: "add_item", item: "cajado" }
+  ], context);
+  assert.equal(countItem(mage, "cajado"), 1);
+});
+
+test("referência 421 resolve comparação das Pedras de Poder", () => {
+  const lothar = createCharacter(mageData, sequence([0, 0, 0, 0, 0]));
+  const colthar = createCharacter(warriorData, sequence([0, 0, 0, 0]));
+  const comparison = mageBookData.references["421"].dynamicDuoComparison;
+
+  lothar.items.push("pedra_de_poder", "pedra_de_poder");
+  colthar.items.push("pedra_de_poder");
+
+  assert.deepEqual(
+    resolveDynamicDuoComparison(comparison, lothar, colthar),
+    {
+      target: 185,
+      selfCount: 2,
+      partnerCount: 1,
+      outcome: "self-greater"
+    }
+  );
+
+  colthar.items.push("pedra_de_poder");
+  assert.equal(
+    resolveDynamicDuoComparison(comparison, lothar, colthar).target,
+    71
+  );
+
+  colthar.items.push("pedra_de_poder");
+  assert.equal(
+    resolveDynamicDuoComparison(comparison, lothar, colthar).target,
+    44
+  );
 });
