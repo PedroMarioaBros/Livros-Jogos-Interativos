@@ -39,6 +39,7 @@ function nodeTargets(node) {
   addTarget(targets, node.dynamicCondition?.falseTarget);
   addTarget(targets, node.dynamicChoice?.failureTarget);
   addTarget(targets, node.encounterSpecial?.roundRoll?.target);
+  addTarget(targets, node.playerEffectChoice?.continueTarget);
 
   if (node.dynamicDuoComparison) {
     addTarget(targets, node.dynamicDuoComparison.partnerGreaterTarget);
