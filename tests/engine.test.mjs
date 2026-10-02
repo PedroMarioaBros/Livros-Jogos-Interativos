@@ -1469,6 +1469,70 @@ test("referência 248 aplica ferimento e tesouro compartilhado", () => {
   );
 });
 
+test("efeito pode zerar recurso do parceiro", () => {
+  const colthar = createCharacter(warriorData, sequence([0, 0, 0, 0]));
+  const lothar = createCharacter(warriorData, sequence([0, 0, 0, 0]));
+  lothar.gold = 7;
+
+  const [result] = applyEffects(
+    colthar,
+    [{ type: "set_partner_resource", resource: "gold", value: 0 }],
+    { partnerCharacter: lothar }
+  );
+
+  assert.equal(result.unsupported, undefined);
+  assert.equal(result.before, 7);
+  assert.equal(lothar.gold, 0);
+});
+
+test("Colthar possui o bloco 251 a 275 estruturado", () => {
+  for (let ref = 251; ref <= 275; ref += 1) {
+    assert.ok(
+      warriorBookData.references[String(ref)],
+      `Referência ${ref} ausente`
+    );
+  }
+
+  assert.equal(warriorBookData.references["252"].estado, "parcial");
+  assert.equal(
+    warriorBookData.references["252"].encounterNeedsReview,
+    true
+  );
+  assert.equal(warriorBookData.references["263"].estado, "parcial");
+  assert.equal(
+    warriorBookData.references["266"].encounterNeedsReview,
+    true
+  );
+  assert.equal(
+    warriorBookData.references["269"].encounter.cooperative,
+    true
+  );
+  assert.equal(
+    warriorBookData.references["274"].encounter.enemies.length,
+    2
+  );
+});
+
+test("referência 268 zera o ouro dos dois irmãos", () => {
+  const effects = warriorBookData.references["268"].effects;
+
+  assert.equal(
+    effects.some(
+      effect => effect.type === "set_gold" && effect.value === 0
+    ),
+    true
+  );
+  assert.equal(
+    effects.some(
+      effect =>
+        effect.type === "set_partner_resource" &&
+        effect.resource === "gold" &&
+        effect.value === 0
+    ),
+    true
+  );
+});
+
 test("set_stat define atributo sem ultrapassar o valor inicial", () => {
   const mage = createCharacter(mageData, sequence([0, 0, 0, 0, 0]));
   mage.stats.magia = 5;
