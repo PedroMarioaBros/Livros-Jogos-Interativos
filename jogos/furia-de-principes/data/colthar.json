@@ -6884,6 +6884,400 @@
           "target": 128
         }
       ]
+    },
+    "426": {
+      "estado": "extraida",
+      "resumo": "Colthar desce até um lago subterrâneo, enche um frasco com Água Benta e deixa o mosteiro.",
+      "effects": [
+        {
+          "type": "add_item",
+          "item": "agua_benta"
+        }
+      ],
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 163
+        }
+      ]
+    },
+    "427": {
+      "estado": "extraida",
+      "resumo": "Depois de derrubar a árvore do Elfo, ela desaparece e deixa uma muda de vidoeiro para Colthar.",
+      "effects": [
+        {
+          "type": "add_item",
+          "item": "muda_de_vidoeiro"
+        }
+      ],
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 197
+        }
+      ]
+    },
+    "428": {
+      "estado": "extraida",
+      "resumo": "Os irmãos se afastam da luz e encontram uma cabana junto a um portão.",
+      "choices": [
+        {
+          "label": "Aproximar-se dos fardos junto à cabana",
+          "target": 79
+        },
+        {
+          "label": "Passar pelo portão",
+          "target": 315
+        }
+      ]
+    },
+    "429": {
+      "estado": "extraida",
+      "resumo": "Depois de encher um frasco com Água Benta, Colthar encontra uma criatura assustadora e foge do mosteiro.",
+      "effects": [
+        {
+          "type": "add_item",
+          "item": "agua_benta"
+        }
+      ],
+      "choices": [
+        {
+          "label": "Fugir do mosteiro",
+          "target": 163
+        }
+      ]
+    },
+    "430": {
+      "estado": "extraida",
+      "resumo": "A trilha se divide entre um caminho de carroça e uma passagem menor.",
+      "choices": [
+        {
+          "label": "Seguir pelo caminho de carroça",
+          "target": 46
+        },
+        {
+          "label": "Seguir pela trilha menor",
+          "target": 123
+        }
+      ]
+    },
+    "431": {
+      "estado": "extraida",
+      "resumo": "A Hidra desperta junto ao portão; Colthar decide lutar ou tentar negociar.",
+      "choices": [
+        {
+          "label": "Atacar a Hidra",
+          "target": 487
+        },
+        {
+          "label": "Tentar negociar com a Hidra",
+          "target": 457
+        }
+      ]
+    },
+    "432": {
+      "estado": "extraida",
+      "resumo": "Colthar sai por uma abertura na encosta da montanha e escolhe entre duas trilhas.",
+      "choices": [
+        {
+          "label": "Seguir pela trilha da esquerda",
+          "target": 137
+        },
+        {
+          "label": "Seguir pela trilha da direita",
+          "target": 201
+        }
+      ]
+    },
+    "433": {
+      "estado": "extraida",
+      "resumo": "Os pergaminhos marrons transparentes formam um enigma; o número calculado deve ser usado como referência.",
+      "referenceInput": {
+        "label": "🔢 Informar a referência correspondente à resposta",
+        "prompt": "Digite o número da referência que corresponde ao peso calculado:",
+        "min": 1,
+        "max": 500,
+        "fallbackTarget": 380,
+        "fallbackLabel": "Não sei a resposta → 380"
+      }
+    },
+    "434": {
+      "estado": "extraida",
+      "resumo": "O Demônio desaparece e uma Bruxa amaldiçoa Colthar antes de partir.",
+      "choices": [
+        {
+          "label": "Prosseguir pela trilha",
+          "target": 367
+        }
+      ]
+    },
+    "435": {
+      "estado": "extraida",
+      "resumo": "Numa caverna, Colthar encontra um Urso Negro adormecido e decide se se aproxima ou retorna à escada.",
+      "choices": [
+        {
+          "label": "Aproximar-se do Urso",
+          "target": 53
+        },
+        {
+          "label": "Voltar à escada",
+          "target": 307
+        }
+      ]
+    },
+    "436": {
+      "estado": "extraida",
+      "resumo": "Durante a subida de uma árvore, uma voz alerta sobre um Elfo maligno; Colthar decide recuar ou continuar.",
+      "choices": [
+        {
+          "label": "Descer e deixar a colina",
+          "target": 188
+        },
+        {
+          "label": "Continuar subindo",
+          "target": 302
+        }
+      ]
+    },
+    "437": {
+      "estado": "extraida",
+      "resumo": "Depois do encontro com o Urso, Colthar encontra uma lanterna antiga ainda utilizável.",
+      "effects": [
+        {
+          "type": "add_item",
+          "item": "lanterna"
+        }
+      ],
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 307
+        }
+      ]
+    },
+    "438": {
+      "estado": "extraida",
+      "resumo": "Colthar enfrenta sozinho dois guardas Scuttlies enquanto Lothar está separado.",
+      "encounter": {
+        "enemies": [
+          {
+            "name": "Scuttlie Um",
+            "habilidade": 8,
+            "energia": 8
+          },
+          {
+            "name": "Scuttlie Dois",
+            "habilidade": 8,
+            "energia": 6
+          }
+        ]
+      },
+      "onVictory": 225,
+      "partnerOnVictory": 225,
+      "partnerOnDefeat": 6
+    },
+    "439": {
+      "estado": "extraida",
+      "resumo": "Uma falsa gema desencadeia uma chama fatal; se AÇÃO for 40, Lothar deve ser encaminhado para a referência 44.",
+      "partnerInstruction": {
+        "conditionalSend": [
+          {
+            "condition": {
+              "type": "shared_equals",
+              "key": "acao",
+              "value": 40
+            },
+            "target": 44
+          }
+        ]
+      },
+      "ending": "death",
+      "afterDeathReference": 39
+    },
+    "440": {
+      "estado": "extraida",
+      "resumo": "Uma Duende conduz Colthar até um túnel de Gnomo; ele precisa Testar a Sorte.",
+      "test": {
+        "type": "luck",
+        "successTarget": 363,
+        "failureTarget": 113
+      }
+    },
+    "441": {
+      "estado": "extraida",
+      "resumo": "Enquanto Colthar está na estalagem, seu cavalo é roubado junto com todo o ouro e provisões guardados nele.",
+      "effects": [
+        {
+          "type": "remove_item_if_present",
+          "item": "cavalo"
+        },
+        {
+          "type": "set_gold",
+          "value": 0
+        },
+        {
+          "type": "set_provisions",
+          "value": 0
+        }
+      ],
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 364
+        }
+      ]
+    },
+    "442": {
+      "estado": "extraida",
+      "resumo": "Dois carneiros monteses bloqueiam a subida de Colthar.",
+      "choices": [
+        {
+          "label": "Enfrentar os carneiros",
+          "target": 95
+        },
+        {
+          "label": "Recuar para os Lobos",
+          "target": 191
+        }
+      ]
+    },
+    "443": {
+      "estado": "extraida",
+      "resumo": "Atrás de uma grade, Colthar encontra um par de sapatos para neve.",
+      "effects": [
+        {
+          "type": "add_item",
+          "item": "sapatos_para_neve"
+        }
+      ],
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 101
+        }
+      ]
+    },
+    "444": {
+      "estado": "extraida",
+      "resumo": "Um feitiço de Lothar transforma a Traça em uma criatura de fogo e os dois irmãos são destruídos.",
+      "partnerRemoved": true,
+      "ending": "death",
+      "afterDeathReference": 39
+    },
+    "445": {
+      "estado": "extraida",
+      "resumo": "Colthar consegue recuperar duas moedas do poço antes que as demais desapareçam e então escolhe como seguir.",
+      "effects": [
+        {
+          "type": "change_gold",
+          "delta": 2
+        }
+      ],
+      "choices": [
+        {
+          "label": "Entrar no túnel",
+          "target": 108
+        },
+        {
+          "label": "Seguir pela estrada norte",
+          "target": 391
+        },
+        {
+          "label": "Seguir pela estrada sul",
+          "target": 384
+        }
+      ]
+    },
+    "446": {
+      "estado": "extraida",
+      "resumo": "Colthar se separa de Lothar e atravessa sozinho uma região árida.",
+      "choices": [
+        {
+          "label": "Prosseguir sozinho",
+          "target": 140
+        }
+      ]
+    },
+    "447": {
+      "estado": "extraida",
+      "resumo": "Ao usar um espelho, Colthar recupera completamente HABILIDADE, ENERGIA e SORTE antes de continuar.",
+      "effects": [
+        {
+          "type": "restore_stat_to_initial",
+          "stat": "habilidade"
+        },
+        {
+          "type": "restore_stat_to_initial",
+          "stat": "energia"
+        },
+        {
+          "type": "restore_stat_to_initial",
+          "stat": "sorte"
+        }
+      ],
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 367
+        }
+      ]
+    },
+    "448": {
+      "estado": "extraida",
+      "resumo": "O Unicórnio aumenta a SORTE inicial de Colthar e restaura sua SORTE ao novo máximo.",
+      "effects": [
+        {
+          "type": "increase_initial_stat",
+          "stat": "sorte",
+          "delta": 1
+        },
+        {
+          "type": "restore_stat_to_initial",
+          "stat": "sorte"
+        }
+      ],
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 373
+        }
+      ]
+    },
+    "449": {
+      "estado": "extraida",
+      "resumo": "Ao destruir o monumento de inseto com a espada, Colthar provoca o desabamento fatal da torre.",
+      "ending": "death",
+      "afterDeathReference": 39
+    },
+    "450": {
+      "estado": "extraida",
+      "resumo": "Colthar enfrenta uma Preguiça de Três Dedos e, após vencê-la, encontra uma Pedra de Poder.",
+      "encounter": {
+        "enemies": [
+          {
+            "name": "Preguiça de Três Dedos",
+            "habilidade": 9,
+            "energia": 8
+          }
+        ]
+      },
+      "rewards": [
+        {
+          "type": "add_item",
+          "item": "pedra_de_poder"
+        },
+        {
+          "type": "change_stat",
+          "stat": "habilidade",
+          "delta": 1
+        },
+        {
+          "type": "change_stat",
+          "stat": "energia",
+          "delta": 2
+        }
+      ],
+      "onVictory": 375
     }
   }
 }
