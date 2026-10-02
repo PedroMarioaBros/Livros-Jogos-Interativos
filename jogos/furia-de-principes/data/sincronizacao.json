@@ -318,6 +318,31 @@
       "notes": "STATUS 7 e rotas por AÇÃO confirmados no OCR do volume do Guerreiro."
     },
     {
+      "character": "colthar",
+      "reference": 377,
+      "verified": true,
+      "effects": [
+        {
+          "type": "set_shared",
+          "key": "status",
+          "value": 5
+        }
+      ],
+      "waitFor": "acao",
+      "routes": [
+        {
+          "acao": [
+            1,
+            24,
+            25,
+            26
+          ],
+          "target": 309
+        }
+      ],
+      "notes": "STATUS 5 e encaminhamento para 309 confirmados no OCR do volume do Guerreiro."
+    },
+    {
       "character": "lothar",
       "reference": 31,
       "verified": true,

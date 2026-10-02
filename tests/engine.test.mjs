@@ -1812,6 +1812,65 @@ test("sincronização 367 de Colthar está verificada", () => {
   );
 });
 
+test("Colthar possui o bloco 376 a 400 estruturado", () => {
+  for (let ref = 376; ref <= 400; ref += 1) {
+    assert.ok(
+      warriorBookData.references[String(ref)],
+      `Referência ${ref} ausente`
+    );
+  }
+
+  assert.equal(
+    warriorBookData.references["378"].estado,
+    "parcial"
+  );
+  assert.equal(
+    warriorBookData.references["378"].onVictoryNeedsReview,
+    true
+  );
+  assert.equal(
+    warriorBookData.references["381"].effects[0].items[0],
+    "corda_magica"
+  );
+  assert.equal(
+    warriorBookData.references["398"].effects[0].item,
+    "barra_de_ferro"
+  );
+  assert.equal(
+    warriorBookData.references["399"].ending,
+    "death"
+  );
+});
+
+test("sincronização 377 de Colthar está verificada", () => {
+  const ref377 = syncBookData.entries.find(
+    entry => entry.character === "colthar" && entry.reference === 377
+  );
+
+  assert.equal(ref377?.verified, true);
+  assert.equal(ref377.effects[0].value, 5);
+  assert.deepEqual(ref377.routes[0].acao, [1, 24, 25, 26]);
+  assert.equal(ref377.routes[0].target, 309);
+});
+
+test("referência 329 marca a passagem para a escolha da 398", () => {
+  const ref329 = warriorBookData.references["329"];
+  const ref398 = warriorBookData.references["398"];
+
+  assert.equal(
+    ref329.effects.some(
+      effect =>
+        effect.type === "set_flag" &&
+        effect.flag === "passou_por_329"
+    ),
+    true
+  );
+  assert.deepEqual(
+    ref398.choices[0].conditions,
+    [{ type: "flag_not", flag: "passou_por_329" }]
+  );
+});
+
 test("set_stat define atributo sem ultrapassar o valor inicial", () => {
   const mage = createCharacter(mageData, sequence([0, 0, 0, 0, 0]));
   mage.stats.magia = 5;
