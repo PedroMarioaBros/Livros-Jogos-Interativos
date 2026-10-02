@@ -47,7 +47,7 @@
   - [x] Limite de séries em combates com prazo narrativo
   - [x] Efeitos condicionais nas sincronizações STATUS/AÇÃO
   - [x] Rolagem especial a cada série de combate
-- [ ] Extrair referências de Colthar
+- [x] Extrair referências de Colthar
   - [x] Primeira expansão estrutural: 77 referências cadastradas no banco
   - [x] Segunda expansão estrutural: referências 75–100 conferidas; 102 referências cadastradas no banco
   - [x] Terceira expansão estrutural: referências 101–125 conferidas; 127 referências cadastradas no banco
@@ -65,13 +65,15 @@
   - [x] Décima quinta expansão estrutural: referências 401–425 conferidas; 425 referências cadastradas no banco
   - [x] Décima sexta expansão estrutural: referências 426–450 conferidas; 450 referências cadastradas no banco
   - [x] Décima sétima expansão estrutural: referências 451–475 conferidas; 475 referências cadastradas no banco
+  - [x] Décima oitava expansão estrutural: referências 476–500 conferidas; 500 referências cadastradas no banco
+  - [x] Referências 1–500 estruturadas continuamente
 - [x] Extrair referências de Lothar
   - [x] Referências 1–500 estruturadas continuamente
 - [ ] Mapear todas as sincronizações STATUS/AÇÃO
   - [x] Motor genérico de sincronização
   - [x] Primeira varredura de AÇÃO de Lothar
   - [x] Primeiros pontos verificados de STATUS de Colthar (31 e 60)
-  - [x] 32 pontos atualmente catalogados conferidos individualmente
+  - [x] 33 pontos atualmente catalogados conferidos individualmente
 - [ ] Classificar finais, mortes e encontros
 - [ ] Testar todos os caminhos alcançáveis
   - [x] Análise automática dos grafos de ambos os volumes
