@@ -46,6 +46,7 @@
   - [x] Loja compartilhada com estoque único entre os dois príncipes
 - [ ] Extrair referências de Colthar
   - [x] Primeira expansão estrutural: 77 referências cadastradas no banco
+  - [x] Segunda expansão estrutural: referências 75–100 conferidas; 102 referências cadastradas no banco
 - [x] Extrair referências de Lothar
   - [x] Referências 1–500 estruturadas continuamente
 - [ ] Mapear todas as sincronizações STATUS/AÇÃO

@@ -1381,9 +1381,404 @@
       ]
     },
     "75": {
-      "estado": "parcial",
-      "resumo": "Uma besta surpreende Colthar antes que ele consiga reagir; o restante da referência precisa de revisão visual.",
-      "needsManualReview": true
+      "estado": "extraida",
+      "resumo": "Depois de ser levado à toca de uma besta, Colthar encontra uma garrafa com uma Poção desconhecida e escolhe como prosseguir.",
+      "choices": [
+        {
+          "label": "Beber a Poção",
+          "target": 477
+        },
+        {
+          "label": "Tentar descer pelo penhasco",
+          "target": 324
+        },
+        {
+          "label": "Explorar os fundos da caverna",
+          "target": 153
+        }
+      ]
+    },
+    "76": {
+      "estado": "extraida",
+      "resumo": "Ao retirar um fura-gelo dos dedos de um Esqueleto, Colthar é atacado por uma Aranha Gigante.",
+      "encounter": {
+        "enemies": [
+          {
+            "name": "Aranha Gigante",
+            "habilidade": 9,
+            "energia": 6
+          }
+        ]
+      },
+      "onVictory": 166
+    },
+    "77": {
+      "estado": "extraida",
+      "resumo": "Após derrotar uma criatura, Colthar ouve outro grito nas trevas e decide entre investigar o túnel ou abandonar a torre.",
+      "choices": [
+        {
+          "label": "Rastejar pelo túnel em direção ao grito",
+          "target": 321
+        },
+        {
+          "label": "Recuar e cavalgar para longe da torre",
+          "target": 60
+        }
+      ]
+    },
+    "78": {
+      "estado": "extraida",
+      "resumo": "Um caminho termina diante de um obelisco; ao tocar sua face oeste, Colthar é transportado para outra situação.",
+      "choices": [
+        {
+          "label": "Prosseguir após tocar o obelisco",
+          "target": 344
+        }
+      ]
+    },
+    "79": {
+      "estado": "extraida",
+      "resumo": "Uma cabeça de madeira faz aos irmãos um enigma sobre quantos planetas existem no céu.",
+      "choices": [
+        {
+          "label": "Responder sete",
+          "target": 120
+        },
+        {
+          "label": "Responder oito",
+          "target": 182
+        },
+        {
+          "label": "Responder nove",
+          "target": 244
+        }
+      ],
+      "notes": "O OCR do volume de Colthar corrompe a terceira opção; a referência correspondente de Lothar confirma 'Nove' e o destino 244."
+    },
+    "80": {
+      "estado": "extraida",
+      "resumo": "Ao observar uma mulher maligna, Colthar é descoberto por um Demônio invocado de um caldeirão.",
+      "encounter": {
+        "enemies": [
+          {
+            "name": "Demônio",
+            "habilidade": 9,
+            "energia": 12
+          }
+        ]
+      },
+      "onVictory": 434
+    },
+    "81": {
+      "estado": "extraida",
+      "resumo": "Os irmãos encontram um cofre com quarenta moedas de ouro e precisam dividir o tesouro.",
+      "effects": [
+        {
+          "type": "add_shared_loot",
+          "gold": 40,
+          "items": []
+        }
+      ],
+      "choices": [
+        {
+          "label": "Prosseguir após dividir o tesouro",
+          "target": 224
+        }
+      ]
+    },
+    "82": {
+      "estado": "extraida",
+      "resumo": "Um arbusto revela ser uma Planta Carnívora e ataca Colthar.",
+      "encounter": {
+        "enemies": [
+          {
+            "name": "Planta Carnívora",
+            "habilidade": 8,
+            "energia": 12
+          }
+        ]
+      },
+      "onVictory": 273
+    },
+    "83": {
+      "estado": "extraida",
+      "resumo": "Lothar lança um feitiço escolhido; Colthar precisa aguardar a instrução do irmão.",
+      "partnerInstruction": {
+        "wait": true,
+        "sourceCharacter": "lothar"
+      }
+    },
+    "84": {
+      "estado": "extraida",
+      "resumo": "O Roc é atingido por uma saraivada de flechas e cai, encerrando a aventura dos envolvidos.",
+      "partnerInstruction": {
+        "sendToReference": 84
+      },
+      "ending": "death"
+    },
+    "85": {
+      "estado": "extraida",
+      "resumo": "Lothar sai vitorioso da choupana e liberta Colthar da armadilha.",
+      "choices": [
+        {
+          "label": "Prosseguir com Lothar",
+          "target": 9
+        }
+      ]
+    },
+    "86": {
+      "estado": "extraida",
+      "resumo": "Colthar atravessa o deserto até a costa e alcança a longa ponte de corda para a Ilha de Orcmoot.",
+      "choices": [
+        {
+          "label": "Seguir para a ponte de Orcmoot",
+          "target": 51
+        }
+      ]
+    },
+    "87": {
+      "estado": "extraida",
+      "resumo": "Seguindo um ribeirão nas montanhas, Colthar encontra duas trilhas para as terras baixas.",
+      "choices": [
+        {
+          "label": "Seguir pela trilha da esquerda",
+          "target": 137
+        },
+        {
+          "label": "Seguir pela trilha da direita",
+          "target": 201
+        }
+      ]
+    },
+    "88": {
+      "estado": "extraida",
+      "resumo": "A encarregada dos escravos usa bonecas de palha contra os irmãos; ambos sofrem dano e enfrentam juntos a Bruxa.",
+      "effects": [
+        {
+          "type": "change_stat",
+          "stat": "energia",
+          "delta": -2
+        },
+        {
+          "type": "change_partner_stat",
+          "stat": "energia",
+          "delta": -2
+        }
+      ],
+      "encounter": {
+        "cooperative": true,
+        "specialRule": "enemy_hit_damages_both",
+        "enemies": [
+          {
+            "name": "Bruxa",
+            "habilidade": 10,
+            "energia": 6
+          }
+        ]
+      },
+      "choices": [
+        {
+          "label": "Vitória com Lothar vivo",
+          "target": 315,
+          "conditions": [
+            {
+              "type": "partner_active"
+            }
+          ]
+        },
+        {
+          "label": "Vitória após Lothar cair",
+          "target": 376,
+          "conditions": [
+            {
+              "type": "partner_removed"
+            }
+          ]
+        }
+      ]
+    },
+    "89": {
+      "estado": "extraida",
+      "resumo": "O efeito de uma Poção termina, mas Colthar ainda conserva a outra metade da garrafa.",
+      "effects": [
+        {
+          "type": "set_flag",
+          "flag": "tem_pocao"
+        }
+      ],
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 171
+        }
+      ]
+    },
+    "90": {
+      "estado": "extraida",
+      "resumo": "Escondido perto de um Pégaso, Colthar é descoberto por um Gigante de Pedra e parte para o confronto.",
+      "choices": [
+        {
+          "label": "Enfrentar o Gigante de Pedra",
+          "target": 461
+        }
+      ]
+    },
+    "91": {
+      "estado": "extraida",
+      "resumo": "Uma escada termina numa parede com duas pedras acionáveis; Colthar pode escolher uma delas ou voltar.",
+      "choices": [
+        {
+          "label": "Pressionar a pedra da esquerda",
+          "target": 42
+        },
+        {
+          "label": "Pressionar a pedra da direita",
+          "target": 193
+        },
+        {
+          "label": "Voltar pela porta",
+          "target": 252
+        }
+      ]
+    },
+    "92": {
+      "estado": "extraida",
+      "resumo": "Ao tentar pegar uma chave do bolso de um gigante adormecido, Colthar faz barulho e o desperta.",
+      "choices": [
+        {
+          "label": "Enfrentar o gigante",
+          "target": 461
+        }
+      ]
+    },
+    "93": {
+      "estado": "extraida",
+      "resumo": "Uma passagem arqueada leva a uma escada; Colthar pode abrir uma porta lateral ou continuar descendo.",
+      "choices": [
+        {
+          "label": "Abrir a porta",
+          "target": 22
+        },
+        {
+          "label": "Continuar descendo a escada",
+          "target": 166
+        }
+      ]
+    },
+    "94": {
+      "estado": "extraida",
+      "resumo": "Lothar destrói magicamente o saco de um gigante; os irmãos escapam e enfrentam juntos o Gigante.",
+      "encounter": {
+        "cooperative": true,
+        "allowCombatMagic": true,
+        "enemies": [
+          {
+            "name": "Gigante",
+            "habilidade": 10,
+            "energia": 10
+          }
+        ]
+      },
+      "onVictory": 498
+    },
+    "95": {
+      "estado": "extraida",
+      "resumo": "Carneiros Monteses derrubam Colthar de um penhasco; a queda machuca suas mãos antes do confronto com Lobos.",
+      "effects": [
+        {
+          "type": "change_stat",
+          "stat": "habilidade",
+          "delta": -2
+        }
+      ],
+      "choices": [
+        {
+          "label": "Enfrentar os Lobos",
+          "target": 191
+        }
+      ]
+    },
+    "96": {
+      "estado": "extraida",
+      "resumo": "Em uma estalagem, um velho monge revela que uma Gema Sagrada está em Orcmoot e que quatro Pergaminhos são necessários.",
+      "choices": [
+        {
+          "label": "Prosseguir pelas montanhas",
+          "target": 4
+        }
+      ]
+    },
+    "97": {
+      "estado": "extraida",
+      "resumo": "Uma saliência desaba; Colthar cai numa piscina, perde ENERGIA e escolhe uma de duas passagens.",
+      "effects": [
+        {
+          "type": "change_stat",
+          "stat": "energia",
+          "delta": -1
+        }
+      ],
+      "choices": [
+        {
+          "label": "Seguir pela passagem da esquerda",
+          "target": 93
+        },
+        {
+          "label": "Seguir pela passagem da direita",
+          "target": 258
+        }
+      ]
+    },
+    "98": {
+      "estado": "extraida",
+      "resumo": "Ao golpear uma raiz, Colthar provoca o desabamento do túnel e é esmagado.",
+      "ending": "death"
+    },
+    "99": {
+      "estado": "extraida",
+      "resumo": "Um Ciclope invisível guarda a passagem; uma Poção permite evitar o combate.",
+      "encounter": {
+        "conditions": [
+          {
+            "type": "flag_not",
+            "flag": "tem_pocao"
+          }
+        ],
+        "enemies": [
+          {
+            "name": "Ciclope",
+            "habilidade": 10,
+            "energia": 10
+          }
+        ]
+      },
+      "onVictory": 181,
+      "choices": [
+        {
+          "label": "Usar a Poção",
+          "target": 156,
+          "conditions": [
+            {
+              "type": "flag",
+              "flag": "tem_pocao"
+            }
+          ]
+        }
+      ]
+    },
+    "100": {
+      "estado": "extraida",
+      "resumo": "Após uma noite tranquila, Colthar chega a uma bifurcação.",
+      "choices": [
+        {
+          "label": "Seguir pelo caminho leste",
+          "target": 19
+        },
+        {
+          "label": "Seguir pelo caminho oeste",
+          "target": 175
+        }
+      ]
     },
     "148": {
       "estado": "pendente",

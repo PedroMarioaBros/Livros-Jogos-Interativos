@@ -362,6 +362,32 @@ export function applyEffect(character, effect, context = {}, rng = Math.random) 
       };
     }
 
+    case "change_partner_stat": {
+      const partner = context.partnerCharacter;
+      if (!partner || !(effect.stat in partner.stats)) {
+        return {
+          type: effect.type,
+          stat: effect.stat,
+          unsupported: true
+        };
+      }
+
+      const before = partner.stats[effect.stat];
+      const value = modifyStat(
+        partner,
+        effect.stat,
+        Number(effect.delta || 0),
+        { allowAboveInitial: effect.cap === "none" }
+      );
+
+      return {
+        type: effect.type,
+        stat: effect.stat,
+        before,
+        value
+      };
+    }
+
     case "random_stat_damage": {
       const roll = rollExpression(effect.dice, rng);
       const before = character.stats[effect.stat];

@@ -712,6 +712,7 @@ function renderReference(reference, options = {}) {
     const context = {
       shared: state.shared,
       partnerActive: state.partnerActive,
+      partnerCharacter: getPartnerHero(),
       itemTags: state.config?.itemTags || {},
       ignoreSharedMutations:
         state.mode === "solo" &&
@@ -853,8 +854,15 @@ function renderReference(reference, options = {}) {
     }
   }
 
+  const encounterAvailable =
+    !node.encounter?.conditions?.length ||
+    node.encounter.conditions.every(condition =>
+      conditionMet(condition, storyContext())
+    );
+
   if (
     (node.encounter || node.encounterDynamic) &&
+    encounterAvailable &&
     !state.completedEncounters.has(state.ref)
   ) {
     renderEncounter(node);
@@ -1499,6 +1507,7 @@ function completeCooperativeCombatVictory(node) {
         const effectContext = {
           shared: state.shared,
           partnerActive: state.partnerActive,
+          partnerCharacter: getPartnerHero(),
           itemTags: state.config?.itemTags || {},
           ignoreSharedMutations: false
         };
