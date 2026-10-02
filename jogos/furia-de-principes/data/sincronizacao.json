@@ -178,6 +178,50 @@
       "notes": "Sincronização confirmada no OCR do volume do Guerreiro."
     },
     {
+      "character": "colthar",
+      "reference": 185,
+      "verified": true,
+      "effects": [
+        {
+          "type": "set_shared",
+          "key": "status",
+          "value": 20
+        }
+      ],
+      "waitFor": "partner-instruction",
+      "routes": [],
+      "notes": "STATUS 20 confirmado no OCR do volume do Guerreiro."
+    },
+    {
+      "character": "colthar",
+      "reference": 199,
+      "verified": true,
+      "effects": [
+        {
+          "type": "set_shared",
+          "key": "status",
+          "value": 3
+        }
+      ],
+      "waitFor": "acao",
+      "routes": [
+        {
+          "acao": [
+            1,
+            22
+          ],
+          "target": 242
+        },
+        {
+          "acao": [
+            23
+          ],
+          "target": 287
+        }
+      ],
+      "notes": "STATUS 3 e rotas por AÇÃO confirmados no OCR do volume do Guerreiro."
+    },
+    {
       "character": "lothar",
       "reference": 31,
       "verified": true,
