@@ -9,13 +9,13 @@ As porcentagens abaixo são estimativas de engenharia para um **Fúria de Prínc
 | Medida | Estado atual |
 | --- | ---: |
 | Colthar — referências estruturadas | 500/500 (100%) |
-| Colthar — completas/extraídas | 489/500 (97,8%) |
-| Colthar — parciais | 11 |
+| Colthar — completas/extraídas | 490/500 (98,0%) |
+| Colthar — parciais | 10 |
 | Colthar — pendentes | 0 |
 | Lothar — referências estruturadas | 500/500 (100%) |
 | Lothar — completas/extraídas | 499/500 (99,8%) |
 | Narrativa combinada — estruturada | 1000/1000 (100%) |
-| Narrativa combinada — completa/extraída | 988/1000 (98,8%) |
+| Narrativa combinada — completa/extraída | 989/1000 (98,9%) |
 | STATUS/AÇÃO catalogados | 34 |
 | STATUS/AÇÃO verificados | 34/34 catalogados |
 | Feitiços de Combate | 12/12 implementados |
@@ -25,12 +25,12 @@ As porcentagens abaixo são estimativas de engenharia para um **Fúria de Prínc
 | Encontros aguardando revisão visual | 7 |
 | Transições pós-morte suportadas | 61/61 |
 | Rotas por resultado do parceiro suportadas | 2/2 cenas (4 rotas) |
-| Referências completas auditadas pelo runtime | 988/988 |
+| Referências completas auditadas pelo runtime | 989/989 |
 | Instâncias de efeitos auditadas | 335 |
 | Instâncias de condições auditadas | 178 |
 | Escolhas coordenadas auditadas | 6 |
 
-Colthar está contínuo de **1 a 500**, sem lacunas estruturais. Isso conclui 100% da estrutura narrativa dos dois volumes. A varredura final de STATUS/AÇÃO também foi concluída: existem 34 pontos catalogados e 34 verificados; o CI agora exige cobertura para todo efeito inline que altere STATUS ou AÇÃO. Ainda existem 11 referências parciais em Colthar (19, 144, 168, 169, 220, 241, 252, 263, 266, 378 e 403) e 1 em Lothar (347). As referências 314 e 44 de Lothar foram promovidas após conferência do OCR derivado do próprio item `livros-jogos` do Archive.org.
+Colthar está contínuo de **1 a 500**, sem lacunas estruturais. Isso conclui 100% da estrutura narrativa dos dois volumes. A varredura final de STATUS/AÇÃO também foi concluída: existem 34 pontos catalogados e 34 verificados; o CI agora exige cobertura para todo efeito inline que altere STATUS ou AÇÃO. Ainda existem 10 referências parciais em Colthar (144, 168, 169, 220, 241, 252, 263, 266, 378 e 403) e 1 em Lothar (347). Colthar 19 e Lothar 314/44 foram promovidas após conferência do OCR derivado do próprio item `livros-jogos` do Archive.org.
 
 ## Estado por área
 
@@ -40,7 +40,7 @@ Colthar está contínuo de **1 a 500**, sem lacunas estruturais. Isso conclui 10
 | Motor genérico de livro-jogo | 98% |
 | Regras específicas de Fúria de Príncipes | 96% |
 | Conteúdo estrutural de Colthar | 100% |
-| Conteúdo completo/extraído de Colthar | 97,8% |
+| Conteúdo completo/extraído de Colthar | 98,0% |
 | Conteúdo estrutural de Lothar | 100% |
 | Conteúdo completo/extraído de Lothar | 99,8% |
 | Combate individual | 96% |
@@ -72,7 +72,7 @@ Com essa régua, o projeto está em aproximadamente:
 - **Fúria de Príncipes completo no mesmo aparelho: ~92%**;
 - **aplicativo Android final: ~86% do caminho total**.
 
-A classificação automática agora cobre 95 finais/saídas e 105 encontros estruturados. Há exatamente um final de sucesso por volume, ambos na referência 500; 7 encontros de Colthar permanecem explicitamente em revisão visual. O grafo combinado em dupla distingue corretamente rotas próprias e rotas do parceiro: 973 de 1000 referências são alcançáveis por transições explícitas, sem alvos inválidos e sem becos sem saída não explicados. As 27 restantes descendem de apenas três entradas não explícitas: Colthar 243 e os enigmas numéricos que podem levar a Colthar 465 e Lothar 18. O runtime do modo dupla agora executa também as 61 transições pós-morte para a referência 39 e as duas cenas dependentes do resultado do parceiro (Lothar 270 e 493). Uma auditoria automática adicional cobre as 988 referências completas: 335 instâncias de efeitos, 178 condições, 4 rotas por resultado do parceiro e 6 escolhas coordenadas são validadas contra o catálogo de recursos suportados pelo motor. Derrotas fatais em combate individual removem corretamente o príncipe ativo antes de o outro continuar. Esses percentuais continuam conservadores porque ainda faltam execução de caminhos completos, conferência das 12 referências parciais restantes e empacotamento final.
+A classificação automática agora cobre 95 finais/saídas e 105 encontros estruturados. Há exatamente um final de sucesso por volume, ambos na referência 500; 7 encontros de Colthar permanecem explicitamente em revisão visual. O grafo combinado em dupla distingue corretamente rotas próprias e rotas do parceiro: 973 de 1000 referências são alcançáveis por transições explícitas, sem alvos inválidos e sem becos sem saída não explicados. As 27 restantes descendem de apenas três entradas não explícitas: Colthar 243 e os enigmas numéricos que podem levar a Colthar 465 e Lothar 18. O runtime do modo dupla agora executa também as 61 transições pós-morte para a referência 39 e as duas cenas dependentes do resultado do parceiro (Lothar 270 e 493). Uma auditoria automática adicional cobre as 989 referências completas: 335 instâncias de efeitos, 178 condições, 4 rotas por resultado do parceiro e 6 escolhas coordenadas são validadas contra o catálogo de recursos suportados pelo motor. Derrotas fatais em combate individual removem corretamente o príncipe ativo antes de o outro continuar. Esses percentuais continuam conservadores porque ainda faltam execução de caminhos completos, conferência das 11 referências parciais restantes e empacotamento final.
 
 ## Marcos
 
@@ -87,7 +87,7 @@ A classificação automática agora cobre 95 finais/saídas e 105 encontros estr
 
 ## Próximos gargalos
 
-1. fechar as 12 referências parciais restantes dos dois volumes por conferência da fonte, sem inventar dados;
+1. fechar as 11 referências parciais restantes dos dois volumes por conferência da fonte, sem inventar dados;
 2. ampliar testes de caminhos alcançáveis e encontros cruzados;
 3. polir interface cooperativa e mensagens de regras especiais;
 4. criar ícones finais e empacotar/testar APK Android;
