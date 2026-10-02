@@ -1800,6 +1800,37 @@ test("Colthar possui o bloco 351 a 375 estruturado", () => {
   );
 });
 
+test("transições solo da referência 39 estão catalogadas", () => {
+  const colthar39 = syncBookData.entries.find(
+    entry => entry.character === "colthar" && entry.reference === 39
+  );
+  const lothar39 = syncBookData.entries.find(
+    entry => entry.character === "lothar" && entry.reference === 39
+  );
+
+  assert.equal(colthar39?.verified, true);
+  assert.equal(colthar39?.type, "partner-removed-transition");
+  assert.deepEqual(
+    colthar39.effects[0],
+    { type: "set_shared", key: "status", value: 1 }
+  );
+
+  assert.equal(lothar39?.verified, true);
+  assert.equal(lothar39?.type, "partner-removed-transition");
+  assert.deepEqual(
+    lothar39.effects[0],
+    { type: "set_shared", key: "acao", value: 1 }
+  );
+});
+
+test("catálogo final possui 34 sincronizações verificadas", () => {
+  assert.equal(syncBookData.entries.length, 34);
+  assert.equal(
+    syncBookData.entries.every(entry => entry.verified === true),
+    true
+  );
+});
+
 test("sincronização 367 de Colthar está verificada", () => {
   const ref367 = syncBookData.entries.find(
     entry => entry.character === "colthar" && entry.reference === 367
