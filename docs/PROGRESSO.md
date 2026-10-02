@@ -13,9 +13,9 @@ As porcentagens abaixo são estimativas de engenharia para um **Fúria de Prínc
 | Colthar — parciais | 11 |
 | Colthar — pendentes | 0 |
 | Lothar — referências estruturadas | 500/500 (100%) |
-| Lothar — completas/extraídas | 497/500 (99,4%) |
+| Lothar — completas/extraídas | 498/500 (99,6%) |
 | Narrativa combinada — estruturada | 1000/1000 (100%) |
-| Narrativa combinada — completa/extraída | 986/1000 (98,6%) |
+| Narrativa combinada — completa/extraída | 987/1000 (98,7%) |
 | STATUS/AÇÃO catalogados | 34 |
 | STATUS/AÇÃO verificados | 34/34 catalogados |
 | Feitiços de Combate | 12/12 implementados |
@@ -25,12 +25,12 @@ As porcentagens abaixo são estimativas de engenharia para um **Fúria de Prínc
 | Encontros aguardando revisão visual | 7 |
 | Transições pós-morte suportadas | 61/61 |
 | Rotas por resultado do parceiro suportadas | 2/2 cenas (4 rotas) |
-| Referências completas auditadas pelo runtime | 986/986 |
-| Instâncias de efeitos auditadas | 334 |
+| Referências completas auditadas pelo runtime | 987/987 |
+| Instâncias de efeitos auditadas | 335 |
 | Instâncias de condições auditadas | 178 |
 | Escolhas coordenadas auditadas | 6 |
 
-Colthar está contínuo de **1 a 500**, sem lacunas estruturais. Isso conclui 100% da estrutura narrativa dos dois volumes. A varredura final de STATUS/AÇÃO também foi concluída: existem 34 pontos catalogados e 34 verificados; o CI agora exige cobertura para todo efeito inline que altere STATUS ou AÇÃO. Ainda existem 11 referências parciais em Colthar (19, 144, 168, 169, 220, 241, 252, 263, 266, 378 e 403) e 3 em Lothar (44, 314 e 347); essas lacunas permanecem explícitas porque o OCR não permite validação segura.
+Colthar está contínuo de **1 a 500**, sem lacunas estruturais. Isso conclui 100% da estrutura narrativa dos dois volumes. A varredura final de STATUS/AÇÃO também foi concluída: existem 34 pontos catalogados e 34 verificados; o CI agora exige cobertura para todo efeito inline que altere STATUS ou AÇÃO. Ainda existem 11 referências parciais em Colthar (19, 144, 168, 169, 220, 241, 252, 263, 266, 378 e 403) e 2 em Lothar (44 e 347). A referência 314 de Lothar foi promovida após conferência do OCR derivado do próprio item `livros-jogos` do Archive.org, que confirmou a regra e o destino 395.
 
 ## Estado por área
 
@@ -42,7 +42,7 @@ Colthar está contínuo de **1 a 500**, sem lacunas estruturais. Isso conclui 10
 | Conteúdo estrutural de Colthar | 100% |
 | Conteúdo completo/extraído de Colthar | 97,8% |
 | Conteúdo estrutural de Lothar | 100% |
-| Conteúdo completo/extraído de Lothar | 99,4% |
+| Conteúdo completo/extraído de Lothar | 99,6% |
 | Combate individual | 96% |
 | Magia de Lothar | 96% |
 | Combate cooperativo | 88% |
@@ -72,7 +72,7 @@ Com essa régua, o projeto está em aproximadamente:
 - **Fúria de Príncipes completo no mesmo aparelho: ~92%**;
 - **aplicativo Android final: ~86% do caminho total**.
 
-A classificação automática agora cobre 95 finais/saídas e 105 encontros estruturados. Há exatamente um final de sucesso por volume, ambos na referência 500; 7 encontros de Colthar permanecem explicitamente em revisão visual. O grafo combinado em dupla distingue corretamente rotas próprias e rotas do parceiro: 973 de 1000 referências são alcançáveis por transições explícitas, sem alvos inválidos e sem becos sem saída não explicados. As 27 restantes descendem de apenas três entradas não explícitas: Colthar 243 e os enigmas numéricos que podem levar a Colthar 465 e Lothar 18. O runtime do modo dupla agora executa também as 61 transições pós-morte para a referência 39 e as duas cenas dependentes do resultado do parceiro (Lothar 270 e 493). Uma auditoria automática adicional cobre as 986 referências completas: 334 instâncias de efeitos, 178 condições, 4 rotas por resultado do parceiro e 6 escolhas coordenadas são validadas contra o catálogo de recursos suportados pelo motor. Derrotas fatais em combate individual removem corretamente o príncipe ativo antes de o outro continuar. Esses percentuais continuam conservadores porque ainda faltam execução de caminhos completos, conferência visual das 14 referências parciais e empacotamento final.
+A classificação automática agora cobre 95 finais/saídas e 105 encontros estruturados. Há exatamente um final de sucesso por volume, ambos na referência 500; 7 encontros de Colthar permanecem explicitamente em revisão visual. O grafo combinado em dupla distingue corretamente rotas próprias e rotas do parceiro: 973 de 1000 referências são alcançáveis por transições explícitas, sem alvos inválidos e sem becos sem saída não explicados. As 27 restantes descendem de apenas três entradas não explícitas: Colthar 243 e os enigmas numéricos que podem levar a Colthar 465 e Lothar 18. O runtime do modo dupla agora executa também as 61 transições pós-morte para a referência 39 e as duas cenas dependentes do resultado do parceiro (Lothar 270 e 493). Uma auditoria automática adicional cobre as 987 referências completas: 335 instâncias de efeitos, 178 condições, 4 rotas por resultado do parceiro e 6 escolhas coordenadas são validadas contra o catálogo de recursos suportados pelo motor. Derrotas fatais em combate individual removem corretamente o príncipe ativo antes de o outro continuar. Esses percentuais continuam conservadores porque ainda faltam execução de caminhos completos, conferência das 13 referências parciais restantes e empacotamento final.
 
 ## Marcos
 
@@ -87,7 +87,7 @@ A classificação automática agora cobre 95 finais/saídas e 105 encontros estr
 
 ## Próximos gargalos
 
-1. fechar as 14 referências parciais dos dois volumes por conferência visual, sem inventar dados;
+1. fechar as 13 referências parciais restantes dos dois volumes por conferência da fonte, sem inventar dados;
 2. ampliar testes de caminhos alcançáveis e encontros cruzados;
 3. polir interface cooperativa e mensagens de regras especiais;
 4. criar ícones finais e empacotar/testar APK Android;

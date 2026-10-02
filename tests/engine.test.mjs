@@ -2967,10 +2967,10 @@ test("Raio de Dizimação respeita o inimigo atual no combate sequencial", () =>
   assert.equal(encounter.finished, false);
 });
 
-test("Lothar 314 permanece parcial mesmo com suporte do motor", () => {
+test("Lothar 314 está extraída e pronta para o Raio de Dizimação", () => {
   const ref314 = mageBookData.references["314"];
 
-  assert.equal(ref314.estado, "parcial");
+  assert.equal(ref314.estado, "extraida");
   assert.equal(
     ref314.effects.some(
       effect =>
@@ -2979,5 +2979,6 @@ test("Lothar 314 permanece parcial mesmo com suporte do motor", () => {
     ),
     true
   );
+  assert.equal(ref314.choices[0].target, 395);
   assert.equal(ref314.needsEngineSupport, undefined);
 });

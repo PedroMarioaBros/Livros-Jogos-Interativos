@@ -83,8 +83,8 @@
   - [x] Análise automática dos grafos de ambos os volumes
   - [x] Grafo combinado em dupla com rotas cruzadas e STATUS/AÇÃO: 973/1000 nós explicitamente alcançáveis, zero becos sem saída
   - [x] Regressões de morte em combate, transição solo e resultado do outro príncipe
-  - [x] Auditoria de runtime nas 986 referências completas: 334 efeitos e 178 condições com suporte reconhecido pelo CI
-  - [x] Raio de Dizimação preparado como item consumível de combate solo e cooperativo, sem promover a referência 314 antes da revisão visual
+  - [x] Auditoria de runtime nas 987 referências completas: 335 efeitos e 178 condições com suporte reconhecido pelo CI
+  - [x] Raio de Dizimação implementado em combate solo/cooperativo; referência 314 confirmada no OCR do item `livros-jogos` do Archive.org
 
 ## Fase 3 — Interface
 - [ ] Biblioteca de aventuras
