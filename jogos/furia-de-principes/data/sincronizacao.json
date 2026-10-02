@@ -69,6 +69,76 @@
       "notes": "Sincronização confirmada no texto do volume do Guerreiro."
     },
     {
+      "character": "colthar",
+      "reference": 111,
+      "verified": true,
+      "effects": [
+        {
+          "type": "set_shared",
+          "key": "status",
+          "value": 18
+        }
+      ],
+      "waitFor": "acao",
+      "routes": [
+        {
+          "acao": [
+            1,
+            37
+          ],
+          "target": 319
+        },
+        {
+          "acao": [
+            38
+          ],
+          "target": 313
+        }
+      ],
+      "notes": "Sincronização conferida no OCR do volume do Guerreiro."
+    },
+    {
+      "character": "colthar",
+      "reference": 123,
+      "verified": true,
+      "effects": [
+        {
+          "type": "set_shared",
+          "key": "status",
+          "value": 13,
+          "conditions": [
+            {
+              "type": "flag",
+              "flag": "encontrou_dragesima"
+            }
+          ]
+        },
+        {
+          "type": "set_shared",
+          "key": "status",
+          "value": 14,
+          "conditions": [
+            {
+              "type": "flag_not",
+              "flag": "encontrou_dragesima"
+            }
+          ]
+        }
+      ],
+      "waitFor": "acao",
+      "routes": [
+        {
+          "acao": [
+            1,
+            31,
+            32
+          ],
+          "target": 282
+        }
+      ],
+      "notes": "STATUS 13 se Colthar já encontrou Dragesima; caso contrário STATUS 14. Depois aguarda AÇÃO 1, 31 ou 32."
+    },
+    {
       "character": "lothar",
       "reference": 31,
       "verified": true,
