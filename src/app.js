@@ -38,7 +38,8 @@ import {
   beginHandoff,
   completeHandoff,
   updateDuoPlayer,
-  restoreDuoSession
+  restoreDuoSession,
+  resolvePartnerOutcomeRoute
 } from "./engine/duo.js";
 
 const state = {
@@ -261,6 +262,97 @@ function updatePartnerState() {
 
   const other = state.character === "colthar" ? "lothar" : "colthar";
   state.partnerActive = !state.duo.players[other].removed;
+}
+
+function applyDuoRemovalTransition(reference) {
+  if (
+    state.mode !== "dupla" ||
+    !state.duo ||
+    !state.partnerActive
+  ) {
+    return false;
+  }
+
+  const transitionReference = Number(reference);
+  if (
+    !Number.isInteger(transitionReference) ||
+    transitionReference < 1 ||
+    transitionReference > 500
+  ) {
+    return false;
+  }
+
+  const syncResult = processSyncPoint(
+    state.syncData,
+    {
+      character: state.character,
+      reference: transitionReference,
+      shared: state.shared
+    },
+    {
+      character: state.hero,
+      partnerCharacter: getPartnerHero(),
+      partnerActive: state.partnerActive
+    }
+  );
+
+  if (syncResult.entry) {
+    state.shared = syncResult.shared;
+  } else {
+    const transitionNode =
+      state.characterData?.references?.[String(transitionReference)];
+    const context = storyContext({
+      shared: state.shared,
+      partnerActive: state.partnerActive
+    });
+
+    applyStoryEffects(
+      state.hero,
+      transitionNode?.effects || [],
+      context
+    );
+    state.shared = context.shared;
+  }
+
+  updateShared();
+  return true;
+}
+
+function removeCurrentDuoPlayer(transitionReference = null) {
+  if (
+    state.mode !== "dupla" ||
+    !state.duo ||
+    !state.character
+  ) {
+    return false;
+  }
+
+  const current = state.duo.players[state.character];
+
+  if (!current.removed) {
+    updateDuoPlayer(state.duo, state.character, {
+      hero: state.hero,
+      reference: state.ref,
+      history: state.history,
+      encounter: state.encounter,
+      completedEncounters: state.completedEncounters,
+      removed: true
+    });
+  }
+
+  updatePartnerState();
+
+  if (
+    state.partnerActive &&
+    Number.isInteger(Number(transitionReference))
+  ) {
+    applyDuoRemovalTransition(
+      Number(transitionReference)
+    );
+  }
+
+  renderDuoStatus();
+  return true;
 }
 
 async function activateDuoCharacter(characterId, options = {}) {
@@ -883,6 +975,40 @@ function renderReference(reference, options = {}) {
     }
   }
 
+  if (
+    node.partnerOutcomeRoutes?.length &&
+    state.mode === "dupla" &&
+    state.duo
+  ) {
+    const other =
+      state.character === "colthar" ? "lothar" : "colthar";
+    const partner = state.duo.players[other];
+    const outcomeRoute = resolvePartnerOutcomeRoute(
+      node.partnerOutcomeRoutes,
+      partner
+    );
+
+    if (
+      outcomeRoute &&
+      Number.isInteger(outcomeRoute.target) &&
+      outcomeRoute.target > 0 &&
+      outcomeRoute.target !== state.ref
+    ) {
+      $("sync-message").textContent =
+        `Resultado do outro príncipe resolvido → ${outcomeRoute.target}`;
+
+      setTimeout(
+        () => navigateTo(
+          outcomeRoute.target,
+          "Resultado do outro príncipe",
+          { applyEntryEffects: true }
+        ),
+        0
+      );
+      return;
+    }
+  }
+
   if (renderPendingSharedLoot()) {
     hideCombat();
     return;
@@ -1468,21 +1594,11 @@ function renderReference(reference, options = {}) {
 
   if (node.ending) {
     if (
-      state.mode === "dupla" &&
-      state.duo &&
-      ["death", "removed"].includes(node.ending) &&
-      !state.duo.players[state.character].removed
+      ["death", "removed"].includes(node.ending)
     ) {
-      updateDuoPlayer(state.duo, state.character, {
-        hero: state.hero,
-        reference: state.ref,
-        history: state.history,
-        encounter: state.encounter,
-        completedEncounters: state.completedEncounters,
-        removed: true
-      });
-      updatePartnerState();
-      renderDuoStatus();
+      removeCurrentDuoPlayer(
+        node.afterDeathReference ?? null
+      );
     }
 
     const info = document.createElement("p");
@@ -2214,6 +2330,10 @@ function playCombatRound() {
           ]
         });
       }
+    }
+
+    if (!node.onDefeat) {
+      removeCurrentDuoPlayer(39);
     }
 
     if (node.onDefeat) {
