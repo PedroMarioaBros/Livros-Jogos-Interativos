@@ -78,6 +78,7 @@
 - [ ] Classificar finais, mortes e encontros
 - [ ] Testar todos os caminhos alcançáveis
   - [x] Análise automática dos grafos de ambos os volumes
+  - [x] Grafo combinado em dupla com rotas cruzadas e STATUS/AÇÃO: 973/1000 nós explicitamente alcançáveis, zero becos sem saída
 
 ## Fase 3 — Interface
 - [ ] Biblioteca de aventuras
@@ -101,6 +102,7 @@
 - [ ] Pontos de encontro narrativos entre os dois príncipes
   - [x] Sessões independentes de Colthar e Lothar no mesmo aparelho
   - [x] Passagem protegida do aparelho entre jogadores
+  - [x] Escolhas coordenadas com destino próprio e do parceiro (partnerTarget), incluindo a referência 287
 - [ ] Sincronização entre dois aparelhos
 
 ## Regra de qualidade
