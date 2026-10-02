@@ -57,10 +57,32 @@ jobs:
       - name: Confirmar APK
         run: test -f android/app/build/outputs/apk/debug/app-debug.apk
 
+      - name: Verificar assinatura do APK
+        run: /usr/local/lib/android/sdk/build-tools/36.0.0/apksigner verify --verbose android/app/build/outputs/apk/debug/app-debug.apk
+
+      - name: Validar metadados do APK
+        run: |
+          APK="android/app/build/outputs/apk/debug/app-debug.apk"
+          OUT="android/app/build/outputs/apk/debug/app-debug.badging.txt"
+          AAPT="/usr/local/lib/android/sdk/build-tools/36.0.0/aapt"
+
+          "$AAPT" dump badging "$APK" | tee "$OUT"
+          grep -F "package: name='io.github.pedromariabros.livrosjogos'" "$OUT"
+          grep -F "sdkVersion:'24'" "$OUT"
+          grep -F "targetSdkVersion:'36'" "$OUT"
+          grep -F "launchable-activity:" "$OUT"
+
+      - name: Gerar checksum SHA-256
+        working-directory: android/app/build/outputs/apk/debug
+        run: sha256sum app-debug.apk > app-debug.apk.sha256
+
       - name: Publicar APK de debug
         uses: actions/upload-artifact@v4
         with:
           name: livros-jogos-debug-apk
-          path: android/app/build/outputs/apk/debug/app-debug.apk
+          path: |
+            android/app/build/outputs/apk/debug/app-debug.apk
+            android/app/build/outputs/apk/debug/app-debug.apk.sha256
+            android/app/build/outputs/apk/debug/app-debug.badging.txt
           if-no-files-found: error
           retention-days: 14
