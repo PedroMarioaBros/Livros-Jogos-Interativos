@@ -33,6 +33,8 @@ As porcentagens abaixo são estimativas de engenharia para um **Fúria de Prínc
 | Rota completa com save/load intermediário | 1/1 validada até o final 500 |
 | Auditoria PWA/offline | 28 recursos de shell, 14 módulos JS, 5 dependências de jogo e 3 ícones — 0 problemas/warnings |
 | Bootstrap Android/Capacitor | webDir `www`, 10 arquivos críticos e 28 recursos auditados — 0 problemas |
+| Primeiro APK Android de debug | gerado no CI, assinatura v2 válida, applicationId/SDKs auditados |
+| Integridade do APK | SHA-256 gerado e conferido; APK + checksum + badging publicados como artefato |
 | Rotas narrativas conjuntas completas executadas | 2/2 finais de sucesso (Colthar e Lothar → 500) |
 | Instâncias de efeitos auditadas | 335 |
 | Instâncias de condições auditadas | 178 |
@@ -59,7 +61,7 @@ Colthar está contínuo de **1 a 500**, sem lacunas estruturais. Isso conclui 10
 | Dois jogadores no mesmo aparelho | 94% |
 | Sincronização entre dois aparelhos | 0% |
 | Camada PWA/offline | 82% |
-| Empacotamento Android/APK | 12% |
+| Empacotamento Android/APK | 55% |
 | Ilustrações e áudio finais | 0–5% |
 | Testes do motor | 99% |
 | Testes da aventura completa | ~94% |
@@ -78,9 +80,9 @@ Para evitar uma média simples enganosa, o acompanhamento global usa pesos fixos
 Com essa régua, o projeto está em aproximadamente:
 
 - **Fúria de Príncipes completo no mesmo aparelho: ~92%**;
-- **aplicativo Android final: ~86% do caminho total**.
+- **aplicativo Android final: ~88% do caminho total**.
 
-A classificação automática agora cobre 95 finais/saídas e 105 encontros estruturados. Há exatamente um final de sucesso por volume, ambos na referência 500; 7 encontros de Colthar permanecem explicitamente em revisão visual. O grafo combinado em dupla distingue corretamente rotas próprias e rotas do parceiro: 988 de 1000 referências são alcançáveis por transições explícitas, sem alvos inválidos, sem becos sem saída não explicados e sem ciclos alcançáveis presos fora de qualquer resolução. As 12 restantes descendem de apenas duas entradas não explícitas por resposta numérica: Colthar 465 e Lothar 18. O runtime do modo dupla agora executa 64 transições pós-saída para a referência 39 e as duas cenas dependentes do resultado do parceiro (Lothar 270 e 493). Uma auditoria automática adicional cobre as 989 referências completas: 335 instâncias de efeitos, 178 condições, 4 rotas por resultado do parceiro e 6 escolhas coordenadas são validadas contra o catálogo de recursos suportados pelo motor. Derrotas fatais em combate individual removem corretamente o príncipe ativo antes de o outro continuar. Finais `removed-transition` também removem corretamente o personagem, e mortes conjuntas diretas removem ambos os príncipes sem exigir handoff intermediário. O CI também instancia todos os 104 encontros completos e executa 208 resoluções integrais determinísticas — uma vitória e uma derrota para cada encontro — além da suíte unitária e das auditorias. Além disso, as 989 referências completas passam por execução real de efeitos, recompensas, condições, escolhas e resoluções condicionais sem retornar recursos não suportados. Duas rotas conjuntas completas são reproduzidas no CI desde a referência 1 até os dois finais de sucesso 500. A rota de Colthar preserva STATUS/AÇÃO, inventário, flags, tesouro compartilhado, instruções cruzadas, morte de Lothar e continuação solo; a rota de Lothar valida pagamentos, três feitiços situacionais, morte de Colthar, STATUS=1 e continuação solo até 500. A rota de Lothar também é interrompida na referência 191, serializada, restaurada como sessão dupla e retomada até 500 preservando ouro, MAGIA, inventário, STATUS/AÇÃO, referências e remoção do parceiro. A PWA passa por auditoria automática de integridade do cache: todos os recursos/imports/dependências necessários ao jogo estão cobertos. Os ícones PNG reais 192×192 e 512×512 já estão no manifesto e no cache, com dimensões verificadas pelo CI. O bootstrap Android usa Capacitor com `webDir` gerado em `www/`, configuração e assets auditados; ainda faltam gerar o projeto nativo, produzir o primeiro APK e testar instalação/atualização em aparelho real. Esses percentuais continuam conservadores porque ainda faltam execução de caminhos completos, conferência das 11 referências parciais restantes e empacotamento final.
+A classificação automática agora cobre 95 finais/saídas e 105 encontros estruturados. Há exatamente um final de sucesso por volume, ambos na referência 500; 7 encontros de Colthar permanecem explicitamente em revisão visual. O grafo combinado em dupla distingue corretamente rotas próprias e rotas do parceiro: 988 de 1000 referências são alcançáveis por transições explícitas, sem alvos inválidos, sem becos sem saída não explicados e sem ciclos alcançáveis presos fora de qualquer resolução. As 12 restantes descendem de apenas duas entradas não explícitas por resposta numérica: Colthar 465 e Lothar 18. O runtime do modo dupla agora executa 64 transições pós-saída para a referência 39 e as duas cenas dependentes do resultado do parceiro (Lothar 270 e 493). Uma auditoria automática adicional cobre as 989 referências completas: 335 instâncias de efeitos, 178 condições, 4 rotas por resultado do parceiro e 6 escolhas coordenadas são validadas contra o catálogo de recursos suportados pelo motor. Derrotas fatais em combate individual removem corretamente o príncipe ativo antes de o outro continuar. Finais `removed-transition` também removem corretamente o personagem, e mortes conjuntas diretas removem ambos os príncipes sem exigir handoff intermediário. O CI também instancia todos os 104 encontros completos e executa 208 resoluções integrais determinísticas — uma vitória e uma derrota para cada encontro — além da suíte unitária e das auditorias. Além disso, as 989 referências completas passam por execução real de efeitos, recompensas, condições, escolhas e resoluções condicionais sem retornar recursos não suportados. Duas rotas conjuntas completas são reproduzidas no CI desde a referência 1 até os dois finais de sucesso 500. A rota de Colthar preserva STATUS/AÇÃO, inventário, flags, tesouro compartilhado, instruções cruzadas, morte de Lothar e continuação solo; a rota de Lothar valida pagamentos, três feitiços situacionais, morte de Colthar, STATUS=1 e continuação solo até 500. A rota de Lothar também é interrompida na referência 191, serializada, restaurada como sessão dupla e retomada até 500 preservando ouro, MAGIA, inventário, STATUS/AÇÃO, referências e remoção do parceiro. A PWA passa por auditoria automática de integridade do cache: todos os recursos/imports/dependências necessários ao jogo estão cobertos. Os ícones PNG reais 192×192 e 512×512 já estão no manifesto e no cache, com dimensões verificadas pelo CI. O empacotamento Android usa Capacitor com `webDir` gerado em `www/`. O CI já gera o projeto nativo, sincroniza os assets, compila `app-debug.apk`, verifica assinatura APK v2, `applicationId`, minSdk 24, target/compileSdk 36 e gera SHA-256 antes de publicar o artefato. Ainda faltam testar instalação, abertura, funcionamento offline, save/load e atualização em aparelho Android real, além de preparar assinatura/empacotamento de release e acabamento dos ícones nativos. Esses percentuais continuam conservadores porque ainda faltam execução de caminhos completos, conferência das 11 referências parciais restantes e empacotamento final.
 
 ## Marcos
 
@@ -91,14 +93,14 @@ A classificação automática agora cobre 95 finais/saídas e 105 encontros estr
 | Colthar solo completo | ~95% |
 | Lothar solo completo | ~94% |
 | Fúria completo no mesmo aparelho | ~92% |
-| Aplicativo Android final | ~86% |
+| Aplicativo Android final | ~88% |
 
 ## Próximos gargalos
 
 1. fechar as 11 referências parciais restantes dos dois volumes por conferência da fonte, sem inventar dados;
 2. ampliar execução de caminhos narrativos completos além da cobertura integral dos encontros;
 3. polir interface cooperativa e mensagens de regras especiais;
-4. criar ícones finais e empacotar/testar APK Android;
+4. testar o APK debug em Android real (instalação, abertura, offline, save/load e atualização) e preparar release assinado;
 5. iniciar a sincronização entre dois aparelhos depois que o modo local estiver estabilizado.
 
 ## Critério de qualidade
