@@ -1386,7 +1386,17 @@
       "choices": [
         {
           "label": "Beber a Poção",
-          "target": 477
+          "target": 477,
+          "effects": [
+            {
+              "type": "set_flag",
+              "flag": "bebeu_pocao"
+            },
+            {
+              "type": "set_flag",
+              "flag": "tem_pocao"
+            }
+          ]
         },
         {
           "label": "Tentar descer pelo penhasco",
@@ -1762,6 +1772,12 @@
               "type": "flag",
               "flag": "tem_pocao"
             }
+          ],
+          "effects": [
+            {
+              "type": "remove_flag",
+              "flag": "tem_pocao"
+            }
           ]
         }
       ]
@@ -1777,6 +1793,384 @@
         {
           "label": "Seguir pelo caminho oeste",
           "target": 175
+        }
+      ]
+    },
+    "101": {
+      "estado": "extraida",
+      "resumo": "Subindo por uma chaminé, Colthar encontra um buraco com brilho verde e decide como agir.",
+      "choices": [
+        {
+          "label": "Enfiar a mão no buraco",
+          "target": 114
+        },
+        {
+          "label": "Investigar com a espada",
+          "target": 251
+        },
+        {
+          "label": "Ignorar o buraco e continuar subindo",
+          "target": 432
+        }
+      ]
+    },
+    "102": {
+      "estado": "extraida",
+      "resumo": "Depois de resgatar uma jovem, Colthar decide acompanhá-la até um mosteiro ou manter o compromisso de encontrar Lothar na ponte de pedágio.",
+      "choices": [
+        {
+          "label": "Acompanhar a jovem até o mosteiro",
+          "target": 377
+        },
+        {
+          "label": "Ir ao encontro de Lothar na ponte",
+          "target": 18
+        }
+      ]
+    },
+    "103": {
+      "estado": "extraida",
+      "resumo": "Um Gnomo hostil ataca Colthar.",
+      "encounter": {
+        "enemies": [
+          {
+            "name": "Gnomo",
+            "habilidade": 8,
+            "energia": 10
+          }
+        ]
+      },
+      "onVictory": 54
+    },
+    "104": {
+      "estado": "extraida",
+      "resumo": "A tentativa de Lothar de pegar as chaves falha; Colthar prossegue com o plano de fuga.",
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 161
+        }
+      ]
+    },
+    "105": {
+      "estado": "extraida",
+      "resumo": "A Hidra oferece passagem em troca dos pertences; Colthar pode aceitar a exigência ou atacar.",
+      "choices": [
+        {
+          "label": "Entregar os bens",
+          "target": 26
+        },
+        {
+          "label": "Atacar a Hidra",
+          "target": 487
+        }
+      ]
+    },
+    "106": {
+      "estado": "extraida",
+      "resumo": "Os irmãos recolhem uma linha de seda resistente; em seguida Lothar cai por um alçapão e é separado de Colthar.",
+      "effects": [
+        {
+          "type": "add_item",
+          "item": "linha_de_seda"
+        }
+      ],
+      "partnerInstruction": {
+        "sendToReference": 293
+      },
+      "choices": [
+        {
+          "label": "Colthar continua sozinho",
+          "target": 497
+        }
+      ]
+    },
+    "107": {
+      "estado": "extraida",
+      "resumo": "Três velhas perguntam qual delas é a mais bela; os irmãos precisam escolher uma resposta.",
+      "choices": [
+        {
+          "label": "A velha com um olho",
+          "target": 152
+        },
+        {
+          "label": "A velha com um dente",
+          "target": 247
+        },
+        {
+          "label": "A velha com uma garra",
+          "target": 351
+        },
+        {
+          "label": "As três juntas",
+          "target": 469
+        }
+      ]
+    },
+    "108": {
+      "estado": "extraida",
+      "resumo": "Um Sapo Gigante ataca Colthar.",
+      "encounter": {
+        "enemies": [
+          {
+            "name": "Sapo Gigante",
+            "habilidade": 8,
+            "energia": 8
+          }
+        ]
+      },
+      "onVictory": 74
+    },
+    "109": {
+      "estado": "extraida",
+      "resumo": "Uma Cerca Viva tenta aprisionar Colthar; ele precisa destruí-la em no máximo três séries de ataque.",
+      "encounter": {
+        "roundLimit": 3,
+        "enemies": [
+          {
+            "name": "Cerca Viva",
+            "habilidade": 9,
+            "energia": 4
+          }
+        ]
+      },
+      "onVictory": 63,
+      "onDefeat": 39,
+      "onRoundLimit": 39,
+      "notes": "Se a Cerca Viva não for destruída até o fim da terceira série, Colthar fica preso para sempre e sua aventura termina."
+    },
+    "110": {
+      "estado": "extraida",
+      "resumo": "Bill e Bert roubam Colthar, levando ouro, provisões e pertences; somente a espada e o cavalo, caso ainda esteja com eles, permanecem.",
+      "effects": [
+        {
+          "type": "set_gold",
+          "value": 0
+        },
+        {
+          "type": "set_provisions",
+          "value": 0
+        },
+        {
+          "type": "clear_items_except",
+          "items": [
+            "espada",
+            "cavalo"
+          ]
+        },
+        {
+          "type": "change_stat",
+          "stat": "energia",
+          "delta": -4
+        }
+      ],
+      "choices": [
+        {
+          "label": "Prosseguir se sobreviver",
+          "target": 13
+        }
+      ]
+    },
+    "111": {
+      "estado": "validada",
+      "resumo": "Ponto de sincronização: Colthar define STATUS 18 e aguarda AÇÃO 1, 37 ou 38."
+    },
+    "112": {
+      "estado": "extraida",
+      "resumo": "Colthar orienta Lothar a enfrentar a situação adiante e aguarda o resultado do irmão antes de decidir como prosseguir.",
+      "partnerInstruction": {
+        "sendToReference": 61,
+        "wait": true
+      }
+    },
+    "113": {
+      "estado": "extraida",
+      "resumo": "Uma explosão atinge Colthar e reduz sua ENERGIA.",
+      "effects": [
+        {
+          "type": "change_stat",
+          "stat": "energia",
+          "delta": -3
+        }
+      ],
+      "choices": [
+        {
+          "label": "Prosseguir se sobreviver",
+          "target": 194
+        }
+      ]
+    },
+    "114": {
+      "estado": "extraida",
+      "resumo": "Colthar alcança um buraco de brilho verde, retira uma enorme esmeralda e é agarrado pelo pescoço.",
+      "effects": [
+        {
+          "type": "add_item",
+          "item": "esmeralda_grande"
+        }
+      ],
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 479
+        }
+      ]
+    },
+    "115": {
+      "estado": "extraida",
+      "resumo": "Colthar encaminha Lothar para outra referência e precisa aguardar a instrução do irmão.",
+      "partnerInstruction": {
+        "sendToReference": 136,
+        "wait": true
+      }
+    },
+    "116": {
+      "estado": "extraida",
+      "resumo": "Colthar não consegue resistir ao Demônio e sua aventura termina.",
+      "ending": "death",
+      "afterDeathReference": 39
+    },
+    "117": {
+      "estado": "extraida",
+      "resumo": "Ao mexer em um espelho, Colthar desperta dois Gárgulas que precisa enfrentar sucessivamente.",
+      "encounter": {
+        "enemies": [
+          {
+            "name": "Gárgula Um",
+            "habilidade": 9,
+            "energia": 8
+          },
+          {
+            "name": "Gárgula Dois",
+            "habilidade": 8,
+            "energia": 8
+          }
+        ]
+      },
+      "rewards": [
+        {
+          "type": "add_item",
+          "item": "espelho_de_prata"
+        }
+      ],
+      "onVictory": 429
+    },
+    "118": {
+      "estado": "extraida",
+      "resumo": "O destino depende de Colthar ter bebido anteriormente a Poção encontrada na caverna.",
+      "choices": [
+        {
+          "label": "Já bebeu a Poção",
+          "target": 89,
+          "conditions": [
+            {
+              "type": "flag",
+              "flag": "bebeu_pocao"
+            }
+          ]
+        },
+        {
+          "label": "Não bebeu a Poção",
+          "target": 171,
+          "conditions": [
+            {
+              "type": "flag_not",
+              "flag": "bebeu_pocao"
+            }
+          ]
+        }
+      ]
+    },
+    "119": {
+      "estado": "extraida",
+      "resumo": "Dentro de um mausoléu, Colthar escolhe entre quatro caixões cobertos por tecidos de cores diferentes.",
+      "choices": [
+        {
+          "label": "Abrir o caixão turquesa",
+          "target": 235
+        },
+        {
+          "label": "Abrir o caixão escarlate",
+          "target": 134
+        },
+        {
+          "label": "Abrir o caixão branco",
+          "target": 254
+        },
+        {
+          "label": "Abrir o caixão verde-esmeralda",
+          "target": 297
+        }
+      ]
+    },
+    "120": {
+      "estado": "extraida",
+      "resumo": "A resposta correta ao enigma permite aos irmãos recuperar os pertences e armas que haviam sido roubados.",
+      "effects": [
+        {
+          "type": "restore_stashed_items"
+        }
+      ],
+      "choices": [
+        {
+          "label": "Prosseguir pelo portão",
+          "target": 315
+        }
+      ]
+    },
+    "121": {
+      "estado": "extraida",
+      "resumo": "Uma vassoura voadora se choca contra uma parede; Colthar perde ENERGIA antes de continuar.",
+      "effects": [
+        {
+          "type": "change_stat",
+          "stat": "energia",
+          "delta": -1
+        }
+      ],
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 192
+        }
+      ]
+    },
+    "122": {
+      "estado": "extraida",
+      "resumo": "Uma enorme Coruja Branca carrega Colthar; um Teste de Sorte determina o que acontece.",
+      "test": {
+        "type": "luck",
+        "successTarget": 484,
+        "failureTarget": 16
+      }
+    },
+    "123": {
+      "estado": "validada",
+      "resumo": "Ponto de sincronização: STATUS vira 13 se Colthar já encontrou Dragesima ou 14 caso contrário; depois ele aguarda AÇÃO 1, 31 ou 32."
+    },
+    "124": {
+      "estado": "extraida",
+      "resumo": "Uma faixa violeta transporta os irmãos para uma trilha na floresta; Colthar deve aguardar a instrução de Lothar.",
+      "partnerInstruction": {
+        "wait": true,
+        "sourceCharacter": "lothar"
+      }
+    },
+    "125": {
+      "estado": "extraida",
+      "resumo": "O feitiço de Lothar desfaz as amarras; os irmãos recuperam seus equipamentos e fogem da caravana.",
+      "partnerInstruction": {
+        "sendToReference": 125
+      },
+      "effects": [
+        {
+          "type": "restore_stashed_items"
+        }
+      ],
+      "choices": [
+        {
+          "label": "Fugir para o deserto",
+          "target": 346
         }
       ]
     },
