@@ -139,6 +139,45 @@
       "notes": "STATUS 13 se Colthar já encontrou Dragesima; caso contrário STATUS 14. Depois aguarda AÇÃO 1, 31 ou 32."
     },
     {
+      "character": "colthar",
+      "reference": 136,
+      "verified": true,
+      "effects": [
+        {
+          "type": "set_shared",
+          "key": "status",
+          "value": 16
+        }
+      ],
+      "waitFor": "partner-instruction",
+      "routes": [],
+      "notes": "STATUS 16 confirmado no OCR do volume do Guerreiro."
+    },
+    {
+      "character": "colthar",
+      "reference": 148,
+      "verified": true,
+      "effects": [
+        {
+          "type": "set_shared",
+          "key": "status",
+          "value": 2
+        }
+      ],
+      "waitFor": "acao",
+      "routes": [
+        {
+          "acao": [
+            1,
+            22,
+            23
+          ],
+          "target": 325
+        }
+      ],
+      "notes": "Sincronização confirmada no OCR do volume do Guerreiro."
+    },
+    {
       "character": "lothar",
       "reference": 31,
       "verified": true,
