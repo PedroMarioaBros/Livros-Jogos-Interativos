@@ -4500,6 +4500,226 @@
           "target": 78
         }
       ]
+    },
+    "276": {
+      "estado": "extraida",
+      "resumo": "Cadáveres animados cercam Colthar perto de um mausoléu e ele decide como reagir.",
+      "choices": [
+        {
+          "label": "Enfrentar os mortos-vivos",
+          "target": 169
+        },
+        {
+          "label": "Correr para o mausoléu",
+          "target": 119
+        },
+        {
+          "label": "Fugir pela trilha",
+          "target": 358
+        }
+      ]
+    },
+    "277": {
+      "estado": "extraida",
+      "resumo": "Depois de se recuperar de um ataque de morcegos, Colthar encontra uma escada lateral numa passagem.",
+      "choices": [
+        {
+          "label": "Descer a escada",
+          "target": 307
+        },
+        {
+          "label": "Continuar pela passagem",
+          "target": 435
+        }
+      ]
+    },
+    "278": {
+      "estado": "extraida",
+      "resumo": "Uma correnteza impede Colthar de atravessar e o força a retornar para enfrentar os Lobos.",
+      "choices": [
+        {
+          "label": "Voltar para enfrentar os Lobos",
+          "target": 191
+        }
+      ]
+    },
+    "279": {
+      "estado": "extraida",
+      "resumo": "Homens da floresta embriagam Colthar e roubam todo o ouro e provisões que ele ainda possui.",
+      "effects": [
+        {
+          "type": "set_gold",
+          "value": 0
+        },
+        {
+          "type": "set_provisions",
+          "value": 0
+        }
+      ],
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 326
+        }
+      ]
+    },
+    "280": {
+      "estado": "extraida",
+      "resumo": "Colthar sobe uma escada e retorna à caverna principal pela outra passagem.",
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 258
+        }
+      ]
+    },
+    "281": {
+      "estado": "extraida",
+      "resumo": "Colthar observa uma Bruxa invocar um Demônio e só retoma a viagem depois que ambos partem.",
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 367
+        }
+      ]
+    },
+    "282": {
+      "estado": "extraida",
+      "resumo": "Um riacho de águas frias oferece duas formas de travessia.",
+      "choices": [
+        {
+          "label": "Atravessar pelas pedras cobertas de limo",
+          "target": 338
+        },
+        {
+          "label": "Atravessar a água a pé",
+          "target": 239
+        }
+      ]
+    },
+    "283": {
+      "estado": "extraida",
+      "resumo": "Num túnel, os irmãos ouvem homens armados se aproximando e escolhem uma de duas passagens.",
+      "choices": [
+        {
+          "label": "Seguir pelo túnel da esquerda",
+          "target": 438
+        },
+        {
+          "label": "Seguir pelo túnel da direita",
+          "target": 343
+        }
+      ]
+    },
+    "284": {
+      "estado": "extraida",
+      "resumo": "Colthar decide explorar o interior de um poço; o caminho depende de possuir uma lanterna.",
+      "choices": [
+        {
+          "label": "Descer com a lanterna",
+          "target": 226,
+          "conditions": [
+            {
+              "type": "has_item",
+              "item": "lanterna"
+            }
+          ]
+        },
+        {
+          "label": "Descer sem lanterna",
+          "target": 355,
+          "conditions": [
+            {
+              "type": "not_has_item",
+              "item": "lanterna"
+            }
+          ]
+        }
+      ]
+    },
+    "285": {
+      "estado": "extraida",
+      "resumo": "Leprechauns roubam todo o ouro de Colthar e também um item escolhido de seu equipamento.",
+      "effects": [
+        {
+          "type": "set_gold",
+          "value": 0
+        }
+      ],
+      "playerEffectChoice": {
+        "type": "discard_one_item",
+        "continueTarget": 353
+      }
+    },
+    "286": {
+      "estado": "extraida",
+      "resumo": "Dois Homens-lagarto atacam os irmãos; cada príncipe enfrenta um adversário e Lothar pode usar magia.",
+      "partnerInstruction": {
+        "sendToReference": 286
+      },
+      "encounter": {
+        "cooperative": true,
+        "allowCombatMagic": true,
+        "enemies": [
+          {
+            "name": "Homem-lagarto Um",
+            "habilidade": 9,
+            "energia": 8
+          },
+          {
+            "name": "Homem-lagarto Dois",
+            "habilidade": 9,
+            "energia": 6
+          }
+        ]
+      },
+      "choices": [
+        {
+          "label": "Vitória com Lothar vivo",
+          "target": 249,
+          "conditions": [
+            {
+              "type": "partner_active"
+            }
+          ]
+        },
+        {
+          "label": "Vitória após Lothar cair",
+          "target": 10,
+          "conditions": [
+            {
+              "type": "partner_removed"
+            }
+          ]
+        }
+      ]
+    },
+    "287": {
+      "estado": "extraida",
+      "resumo": "Os irmãos encontram uma cabana de Orcs e decidem como atacá-la.",
+      "choices": [
+        {
+          "label": "Ambos entram pela porta",
+          "target": 486
+        },
+        {
+          "label": "Lothar entra pela porta e Colthar pela janela",
+          "target": 455
+        },
+        {
+          "label": "Colthar entra pela porta e Lothar lança magia pela janela",
+          "target": 403
+        }
+      ]
+    },
+    "288": {
+      "estado": "extraida",
+      "resumo": "Colthar observa ladrões de túmulos e precisa Testar a Sorte para saber se é descoberto.",
+      "test": {
+        "type": "luck",
+        "successTarget": 390,
+        "failureTarget": 347
+      }
     }
   }
 }
