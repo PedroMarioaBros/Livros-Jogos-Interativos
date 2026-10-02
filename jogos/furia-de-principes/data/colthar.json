@@ -5427,6 +5427,12 @@
             }
           ]
         }
+      ],
+      "effects": [
+        {
+          "type": "set_flag",
+          "flag": "passou_por_329"
+        }
       ]
     },
     "330": {
@@ -6069,6 +6075,376 @@
         ]
       },
       "onVictory": 415
+    },
+    "376": {
+      "estado": "extraida",
+      "resumo": "Com Lothar fora da aventura, Colthar deixa o acampamento das Amazonas e segue sozinho.",
+      "partnerRemoved": true,
+      "choices": [
+        {
+          "label": "Prosseguir sozinho",
+          "target": 4
+        }
+      ]
+    },
+    "377": {
+      "estado": "validada",
+      "resumo": "Ponto de sincronização: Colthar define STATUS 5 e aguarda AÇÃO 1, 24, 25 ou 26."
+    },
+    "378": {
+      "estado": "parcial",
+      "resumo": "Um Homem-camaleão obriga Colthar a lutar; após a vitória, ele encontra uma Pedra de Poder e recebe ganhos de HABILIDADE e SORTE.",
+      "encounter": {
+        "enemies": [
+          {
+            "name": "Homem-camaleão",
+            "habilidade": 10,
+            "energia": 6
+          }
+        ]
+      },
+      "rewards": [
+        {
+          "type": "add_item",
+          "item": "pedra_de_poder"
+        },
+        {
+          "type": "change_stat",
+          "stat": "habilidade",
+          "delta": 1
+        },
+        {
+          "type": "change_stat",
+          "stat": "sorte",
+          "delta": 1
+        }
+      ],
+      "onVictoryNeedsReview": true,
+      "notes": "O OCR do Internet Archive corta o número do destino após a vitória ('Volte para Ma.'). Combate e recompensa confirmados; não inventar o destino."
+    },
+    "379": {
+      "estado": "extraida",
+      "resumo": "Colthar deixa Lothar na estalagem e segue sozinho para a cordilheira norte.",
+      "choices": [
+        {
+          "label": "Prosseguir para as montanhas",
+          "target": 4
+        }
+      ]
+    },
+    "380": {
+      "estado": "extraida",
+      "resumo": "Uma resposta errada ao Demônio é fatal; se AÇÃO for 40, Lothar deve ser encaminhado para a referência 44.",
+      "partnerInstruction": {
+        "conditionalSend": [
+          {
+            "condition": {
+              "type": "shared_equals",
+              "key": "acao",
+              "value": 40
+            },
+            "target": 44
+          }
+        ]
+      },
+      "ending": "death",
+      "afterDeathReference": 39
+    },
+    "381": {
+      "estado": "extraida",
+      "resumo": "Depois de derrotar o mercador de escravos, Colthar liberta Lothar e os demais cativos; os irmãos decidem quem fica com a corda mágica.",
+      "effects": [
+        {
+          "type": "add_shared_loot",
+          "gold": 0,
+          "items": [
+            "corda_magica"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "label": "Prosseguir após dividir a corda",
+          "target": 255
+        }
+      ]
+    },
+    "382": {
+      "estado": "extraida",
+      "resumo": "Uma chaminé vertical ilumina o túnel; Colthar decide subir por ela ou continuar pela passagem.",
+      "choices": [
+        {
+          "label": "Subir pela chaminé",
+          "target": 101
+        },
+        {
+          "label": "Continuar pela passagem",
+          "target": 489
+        }
+      ]
+    },
+    "383": {
+      "estado": "extraida",
+      "resumo": "Os irmãos chegam a pequenas montanhas e decidem se continuam pela trilha ou sobem.",
+      "choices": [
+        {
+          "label": "Continuar pela trilha",
+          "target": 214
+        },
+        {
+          "label": "Subir as montanhas",
+          "target": 420
+        }
+      ]
+    },
+    "384": {
+      "estado": "extraida",
+      "resumo": "A estrada entra numa mata fechada; Colthar decide investigar uma voz feminina numa clareira ou continuar.",
+      "choices": [
+        {
+          "label": "Entrar na clareira",
+          "target": 168
+        },
+        {
+          "label": "Continuar pelo caminho",
+          "target": 149
+        }
+      ]
+    },
+    "385": {
+      "estado": "extraida",
+      "resumo": "O Troll fica com todo o ouro de Colthar e permite a passagem pela ponte.",
+      "effects": [
+        {
+          "type": "set_gold",
+          "value": 0
+        }
+      ],
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 100
+        }
+      ]
+    },
+    "386": {
+      "estado": "extraida",
+      "resumo": "Após vencer as Moscas Gigantes, larvas ferem Colthar antes de ele continuar a pé.",
+      "effects": [
+        {
+          "type": "change_stat",
+          "stat": "habilidade",
+          "delta": -1
+        },
+        {
+          "type": "change_stat",
+          "stat": "energia",
+          "delta": -1
+        }
+      ],
+      "choices": [
+        {
+          "label": "Prosseguir a pé",
+          "target": 184
+        }
+      ]
+    },
+    "387": {
+      "estado": "extraida",
+      "resumo": "Colthar e Lothar eliminam os estalajadeiros e sobem as escadas.",
+      "partnerInstruction": {
+        "sendToReference": 387
+      },
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 12
+        }
+      ]
+    },
+    "388": {
+      "estado": "extraida",
+      "resumo": "A Hidra desperta e Colthar precisa enfrentá-la.",
+      "choices": [
+        {
+          "label": "Enfrentar a Hidra",
+          "target": 487
+        }
+      ]
+    },
+    "389": {
+      "estado": "extraida",
+      "resumo": "As velhas desaparecem junto com Lothar; Colthar continua a busca sozinho.",
+      "partnerRemoved": true,
+      "choices": [
+        {
+          "label": "Prosseguir sozinho",
+          "target": 140
+        }
+      ]
+    },
+    "390": {
+      "estado": "extraida",
+      "resumo": "Ladrões de túmulos fogem e deixam cair um livro sagrado, que Colthar recolhe.",
+      "effects": [
+        {
+          "type": "add_item",
+          "item": "livro_sagrado"
+        }
+      ],
+      "choices": [
+        {
+          "label": "Voltar à trilha do cemitério",
+          "target": 276
+        }
+      ]
+    },
+    "391": {
+      "estado": "extraida",
+      "resumo": "Num desfiladeiro estreito, Colthar decide dar meia-volta ou enfrentar um cavaleiro que se aproxima.",
+      "choices": [
+        {
+          "label": "Voltar para a estrada ao sul",
+          "target": 384
+        },
+        {
+          "label": "Enfrentar o estranho",
+          "target": 5
+        }
+      ]
+    },
+    "392": {
+      "estado": "extraida",
+      "resumo": "Colthar precisa Testar a Sorte.",
+      "test": {
+        "type": "luck",
+        "successTarget": 356,
+        "failureTarget": 495
+      }
+    },
+    "393": {
+      "estado": "extraida",
+      "resumo": "Ao atingir a torre com a arma, Colthar machuca a mão e perde HABILIDADE antes de entrar pelo buraco.",
+      "effects": [
+        {
+          "type": "change_stat",
+          "stat": "habilidade",
+          "delta": -1
+        }
+      ],
+      "choices": [
+        {
+          "label": "Entrar pelo buraco",
+          "target": 314
+        }
+      ]
+    },
+    "394": {
+      "estado": "extraida",
+      "resumo": "Lothar prepara um feitiço; Colthar deve aguardar a instrução do outro jogador.",
+      "partnerInstruction": {
+        "wait": true,
+        "sourceCharacter": "lothar"
+      }
+    },
+    "395": {
+      "estado": "extraida",
+      "resumo": "Ao libertar o guerreiro congelado, Colthar é imediatamente atacado.",
+      "choices": [
+        {
+          "label": "Enfrentar o guerreiro",
+          "target": 56
+        }
+      ]
+    },
+    "396": {
+      "estado": "extraida",
+      "resumo": "Colthar perde todas as moedas e provisões que estavam na mochila e continua a pé.",
+      "effects": [
+        {
+          "type": "set_gold",
+          "value": 0
+        },
+        {
+          "type": "set_provisions",
+          "value": 0
+        }
+      ],
+      "choices": [
+        {
+          "label": "Prosseguir a pé",
+          "target": 184
+        }
+      ]
+    },
+    "397": {
+      "estado": "extraida",
+      "resumo": "Perseguido por Lobos, Colthar alcança uma árvore, sofre um ferimento e depois continua pelo caminho.",
+      "effects": [
+        {
+          "type": "change_stat",
+          "stat": "energia",
+          "delta": -1
+        }
+      ],
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 207
+        }
+      ]
+    },
+    "398": {
+      "estado": "extraida",
+      "resumo": "Colthar descobre que a suposta serpente é uma barra de ferro usada como ferramenta de mineração.",
+      "effects": [
+        {
+          "type": "add_item",
+          "item": "barra_de_ferro"
+        }
+      ],
+      "choices": [
+        {
+          "label": "Sair pela esquerda",
+          "target": 329,
+          "conditions": [
+            {
+              "type": "flag_not",
+              "flag": "passou_por_329"
+            }
+          ]
+        },
+        {
+          "label": "Sair pela direita",
+          "target": 476
+        }
+      ]
+    },
+    "399": {
+      "estado": "extraida",
+      "resumo": "Colthar escorrega no fim de um túnel e cai num abismo.",
+      "ending": "death",
+      "afterDeathReference": 39
+    },
+    "400": {
+      "estado": "extraida",
+      "resumo": "Depois de provocar uma Bruxa, Colthar recebe uma maldição estética e pode comprar uma cura por duas moedas.",
+      "choices": [
+        {
+          "label": "Comprar a cura",
+          "target": 499,
+          "conditions": [
+            {
+              "type": "gold_gte",
+              "value": 2
+            }
+          ]
+        },
+        {
+          "label": "Não comprar a cura",
+          "target": 8
+        }
+      ]
     }
   }
 }
