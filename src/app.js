@@ -1890,6 +1890,34 @@ function playCombatRound() {
   const enemy = currentOpponent(state.encounter);
   updateCombatOpponents();
 
+  if (
+    result.round &&
+    !result.victory &&
+    !result.defeat &&
+    state.encounter.roundLimit > 0 &&
+    state.encounter.rounds.length >= state.encounter.roundLimit
+  ) {
+    state.encounter.finished = true;
+    $("combat-title").textContent = "☠️ Limite de séries atingido";
+    $("combat-round").classList.add("hidden");
+    $("spell-panel").classList.add("hidden");
+
+    if (node.onRoundLimit) {
+      $("combat-continue").classList.remove("hidden");
+      $("combat-continue").dataset.target = node.onRoundLimit;
+      $("combat-continue").textContent =
+        `Continuar → ${node.onRoundLimit}`;
+      showGameMessage(
+        `O inimigo não foi derrotado em ${state.encounter.roundLimit} séries. A aventura determina uma consequência específica.`
+      );
+    } else {
+      showGameMessage(
+        `O inimigo não foi derrotado em ${state.encounter.roundLimit} séries.`
+      );
+    }
+    return;
+  }
+
   if (result.defeat) {
     $("combat-title").textContent = node.onDefeat
       ? "⚠️ Combate perdido"
