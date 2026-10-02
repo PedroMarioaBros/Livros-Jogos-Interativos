@@ -1533,6 +1533,105 @@ test("referência 268 zera o ouro dos dois irmãos", () => {
   );
 });
 
+test("remoção unitária preserva outras cópias de item empilhável", () => {
+  const hero = createCharacter(warriorData, sequence([0, 0, 0, 0]));
+  hero.items.push("cogumelo_curativo", "cogumelo_curativo");
+
+  const [result] = applyEffects(
+    hero,
+    [{ type: "remove_one_item", item: "cogumelo_curativo" }],
+    { itemTags: gameBookConfig.itemTags }
+  );
+
+  assert.equal(result.removed, true);
+  assert.equal(countItem(hero, "cogumelo_curativo"), 1);
+});
+
+test("Cogumelo Curativo é empilhável e recupera dois pontos", () => {
+  assert.equal(
+    gameBookConfig.itemTags.stackable.includes("cogumelo_curativo"),
+    true
+  );
+  assert.deepEqual(
+    gameBookConfig.consumables.cogumelo_curativo.effects,
+    [{ type: "change_stat", stat: "energia", delta: 2 }]
+  );
+
+  const hero = createCharacter(warriorData, sequence([0, 0, 0, 0]));
+  hero.stats.energia -= 4;
+  const before = hero.stats.energia;
+
+  applyEffects(
+    hero,
+    gameBookConfig.consumables.cogumelo_curativo.effects,
+    { itemTags: gameBookConfig.itemTags }
+  );
+
+  assert.equal(hero.stats.energia, before + 2);
+});
+
+test("Colthar possui o bloco 276 a 300 estruturado", () => {
+  for (let ref = 276; ref <= 300; ref += 1) {
+    assert.ok(
+      warriorBookData.references[String(ref)],
+      `Referência ${ref} ausente`
+    );
+    assert.notEqual(
+      warriorBookData.references[String(ref)].estado,
+      "pendente",
+      `Referência ${ref} ainda pendente`
+    );
+  }
+
+  assert.equal(
+    warriorBookData.references["285"].playerEffectChoice.continueTarget,
+    353
+  );
+  assert.equal(
+    warriorBookData.references["291"].encounter.cooperative,
+    true
+  );
+  assert.equal(
+    warriorBookData.references["291"].encounter.enemies[1].energia,
+    8
+  );
+  assert.equal(
+    warriorBookData.references["298"].ending,
+    "removed"
+  );
+});
+
+test("referência 293 restaura atributos e permite guardar dois cogumelos", () => {
+  const ref293 = warriorBookData.references["293"];
+  const guardar = ref293.choices.find(choice =>
+    choice.effects?.some(effect => effect.item === "cogumelo_curativo")
+  );
+
+  assert.equal(
+    ref293.effects.filter(effect => effect.type === "restore_stat_to_initial").length,
+    2
+  );
+  assert.ok(guardar);
+  assert.equal(
+    guardar.effects.filter(effect => effect.item === "cogumelo_curativo").length,
+    2
+  );
+  assert.equal(
+    guardar.conditions[0].item,
+    "mochila"
+  );
+});
+
+test("referência 294 encaminha Lothar conforme AÇÃO", () => {
+  const routes =
+    warriorBookData.references["294"].partnerInstruction.conditionalSend;
+
+  assert.equal(routes[0].condition.value, 36);
+  assert.equal(routes[0].target, 136);
+  assert.deepEqual(routes[1].condition.values, [36]);
+  assert.equal(routes[1].target, 473);
+});
+
 test("set_stat define atributo sem ultrapassar o valor inicial", () => {
   const mage = createCharacter(mageData, sequence([0, 0, 0, 0, 0]));
   mage.stats.magia = 5;
