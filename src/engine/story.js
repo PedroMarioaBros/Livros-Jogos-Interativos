@@ -410,6 +410,26 @@ export function applyEffect(character, effect, context = {}, rng = Math.random) 
       };
     }
 
+    case "recover_last_combat_damage_except": {
+      const damage = Math.max(0, Number(character.lastCombatDamage || 0));
+      const leave = Math.max(0, Number(effect.leave || 0));
+      const amount = Math.max(0, damage - leave);
+      const before = character.stats[effect.stat];
+      const value = modifyStat(
+        character,
+        effect.stat,
+        amount
+      );
+      return {
+        type: effect.type,
+        stat: effect.stat,
+        damage,
+        leave,
+        recovered: value - before,
+        value
+      };
+    }
+
     case "recover_fraction_last_combat_damage": {
       const damage = Math.max(0, Number(character.lastCombatDamage || 0));
       const amount = Math.floor(damage * Number(effect.fraction || 0));
