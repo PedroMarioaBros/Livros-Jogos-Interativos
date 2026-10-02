@@ -188,13 +188,40 @@ export function applyEffect(character, effect, context = {}, rng = Math.random) 
       character.items = [];
       return { type: effect.type };
 
-    case "stash_and_clear_items":
-      character.stashedItems = [...character.items];
+    case "stash_and_clear_items": {
+      const removed = [...character.items];
+      character.stashedItems = [
+        ...(character.stashedItems || []),
+        ...removed
+      ];
       character.items = [];
       return {
         type: effect.type,
-        stashed: [...character.stashedItems]
+        stashed: removed
       };
+    }
+
+    case "stash_and_clear_partner_items": {
+      const partner = context.partnerCharacter;
+      if (!partner) {
+        return {
+          type: effect.type,
+          unsupported: true
+        };
+      }
+
+      const removed = [...partner.items];
+      partner.stashedItems = [
+        ...(partner.stashedItems || []),
+        ...removed
+      ];
+      partner.items = [];
+
+      return {
+        type: effect.type,
+        stashed: removed
+      };
+    }
 
     case "stash_items_except": {
       const keep = new Set(effect.items || []);
@@ -214,7 +241,12 @@ export function applyEffect(character, effect, context = {}, rng = Math.random) 
     case "restore_stashed_items": {
       const restored = [...(character.stashedItems || [])];
       for (const item of restored) {
-        if (!hasItem(character, item)) character.items.push(item);
+        if (
+          isStackableItem(item, context) ||
+          !hasItem(character, item)
+        ) {
+          character.items.push(item);
+        }
       }
       character.stashedItems = [];
       const resolvedTemporary = resolveTemporaryEffects(character, context);

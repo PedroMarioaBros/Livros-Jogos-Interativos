@@ -1871,6 +1871,103 @@ test("referência 329 marca a passagem para a escolha da 398", () => {
   );
 });
 
+test("confisco conjunto preserva itens empilháveis", () => {
+  const colthar = createCharacter(warriorData, sequence([0, 0, 0, 0]));
+  const lothar = createCharacter(warriorData, sequence([0, 0, 0, 0]));
+
+  colthar.items.push("pergaminho_marrom", "pergaminho_marrom");
+  lothar.items.push("cogumelo_curativo", "cogumelo_curativo");
+
+  applyEffects(
+    colthar,
+    [
+      { type: "stash_and_clear_items" },
+      { type: "stash_and_clear_partner_items" }
+    ],
+    {
+      partnerCharacter: lothar,
+      itemTags: gameBookConfig.itemTags
+    }
+  );
+
+  applyEffects(
+    lothar,
+    [
+      { type: "stash_and_clear_items" },
+      { type: "stash_and_clear_partner_items" }
+    ],
+    {
+      partnerCharacter: colthar,
+      itemTags: gameBookConfig.itemTags
+    }
+  );
+
+  assert.equal(colthar.items.length, 0);
+  assert.equal(lothar.items.length, 0);
+  assert.equal(
+    colthar.stashedItems.filter(item => item === "pergaminho_marrom").length,
+    2
+  );
+  assert.equal(
+    lothar.stashedItems.filter(item => item === "cogumelo_curativo").length,
+    2
+  );
+
+  applyEffects(
+    colthar,
+    [{ type: "restore_stashed_items" }],
+    { itemTags: gameBookConfig.itemTags }
+  );
+  applyEffects(
+    lothar,
+    [{ type: "restore_stashed_items" }],
+    { itemTags: gameBookConfig.itemTags }
+  );
+
+  assert.equal(countItem(colthar, "pergaminho_marrom"), 2);
+  assert.equal(countItem(lothar, "cogumelo_curativo"), 2);
+});
+
+test("Colthar possui o bloco 401 a 425 estruturado", () => {
+  for (let ref = 401; ref <= 425; ref += 1) {
+    assert.ok(
+      warriorBookData.references[String(ref)],
+      `Referência ${ref} ausente`
+    );
+  }
+
+  assert.equal(warriorBookData.references["403"].estado, "parcial");
+  assert.equal(
+    warriorBookData.references["413"].encounter.enemies[1].habilidade,
+    8
+  );
+  assert.equal(
+    warriorBookData.references["420"].effects[1].type,
+    "stash_and_clear_partner_items"
+  );
+  assert.equal(
+    warriorBookData.references["422"].effects[0].item,
+    "escudo_excelente"
+  );
+  assert.equal(
+    warriorBookData.references["423"].encounter.enemies.length,
+    2
+  );
+});
+
+test("Lothar 420 deixou de depender de suporte pendente", () => {
+  const ref420 = mageBookData.references["420"];
+
+  assert.equal(ref420.estado, "extraida");
+  assert.equal(ref420.needsEngineSupport, undefined);
+  assert.equal(
+    ref420.effects.some(
+      effect => effect.type === "stash_and_clear_partner_items"
+    ),
+    true
+  );
+});
+
 test("set_stat define atributo sem ultrapassar o valor inicial", () => {
   const mage = createCharacter(mageData, sequence([0, 0, 0, 0, 0]));
   mage.stats.magia = 5;
