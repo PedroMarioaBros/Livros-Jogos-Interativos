@@ -765,7 +765,10 @@ function renderReference(reference, options = {}) {
     {
       ignoreMutations:
         state.mode === "solo" &&
-        state.rules.modes.solo.ignoreSharedMutations
+        state.rules.modes.solo.ignoreSharedMutations,
+      character: state.hero,
+      partnerCharacter: getPartnerHero(),
+      partnerActive: state.partnerActive
     }
   );
 
