@@ -3760,6 +3760,388 @@
           "target": 343
         }
       ]
+    },
+    "226": {
+      "estado": "extraida",
+      "resumo": "Com uma lanterna, Colthar desce pelo interior do poço até uma saliência sobre o rio subterrâneo e decide enfrentar uma criatura ou continuar descendo.",
+      "choices": [
+        {
+          "label": "Enfrentar a criatura nas sombras",
+          "target": 411
+        },
+        {
+          "label": "Continuar descendo até o rio",
+          "target": 165
+        }
+      ]
+    },
+    "227": {
+      "estado": "extraida",
+      "resumo": "Uma criatura amistosa entrega a Colthar um pergaminho marrom com runas e indica o caminho para o vulcão.",
+      "effects": [
+        {
+          "type": "add_item",
+          "item": "pergaminho_marrom"
+        }
+      ],
+      "choices": [
+        {
+          "label": "Seguir para o vulcão",
+          "target": 111
+        }
+      ]
+    },
+    "228": {
+      "estado": "extraida",
+      "resumo": "Colthar ataca um Troll.",
+      "encounter": {
+        "enemies": [
+          {
+            "name": "Troll",
+            "habilidade": 9,
+            "energia": 10
+          }
+        ]
+      },
+      "onVictory": 459
+    },
+    "229": {
+      "estado": "extraida",
+      "resumo": "Colthar precisa Testar a Sorte.",
+      "test": {
+        "type": "luck",
+        "successTarget": 342,
+        "failureTarget": 237
+      }
+    },
+    "230": {
+      "estado": "extraida",
+      "resumo": "Depois de vencer os Gremlins, os irmãos ouvem reforços se aproximando e decidem se se escondem ou recuam.",
+      "choices": [
+        {
+          "label": "Esconder-se nos barris",
+          "target": 350
+        },
+        {
+          "label": "Recuar pelo hall e subir as escadas",
+          "target": 306
+        }
+      ]
+    },
+    "231": {
+      "estado": "extraida",
+      "resumo": "Colthar escorrega e cai para trás, precisando Testar a Sorte.",
+      "test": {
+        "type": "luck",
+        "successTarget": 64,
+        "failureTarget": 328
+      }
+    },
+    "232": {
+      "estado": "extraida",
+      "resumo": "Um Elfo da Floresta convida Colthar para uma plataforma numa árvore; ele decide como responder.",
+      "choices": [
+        {
+          "label": "Subir pela escada de corda",
+          "target": 302
+        },
+        {
+          "label": "Subir pelo tronco da árvore",
+          "target": 436
+        },
+        {
+          "label": "Ignorar o convite e deixar a colina",
+          "target": 188
+        }
+      ]
+    },
+    "233": {
+      "estado": "extraida",
+      "resumo": "Duas Sanguessugas Gigantes da Floresta atacam Colthar depois de já lhe sugarem sangue.",
+      "effects": [
+        {
+          "type": "change_stat",
+          "stat": "energia",
+          "delta": -1
+        }
+      ],
+      "encounter": {
+        "enemies": [
+          {
+            "name": "Sanguessuga Um",
+            "habilidade": 7,
+            "energia": 6
+          },
+          {
+            "name": "Sanguessuga Dois",
+            "habilidade": 7,
+            "energia": 4
+          }
+        ]
+      },
+      "onVictory": 87
+    },
+    "234": {
+      "estado": "extraida",
+      "resumo": "Colthar escorrega no gelo e cai de cabeça em um abismo.",
+      "ending": "death",
+      "afterDeathReference": 39
+    },
+    "235": {
+      "estado": "extraida",
+      "resumo": "Sob o tecido turquesa há um Ghoul que ataca Colthar; após vencê-lo, ele pode examinar outros caixões.",
+      "encounter": {
+        "enemies": [
+          {
+            "name": "Ghoul",
+            "habilidade": 8,
+            "energia": 6
+          }
+        ]
+      },
+      "postVictoryChoices": [
+        {
+          "label": "Examinar o tecido escarlate",
+          "target": 134
+        },
+        {
+          "label": "Examinar o tecido branco",
+          "target": 254
+        },
+        {
+          "label": "Examinar o tecido verde-esmeralda",
+          "target": 297
+        }
+      ]
+    },
+    "236": {
+      "estado": "extraida",
+      "resumo": "A forca não oferece mais nada; os irmãos podem investigar as covas, se ainda não o fizeram, ou continuar a viagem.",
+      "choices": [
+        {
+          "label": "Inspecionar as covas",
+          "target": 357,
+          "conditions": [
+            {
+              "type": "flag_not",
+              "flag": "covas_inspecionadas"
+            }
+          ]
+        },
+        {
+          "label": "Continuar a jornada",
+          "target": 179
+        }
+      ]
+    },
+    "237": {
+      "estado": "extraida",
+      "resumo": "Colthar não alcança o galho e precisa voltar para enfrentar o monstro.",
+      "choices": [
+        {
+          "label": "Voltar ao combate",
+          "target": 34
+        }
+      ]
+    },
+    "238": {
+      "estado": "extraida",
+      "resumo": "Colthar encontra três homens da floresta junto a uma fogueira e decide aceitar o convite ou ameaçá-los.",
+      "choices": [
+        {
+          "label": "Juntar-se aos homens da floresta",
+          "target": 279
+        },
+        {
+          "label": "Ameaçá-los com a espada",
+          "target": 456
+        }
+      ]
+    },
+    "239": {
+      "estado": "extraida",
+      "resumo": "Colthar precisa Testar a Sorte ao atravessar o riacho.",
+      "test": {
+        "type": "luck",
+        "successTarget": 405,
+        "failureTarget": 67
+      }
+    },
+    "240": {
+      "estado": "extraida",
+      "resumo": "Colthar oferece vinho aos Leprechauns; embriagados, eles convidam os irmãos a olhar no arco-íris.",
+      "effects": [
+        {
+          "type": "remove_item_if_present",
+          "item": "garrafa_de_vinho"
+        }
+      ],
+      "choices": [
+        {
+          "label": "Entrar no arco-íris",
+          "target": 204
+        }
+      ]
+    },
+    "241": {
+      "estado": "parcial",
+      "resumo": "Durante uma viagem no Roc, um Roc inimigo se aproxima e uma rolagem de 1d6 define a consequência.",
+      "needsManualReview": true,
+      "notes": "A tabela do OCR do Internet Archive está corrompida: registra 1 → 317, '7' → 178, 3/4/5 → 269 e 6 → 84. Como o dado é 1d6, o segundo valor precisa de conferência visual antes de cadastrar a rolagem completa."
+    },
+    "242": {
+      "estado": "extraida",
+      "resumo": "Lothar decide não cavalgar com Colthar e combina reencontrá-lo no Scamder.",
+      "choices": [
+        {
+          "label": "Prosseguir separado",
+          "target": 325
+        }
+      ]
+    },
+    "243": {
+      "estado": "extraida",
+      "resumo": "Colthar questiona uma multidão que humilha uma mulher e decide se a salva, participa da agressão ou se afasta.",
+      "choices": [
+        {
+          "label": "Tentar salvar a mulher",
+          "target": 133
+        },
+        {
+          "label": "Juntar-se à multidão",
+          "target": 400
+        },
+        {
+          "label": "Ignorar a situação e ir à estalagem",
+          "target": 441
+        }
+      ]
+    },
+    "244": {
+      "estado": "extraida",
+      "resumo": "Uma resposta errada dispara um alarme, mas os irmãos recuperam todos os pertences e armas roubados.",
+      "effects": [
+        {
+          "type": "restore_stashed_items"
+        }
+      ],
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 88
+        }
+      ]
+    },
+    "245": {
+      "estado": "extraida",
+      "resumo": "Espinhos venenosos de um peixe-pedra ferem Colthar, que desmaia depois de atravessar o rio.",
+      "effects": [
+        {
+          "type": "change_stat",
+          "stat": "energia",
+          "delta": -4
+        }
+      ],
+      "choices": [
+        {
+          "label": "Prosseguir se sobreviver",
+          "target": 197
+        }
+      ]
+    },
+    "246": {
+      "estado": "extraida",
+      "resumo": "O próximo destino depende de a Hidra já ter sido morta ou transformada.",
+      "dynamicCondition": {
+        "type": "flag_any",
+        "flags": [
+          "hidra_morta",
+          "hidra_transformada"
+        ],
+        "trueTarget": 416,
+        "falseTarget": 115
+      }
+    },
+    "247": {
+      "estado": "extraida",
+      "resumo": "A bênção de uma velha aumenta a HABILIDADE de Colthar, mas a reação das outras reduz sua SORTE.",
+      "effects": [
+        {
+          "type": "change_stat",
+          "stat": "habilidade",
+          "delta": 1
+        },
+        {
+          "type": "change_stat",
+          "stat": "sorte",
+          "delta": -1
+        }
+      ],
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 389
+        }
+      ]
+    },
+    "248": {
+      "estado": "extraida",
+      "resumo": "A fechadura de uma arca explode na mão de Colthar; dentro há uma garrafa de vinho e oito moedas para os irmãos dividirem.",
+      "effects": [
+        {
+          "type": "change_stat",
+          "stat": "habilidade",
+          "delta": -1
+        },
+        {
+          "type": "add_shared_loot",
+          "gold": 8,
+          "items": [
+            "garrafa_de_vinho"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "label": "Atravessar a ponte depois da divisão",
+          "target": 418
+        }
+      ]
+    },
+    "249": {
+      "estado": "extraida",
+      "resumo": "Um guarda captura os irmãos com boleadeiras; Colthar decide como tentar escapar antes da chegada das Piranhas da Areia.",
+      "choices": [
+        {
+          "label": "Tentar acordar Lothar com a água",
+          "target": 58
+        },
+        {
+          "label": "Tentar alcançar a faca",
+          "target": 129
+        },
+        {
+          "label": "Gritar por socorro",
+          "target": 211
+        }
+      ]
+    },
+    "250": {
+      "estado": "extraida",
+      "resumo": "Um monge vende seis artefatos únicos por duas moedas cada; os irmãos decidem conjuntamente quem compra cada item.",
+      "merchant": {
+        "pricePerItem": 2,
+        "sharedUniqueStock": true,
+        "items": [
+          "estatua_de_jade",
+          "bola_de_cristal",
+          "anel",
+          "passaro_mecanico",
+          "sino_de_cobre",
+          "frasco_tampado"
+        ],
+        "continueTarget": 323
+      }
     }
   }
 }
