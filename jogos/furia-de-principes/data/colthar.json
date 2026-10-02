@@ -3400,6 +3400,366 @@
         "wait": true,
         "sourceCharacter": "lothar"
       }
+    },
+    "201": {
+      "estado": "extraida",
+      "resumo": "Colthar encontra um Pégaso maltratado e decide esperar o Gigante ou procurá-lo na toca.",
+      "choices": [
+        {
+          "label": "Esperar pelo Gigante",
+          "target": 90
+        },
+        {
+          "label": "Procurar o Gigante na toca",
+          "target": 308
+        }
+      ]
+    },
+    "202": {
+      "estado": "extraida",
+      "resumo": "Depois de um combate exaustivo, os irmãos encontram casulos de seda e decidem entre abri-los ou guardar parte da seda.",
+      "choices": [
+        {
+          "label": "Abrir um dos casulos",
+          "target": 38
+        },
+        {
+          "label": "Guardar um pouco de seda",
+          "target": 106
+        }
+      ]
+    },
+    "203": {
+      "estado": "extraida",
+      "resumo": "Dragesima surge, derrota a criatura e conversa com Colthar antes de desaparecer.",
+      "effects": [
+        {
+          "type": "set_flag",
+          "flag": "encontrou_dragesima"
+        }
+      ],
+      "choices": [
+        {
+          "label": "Deixar a capela",
+          "target": 430
+        }
+      ]
+    },
+    "204": {
+      "estado": "extraida",
+      "resumo": "O arco-íris mágico oferece quatro faixas coloridas aos irmãos.",
+      "choices": [
+        {
+          "label": "Escolher a faixa vermelha",
+          "target": 183
+        },
+        {
+          "label": "Escolher a faixa verde",
+          "target": 162
+        },
+        {
+          "label": "Escolher a faixa azul",
+          "target": 145
+        },
+        {
+          "label": "Escolher a faixa violeta",
+          "target": 124
+        }
+      ]
+    },
+    "205": {
+      "estado": "extraida",
+      "resumo": "Um barril de vinho cai sobre Colthar e o esmaga.",
+      "ending": "death",
+      "afterDeathReference": 39
+    },
+    "206": {
+      "estado": "extraida",
+      "resumo": "O Vampiro domina Colthar e o mata.",
+      "ending": "death",
+      "afterDeathReference": 39
+    },
+    "207": {
+      "estado": "extraida",
+      "resumo": "Ao amanhecer, Colthar chega a um rio e decide atravessá-lo ou seguir a correnteza.",
+      "choices": [
+        {
+          "label": "Atravessar o rio",
+          "target": 157
+        },
+        {
+          "label": "Seguir a correnteza",
+          "target": 233
+        }
+      ]
+    },
+    "208": {
+      "estado": "extraida",
+      "resumo": "Uma barra de metal detém uma pedra de granito, mas fica torcida e inutilizada; Colthar continua pelo túnel.",
+      "choices": [
+        {
+          "label": "Prosseguir pelo túnel",
+          "target": 382
+        }
+      ],
+      "notes": "A barra usada fica inutilizada. O identificador do item será ligado quando a referência de aquisição correspondente de Colthar for extraída."
+    },
+    "209": {
+      "estado": "extraida",
+      "resumo": "Outra bola azul atinge Colthar nas costas, reduzindo sua ENERGIA.",
+      "effects": [
+        {
+          "type": "change_stat",
+          "stat": "energia",
+          "delta": -3
+        }
+      ],
+      "choices": [
+        {
+          "label": "Retornar ao Gnomo",
+          "target": 103
+        }
+      ]
+    },
+    "210": {
+      "estado": "extraida",
+      "resumo": "Ainda invisível, Colthar enfrenta um Urso Negro.",
+      "encounter": {
+        "enemies": [
+          {
+            "name": "Urso Negro",
+            "habilidade": 8,
+            "energia": 10
+          }
+        ]
+      },
+      "onVictory": 437
+    },
+    "211": {
+      "estado": "extraida",
+      "resumo": "Colthar grita por ajuda e precisa Testar a Sorte.",
+      "test": {
+        "type": "luck",
+        "successTarget": 264,
+        "failureTarget": 361
+      }
+    },
+    "212": {
+      "estado": "extraida",
+      "resumo": "Os irmãos se reencontram na ponte; o Troll cobra duas moedas de ouro de cada um.",
+      "choices": [
+        {
+          "label": "Pagar o pedágio conjunto",
+          "target": 371,
+          "conditions": [
+            {
+              "type": "shared_gold_gte",
+              "value": 4
+            }
+          ],
+          "sharedPayment": {
+            "amount": 4
+          }
+        },
+        {
+          "label": "Lutar contra o Troll",
+          "target": 345
+        }
+      ]
+    },
+    "213": {
+      "estado": "extraida",
+      "resumo": "Depois de vencer os Todd, Colthar retorna ao corredor e sobe as escadas.",
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 12
+        }
+      ]
+    },
+    "214": {
+      "estado": "extraida",
+      "resumo": "Numa encruzilhada com forca e covas recentes, os irmãos decidem qual local investigar.",
+      "choices": [
+        {
+          "label": "Inspecionar a forca",
+          "target": 236
+        },
+        {
+          "label": "Inspecionar as covas",
+          "target": 357
+        }
+      ]
+    },
+    "215": {
+      "estado": "extraida",
+      "resumo": "Colthar enfrenta um Verme do Gelo; sapatos para neve concedem +2 HABILIDADE somente durante este combate.",
+      "encounter": {
+        "enemies": [
+          {
+            "name": "Verme do Gelo",
+            "habilidade": 11,
+            "energia": 10
+          }
+        ],
+        "conditionalModifiers": [
+          {
+            "conditions": [
+              {
+                "type": "has_item",
+                "item": "sapatos_para_neve"
+              }
+            ],
+            "modifiers": {
+              "heroSkill": 2
+            }
+          }
+        ]
+      },
+      "onVictory": 49
+    },
+    "216": {
+      "estado": "extraida",
+      "resumo": "Colthar precisa Testar a Sorte.",
+      "test": {
+        "type": "luck",
+        "successTarget": 262,
+        "failureTarget": 62
+      }
+    },
+    "217": {
+      "estado": "validada",
+      "resumo": "Ponto de sincronização: Colthar define STATUS 9 e aguarda AÇÃO 1, 28, 29 ou 30."
+    },
+    "218": {
+      "estado": "extraida",
+      "resumo": "Colthar encontra uma grande caverna cheia de tesouros e a Espada Congelante.",
+      "choices": [
+        {
+          "label": "Pegar a Espada Congelante",
+          "target": 267
+        },
+        {
+          "label": "Encher primeiro os bolsos de ouro",
+          "target": 370
+        }
+      ]
+    },
+    "219": {
+      "estado": "extraida",
+      "resumo": "Colthar força uma barra da jaula, perde ENERGIA e os irmãos escapam, escolhendo para onde seguir.",
+      "partnerInstruction": {
+        "sendToReference": 219
+      },
+      "effects": [
+        {
+          "type": "change_stat",
+          "stat": "energia",
+          "delta": -2
+        }
+      ],
+      "choices": [
+        {
+          "label": "Aproximar-se da luz",
+          "target": 354
+        },
+        {
+          "label": "Mover-se na direção oposta",
+          "target": 428
+        }
+      ]
+    },
+    "220": {
+      "estado": "parcial",
+      "resumo": "Colthar encontra um homem cercado por três Espectros das Sombras e entra no combate.",
+      "encounterNeedsReview": true,
+      "onVictory": 318,
+      "notes": "O OCR preserva ENERGIA 4 para os três Espectros e HABILIDADE 8 para o segundo e terceiro, mas a HABILIDADE do primeiro está ilegível. Não cadastrar o encontro completo até conferência visual."
+    },
+    "221": {
+      "estado": "extraida",
+      "resumo": "Depois de afastar um Roc inimigo, os irmãos encontram um manto negro e um barrete de prata para dividir.",
+      "effects": [
+        {
+          "type": "add_shared_loot",
+          "gold": 0,
+          "items": [
+            "manto_negro",
+            "barrete_de_prata"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "label": "Continuar pelo deserto",
+          "target": 173
+        }
+      ]
+    },
+    "222": {
+      "estado": "extraida",
+      "resumo": "Colthar precisa Testar a Sorte.",
+      "test": {
+        "type": "luck",
+        "successTarget": 280,
+        "failureTarget": 45
+      }
+    },
+    "223": {
+      "estado": "extraida",
+      "resumo": "A luz do amanhecer destrói o Vampiro; Colthar ganha SORTE e deixa o mausoléu.",
+      "effects": [
+        {
+          "type": "change_stat",
+          "stat": "sorte",
+          "delta": 1
+        }
+      ],
+      "choices": [
+        {
+          "label": "Deixar o cemitério",
+          "target": 61
+        }
+      ]
+    },
+    "224": {
+      "estado": "extraida",
+      "resumo": "O Coletor de Impostos exige cinco moedas de ouro de cada irmão; o destino depende do ouro conjunto.",
+      "choices": [
+        {
+          "label": "Pagar a taxa",
+          "target": 458,
+          "conditions": [
+            {
+              "type": "shared_gold_gte",
+              "value": 10
+            }
+          ],
+          "sharedPayment": {
+            "amount": 10
+          }
+        },
+        {
+          "label": "Não há ouro suficiente",
+          "target": 304,
+          "conditions": [
+            {
+              "type": "shared_gold_lt",
+              "value": 10
+            }
+          ]
+        }
+      ]
+    },
+    "225": {
+      "estado": "extraida",
+      "resumo": "Com os guardas mortos e mais Scuttlies se aproximando, Colthar recua e escolhe outra passagem.",
+      "choices": [
+        {
+          "label": "Tomar outra passagem",
+          "target": 343
+        }
+      ]
     }
   }
 }

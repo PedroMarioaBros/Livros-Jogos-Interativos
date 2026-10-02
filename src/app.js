@@ -10,7 +10,8 @@ import {
   applyEffects as applyStoryEffects,
   availableChoices,
   conditionMet,
-  resolveDynamicDuoComparison
+  resolveDynamicDuoComparison,
+  resolveConditionalEncounterModifiers
 } from "./engine/story.js";
 import {
   createEncounter,
@@ -1345,6 +1346,16 @@ function renderEncounter(node) {
         habilidade: state.hero.stats.habilidade,
         energia: state.hero.stats.energia
       }]
+    };
+  }
+
+  if (encounterDefinition) {
+    encounterDefinition = {
+      ...encounterDefinition,
+      modifiers: resolveConditionalEncounterModifiers(
+        encounterDefinition,
+        storyContext()
+      )
     };
   }
 
