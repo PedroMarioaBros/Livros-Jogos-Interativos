@@ -10,6 +10,27 @@ async function readText(relativePath) {
   return fs.readFile(path.join(root, relativePath), "utf8");
 }
 
+async function readBuffer(relativePath) {
+  return fs.readFile(path.join(root, relativePath));
+}
+
+async function readPngSize(relativePath) {
+  const buffer = await readBuffer(relativePath);
+  const signature = "89504e470d0a1a0a";
+
+  if (
+    buffer.length < 24 ||
+    buffer.subarray(0, 8).toString("hex") !== signature
+  ) {
+    return null;
+  }
+
+  const width = buffer.readUInt32BE(16);
+  const height = buffer.readUInt32BE(20);
+
+  return `${width}x${height}`;
+}
+
 async function readJSON(relativePath) {
   return JSON.parse(await readText(relativePath));
 }
@@ -160,15 +181,37 @@ if (!Array.isArray(manifest.icons) || manifest.icons.length === 0) {
     }
   }
 
-  const rasterSizes = new Set(
-    manifest.icons
-      .filter(icon => /image\/(png|webp)/.test(icon.type || ""))
-      .flatMap(icon => String(icon.sizes || "").split(/\s+/))
-  );
+  const rasterSizes = new Set();
+
+  for (const icon of manifest.icons) {
+    if (icon.type !== "image/png") continue;
+
+    const iconPath = normalizeShellPath(icon.src || "");
+    if (!iconPath || !(await exists(iconPath))) continue;
+
+    const actualSize = await readPngSize(iconPath);
+
+    if (!actualSize) {
+      issues.push(`Ícone PNG inválido: ${iconPath}`);
+      continue;
+    }
+
+    rasterSizes.add(actualSize);
+
+    const declaredSizes = new Set(
+      String(icon.sizes || "").split(/\s+/).filter(Boolean)
+    );
+
+    if (!declaredSizes.has(actualSize)) {
+      issues.push(
+        `Ícone ${iconPath} declara ${icon.sizes || "(sem sizes)"}, mas mede ${actualSize}`
+      );
+    }
+  }
 
   if (!rasterSizes.has("192x192") || !rasterSizes.has("512x512")) {
-    warnings.push(
-      "Manifesto ainda não possui ícones raster 192x192 e 512x512; manter como pendência de acabamento/Android."
+    issues.push(
+      "Manifesto precisa de ícones PNG reais 192x192 e 512x512."
     );
   }
 }
@@ -264,6 +307,9 @@ const report = {
   jsModulesRequired: jsClosure.size,
   gameDependenciesChecked: gameDependencyCount,
   manifestIcons: manifest.icons?.length || 0,
+  rasterIconSizes: manifest.icons
+    ?.filter(icon => icon.type === "image/png")
+    .map(icon => icon.sizes) || [],
   warnings,
   issues
 };
