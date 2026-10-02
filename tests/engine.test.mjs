@@ -40,7 +40,8 @@ import {
   beginHandoff,
   completeHandoff,
   updateDuoPlayer,
-  resolvePartnerOutcomeRoute
+  resolvePartnerOutcomeRoute,
+  endingRemovesDuoPlayer
 } from "../src/engine/duo.js";
 import {
   merchantItemSold,
@@ -2356,7 +2357,7 @@ test("todas as transições pós-morte apontam para a referência 39 catalogada"
     }
   }
 
-  assert.equal(count, 61);
+  assert.equal(count, 64);
 });
 
 test("Lothar 270 e 493 usam rotas de resultado do parceiro", () => {
@@ -3005,4 +3006,45 @@ test("Colthar 19 possui as duas rotas confirmadas no Archive", () => {
     [133, 243]
   );
   assert.equal(ref19.needsManualReview, undefined);
+});
+
+
+test("finais death, removed e removed-transition removem o jogador da dupla", () => {
+  assert.equal(endingRemovesDuoPlayer("death"), true);
+  assert.equal(endingRemovesDuoPlayer("removed"), true);
+  assert.equal(endingRemovesDuoPlayer("removed-transition"), true);
+  assert.equal(endingRemovesDuoPlayer("success"), false);
+});
+
+test("mortes conjuntas diretas removem também o parceiro", () => {
+  const jointRefs = ["17", "29", "32", "35", "98"];
+
+  for (const ref of jointRefs) {
+    assert.equal(
+      warriorBookData.references[ref].partnerRemoved,
+      true,
+      `Colthar ${ref} deve remover Lothar`
+    );
+    assert.equal(
+      mageBookData.references[ref].partnerRemoved,
+      true,
+      `Lothar ${ref} deve remover Colthar`
+    );
+  }
+});
+
+test("referência 294 remove o personagem e aplica a transição 39 automaticamente", () => {
+  for (const book of [warriorBookData, mageBookData]) {
+    const ref294 = book.references["294"];
+    assert.equal(ref294.ending, "removed-transition");
+    assert.equal(ref294.afterDeathReference, 39);
+    assert.equal(ref294.choices, undefined);
+  }
+});
+
+test("morte individual de Lothar 399 continua pela transição solo", () => {
+  const ref399 = mageBookData.references["399"];
+
+  assert.equal(ref399.ending, "death");
+  assert.equal(ref399.afterDeathReference, 39);
 });
