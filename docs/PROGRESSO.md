@@ -8,19 +8,19 @@ As porcentagens abaixo são estimativas de engenharia para um **Fúria de Prínc
 
 | Medida | Estado atual |
 | --- | ---: |
-| Colthar — referências estruturadas | 375/500 (75,0%) |
-| Colthar — completas/extraídas | 366/500 (73,2%) |
-| Colthar — parciais | 9 |
+| Colthar — referências estruturadas | 400/500 (80,0%) |
+| Colthar — completas/extraídas | 390/500 (78,0%) |
+| Colthar — parciais | 10 |
 | Colthar — pendentes | 0 |
 | Lothar — referências estruturadas | 500/500 (100%) |
 | Lothar — completas/extraídas | 496/500 (99,2%) |
-| Narrativa combinada — estruturada | 875/1000 (87,5%) |
-| Narrativa combinada — completa/extraída | 862/1000 (86,2%) |
-| STATUS/AÇÃO catalogados | 29 |
-| STATUS/AÇÃO verificados | 29/29 catalogados |
+| Narrativa combinada — estruturada | 900/1000 (90,0%) |
+| Narrativa combinada — completa/extraída | 886/1000 (88,6%) |
+| STATUS/AÇÃO catalogados | 30 |
+| STATUS/AÇÃO verificados | 30/30 catalogados |
 | Feitiços de Combate | 12/12 implementados |
 
-Colthar está contínuo de **1 a 375**, sem lacunas estruturais nesse intervalo. A referência 144 permanece parcial porque o OCR do acervo do Internet Archive preserva a ENERGIA da Formiga-leão, mas não o valor de HABILIDADE; a lacuna não é preenchida por inferência.
+Colthar está contínuo de **1 a 400**, sem lacunas estruturais nesse intervalo. A referência 144 permanece parcial porque o OCR do acervo do Internet Archive preserva a ENERGIA da Formiga-leão, mas não o valor de HABILIDADE; a lacuna não é preenchida por inferência.
 
 ## Estado por área
 
@@ -29,8 +29,8 @@ Colthar está contínuo de **1 a 375**, sem lacunas estruturais nesse intervalo.
 | Fundação e arquitetura | 100% |
 | Motor genérico de livro-jogo | 97% |
 | Regras específicas de Fúria de Príncipes | 95% |
-| Conteúdo estrutural de Colthar | 75,0% |
-| Conteúdo completo/extraído de Colthar | 73,2% |
+| Conteúdo estrutural de Colthar | 80,0% |
+| Conteúdo completo/extraído de Colthar | 78,0% |
 | Conteúdo estrutural de Lothar | 100% |
 | Conteúdo completo/extraído de Lothar | 99,2% |
 | Combate individual | 96% |
@@ -44,7 +44,7 @@ Colthar está contínuo de **1 a 375**, sem lacunas estruturais nesse intervalo.
 | Empacotamento Android/APK | 0% |
 | Ilustrações e áudio finais | 0–5% |
 | Testes do motor | 93% |
-| Testes da aventura completa | ~63% |
+| Testes da aventura completa | ~66% |
 
 ## Percentual global
 
@@ -59,8 +59,8 @@ Para evitar uma média simples enganosa, o acompanhamento global usa pesos fixos
 
 Com essa régua, o projeto está em aproximadamente:
 
-- **Fúria de Príncipes completo no mesmo aparelho: ~82%**;
-- **aplicativo Android final: ~76% do caminho total**.
+- **Fúria de Príncipes completo no mesmo aparelho: ~83%**;
+- **aplicativo Android final: ~77% do caminho total**.
 
 Esses percentuais são conservadores: o conteúdo narrativo e os testes de caminhos têm o maior peso, e são hoje o principal trabalho restante.
 
@@ -70,14 +70,14 @@ Esses percentuais são conservadores: o conteúdo narrativo e os testes de camin
 | --- | ---: |
 | Motor reutilizável | ~97% |
 | Demonstração jogável de Fúria | ~92% |
-| Colthar solo completo | ~75% |
+| Colthar solo completo | ~79% |
 | Lothar solo completo | ~94% |
-| Fúria completo no mesmo aparelho | ~82% |
-| Aplicativo Android final | ~76% |
+| Fúria completo no mesmo aparelho | ~83% |
+| Aplicativo Android final | ~77% |
 
 ## Próximos gargalos
 
-1. continuar Colthar a partir da referência 376;
+1. continuar Colthar a partir da referência 401;
 2. fechar referências parciais/pendentes sem inventar dados ausentes;
 3. mapear novos pontos STATUS/AÇÃO conforme surgirem no volume de Colthar;
 4. ampliar testes de caminhos alcançáveis;
