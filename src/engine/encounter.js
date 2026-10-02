@@ -11,6 +11,7 @@ export function createEncounter(reference, definition) {
     enemies: definition.enemies.map(createOpponent),
     currentEnemyIndex: 0,
     rounds: [],
+    roundLimit: Number(definition.roundLimit || 0),
     finished: false,
     victory: false,
     defeat: false,
