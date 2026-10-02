@@ -4864,6 +4864,90 @@
           "target": 39
         }
       ]
+    },
+    "295": {
+      "estado": "extraida",
+      "resumo": "Lothar desaparece num buraco e Colthar passa a seguir sozinho para as montanhas.",
+      "partnerRemoved": true,
+      "choices": [
+        {
+          "label": "Prosseguir sozinho",
+          "target": 4
+        }
+      ]
+    },
+    "296": {
+      "estado": "extraida",
+      "resumo": "Colthar consegue escapar da criatura e segue adiante.",
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 217
+        }
+      ]
+    },
+    "297": {
+      "estado": "extraida",
+      "resumo": "Sob o tecido verde-esmeralda há um Ghoul inerte segurando um pergaminho marrom com runas; Colthar o recolhe e pode examinar os outros caixões.",
+      "effects": [
+        {
+          "type": "add_item",
+          "item": "pergaminho_marrom"
+        }
+      ],
+      "choices": [
+        {
+          "label": "Examinar o tecido turquesa",
+          "target": 235
+        },
+        {
+          "label": "Examinar o tecido escarlate",
+          "target": 134
+        },
+        {
+          "label": "Examinar o tecido branco",
+          "target": 254
+        }
+      ]
+    },
+    "298": {
+      "estado": "extraida",
+      "resumo": "Uma corda mágica captura Colthar e a aventura deste príncipe se encerra.",
+      "partnerInstruction": {
+        "sendToReference": 298
+      },
+      "ending": "removed"
+    },
+    "299": {
+      "estado": "extraida",
+      "resumo": "A fechadura de uma arca explode na mão de Colthar; dentro há uma garrafa de vinho e oito moedas de ouro.",
+      "effects": [
+        {
+          "type": "change_stat",
+          "stat": "habilidade",
+          "delta": -1
+        },
+        {
+          "type": "change_gold",
+          "delta": 8
+        },
+        {
+          "type": "add_item",
+          "item": "garrafa_de_vinho"
+        }
+      ],
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 339
+        }
+      ]
+    },
+    "300": {
+      "estado": "extraida",
+      "resumo": "Um acidente fatal encerra a aventura de Colthar.",
+      "ending": "death",
+      "afterDeathReference": 39
     }
   }
 }
