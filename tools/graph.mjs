@@ -278,9 +278,14 @@ function analyzeCharacter(
   };
 }
 
-function analyzeCombinedDuo(characterReports) {
+function analyzeCombinedDuo(
+  characterReports,
+  books,
+  syncEntries
+) {
   const graph = new Map();
   const reverse = new Map();
+  const resolutionTerminals = [];
 
   for (const character of CHARACTERS) {
     const report = characterReports[character];
@@ -292,7 +297,18 @@ function analyzeCombinedDuo(characterReports) {
       reference += 1
     ) {
       const key = `${character}:${reference}`;
+      const node =
+        books[character].references[String(reference)];
+      const syncEntry = syncEntryFor(
+        syncEntries,
+        character,
+        reference
+      );
       const targets = [];
+
+      if (isExplainedOpenNode(node, syncEntry)) {
+        resolutionTerminals.push(key);
+      }
 
       for (
         const target of
@@ -350,6 +366,26 @@ function analyzeCombinedDuo(characterReports) {
     })
     .sort();
 
+  const canReachResolution = new Set();
+  const resolutionQueue = [...resolutionTerminals];
+
+  while (resolutionQueue.length) {
+    const key = resolutionQueue.shift();
+    if (canReachResolution.has(key)) continue;
+
+    canReachResolution.add(key);
+
+    for (const source of reverse.get(key) || []) {
+      if (!canReachResolution.has(source)) {
+        resolutionQueue.push(source);
+      }
+    }
+  }
+
+  const reachableWithoutResolution = [...reachable]
+    .filter(key => !canReachResolution.has(key))
+    .sort();
+
   return {
     totalNodes: allNodes.length,
     reachableNodes: reachable.size,
@@ -358,7 +394,12 @@ function analyzeCombinedDuo(characterReports) {
     ),
     unreachableCount: unreachable.length,
     unreachable,
-    unreachableEntryPoints
+    unreachableEntryPoints,
+    resolutionTerminalCount: resolutionTerminals.length,
+    nodesThatCanReachResolution: canReachResolution.size,
+    reachableWithoutResolutionCount:
+      reachableWithoutResolution.length,
+    reachableWithoutResolution
   };
 }
 
@@ -391,7 +432,9 @@ const characterReports = {
 };
 
 const combinedDuo = analyzeCombinedDuo(
-  characterReports
+  characterReports,
+  { colthar, lothar },
+  syncEntries
 );
 
 const report = {
@@ -422,6 +465,7 @@ if (
   report.lothar.references !== 500 ||
   report.colthar.deadEnds.length > 0 ||
   report.lothar.deadEnds.length > 0 ||
+  report.combinedDuo.reachableWithoutResolutionCount > 0 ||
   fatalProblems.length > 0
 ) {
   process.exit(1);
