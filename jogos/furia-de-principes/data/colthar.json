@@ -5322,6 +5322,391 @@
         ]
       },
       "onVictory": 102
+    },
+    "326": {
+      "estado": "extraida",
+      "resumo": "Um Druida ameaça transformar Colthar; possuir uma muda de vidoeiro oferece uma alternativa.",
+      "choices": [
+        {
+          "label": "Oferecer a muda de vidoeiro",
+          "target": 275,
+          "conditions": [
+            {
+              "type": "has_item",
+              "item": "muda_de_vidoeiro"
+            }
+          ]
+        },
+        {
+          "label": "Não possuir muda de vidoeiro",
+          "target": 68,
+          "conditions": [
+            {
+              "type": "not_has_item",
+              "item": "muda_de_vidoeiro"
+            }
+          ]
+        }
+      ]
+    },
+    "327": {
+      "estado": "extraida",
+      "resumo": "Bruxas ferem Colthar antes de invocar uma criatura; o Pé de Coelho da Sorte pode alterar o destino.",
+      "effects": [
+        {
+          "type": "change_stat",
+          "stat": "energia",
+          "delta": -3
+        }
+      ],
+      "choices": [
+        {
+          "label": "Usar a sorte do Pé de Coelho",
+          "target": 203,
+          "conditions": [
+            {
+              "type": "has_item",
+              "item": "pe_de_coelho_da_sorte"
+            }
+          ]
+        }
+      ],
+      "roll": {
+        "dice": "1d6",
+        "conditions": [
+          {
+            "type": "not_has_item",
+            "item": "pe_de_coelho_da_sorte"
+          }
+        ],
+        "routes": [
+          {
+            "range": [
+              1,
+              2
+            ],
+            "target": 271
+          },
+          {
+            "range": [
+              3,
+              6
+            ],
+            "target": 116
+          }
+        ]
+      }
+    },
+    "328": {
+      "estado": "extraida",
+      "resumo": "Uma queda fatal encerra a aventura de Colthar.",
+      "ending": "death",
+      "afterDeathReference": 39
+    },
+    "329": {
+      "estado": "extraida",
+      "resumo": "Dois anões bloqueiam uma caverna; possuir uma barra de ferro muda o próximo caminho.",
+      "choices": [
+        {
+          "label": "Possui barra de ferro",
+          "target": 423,
+          "conditions": [
+            {
+              "type": "has_item",
+              "item": "barra_de_ferro"
+            }
+          ]
+        },
+        {
+          "label": "Não possui barra de ferro",
+          "target": 14,
+          "conditions": [
+            {
+              "type": "not_has_item",
+              "item": "barra_de_ferro"
+            }
+          ]
+        }
+      ]
+    },
+    "330": {
+      "estado": "extraida",
+      "resumo": "Colthar precisa Testar a Sorte.",
+      "test": {
+        "type": "luck",
+        "successTarget": 20,
+        "failureTarget": 278
+      }
+    },
+    "331": {
+      "estado": "extraida",
+      "resumo": "Um mecanismo secreto sob o sarcófago revela uma passagem iluminada.",
+      "choices": [
+        {
+          "label": "Entrar pela passagem",
+          "target": 412
+        }
+      ]
+    },
+    "332": {
+      "estado": "extraida",
+      "resumo": "Uma visão do destino mostra Colthar preso em areia movediça.",
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 496
+        }
+      ]
+    },
+    "333": {
+      "estado": "extraida",
+      "resumo": "Lothar abre uma caixa e sofre um ataque de pequenas serpentes; o dano é resolvido na referência correspondente do irmão.",
+      "partnerInstruction": {
+        "sendToReference": 333
+      },
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 373
+        }
+      ]
+    },
+    "334": {
+      "estado": "extraida",
+      "resumo": "Um Urso Negro ataca Colthar.",
+      "encounter": {
+        "enemies": [
+          {
+            "name": "Urso Negro",
+            "habilidade": 10,
+            "energia": 10
+          }
+        ]
+      },
+      "onVictory": 437
+    },
+    "335": {
+      "estado": "extraida",
+      "resumo": "Uma cerca viva se regenera e prende Colthar; uma muda de vidoeiro pode ajudá-lo.",
+      "choices": [
+        {
+          "label": "Usar a muda de vidoeiro",
+          "target": 492,
+          "conditions": [
+            {
+              "type": "has_item",
+              "item": "muda_de_vidoeiro"
+            }
+          ]
+        },
+        {
+          "label": "Sem muda de vidoeiro",
+          "target": 109,
+          "conditions": [
+            {
+              "type": "not_has_item",
+              "item": "muda_de_vidoeiro"
+            }
+          ]
+        }
+      ]
+    },
+    "336": {
+      "estado": "extraida",
+      "resumo": "Marimbondos ferroam Colthar enquanto ele escala, reduzindo sua ENERGIA.",
+      "effects": [
+        {
+          "type": "change_stat",
+          "stat": "energia",
+          "delta": -2
+        }
+      ],
+      "choices": [
+        {
+          "label": "Continuar subindo",
+          "target": 409
+        }
+      ]
+    },
+    "337": {
+      "estado": "extraida",
+      "resumo": "Colthar ataca um Druida antes que ele conclua seu feitiço.",
+      "encounter": {
+        "enemies": [
+          {
+            "name": "Druida",
+            "habilidade": 9,
+            "energia": 6
+          }
+        ]
+      },
+      "onVictory": 78
+    },
+    "338": {
+      "estado": "extraida",
+      "resumo": "Uma das pedras da travessia revela ser um Peixe-pedra venenoso; Colthar Testa a Sorte.",
+      "test": {
+        "type": "luck",
+        "successTarget": 37,
+        "failureTarget": 245
+      }
+    },
+    "339": {
+      "estado": "extraida",
+      "resumo": "Sem encontrar mais nada útil, Colthar deixa a casa do Troll e atravessa a ponte.",
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 100
+        }
+      ]
+    },
+    "340": {
+      "estado": "extraida",
+      "resumo": "Ao derreter o gelo com a lanterna, Colthar desperta o guerreiro congelado e decide fugir ou lutar.",
+      "choices": [
+        {
+          "label": "Fugir",
+          "target": 234
+        },
+        {
+          "label": "Lutar",
+          "target": 56
+        }
+      ]
+    },
+    "341": {
+      "estado": "extraida",
+      "resumo": "Colthar resiste a uma forte rajada de vento e permanece no aposento.",
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 331
+        }
+      ]
+    },
+    "342": {
+      "estado": "extraida",
+      "resumo": "Colthar escapa de um Javali e precisa Testar a Sorte ao atravessar um galho sobre a cerca viva.",
+      "test": {
+        "type": "luck",
+        "successTarget": 63,
+        "failureTarget": 467
+      }
+    },
+    "343": {
+      "estado": "extraida",
+      "resumo": "Uma raiz bloqueia a passagem; os irmãos decidem cortá-la ou tentar se esgueirar.",
+      "choices": [
+        {
+          "label": "Cortar a raiz com a espada",
+          "target": 98
+        },
+        {
+          "label": "Tentar passar sem cortar",
+          "target": 146
+        }
+      ]
+    },
+    "344": {
+      "estado": "validada",
+      "resumo": "Ponto de sincronização: Colthar define STATUS 15 e aguarda AÇÃO 1 ou 35."
+    },
+    "345": {
+      "estado": "extraida",
+      "resumo": "Os irmãos enfrentam juntos um Troll em ataques alternados; Lothar pode usar magia.",
+      "partnerInstruction": {
+        "sendToReference": 345
+      },
+      "encounter": {
+        "cooperative": true,
+        "allowCombatMagic": true,
+        "enemies": [
+          {
+            "name": "Troll",
+            "habilidade": 9,
+            "energia": 10
+          }
+        ]
+      },
+      "choices": [
+        {
+          "label": "Vitória com Lothar vivo",
+          "target": 48,
+          "conditions": [
+            {
+              "type": "partner_active"
+            }
+          ]
+        },
+        {
+          "label": "Vitória após Lothar sair da aventura",
+          "target": 459,
+          "conditions": [
+            {
+              "type": "partner_removed"
+            }
+          ]
+        }
+      ]
+    },
+    "346": {
+      "estado": "extraida",
+      "resumo": "Aeronautas oferecem transporte de Roc até o deserto em troca de ajuda; os irmãos decidem aceitar ou continuar a pé.",
+      "choices": [
+        {
+          "label": "Aceitar a viagem aérea",
+          "target": 241
+        },
+        {
+          "label": "Continuar a pé",
+          "target": 291
+        }
+      ]
+    },
+    "347": {
+      "estado": "extraida",
+      "resumo": "Ladrões de túmulos fogem e deixam cair um livro sagrado, que Colthar recolhe.",
+      "effects": [
+        {
+          "type": "add_item",
+          "item": "livro_sagrado"
+        }
+      ],
+      "choices": [
+        {
+          "label": "Voltar à trilha do cemitério",
+          "target": 276
+        }
+      ]
+    },
+    "348": {
+      "estado": "extraida",
+      "resumo": "Colthar é atingido durante a confusão na estalagem; Lothar deve continuar pela referência correspondente.",
+      "partnerInstruction": {
+        "sendToReference": 348
+      },
+      "ending": "death",
+      "afterDeathReference": 39
+    },
+    "349": {
+      "estado": "extraida",
+      "resumo": "Um enorme pedregulho alcança Colthar no túnel e encerra sua aventura.",
+      "ending": "death",
+      "afterDeathReference": 39
+    },
+    "350": {
+      "estado": "extraida",
+      "resumo": "Escondidos em barris, os irmãos são separados quando o barril de Lothar cai no rio; Colthar segue sozinho.",
+      "partnerInstruction": {
+        "sendToReference": 350
+      },
+      "choices": [
+        {
+          "label": "Prosseguir sozinho",
+          "target": 497
+        }
+      ]
     }
   }
 }

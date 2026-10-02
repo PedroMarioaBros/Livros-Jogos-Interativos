@@ -262,6 +262,34 @@
       "notes": "STATUS 9 e quatro rotas por AÇÃO confirmados no OCR do volume do Guerreiro."
     },
     {
+      "character": "colthar",
+      "reference": 344,
+      "verified": true,
+      "effects": [
+        {
+          "type": "set_shared",
+          "key": "status",
+          "value": 15
+        }
+      ],
+      "waitFor": "acao",
+      "routes": [
+        {
+          "acao": [
+            1
+          ],
+          "target": 86
+        },
+        {
+          "acao": [
+            35
+          ],
+          "target": 265
+        }
+      ],
+      "notes": "STATUS 15 e rotas por AÇÃO confirmados no OCR do volume do Guerreiro."
+    },
+    {
       "character": "lothar",
       "reference": 31,
       "verified": true,
