@@ -124,6 +124,10 @@ export function conditionMet(condition, context) {
       const partnerGold = Number(context.partnerCharacter?.gold || 0);
       return character.gold + partnerGold >= Number(condition.value || 0);
     }
+    case "shared_gold_lt": {
+      const partnerGold = Number(context.partnerCharacter?.gold || 0);
+      return character.gold + partnerGold < Number(condition.value || 0);
+    }
     default:
       return false;
   }
