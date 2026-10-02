@@ -2980,9 +2980,426 @@
         }
       ]
     },
+    "176": {
+      "estado": "extraida",
+      "resumo": "Touros negros investem contra Colthar; ele perde ENERGIA e recua para tentar atravessar a ponte.",
+      "effects": [
+        {
+          "type": "change_stat",
+          "stat": "energia",
+          "delta": -2
+        }
+      ],
+      "choices": [
+        {
+          "label": "Recuar para a ponte",
+          "target": 52
+        }
+      ]
+    },
+    "177": {
+      "estado": "extraida",
+      "resumo": "Depois de vencer os Ogres, Colthar encontra cinco moedas de ouro e recupera quase toda a ENERGIA perdida no combate, mantendo apenas um ponto de dano.",
+      "effects": [
+        {
+          "type": "change_gold",
+          "delta": 5
+        },
+        {
+          "type": "recover_last_combat_damage_except",
+          "stat": "energia",
+          "leave": 1
+        }
+      ],
+      "choices": [
+        {
+          "label": "Voltar à ponte de pedágio",
+          "target": 13
+        }
+      ]
+    },
+    "178": {
+      "estado": "extraida",
+      "resumo": "Colthar manda Lothar para a mesma referência, sofre um ferimento de besta e segue para o combate conjunto.",
+      "partnerInstruction": {
+        "sendToReference": 178
+      },
+      "effects": [
+        {
+          "type": "change_stat",
+          "stat": "energia",
+          "delta": -1
+        }
+      ],
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 269
+        }
+      ]
+    },
+    "179": {
+      "estado": "extraida",
+      "resumo": "A Morte Que Aguarda mostra três crianças do destino; Colthar precisa escolher qual visão encarar.",
+      "choices": [
+        {
+          "label": "Olhar a primeira criança",
+          "target": 272
+        },
+        {
+          "label": "Olhar a segunda criança",
+          "target": 332
+        },
+        {
+          "label": "Olhar a terceira criança",
+          "target": 406
+        }
+      ]
+    },
+    "180": {
+      "estado": "extraida",
+      "resumo": "Investigando o ladrão de cavalos, Colthar rouba uma garrafa de hidromel antes de deixar a vila.",
+      "effects": [
+        {
+          "type": "add_item",
+          "item": "garrafa_de_hidromel"
+        }
+      ],
+      "choices": [
+        {
+          "label": "Deixar a vila",
+          "target": 367
+        }
+      ]
+    },
+    "181": {
+      "estado": "extraida",
+      "resumo": "O Ciclope derrotado se transforma numa Pedra de Poder; Colthar a recolhe e ganha SORTE e ENERGIA.",
+      "effects": [
+        {
+          "type": "add_item",
+          "item": "pedra_de_poder"
+        },
+        {
+          "type": "change_stat",
+          "stat": "sorte",
+          "delta": 1
+        },
+        {
+          "type": "change_stat",
+          "stat": "energia",
+          "delta": 1
+        }
+      ],
+      "choices": [
+        {
+          "label": "Prosseguir pelo túnel",
+          "target": 31
+        }
+      ]
+    },
+    "182": {
+      "estado": "extraida",
+      "resumo": "A resposta ao enigma provoca um alarme, mas os irmãos recuperam todos os pertences e armas roubados.",
+      "effects": [
+        {
+          "type": "restore_stashed_items"
+        }
+      ],
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 88
+        }
+      ]
+    },
+    "183": {
+      "estado": "extraida",
+      "resumo": "A faixa vermelha do arco-íris devolve os irmãos ao ponto anterior e reduz a HABILIDADE de Colthar.",
+      "effects": [
+        {
+          "type": "change_stat",
+          "stat": "habilidade",
+          "delta": -1
+        }
+      ],
+      "choices": [
+        {
+          "label": "Escolher a faixa verde",
+          "target": 162
+        },
+        {
+          "label": "Escolher a faixa azul",
+          "target": 145
+        },
+        {
+          "label": "Escolher a faixa violeta",
+          "target": 124
+        }
+      ]
+    },
+    "184": {
+      "estado": "extraida",
+      "resumo": "Colthar captura um cavalo selvagem e retorna em direção à ponte.",
+      "effects": [
+        {
+          "type": "add_item",
+          "item": "cavalo"
+        }
+      ],
+      "choices": [
+        {
+          "label": "Retornar à ponte",
+          "target": 60
+        }
+      ]
+    },
+    "185": {
+      "estado": "validada",
+      "resumo": "Ponto de sincronização: Colthar define STATUS 20 e aguarda instruções do outro jogador."
+    },
+    "186": {
+      "estado": "extraida",
+      "resumo": "Os irmãos enfrentam dois Gremlins, cada um contra um inimigo, sem tempo para magia.",
+      "encounter": {
+        "cooperative": true,
+        "noCombatMagic": true,
+        "enemies": [
+          {
+            "name": "Gremlin Um",
+            "habilidade": 8,
+            "energia": 4
+          },
+          {
+            "name": "Gremlin Dois",
+            "habilidade": 7,
+            "energia": 4
+          }
+        ]
+      },
+      "choices": [
+        {
+          "label": "Vitória com Lothar ativo",
+          "target": 230,
+          "conditions": [
+            {
+              "type": "partner_active"
+            }
+          ]
+        },
+        {
+          "label": "Vitória após Lothar sair da aventura",
+          "target": 497,
+          "conditions": [
+            {
+              "type": "partner_removed"
+            }
+          ]
+        }
+      ]
+    },
+    "187": {
+      "estado": "extraida",
+      "resumo": "Mãos invisíveis arremessam Colthar contra a parede; ele perde ENERGIA e decide como continuar.",
+      "effects": [
+        {
+          "type": "change_stat",
+          "stat": "energia",
+          "delta": -1
+        }
+      ],
+      "choices": [
+        {
+          "label": "Examinar o sarcófago",
+          "target": 331
+        },
+        {
+          "label": "Atravessar o batente",
+          "target": 141
+        }
+      ]
+    },
+    "188": {
+      "estado": "extraida",
+      "resumo": "Ao sair da floresta, Colthar precisa escolher onde procurar abrigo ao anoitecer.",
+      "choices": [
+        {
+          "label": "Procurar abrigo no vale arborizado",
+          "target": 82
+        },
+        {
+          "label": "Abrigar-se junto ao monólito",
+          "target": 273
+        }
+      ]
+    },
+    "189": {
+      "estado": "extraida",
+      "resumo": "Com Lothar morto, Colthar deixa a estalagem e segue sozinho pelas montanhas do norte.",
+      "partnerRemoved": true,
+      "choices": [
+        {
+          "label": "Prosseguir sozinho",
+          "target": 4
+        }
+      ]
+    },
+    "190": {
+      "estado": "extraida",
+      "resumo": "Colthar atravessa a longa ponte até Orcmoot e encontra a Hidra de três cabeças já morta diante da torre.",
+      "choices": [
+        {
+          "label": "Entrar na torre",
+          "target": 155
+        }
+      ]
+    },
+    "191": {
+      "estado": "extraida",
+      "resumo": "Três Lobos Cinzentos atacam Colthar em sequência.",
+      "encounter": {
+        "enemies": [
+          {
+            "name": "Lobo Um",
+            "habilidade": 8,
+            "energia": 8
+          },
+          {
+            "name": "Lobo Dois",
+            "habilidade": 9,
+            "energia": 6
+          },
+          {
+            "name": "Lobo Três",
+            "habilidade": 7,
+            "energia": 6
+          }
+        ]
+      },
+      "onVictory": 207
+    },
+    "192": {
+      "estado": "extraida",
+      "resumo": "Uma arcada leva a um aposento com quatro grades, uma em cada parede.",
+      "choices": [
+        {
+          "label": "Examinar a grade norte",
+          "target": 300
+        },
+        {
+          "label": "Examinar a grade sul",
+          "target": 443
+        },
+        {
+          "label": "Examinar a grade leste",
+          "target": 491
+        },
+        {
+          "label": "Examinar a grade oeste",
+          "target": 310
+        }
+      ]
+    },
+    "193": {
+      "estado": "extraida",
+      "resumo": "Uma parede revela um porão com restos de criaturas e um pequeno machado de prata.",
+      "effects": [
+        {
+          "type": "add_item",
+          "item": "machado_de_prata"
+        }
+      ],
+      "choices": [
+        {
+          "label": "Retornar à porta de carvalho",
+          "target": 252
+        }
+      ]
+    },
+    "194": {
+      "estado": "extraida",
+      "resumo": "Colthar persegue o Gnomo que prepara outra bola de fogo e precisa Testar a Sorte.",
+      "test": {
+        "type": "luck",
+        "successTarget": 103,
+        "failureTarget": 209
+      }
+    },
+    "195": {
+      "estado": "extraida",
+      "resumo": "Num antigo pátio, Colthar procura Água Benta e decide entre testar a água do lago ou examinar a capela.",
+      "choices": [
+        {
+          "label": "Encher o frasco no lago",
+          "target": 320
+        },
+        {
+          "label": "Examinar primeiro a capela",
+          "target": 72
+        }
+      ]
+    },
+    "196": {
+      "estado": "extraida",
+      "resumo": "Colthar envia Lothar para a referência correspondente; juntos decidem entre subir a escada ou entrar pela porta.",
+      "partnerInstruction": {
+        "sendToReference": 170
+      },
+      "choices": [
+        {
+          "label": "Subir a escada",
+          "target": 12
+        },
+        {
+          "label": "Entrar pela porta",
+          "target": 481
+        }
+      ]
+    },
+    "197": {
+      "estado": "extraida",
+      "resumo": "Numa clareira com framboesas e cogumelos, Colthar escolhe o que comer.",
+      "choices": [
+        {
+          "label": "Comer framboesas",
+          "target": 127
+        },
+        {
+          "label": "Comer cogumelos",
+          "target": 293
+        }
+      ]
+    },
+    "198": {
+      "estado": "extraida",
+      "resumo": "O feitiço destrói a toca dos Scuttlies e permite recuperar todos os pertences roubados.",
+      "effects": [
+        {
+          "type": "restore_stashed_items"
+        }
+      ],
+      "choices": [
+        {
+          "label": "Continuar viajando juntos",
+          "target": 107
+        },
+        {
+          "label": "Separar-se",
+          "target": 446
+        }
+      ]
+    },
     "199": {
-      "estado": "pendente",
-      "resumo": "Referência reservada para extração e validação."
+      "estado": "validada",
+      "resumo": "Ponto de sincronização: Colthar define STATUS 3 e aguarda AÇÃO 1, 22 ou 23."
+    },
+    "200": {
+      "estado": "extraida",
+      "resumo": "Colthar permanece aguardando instruções do outro jogador.",
+      "partnerInstruction": {
+        "wait": true,
+        "sourceCharacter": "lothar"
+      }
     }
   }
 }

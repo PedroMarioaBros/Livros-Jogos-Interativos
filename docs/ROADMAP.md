@@ -53,13 +53,14 @@
   - [x] Terceira expansão estrutural: referências 101–125 conferidas; 127 referências cadastradas no banco
   - [x] Quarta expansão estrutural: referências 126–150 conferidas; 151 referências cadastradas no banco
   - [x] Quinta expansão estrutural: referências 151–175 conferidas; 176 referências cadastradas no banco
+  - [x] Sexta expansão estrutural: referências 176–200 conferidas; 200 referências cadastradas no banco
 - [x] Extrair referências de Lothar
   - [x] Referências 1–500 estruturadas continuamente
 - [ ] Mapear todas as sincronizações STATUS/AÇÃO
   - [x] Motor genérico de sincronização
   - [x] Primeira varredura de AÇÃO de Lothar
   - [x] Primeiros pontos verificados de STATUS de Colthar (31 e 60)
-  - [x] 24 pontos atualmente catalogados conferidos individualmente
+  - [x] 26 pontos atualmente catalogados conferidos individualmente
 - [ ] Classificar finais, mortes e encontros
 - [ ] Testar todos os caminhos alcançáveis
   - [x] Análise automática dos grafos de ambos os volumes
