@@ -94,6 +94,43 @@ export function completeHandoff(session) {
   };
 }
 
+export function resolvePartnerOutcomeRoute(routes, partner) {
+  if (!Array.isArray(routes) || !partner) return null;
+
+  for (const route of routes) {
+    if (route.condition === "partner_defeated") {
+      const defeated =
+        Boolean(partner.removed) ||
+        Number(partner.hero?.stats?.energia || 0) <= 0;
+
+      if (defeated) {
+        return {
+          ...route,
+          target: Number(route.target)
+        };
+      }
+    }
+
+    if (route.condition === "partner_victory") {
+      const expectedReference = Number(
+        route.partnerReference ?? route.target
+      );
+      const victorious =
+        !partner.removed &&
+        Number(partner.reference) === expectedReference;
+
+      if (victorious) {
+        return {
+          ...route,
+          target: Number(route.target)
+        };
+      }
+    }
+  }
+
+  return null;
+}
+
 export function updateDuoPlayer(session, character, patch) {
   const player = session?.players?.[character];
   if (!player) throw new Error("Jogador inválido.");

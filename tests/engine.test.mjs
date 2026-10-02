@@ -35,7 +35,13 @@ import {
   applyCombatSpell,
   applyCooperativeCombatSpell
 } from "../src/engine/spell-combat.js";
-import { createDuoSession, beginHandoff, completeHandoff, updateDuoPlayer } from "../src/engine/duo.js";
+import {
+  createDuoSession,
+  beginHandoff,
+  completeHandoff,
+  updateDuoPlayer,
+  resolvePartnerOutcomeRoute
+} from "../src/engine/duo.js";
 import {
   merchantItemSold,
   purchaseMerchantItem
@@ -2274,6 +2280,100 @@ test("referência 241 mantém apenas destinos confirmados para auditoria", () =>
     [317, 178, 269, 84]
   );
   assert.equal(ref241.roll, undefined);
+});
+
+test("rotas de resultado do parceiro aguardam vitória ou derrota real", () => {
+  const routes = [
+    { condition: "partner_defeated", target: 497 },
+    { condition: "partner_victory", target: 202 }
+  ];
+
+  const partner = {
+    reference: 270,
+    removed: false,
+    hero: { stats: { energia: 10 } }
+  };
+
+  assert.equal(
+    resolvePartnerOutcomeRoute(routes, partner),
+    null
+  );
+
+  partner.reference = 202;
+  assert.deepEqual(
+    resolvePartnerOutcomeRoute(routes, partner),
+    { condition: "partner_victory", target: 202 }
+  );
+
+  partner.reference = 270;
+  partner.removed = true;
+  assert.deepEqual(
+    resolvePartnerOutcomeRoute(routes, partner),
+    { condition: "partner_defeated", target: 497 }
+  );
+});
+
+test("energia zero também caracteriza derrota do parceiro", () => {
+  const route = resolvePartnerOutcomeRoute(
+    [
+      { condition: "partner_defeated", target: 298 },
+      { condition: "partner_victory", target: 381 }
+    ],
+    {
+      reference: 493,
+      removed: false,
+      hero: { stats: { energia: 0 } }
+    }
+  );
+
+  assert.deepEqual(
+    route,
+    { condition: "partner_defeated", target: 298 }
+  );
+});
+
+test("todas as transições pós-morte apontam para a referência 39 catalogada", () => {
+  const books = [
+    ["colthar", warriorBookData],
+    ["lothar", mageBookData]
+  ];
+  let count = 0;
+
+  for (const [character, book] of books) {
+    const transition = syncBookData.entries.find(
+      entry =>
+        entry.character === character &&
+        entry.reference === 39
+    );
+
+    assert.ok(transition);
+
+    for (const node of Object.values(book.references)) {
+      if (!node.afterDeathReference) continue;
+      count += 1;
+      assert.equal(node.afterDeathReference, 39);
+    }
+  }
+
+  assert.equal(count, 61);
+});
+
+test("Lothar 270 e 493 usam rotas de resultado do parceiro", () => {
+  assert.deepEqual(
+    mageBookData.references["270"].partnerOutcomeRoutes,
+    [
+      { condition: "partner_defeated", target: 497 },
+      { condition: "partner_victory", target: 202 }
+    ]
+  );
+
+  assert.deepEqual(
+    mageBookData.references["493"].partnerOutcomeRoutes,
+    [
+      { condition: "partner_defeated", target: 298 },
+      { condition: "partner_victory", target: 381 }
+    ]
+  );
 });
 
 test("set_stat define atributo sem ultrapassar o valor inicial", () => {
