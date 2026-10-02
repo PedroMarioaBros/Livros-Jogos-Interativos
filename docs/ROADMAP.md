@@ -94,6 +94,7 @@
   - [x] Smoke test do runtime narrativo em 989/989 referências completas, cobrindo 335 efeitos e 178 condições
   - [x] Primeira rota conjunta completa reproduzida no CI: início → morte de Lothar → continuação solo de Colthar → sucesso 500
   - [x] Segunda rota conjunta completa reproduzida no CI: início → morte de Colthar → continuação solo de Lothar → sucesso 500
+  - [x] Save/load integrado no meio da rota completa de Lothar, com retomada até o sucesso 500
 
 ## Fase 3 — Interface
 - [ ] Biblioteca de aventuras
@@ -134,6 +135,8 @@ Nenhuma referência será marcada como `validada` sem conferência explícita. O
 - [x] Cache do motor e dados para funcionamento offline
 - [x] Fluxo de instalação pelo navegador quando suportado
 - [x] Salvamento local compatível com uso offline
+- [x] Auditoria automática do APP_SHELL, imports JS e dependências do jogo no cache offline
+- [ ] Ícones raster PWA 192×192 e 512×512
 - [ ] Ícones finais em múltiplos tamanhos
 - [ ] Empacotamento Android/APK
 - [ ] Testes de instalação e atualização em aparelho real

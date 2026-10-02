@@ -25,11 +25,13 @@ As porcentagens abaixo são estimativas de engenharia para um **Fúria de Prínc
 | Encontros aguardando revisão visual | 7 |
 | Encontros completos executados no CI | 104/104 |
 | Simulações integrais de combate | 208/208 (104 vitórias + 104 derrotas) |
-| Testes automatizados | 147/147 |
+| Testes automatizados | 148/148 |
 | Transições pós-saída suportadas | 64/64 |
 | Rotas por resultado do parceiro suportadas | 2/2 cenas (4 rotas) |
 | Referências completas auditadas pelo runtime | 989/989 |
 | Referências completas executadas em smoke test narrativo | 989/989 |
+| Rota completa com save/load intermediário | 1/1 validada até o final 500 |
+| Auditoria PWA/offline | 26 recursos de shell, 14 módulos JS e 5 dependências de jogo — 0 problemas |
 | Rotas narrativas conjuntas completas executadas | 2/2 finais de sucesso (Colthar e Lothar → 500) |
 | Instâncias de efeitos auditadas | 335 |
 | Instâncias de condições auditadas | 178 |
@@ -52,14 +54,14 @@ Colthar está contínuo de **1 a 500**, sem lacunas estruturais. Isso conclui 10
 | Magia de Lothar | 96% |
 | Combate cooperativo | 91% |
 | Interface funcional | 88% |
-| Salvamento e histórico | 95% |
+| Salvamento e histórico | 97% |
 | Dois jogadores no mesmo aparelho | 94% |
 | Sincronização entre dois aparelhos | 0% |
-| Camada PWA/offline | 70% |
+| Camada PWA/offline | 75% |
 | Empacotamento Android/APK | 0% |
 | Ilustrações e áudio finais | 0–5% |
 | Testes do motor | 99% |
-| Testes da aventura completa | ~93% |
+| Testes da aventura completa | ~94% |
 
 ## Percentual global
 
@@ -77,7 +79,7 @@ Com essa régua, o projeto está em aproximadamente:
 - **Fúria de Príncipes completo no mesmo aparelho: ~92%**;
 - **aplicativo Android final: ~86% do caminho total**.
 
-A classificação automática agora cobre 95 finais/saídas e 105 encontros estruturados. Há exatamente um final de sucesso por volume, ambos na referência 500; 7 encontros de Colthar permanecem explicitamente em revisão visual. O grafo combinado em dupla distingue corretamente rotas próprias e rotas do parceiro: 988 de 1000 referências são alcançáveis por transições explícitas, sem alvos inválidos, sem becos sem saída não explicados e sem ciclos alcançáveis presos fora de qualquer resolução. As 12 restantes descendem de apenas duas entradas não explícitas por resposta numérica: Colthar 465 e Lothar 18. O runtime do modo dupla agora executa 64 transições pós-saída para a referência 39 e as duas cenas dependentes do resultado do parceiro (Lothar 270 e 493). Uma auditoria automática adicional cobre as 989 referências completas: 335 instâncias de efeitos, 178 condições, 4 rotas por resultado do parceiro e 6 escolhas coordenadas são validadas contra o catálogo de recursos suportados pelo motor. Derrotas fatais em combate individual removem corretamente o príncipe ativo antes de o outro continuar. Finais `removed-transition` também removem corretamente o personagem, e mortes conjuntas diretas removem ambos os príncipes sem exigir handoff intermediário. O CI também instancia todos os 104 encontros completos e executa 208 resoluções integrais determinísticas — uma vitória e uma derrota para cada encontro — além da suíte unitária e das auditorias. Além disso, as 989 referências completas passam por execução real de efeitos, recompensas, condições, escolhas e resoluções condicionais sem retornar recursos não suportados. Duas rotas conjuntas completas são reproduzidas no CI desde a referência 1 até os dois finais de sucesso 500. A rota de Colthar preserva STATUS/AÇÃO, inventário, flags, tesouro compartilhado, instruções cruzadas, morte de Lothar e continuação solo; a rota de Lothar valida pagamentos, três feitiços situacionais, morte de Colthar, STATUS=1 e continuação solo até 500. Esses percentuais continuam conservadores porque ainda faltam execução de caminhos completos, conferência das 11 referências parciais restantes e empacotamento final.
+A classificação automática agora cobre 95 finais/saídas e 105 encontros estruturados. Há exatamente um final de sucesso por volume, ambos na referência 500; 7 encontros de Colthar permanecem explicitamente em revisão visual. O grafo combinado em dupla distingue corretamente rotas próprias e rotas do parceiro: 988 de 1000 referências são alcançáveis por transições explícitas, sem alvos inválidos, sem becos sem saída não explicados e sem ciclos alcançáveis presos fora de qualquer resolução. As 12 restantes descendem de apenas duas entradas não explícitas por resposta numérica: Colthar 465 e Lothar 18. O runtime do modo dupla agora executa 64 transições pós-saída para a referência 39 e as duas cenas dependentes do resultado do parceiro (Lothar 270 e 493). Uma auditoria automática adicional cobre as 989 referências completas: 335 instâncias de efeitos, 178 condições, 4 rotas por resultado do parceiro e 6 escolhas coordenadas são validadas contra o catálogo de recursos suportados pelo motor. Derrotas fatais em combate individual removem corretamente o príncipe ativo antes de o outro continuar. Finais `removed-transition` também removem corretamente o personagem, e mortes conjuntas diretas removem ambos os príncipes sem exigir handoff intermediário. O CI também instancia todos os 104 encontros completos e executa 208 resoluções integrais determinísticas — uma vitória e uma derrota para cada encontro — além da suíte unitária e das auditorias. Além disso, as 989 referências completas passam por execução real de efeitos, recompensas, condições, escolhas e resoluções condicionais sem retornar recursos não suportados. Duas rotas conjuntas completas são reproduzidas no CI desde a referência 1 até os dois finais de sucesso 500. A rota de Colthar preserva STATUS/AÇÃO, inventário, flags, tesouro compartilhado, instruções cruzadas, morte de Lothar e continuação solo; a rota de Lothar valida pagamentos, três feitiços situacionais, morte de Colthar, STATUS=1 e continuação solo até 500. A rota de Lothar também é interrompida na referência 191, serializada, restaurada como sessão dupla e retomada até 500 preservando ouro, MAGIA, inventário, STATUS/AÇÃO, referências e remoção do parceiro. A PWA passa por auditoria automática de integridade do cache: todos os recursos/imports/dependências necessários ao jogo estão cobertos; permanecem pendentes os ícones raster 192×192 e 512×512 e testes finais de instalação. Esses percentuais continuam conservadores porque ainda faltam execução de caminhos completos, conferência das 11 referências parciais restantes e empacotamento final.
 
 ## Marcos
 
