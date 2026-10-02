@@ -91,6 +91,7 @@
   - [x] Finais conjuntos e `removed-transition` normalizados no runtime do modo dupla
   - [x] Resultados de combate que movem/removem o parceiro centralizados em `duo.js` e cobertos por regressões reais
   - [x] Smoke test de 104/104 encontros completos e 208 resoluções integrais de combate (vitória/derrota)
+  - [x] Smoke test do runtime narrativo em 989/989 referências completas, cobrindo 335 efeitos e 178 condições
 
 ## Fase 3 — Interface
 - [ ] Biblioteca de aventuras
