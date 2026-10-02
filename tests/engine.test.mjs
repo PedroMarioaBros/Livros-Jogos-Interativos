@@ -41,7 +41,8 @@ import {
   completeHandoff,
   updateDuoPlayer,
   resolvePartnerOutcomeRoute,
-  endingRemovesDuoPlayer
+  endingRemovesDuoPlayer,
+  applyPartnerCombatOutcome
 } from "../src/engine/duo.js";
 import {
   merchantItemSold,
@@ -3047,4 +3048,120 @@ test("morte individual de Lothar 399 continua pela transição solo", () => {
 
   assert.equal(ref399.ending, "death");
   assert.equal(ref399.afterDeathReference, 39);
+});
+
+
+test("resultado de vitória de Colthar 47 encaminha Lothar para 478", () => {
+  const colthar = createCharacter(warriorData, sequence([0, 0, 0, 0]));
+  const lothar = createCharacter(mageData, sequence([0, 0, 0, 0, 0]));
+  const session = createDuoSession({
+    colthar: { hero: colthar, reference: 47, history: [] },
+    lothar: { hero: lothar, reference: 100, history: [] }
+  }, "colthar");
+
+  const result = applyPartnerCombatOutcome(
+    session,
+    "colthar",
+    warriorBookData.references["47"],
+    "victory"
+  );
+
+  assert.equal(result.changed, true);
+  assert.equal(result.action, "moved");
+  assert.equal(result.partnerCharacter, "lothar");
+  assert.equal(result.target, 478);
+  assert.equal(session.players.lothar.reference, 478);
+  assert.equal(
+    session.players.lothar.history.at(-1).label,
+    "Vitória do outro príncipe"
+  );
+});
+
+test("resultado de derrota de Colthar 47 encaminha Lothar para 6", () => {
+  const colthar = createCharacter(warriorData, sequence([0, 0, 0, 0]));
+  const lothar = createCharacter(mageData, sequence([0, 0, 0, 0, 0]));
+  const session = createDuoSession({
+    colthar: { hero: colthar, reference: 47, history: [] },
+    lothar: { hero: lothar, reference: 100, history: [] }
+  }, "colthar");
+
+  const result = applyPartnerCombatOutcome(
+    session,
+    "colthar",
+    warriorBookData.references["47"],
+    "defeat"
+  );
+
+  assert.equal(result.changed, true);
+  assert.equal(result.action, "moved");
+  assert.equal(result.target, 6);
+  assert.equal(session.players.lothar.reference, 6);
+  assert.equal(session.players.lothar.removed, false);
+});
+
+test("derrota em Colthar 471 remove Lothar da sessão", () => {
+  const colthar = createCharacter(warriorData, sequence([0, 0, 0, 0]));
+  const lothar = createCharacter(mageData, sequence([0, 0, 0, 0, 0]));
+  const session = createDuoSession({
+    colthar: { hero: colthar, reference: 471, history: [] },
+    lothar: { hero: lothar, reference: 200, history: [] }
+  }, "colthar");
+
+  const result = applyPartnerCombatOutcome(
+    session,
+    "colthar",
+    warriorBookData.references["471"],
+    "defeat"
+  );
+
+  assert.equal(result.changed, true);
+  assert.equal(result.action, "removed");
+  assert.equal(session.players.lothar.removed, true);
+  assert.equal(
+    session.players.lothar.history.at(-1).label,
+    "Derrota fatal do outro príncipe"
+  );
+});
+
+test("derrota em Lothar 490 encaminha Colthar sem removê-lo", () => {
+  const colthar = createCharacter(warriorData, sequence([0, 0, 0, 0]));
+  const lothar = createCharacter(mageData, sequence([0, 0, 0, 0, 0]));
+  const session = createDuoSession({
+    colthar: { hero: colthar, reference: 300, history: [] },
+    lothar: { hero: lothar, reference: 490, history: [] }
+  }, "lothar");
+
+  const result = applyPartnerCombatOutcome(
+    session,
+    "lothar",
+    mageBookData.references["490"],
+    "defeat"
+  );
+
+  assert.equal(result.changed, true);
+  assert.equal(result.action, "moved");
+  assert.equal(result.partnerCharacter, "colthar");
+  assert.equal(result.target, 282);
+  assert.equal(session.players.colthar.reference, 282);
+  assert.equal(session.players.colthar.removed, false);
+});
+
+test("resultado cruzado não altera parceiro já removido", () => {
+  const colthar = createCharacter(warriorData, sequence([0, 0, 0, 0]));
+  const lothar = createCharacter(mageData, sequence([0, 0, 0, 0, 0]));
+  const session = createDuoSession({
+    colthar: { hero: colthar, reference: 47, history: [] },
+    lothar: { hero: lothar, reference: 100, history: [], removed: true }
+  }, "colthar");
+
+  const result = applyPartnerCombatOutcome(
+    session,
+    "colthar",
+    warriorBookData.references["47"],
+    "victory"
+  );
+
+  assert.equal(result.changed, false);
+  assert.equal(session.players.lothar.reference, 100);
+  assert.equal(session.players.lothar.removed, true);
 });
