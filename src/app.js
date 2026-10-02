@@ -1247,6 +1247,23 @@ function renderReference(reference, options = {}) {
     info.textContent = "Escolha um item para perder:";
     $("choices").appendChild(info);
 
+    if (state.hero.items.length === 0) {
+      const continueTarget = Number(
+        node.playerEffectChoice.continueTarget
+      );
+
+      if (Number.isInteger(continueTarget) && continueTarget > 0) {
+        const button = document.createElement("button");
+        button.dataset.playerEffectChoice = "true";
+        button.textContent =
+          `Nenhum item disponível para perder → ${continueTarget}`;
+        button.addEventListener("click", () =>
+          navigateTo(continueTarget, "Sem item para descartar")
+        );
+        $("choices").appendChild(button);
+      }
+    }
+
     for (const item of state.hero.items) {
       const button = document.createElement("button");
       button.dataset.playerEffectChoice = "true";
