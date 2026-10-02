@@ -272,6 +272,16 @@ for (const [character, book] of Object.entries(books)) {
       }
     }
 
+    if (
+      node.ending === "removed-transition" &&
+      reference !== 39 &&
+      node.afterDeathReference === undefined
+    ) {
+      issues.push(
+        `${character} ${reference}: removed-transition sem afterDeathReference`
+      );
+    }
+
     if (node.afterDeathReference !== undefined) {
       stats.afterDeathTransitions += 1;
 
