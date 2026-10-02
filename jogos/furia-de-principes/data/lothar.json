@@ -4983,7 +4983,7 @@
       ]
     },
     "314": {
-      "estado": "parcial",
+      "estado": "extraida",
       "resumo": "Electron identifica o objeto como um Raio de Dizimação de uso único capaz de destruir instantaneamente um inimigo em combate.",
       "effects": [
         {
@@ -4997,7 +4997,7 @@
           "target": 395
         }
       ],
-      "notes": "Motor já suporta o Raio de Dizimação em combate; a referência continua parcial até conferência visual da fonte."
+      "notes": "Regra e destino 395 confirmados no OCR derivado do item livros-jogos do Archive.org; motor suporta o uso único em combate."
     },
     "315": {
       "estado": "extraida",
