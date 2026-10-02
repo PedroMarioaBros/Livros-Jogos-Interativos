@@ -605,6 +605,7 @@ function renderReference(reference, options = {}) {
     const context = {
       shared: state.shared,
       partnerActive: state.partnerActive,
+      partnerCharacter: getPartnerHero(),
       itemTags: state.config?.itemTags || {},
       ignoreSharedMutations:
         state.mode === "solo" &&
@@ -1351,6 +1352,7 @@ function completeCooperativeCombatVictory(node) {
         const effectContext = {
           shared: state.shared,
           partnerActive: state.partnerActive,
+          partnerCharacter: getPartnerHero(),
           itemTags: state.config?.itemTags || {},
           ignoreSharedMutations: false
         };
