@@ -153,6 +153,119 @@ export function updateDuoPlayer(session, character, patch) {
   return player;
 }
 
+export function applyPartnerCombatOutcome(
+  session,
+  currentCharacter,
+  node,
+  outcome
+) {
+  if (
+    !session ||
+    !DUO_CHARACTERS.includes(currentCharacter) ||
+    !node ||
+    !["victory", "defeat"].includes(outcome)
+  ) {
+    return { changed: false, action: null };
+  }
+
+  const partnerCharacter =
+    currentCharacter === "colthar" ? "lothar" : "colthar";
+  const partner = session.players?.[partnerCharacter];
+
+  if (!partner || partner.removed) {
+    return {
+      changed: false,
+      action: null,
+      partnerCharacter
+    };
+  }
+
+  if (outcome === "victory") {
+    const target = Number(node.partnerOnVictory);
+    if (!Number.isInteger(target) || target < 1) {
+      return {
+        changed: false,
+        action: null,
+        partnerCharacter
+      };
+    }
+
+    const from = Number(partner.reference);
+    updateDuoPlayer(session, partnerCharacter, {
+      reference: target,
+      history: [
+        ...(partner.history || []),
+        {
+          from,
+          to: target,
+          label: "Vitória do outro príncipe"
+        }
+      ]
+    });
+
+    return {
+      changed: true,
+      action: "moved",
+      partnerCharacter,
+      from,
+      target
+    };
+  }
+
+  if (node.partnerRemovedOnDefeat) {
+    const reference = Number(partner.reference);
+    updateDuoPlayer(session, partnerCharacter, {
+      removed: true,
+      history: [
+        ...(partner.history || []),
+        {
+          from: reference,
+          to: reference,
+          label: "Derrota fatal do outro príncipe"
+        }
+      ]
+    });
+
+    return {
+      changed: true,
+      action: "removed",
+      partnerCharacter,
+      from: reference,
+      target: reference
+    };
+  }
+
+  const target = Number(node.partnerOnDefeat);
+  if (!Number.isInteger(target) || target < 1) {
+    return {
+      changed: false,
+      action: null,
+      partnerCharacter
+    };
+  }
+
+  const from = Number(partner.reference);
+  updateDuoPlayer(session, partnerCharacter, {
+    reference: target,
+    history: [
+      ...(partner.history || []),
+      {
+        from,
+        to: target,
+        label: "Derrota do outro príncipe"
+      }
+    ]
+  });
+
+  return {
+    changed: true,
+    action: "moved",
+    partnerCharacter,
+    from,
+    target
+  };
+}
+
 export function markDuoPlayerRemoved(session, character) {
   const player = session?.players?.[character];
   if (!player) throw new Error("Jogador inválido.");
