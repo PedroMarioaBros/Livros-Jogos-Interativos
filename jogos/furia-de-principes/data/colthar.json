@@ -263,7 +263,8 @@
     "17": {
       "estado": "extraida",
       "resumo": "Lothar cai mortalmente ferido e Colthar também é atingido ao tentar socorrê-lo.",
-      "ending": "death"
+      "ending": "death",
+      "partnerRemoved": true
     },
     "18": {
       "estado": "extraida",
@@ -479,7 +480,8 @@
     "29": {
       "estado": "extraida",
       "resumo": "A ponte não suporta o peso dos dois irmãos e desaba.",
-      "ending": "death"
+      "ending": "death",
+      "partnerRemoved": true
     },
     "30": {
       "estado": "extraida",
@@ -543,7 +545,8 @@
     "32": {
       "estado": "extraida",
       "resumo": "Um Cockatrice salta da cesta e mata os dois irmãos.",
-      "ending": "death"
+      "ending": "death",
+      "partnerRemoved": true
     },
     "33": {
       "estado": "extraida",
@@ -576,7 +579,8 @@
     "35": {
       "estado": "extraida",
       "resumo": "Ao ver Lothar cair, Colthar se distrai e é mortalmente ferido.",
-      "ending": "death"
+      "ending": "death",
+      "partnerRemoved": true
     },
     "36": {
       "estado": "extraida",
@@ -1761,7 +1765,8 @@
     "98": {
       "estado": "extraida",
       "resumo": "Ao golpear uma raiz, Colthar provoca o desabamento do túnel e é esmagado.",
-      "ending": "death"
+      "ending": "death",
+      "partnerRemoved": true
     },
     "99": {
       "estado": "extraida",
@@ -4880,12 +4885,7 @@
         ]
       },
       "ending": "removed-transition",
-      "choices": [
-        {
-          "label": "Encerrar transição",
-          "target": 39
-        }
-      ]
+      "afterDeathReference": 39
     },
     "295": {
       "estado": "extraida",

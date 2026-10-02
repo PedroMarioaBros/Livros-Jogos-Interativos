@@ -88,6 +88,7 @@
   - [x] Enigma numérico de Lothar 44 migrado para `referenceInput` após confirmação no Archive.org
   - [x] Colthar 19 confirmado no Archive.org com rotas 133 e 243
   - [x] Auditoria reversa de resolução: zero ciclos alcançáveis presos sem final, espera, resposta numérica ou revisão explícita
+  - [x] Finais conjuntos e `removed-transition` normalizados no runtime do modo dupla
 
 ## Fase 3 — Interface
 - [ ] Biblioteca de aventuras
@@ -112,7 +113,7 @@
   - [x] Sessões independentes de Colthar e Lothar no mesmo aparelho
   - [x] Passagem protegida do aparelho entre jogadores
   - [x] Escolhas coordenadas com destino próprio e do parceiro (partnerTarget), incluindo a referência 287
-  - [x] Transição automática pós-morte para modo solo: 61/61 ocorrências via referência 39
+  - [x] Transição automática pós-saída para modo solo: 64/64 ocorrências via referência 39
   - [x] Rotas dependentes de vitória/derrota do parceiro: Lothar 270 e 493
   - [x] Auditoria de 6 escolhas coordenadas com partnerTarget
 - [ ] Sincronização entre dois aparelhos

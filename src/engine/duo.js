@@ -94,6 +94,10 @@ export function completeHandoff(session) {
   };
 }
 
+export function endingRemovesDuoPlayer(ending) {
+  return ["death", "removed", "removed-transition"].includes(ending);
+}
+
 export function resolvePartnerOutcomeRoute(routes, partner) {
   if (!Array.isArray(routes) || !partner) return null;
 
