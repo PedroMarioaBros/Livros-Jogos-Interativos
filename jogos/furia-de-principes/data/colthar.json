@@ -1357,9 +1357,22 @@
       ]
     },
     "75": {
-      "estado": "parcial",
-      "resumo": "Uma besta surpreende Colthar antes que ele consiga reagir; o restante da referência precisa de revisão visual.",
-      "needsManualReview": true
+      "estado": "extraida",
+      "resumo": "Depois de ser levado à toca de uma besta, Colthar encontra uma garrafa com uma Poção desconhecida e escolhe como prosseguir.",
+      "choices": [
+        {
+          "label": "Beber a Poção",
+          "target": 477
+        },
+        {
+          "label": "Tentar descer pelo penhasco",
+          "target": 324
+        },
+        {
+          "label": "Explorar os fundos da caverna",
+          "target": 153
+        }
+      ]
     },
     "76": {
       "estado": "extraida",
@@ -1563,6 +1576,12 @@
     "89": {
       "estado": "extraida",
       "resumo": "O efeito de uma Poção termina, mas Colthar ainda conserva a outra metade da garrafa.",
+      "effects": [
+        {
+          "type": "set_flag",
+          "flag": "tem_pocao"
+        }
+      ],
       "choices": [
         {
           "label": "Prosseguir",
@@ -1697,8 +1716,8 @@
       "encounter": {
         "conditions": [
           {
-            "type": "not_has_item",
-            "item": "pocao"
+            "type": "flag_not",
+            "flag": "tem_pocao"
           }
         ],
         "enemies": [
@@ -1716,8 +1735,8 @@
           "target": 156,
           "conditions": [
             {
-              "type": "has_item",
-              "item": "pocao"
+              "type": "flag",
+              "flag": "tem_pocao"
             }
           ]
         }
