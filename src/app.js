@@ -644,6 +644,43 @@ function resolvePendingSharedLoot() {
   showGameMessage("Tesouro dividido e registrado nas fichas.");
 }
 
+function useConsumableItem(item) {
+  const definition = state.config?.consumables?.[item];
+  if (!definition || !state.hero?.items.includes(item)) return;
+
+  const combatActive =
+    (state.encounter && !state.encounter.finished) ||
+    (state.cooperativeEncounter && !state.cooperativeEncounter.finished);
+
+  if (combatActive && definition.usableInCombat === false) {
+    showGameMessage("Esse item não pode ser usado durante combate.");
+    return;
+  }
+
+  const context = {
+    shared: state.shared,
+    partnerActive: state.partnerActive,
+    partnerCharacter: getPartnerHero(),
+    itemTags: state.config?.itemTags || {}
+  };
+
+  applyStoryEffects(
+    state.hero,
+    [
+      { type: "remove_one_item", item },
+      ...(definition.effects || [])
+    ],
+    context
+  );
+
+  state.shared = context.shared;
+  persistActiveDuoPlayer();
+  renderSheet();
+  showGameMessage(
+    (definition.label || displayItemName(item)) + " utilizado."
+  );
+}
+
 function renderSheet() {
   const hero = state.hero;
 
@@ -656,8 +693,36 @@ function renderSheet() {
   $("resources").textContent =
     `Provisões: ${hero.provisions} • Ouro: ${hero.gold}`;
 
-  $("inventory").textContent =
-    hero.items.length ? `Itens: ${hero.items.join(", ")}` : "Itens: nenhum";
+  const inventory = $("inventory");
+  inventory.innerHTML = "";
+
+  if (!hero.items.length) {
+    inventory.textContent = "Itens: nenhum";
+  } else {
+    const list = document.createElement("span");
+    list.textContent = `Itens: ${hero.items.join(", ")}`;
+    inventory.appendChild(list);
+
+    const consumables = state.config?.consumables || {};
+    const counts = new Map();
+
+    for (const item of hero.items) {
+      if (!consumables[item]) continue;
+      counts.set(item, (counts.get(item) || 0) + 1);
+    }
+
+    for (const [item, count] of counts) {
+      const button = document.createElement("button");
+      const definition = consumables[item];
+      button.textContent =
+        `Usar ${definition.label || displayItemName(item)} (${count})`;
+      button.addEventListener("click", () =>
+        useConsumableItem(item)
+      );
+      inventory.appendChild(document.createTextNode(" "));
+      inventory.appendChild(button);
+    }
+  }
 
   updateShared();
   renderDuoStatus();
@@ -1182,6 +1247,23 @@ function renderReference(reference, options = {}) {
     info.textContent = "Escolha um item para perder:";
     $("choices").appendChild(info);
 
+    if (state.hero.items.length === 0) {
+      const continueTarget = Number(
+        node.playerEffectChoice.continueTarget
+      );
+
+      if (Number.isInteger(continueTarget) && continueTarget > 0) {
+        const button = document.createElement("button");
+        button.dataset.playerEffectChoice = "true";
+        button.textContent =
+          `Nenhum item disponível para perder → ${continueTarget}`;
+        button.addEventListener("click", () =>
+          navigateTo(continueTarget, "Sem item para descartar")
+        );
+        $("choices").appendChild(button);
+      }
+    }
+
     for (const item of state.hero.items) {
       const button = document.createElement("button");
       button.dataset.playerEffectChoice = "true";
@@ -1189,7 +1271,7 @@ function renderReference(reference, options = {}) {
       button.addEventListener("click", () => {
         applyStoryEffects(
           state.hero,
-          [{ type: "remove_item", item }],
+          [{ type: "remove_one_item", item }],
           { itemTags: state.config?.itemTags || {} }
         );
         renderSheet();
@@ -1199,6 +1281,13 @@ function renderReference(reference, options = {}) {
             entry.disabled = true;
           });
         showGameMessage(`Item perdido: ${item}.`);
+
+        const continueTarget = Number(
+          node.playerEffectChoice.continueTarget
+        );
+        if (Number.isInteger(continueTarget) && continueTarget > 0) {
+          navigateTo(continueTarget, "Item descartado");
+        }
       });
       $("choices").appendChild(button);
     }
@@ -1319,7 +1408,8 @@ function renderReference(reference, options = {}) {
     choices.length === 0 &&
     !node.test &&
     !node.encounter &&
-    !node.partnerInstruction
+    !node.partnerInstruction &&
+    !node.playerEffectChoice
   ) {
     const info = document.createElement("p");
     info.className = "muted";

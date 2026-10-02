@@ -4500,6 +4500,454 @@
           "target": 78
         }
       ]
+    },
+    "276": {
+      "estado": "extraida",
+      "resumo": "Cadáveres animados cercam Colthar perto de um mausoléu e ele decide como reagir.",
+      "choices": [
+        {
+          "label": "Enfrentar os mortos-vivos",
+          "target": 169
+        },
+        {
+          "label": "Correr para o mausoléu",
+          "target": 119
+        },
+        {
+          "label": "Fugir pela trilha",
+          "target": 358
+        }
+      ]
+    },
+    "277": {
+      "estado": "extraida",
+      "resumo": "Depois de se recuperar de um ataque de morcegos, Colthar encontra uma escada lateral numa passagem.",
+      "choices": [
+        {
+          "label": "Descer a escada",
+          "target": 307
+        },
+        {
+          "label": "Continuar pela passagem",
+          "target": 435
+        }
+      ]
+    },
+    "278": {
+      "estado": "extraida",
+      "resumo": "Uma correnteza impede Colthar de atravessar e o força a retornar para enfrentar os Lobos.",
+      "choices": [
+        {
+          "label": "Voltar para enfrentar os Lobos",
+          "target": 191
+        }
+      ]
+    },
+    "279": {
+      "estado": "extraida",
+      "resumo": "Homens da floresta embriagam Colthar e roubam todo o ouro e provisões que ele ainda possui.",
+      "effects": [
+        {
+          "type": "set_gold",
+          "value": 0
+        },
+        {
+          "type": "set_provisions",
+          "value": 0
+        }
+      ],
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 326
+        }
+      ]
+    },
+    "280": {
+      "estado": "extraida",
+      "resumo": "Colthar sobe uma escada e retorna à caverna principal pela outra passagem.",
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 258
+        }
+      ]
+    },
+    "281": {
+      "estado": "extraida",
+      "resumo": "Colthar observa uma Bruxa invocar um Demônio e só retoma a viagem depois que ambos partem.",
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 367
+        }
+      ]
+    },
+    "282": {
+      "estado": "extraida",
+      "resumo": "Um riacho de águas frias oferece duas formas de travessia.",
+      "choices": [
+        {
+          "label": "Atravessar pelas pedras cobertas de limo",
+          "target": 338
+        },
+        {
+          "label": "Atravessar a água a pé",
+          "target": 239
+        }
+      ]
+    },
+    "283": {
+      "estado": "extraida",
+      "resumo": "Num túnel, os irmãos ouvem homens armados se aproximando e escolhem uma de duas passagens.",
+      "choices": [
+        {
+          "label": "Seguir pelo túnel da esquerda",
+          "target": 438
+        },
+        {
+          "label": "Seguir pelo túnel da direita",
+          "target": 343
+        }
+      ]
+    },
+    "284": {
+      "estado": "extraida",
+      "resumo": "Colthar decide explorar o interior de um poço; o caminho depende de possuir uma lanterna.",
+      "choices": [
+        {
+          "label": "Descer com a lanterna",
+          "target": 226,
+          "conditions": [
+            {
+              "type": "has_item",
+              "item": "lanterna"
+            }
+          ]
+        },
+        {
+          "label": "Descer sem lanterna",
+          "target": 355,
+          "conditions": [
+            {
+              "type": "not_has_item",
+              "item": "lanterna"
+            }
+          ]
+        }
+      ]
+    },
+    "285": {
+      "estado": "extraida",
+      "resumo": "Leprechauns roubam todo o ouro de Colthar e também um item escolhido de seu equipamento.",
+      "effects": [
+        {
+          "type": "set_gold",
+          "value": 0
+        }
+      ],
+      "playerEffectChoice": {
+        "type": "discard_one_item",
+        "continueTarget": 353
+      }
+    },
+    "286": {
+      "estado": "extraida",
+      "resumo": "Dois Homens-lagarto atacam os irmãos; cada príncipe enfrenta um adversário e Lothar pode usar magia.",
+      "partnerInstruction": {
+        "sendToReference": 286
+      },
+      "encounter": {
+        "cooperative": true,
+        "allowCombatMagic": true,
+        "enemies": [
+          {
+            "name": "Homem-lagarto Um",
+            "habilidade": 9,
+            "energia": 8
+          },
+          {
+            "name": "Homem-lagarto Dois",
+            "habilidade": 9,
+            "energia": 6
+          }
+        ]
+      },
+      "choices": [
+        {
+          "label": "Vitória com Lothar vivo",
+          "target": 249,
+          "conditions": [
+            {
+              "type": "partner_active"
+            }
+          ]
+        },
+        {
+          "label": "Vitória após Lothar cair",
+          "target": 10,
+          "conditions": [
+            {
+              "type": "partner_removed"
+            }
+          ]
+        }
+      ]
+    },
+    "287": {
+      "estado": "extraida",
+      "resumo": "Os irmãos encontram uma cabana de Orcs e decidem como atacá-la.",
+      "choices": [
+        {
+          "label": "Ambos entram pela porta",
+          "target": 486
+        },
+        {
+          "label": "Lothar entra pela porta e Colthar pela janela",
+          "target": 455
+        },
+        {
+          "label": "Colthar entra pela porta e Lothar lança magia pela janela",
+          "target": 403
+        }
+      ]
+    },
+    "288": {
+      "estado": "extraida",
+      "resumo": "Colthar observa ladrões de túmulos e precisa Testar a Sorte para saber se é descoberto.",
+      "test": {
+        "type": "luck",
+        "successTarget": 390,
+        "failureTarget": 347
+      }
+    },
+    "289": {
+      "estado": "extraida",
+      "resumo": "Colthar reencontra Lothar inesperadamente e os irmãos voltam a viajar juntos.",
+      "choices": [
+        {
+          "label": "Prosseguir juntos",
+          "target": 25
+        }
+      ]
+    },
+    "290": {
+      "estado": "extraida",
+      "resumo": "O anfitrião élfico se irrita com Colthar; ele precisa Testar a Sorte.",
+      "test": {
+        "type": "luck",
+        "successTarget": 427,
+        "failureTarget": 494
+      }
+    },
+    "291": {
+      "estado": "extraida",
+      "resumo": "Dois Salteadores dos Ares atacam os irmãos no deserto; cada príncipe enfrenta um adversário e Lothar pode usar magia.",
+      "partnerInstruction": {
+        "sendToReference": 291
+      },
+      "encounter": {
+        "cooperative": true,
+        "allowCombatMagic": true,
+        "enemies": [
+          {
+            "name": "Salteador dos Ares Um",
+            "habilidade": 9,
+            "energia": 8
+          },
+          {
+            "name": "Salteador dos Ares Dois",
+            "habilidade": 9,
+            "energia": 8
+          }
+        ]
+      },
+      "choices": [
+        {
+          "label": "Vitória com Lothar vivo",
+          "target": 221,
+          "conditions": [
+            {
+              "type": "partner_active"
+            }
+          ]
+        },
+        {
+          "label": "Vitória após Lothar sair da aventura",
+          "target": 17,
+          "conditions": [
+            {
+              "type": "partner_removed"
+            }
+          ]
+        }
+      ]
+    },
+    "292": {
+      "estado": "extraida",
+      "resumo": "Colthar precisa Testar a Sorte.",
+      "test": {
+        "type": "luck",
+        "successTarget": 472,
+        "failureTarget": 191
+      }
+    },
+    "293": {
+      "estado": "extraida",
+      "resumo": "Cogumelos restauram completamente ENERGIA e SORTE; se ainda possuir a mochila, Colthar pode guardar dois para uso posterior.",
+      "effects": [
+        {
+          "type": "restore_stat_to_initial",
+          "stat": "energia"
+        },
+        {
+          "type": "restore_stat_to_initial",
+          "stat": "sorte"
+        }
+      ],
+      "choices": [
+        {
+          "label": "Guardar dois cogumelos curativos",
+          "target": 374,
+          "conditions": [
+            {
+              "type": "has_item",
+              "item": "mochila"
+            }
+          ],
+          "effects": [
+            {
+              "type": "add_item",
+              "item": "cogumelo_curativo"
+            },
+            {
+              "type": "add_item",
+              "item": "cogumelo_curativo"
+            }
+          ]
+        },
+        {
+          "label": "Não guardar cogumelos",
+          "target": 374
+        }
+      ]
+    },
+    "294": {
+      "estado": "extraida",
+      "resumo": "Colthar deixa a aventura; Lothar deve ser encaminhado conforme o valor atual de AÇÃO.",
+      "partnerInstruction": {
+        "conditionalSend": [
+          {
+            "condition": {
+              "type": "shared_equals",
+              "key": "acao",
+              "value": 36
+            },
+            "target": 136
+          },
+          {
+            "condition": {
+              "type": "shared_not_in",
+              "key": "acao",
+              "values": [
+                36
+              ]
+            },
+            "target": 473
+          }
+        ]
+      },
+      "ending": "removed-transition",
+      "choices": [
+        {
+          "label": "Encerrar transição",
+          "target": 39
+        }
+      ]
+    },
+    "295": {
+      "estado": "extraida",
+      "resumo": "Lothar desaparece num buraco e Colthar passa a seguir sozinho para as montanhas.",
+      "partnerRemoved": true,
+      "choices": [
+        {
+          "label": "Prosseguir sozinho",
+          "target": 4
+        }
+      ]
+    },
+    "296": {
+      "estado": "extraida",
+      "resumo": "Colthar consegue escapar da criatura e segue adiante.",
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 217
+        }
+      ]
+    },
+    "297": {
+      "estado": "extraida",
+      "resumo": "Sob o tecido verde-esmeralda há um Ghoul inerte segurando um pergaminho marrom com runas; Colthar o recolhe e pode examinar os outros caixões.",
+      "effects": [
+        {
+          "type": "add_item",
+          "item": "pergaminho_marrom"
+        }
+      ],
+      "choices": [
+        {
+          "label": "Examinar o tecido turquesa",
+          "target": 235
+        },
+        {
+          "label": "Examinar o tecido escarlate",
+          "target": 134
+        },
+        {
+          "label": "Examinar o tecido branco",
+          "target": 254
+        }
+      ]
+    },
+    "298": {
+      "estado": "extraida",
+      "resumo": "Uma corda mágica captura Colthar e a aventura deste príncipe se encerra.",
+      "partnerInstruction": {
+        "sendToReference": 298
+      },
+      "ending": "removed"
+    },
+    "299": {
+      "estado": "extraida",
+      "resumo": "A fechadura de uma arca explode na mão de Colthar; dentro há uma garrafa de vinho e oito moedas de ouro.",
+      "effects": [
+        {
+          "type": "change_stat",
+          "stat": "habilidade",
+          "delta": -1
+        },
+        {
+          "type": "change_gold",
+          "delta": 8
+        },
+        {
+          "type": "add_item",
+          "item": "garrafa_de_vinho"
+        }
+      ],
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 339
+        }
+      ]
+    },
+    "300": {
+      "estado": "extraida",
+      "resumo": "Um acidente fatal encerra a aventura de Colthar.",
+      "ending": "death",
+      "afterDeathReference": 39
     }
   }
 }

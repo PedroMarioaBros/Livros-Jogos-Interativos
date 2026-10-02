@@ -238,6 +238,16 @@ export function applyEffect(character, effect, context = {}, rng = Math.random) 
       };
     }
 
+    case "remove_one_item": {
+      const index = character.items.indexOf(effect.item);
+      if (index >= 0) character.items.splice(index, 1);
+      return {
+        type: effect.type,
+        item: effect.item,
+        removed: index >= 0
+      };
+    }
+
     case "remove_item":
     case "remove_item_if_present":
       character.items = character.items.filter(item => item !== effect.item);

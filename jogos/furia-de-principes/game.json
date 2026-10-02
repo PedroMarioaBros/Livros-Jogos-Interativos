@@ -39,7 +39,21 @@
     ],
     "stackable": [
       "pedra_de_poder",
-      "pergaminho_marrom"
+      "pergaminho_marrom",
+      "cogumelo_curativo"
     ]
+  },
+  "consumables": {
+    "cogumelo_curativo": {
+      "label": "Cogumelo curativo",
+      "usableInCombat": false,
+      "effects": [
+        {
+          "type": "change_stat",
+          "stat": "energia",
+          "delta": 2
+        }
+      ]
+    }
   }
 }
