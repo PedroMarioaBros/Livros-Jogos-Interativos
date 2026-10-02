@@ -1683,6 +1683,62 @@ test("enigma 311 oferece resposta livre e rota explícita de desistência", () =
   assert.equal(input.fallbackTarget, 380);
 });
 
+test("Colthar possui o bloco 326 a 350 estruturado", () => {
+  for (let ref = 326; ref <= 350; ref += 1) {
+    assert.ok(
+      warriorBookData.references[String(ref)],
+      `Referência ${ref} ausente`
+    );
+    assert.notEqual(
+      warriorBookData.references[String(ref)].estado,
+      "pendente",
+      `Referência ${ref} ainda pendente`
+    );
+  }
+
+  assert.equal(
+    warriorBookData.references["327"].roll.conditions[0].flag,
+    "pe_de_coelho_da_sorte"
+  );
+  assert.equal(
+    warriorBookData.references["345"].encounter.cooperative,
+    true
+  );
+  assert.equal(
+    warriorBookData.references["347"].effects[0].item,
+    "livro_sagrado"
+  );
+  assert.equal(
+    warriorBookData.references["350"].choices[0].target,
+    497
+  );
+});
+
+test("sincronização 344 de Colthar está verificada", () => {
+  const ref344 = syncBookData.entries.find(
+    entry => entry.character === "colthar" && entry.reference === 344
+  );
+
+  assert.equal(ref344?.verified, true);
+  assert.equal(ref344.effects[0].value, 15);
+  assert.deepEqual(
+    ref344.routes.map(route => route.target),
+    [86, 265]
+  );
+});
+
+test("rolagem 327 só existe sem o Pé de Coelho", () => {
+  const roll = warriorBookData.references["327"].roll;
+  assert.deepEqual(
+    roll.conditions,
+    [{ type: "not_has_item", item: "pe_de_coelho_da_sorte" }]
+  );
+  assert.deepEqual(
+    roll.routes.map(route => route.target),
+    [271, 116]
+  );
+});
+
 test("set_stat define atributo sem ultrapassar o valor inicial", () => {
   const mage = createCharacter(mageData, sequence([0, 0, 0, 0, 0]));
   mage.stats.magia = 5;
