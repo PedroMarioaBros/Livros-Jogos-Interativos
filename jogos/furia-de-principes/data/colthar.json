@@ -2174,9 +2174,409 @@
         }
       ]
     },
+    "126": {
+      "estado": "extraida",
+      "resumo": "Colthar Testa a Sorte para decidir o que acontece ao tentar recuperar moedas do poço.",
+      "test": {
+        "type": "luck",
+        "successTarget": 445,
+        "failureTarget": 30
+      }
+    },
+    "127": {
+      "estado": "extraida",
+      "resumo": "Framboesas silvestres restauram parte da ENERGIA de Colthar.",
+      "effects": [
+        {
+          "type": "change_stat",
+          "stat": "energia",
+          "delta": 2
+        }
+      ],
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 374
+        }
+      ]
+    },
+    "128": {
+      "estado": "extraida",
+      "resumo": "Colthar corta o saco do Gigante e os irmãos enfrentam juntos o inimigo em ataques alternados.",
+      "partnerInstruction": {
+        "sendToReference": 128
+      },
+      "encounter": {
+        "cooperative": true,
+        "allowCombatMagic": true,
+        "enemies": [
+          {
+            "name": "Gigante",
+            "habilidade": 10,
+            "energia": 10
+          }
+        ]
+      },
+      "onVictory": 498
+    },
+    "129": {
+      "estado": "extraida",
+      "resumo": "As Piranhas da Areia alcançam os irmãos antes que consigam se libertar.",
+      "partnerInstruction": {
+        "sendToReference": 129
+      },
+      "ending": "death"
+    },
+    "130": {
+      "estado": "extraida",
+      "resumo": "O feitiço de Lothar explode dentro da toca dos Scuttlies sem efeito aparente; os irmãos decidem persegui-los.",
+      "choices": [
+        {
+          "label": "Perseguir os Scuttlies",
+          "target": 47
+        }
+      ]
+    },
+    "131": {
+      "estado": "extraida",
+      "resumo": "Depois de vencer os ocupantes da choupana, Colthar liberta Lothar de uma armadilha de fios.",
+      "partnerInstruction": {
+        "sendToReference": 131
+      },
+      "choices": [
+        {
+          "label": "Voltar para a choupana",
+          "target": 9
+        }
+      ]
+    },
+    "132": {
+      "estado": "extraida",
+      "resumo": "Um velho monge revela uma pista sobre a Gema Sagrada de Orcmoot e oferece artefatos aos irmãos.",
+      "choices": [
+        {
+          "label": "Negociar com o monge",
+          "target": 250
+        },
+        {
+          "label": "Não negociar",
+          "target": 323
+        }
+      ]
+    },
+    "133": {
+      "estado": "extraida",
+      "resumo": "Colthar tenta libertar uma velha presa a um tronco e Testa a Sorte.",
+      "test": {
+        "type": "luck",
+        "successTarget": 36,
+        "failureTarget": 468
+      }
+    },
+    "134": {
+      "estado": "extraida",
+      "resumo": "Um homem aparentemente adormecido revela ser um Vampiro; o destino depende dos objetos sagrados de Colthar.",
+      "choices": [
+        {
+          "label": "Usar a cruz de ouro e o livro sagrado",
+          "target": 263,
+          "conditions": [
+            {
+              "type": "has_item",
+              "item": "cruz_de_ouro"
+            },
+            {
+              "type": "has_item",
+              "item": "livro_sagrado"
+            }
+          ]
+        },
+        {
+          "label": "Usar somente a cruz de ouro",
+          "target": 452,
+          "conditions": [
+            {
+              "type": "has_item",
+              "item": "cruz_de_ouro"
+            },
+            {
+              "type": "not_has_item",
+              "item": "livro_sagrado"
+            }
+          ]
+        },
+        {
+          "label": "Usar somente o livro sagrado",
+          "target": 470,
+          "conditions": [
+            {
+              "type": "not_has_item",
+              "item": "cruz_de_ouro"
+            },
+            {
+              "type": "has_item",
+              "item": "livro_sagrado"
+            }
+          ]
+        },
+        {
+          "label": "Sem nenhum dos dois objetos",
+          "target": 206,
+          "conditions": [
+            {
+              "type": "not_has_item",
+              "item": "cruz_de_ouro"
+            },
+            {
+              "type": "not_has_item",
+              "item": "livro_sagrado"
+            }
+          ]
+        }
+      ]
+    },
+    "135": {
+      "estado": "extraida",
+      "resumo": "Colthar usa o cavalo para romper a multidão hostil e escapar.",
+      "choices": [
+        {
+          "label": "Escapar",
+          "target": 367
+        }
+      ]
+    },
+    "136": {
+      "estado": "validada",
+      "resumo": "Ponto de sincronização: Colthar define STATUS 16 e aguarda instruções de Lothar."
+    },
+    "137": {
+      "estado": "extraida",
+      "resumo": "Nas montanhas nevadas, Colthar encontra um Verme do Gelo e decide lutar ou fugir.",
+      "choices": [
+        {
+          "label": "Enfrentar o Verme do Gelo",
+          "target": 215
+        },
+        {
+          "label": "Tentar fugir",
+          "target": 296
+        }
+      ]
+    },
+    "138": {
+      "estado": "extraida",
+      "resumo": "Durante uma confusão na estalagem, Colthar salta do lustre e Testa a Sorte.",
+      "test": {
+        "type": "luck",
+        "successTarget": 387,
+        "failureTarget": 348
+      }
+    },
+    "139": {
+      "estado": "extraida",
+      "resumo": "Depois de derrotar os anões, Colthar encontra oito moedas de ouro.",
+      "effects": [
+        {
+          "type": "change_gold",
+          "delta": 8
+        }
+      ],
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 476
+        }
+      ]
+    },
+    "140": {
+      "estado": "extraida",
+      "resumo": "Um terrível guincho anuncia uma criatura alada; uma rolagem de 1d6 define o próximo destino.",
+      "roll": {
+        "dice": "1d6",
+        "routes": [
+          {
+            "range": [
+              1,
+              3
+            ],
+            "target": 259
+          },
+          {
+            "range": [
+              4,
+              6
+            ],
+            "target": 75
+          }
+        ]
+      }
+    },
+    "141": {
+      "estado": "extraida",
+      "resumo": "Em uma cela devastada de capela, Colthar escolhe entre descer uma passagem, examinar um sarcófago ou explorar outra porta.",
+      "choices": [
+        {
+          "label": "Descer pela passagem",
+          "target": 33
+        },
+        {
+          "label": "Examinar o sarcófago",
+          "target": 331
+        },
+        {
+          "label": "Entrar pela outra porta",
+          "target": 220
+        }
+      ]
+    },
+    "142": {
+      "estado": "extraida",
+      "resumo": "Um Mercador de Escravos e dois capangas atacam Colthar; a corda mágica pode capturá-lo durante qualquer série.",
+      "encounter": {
+        "enemies": [
+          {
+            "name": "Capanga Um",
+            "habilidade": 8,
+            "energia": 4
+          },
+          {
+            "name": "Capanga Dois",
+            "habilidade": 7,
+            "energia": 4
+          },
+          {
+            "name": "Mercador de Escravos",
+            "habilidade": 6,
+            "energia": 4
+          }
+        ]
+      },
+      "encounterSpecial": {
+        "roundRoll": {
+          "dice": "1d6",
+          "trigger": 6,
+          "target": 466
+        }
+      },
+      "partnerOnDefeat": 96,
+      "onVictory": 402
+    },
+    "143": {
+      "estado": "extraida",
+      "resumo": "Uma arca fere Lothar e contém uma garrafa de vinho e oito moedas de ouro para os irmãos dividirem.",
+      "effects": [
+        {
+          "type": "change_partner_stat",
+          "stat": "habilidade",
+          "delta": -1
+        },
+        {
+          "type": "add_shared_loot",
+          "gold": 8,
+          "items": [
+            "garrafa_de_vinho"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "label": "Atravessar a ponte depois da divisão",
+          "target": 418
+        }
+      ]
+    },
+    "144": {
+      "estado": "parcial",
+      "resumo": "Ao contornar a ponte, Colthar cai numa fenda e encontra uma Formiga-leão Gigante.",
+      "encounterNeedsReview": true,
+      "onVictory": 359,
+      "notes": "O OCR do Internet Archive preserva ENERGIA 8, mas perdeu o valor de HABILIDADE da Formiga-leão. Não cadastrar o encontro completo até conferência visual."
+    },
+    "145": {
+      "estado": "extraida",
+      "resumo": "A faixa azul transporta os irmãos de volta a uma trilha de floresta.",
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 224
+        }
+      ]
+    },
+    "146": {
+      "estado": "extraida",
+      "resumo": "Os irmãos recuperam os pertences guardados pelos Scuttlies e decidem se continuam juntos ou se separam.",
+      "effects": [
+        {
+          "type": "restore_stashed_items"
+        }
+      ],
+      "choices": [
+        {
+          "label": "Continuar juntos",
+          "target": 107
+        },
+        {
+          "label": "Separar-se",
+          "target": 446
+        }
+      ]
+    },
+    "147": {
+      "estado": "extraida",
+      "resumo": "Um Unicórnio liberto concede a Colthar um desejo limitado.",
+      "choices": [
+        {
+          "label": "Curar os ferimentos",
+          "target": 408
+        },
+        {
+          "label": "Aumentar a Sorte",
+          "target": 448
+        },
+        {
+          "label": "Tornar-se um guerreiro mais habilidoso",
+          "target": 475
+        }
+      ]
+    },
     "148": {
-      "estado": "pendente",
-      "resumo": "Referência reservada para extração e validação."
+      "estado": "validada",
+      "resumo": "Ponto de sincronização: Colthar define STATUS 2 e aguarda AÇÃO 1, 22 ou 23."
+    },
+    "149": {
+      "estado": "extraida",
+      "resumo": "Colthar se aproxima de uma Bruxa junto a um caldeirão e Testa a Sorte.",
+      "test": {
+        "type": "luck",
+        "successTarget": 281,
+        "failureTarget": 80
+      }
+    },
+    "150": {
+      "estado": "extraida",
+      "resumo": "No oásis, Colthar é atacado por dois Homens-lagarto e chama Lothar para ajudá-lo.",
+      "partnerInstruction": {
+        "sendToReference": 150
+      },
+      "encounter": {
+        "cooperative": true,
+        "allowCombatMagic": true,
+        "enemies": [
+          {
+            "name": "Homem-lagarto Um",
+            "habilidade": 9,
+            "energia": 8
+          },
+          {
+            "name": "Homem-lagarto Dois",
+            "habilidade": 9,
+            "energia": 6
+          }
+        ]
+      },
+      "partnerOnDefeat": 10,
+      "onVictory": 485,
+      "notes": "Atributos do segundo Homem-lagarto confirmados pelo encontro correspondente de Lothar."
     },
     "199": {
       "estado": "pendente",
