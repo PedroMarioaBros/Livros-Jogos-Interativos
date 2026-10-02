@@ -10,7 +10,12 @@ import {
 } from "../src/engine/story.js";
 import { processSyncPoint } from "../src/engine/sync.js";
 import { castSituationalSpell } from "../src/engine/magic.js";
-import { endingRemovesDuoPlayer } from "../src/engine/duo.js";
+import { serializeSave, parseSave } from "../src/engine/save.js";
+import {
+  createDuoSession,
+  restoreDuoSession,
+  endingRemovesDuoPlayer
+} from "../src/engine/duo.js";
 
 function constantRng() {
   return 0.25;
@@ -389,6 +394,71 @@ function applyVictoryRewards(state, character, node) {
   state.shared = context.shared;
 }
 
+function canonicalStateToSaveState(state, activeCharacter) {
+  const duo = createDuoSession(
+    {
+      colthar: {
+        hero: state.heroes.colthar,
+        reference: state.refs.colthar,
+        removed: state.removed.colthar
+      },
+      lothar: {
+        hero: state.heroes.lothar,
+        reference: state.refs.lothar,
+        removed: state.removed.lothar
+      }
+    },
+    activeCharacter
+  );
+
+  return {
+    config: game,
+    mode: "dupla",
+    character: activeCharacter,
+    hero: duo.players[activeCharacter].hero,
+    shared: { ...state.shared },
+    ref: state.refs[activeCharacter],
+    partnerActive:
+      !state.removed[otherCharacter(activeCharacter)],
+    completedEncounters: new Set(),
+    encounter: null,
+    history: [],
+    duo,
+    cooperativeEncounter: null,
+    pendingSharedLoot: null
+  };
+}
+
+function restoreCanonicalState(serialized, activeCharacter, history) {
+  const snapshot = parseSave(serialized);
+  const duo = restoreDuoSession(snapshot.duo);
+
+  return {
+    refs: {
+      colthar: duo.players.colthar.reference,
+      lothar: duo.players.lothar.reference
+    },
+    heroes: {
+      colthar: duo.players.colthar.hero,
+      lothar: duo.players.lothar.hero
+    },
+    removed: {
+      colthar: duo.players.colthar.removed,
+      lothar: duo.players.lothar.removed
+    },
+    entryApplied: {
+      colthar:
+        activeCharacter === "colthar" ||
+        duo.players.colthar.removed,
+      lothar:
+        activeCharacter === "lothar" ||
+        duo.players.lothar.removed
+    },
+    shared: { ...snapshot.shared },
+    history: [...history]
+  };
+}
+
 function processAction(state, action) {
   const character = action.character;
   const partner = otherCharacter(character);
@@ -660,4 +730,82 @@ test("rota conjunta coerente leva Lothar do início ao sucesso 500", () => {
     true
   );
   assert.ok(state.history.length >= 75);
+});
+
+
+test("save/load no meio da rota de Lothar preserva estado e permite chegar a 500", () => {
+  let state = createState();
+
+  const checkpointIndex = canonicalLotharRoute.findIndex(
+    action =>
+      action.character === "lothar" &&
+      Number(action.to) === 191
+  );
+
+  assert.ok(checkpointIndex > 0);
+
+  for (let index = 0; index <= checkpointIndex; index += 1) {
+    processAction(state, canonicalLotharRoute[index]);
+  }
+
+  assert.equal(state.refs.lothar, 191);
+  assert.equal(state.removed.colthar, true);
+  assert.equal(state.shared.status, 1);
+  assert.equal(state.shared.acao, 32);
+
+  applyEntryEffects(
+    state,
+    "lothar",
+    books.lothar.references["191"]
+  );
+
+  const beforeSave = {
+    gold: state.heroes.lothar.gold,
+    magia: state.heroes.lothar.stats.magia,
+    items: [...state.heroes.lothar.items],
+    shared: { ...state.shared },
+    refs: { ...state.refs },
+    removed: { ...state.removed }
+  };
+
+  const serialized = serializeSave(
+    canonicalStateToSaveState(state, "lothar")
+  );
+
+  state = restoreCanonicalState(
+    serialized,
+    "lothar",
+    state.history
+  );
+
+  assert.equal(state.heroes.lothar.gold, beforeSave.gold);
+  assert.equal(
+    state.heroes.lothar.stats.magia,
+    beforeSave.magia
+  );
+  assert.deepEqual(
+    state.heroes.lothar.items,
+    beforeSave.items
+  );
+  assert.deepEqual(state.shared, beforeSave.shared);
+  assert.deepEqual(state.refs, beforeSave.refs);
+  assert.deepEqual(state.removed, beforeSave.removed);
+
+  for (
+    let index = checkpointIndex + 1;
+    index < canonicalLotharRoute.length;
+    index += 1
+  ) {
+    processAction(state, canonicalLotharRoute[index]);
+  }
+
+  assert.equal(state.refs.lothar, 500);
+  assert.equal(state.removed.colthar, true);
+  assert.equal(state.removed.lothar, false);
+  assert.equal(state.shared.status, 1);
+  assert.equal(state.shared.acao, 39);
+  assert.equal(
+    state.heroes.lothar.items.includes("gema_sagrada_azul"),
+    true
+  );
 });
