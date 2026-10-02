@@ -1325,7 +1325,13 @@
         }
       ],
       "failureTarget": 47,
-      "partnerOnFailure": 47
+      "partnerOnFailure": 47,
+      "effects": [
+        {
+          "type": "set_flag",
+          "flag": "tentou_magia_scutllies"
+        }
+      ]
     },
     "84": {
       "estado": "extraida",
@@ -7439,7 +7445,13 @@
         },
         {
           "label": "Voltar à superfície para tentar magia",
-          "target": 83
+          "target": 83,
+          "conditions": [
+            {
+              "type": "flag_not",
+              "flag": "tentou_magia_scutllies"
+            }
+          ]
         }
       ]
     },
