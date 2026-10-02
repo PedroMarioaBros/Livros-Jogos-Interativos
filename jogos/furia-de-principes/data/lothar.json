@@ -1073,7 +1073,6 @@
     "70": {
       "estado": "extraida",
       "resumo": "Os irmãos enfrentam juntos o Coletor de Impostos e seus três capangas; Lothar pode usar Feitiço de Combate.",
-      "allowCombatMagic": true,
       "choices": [
         {
           "label": "Vitória com Colthar ativo",
