@@ -405,6 +405,32 @@ export function applyEffect(character, effect, context = {}, rng = Math.random) 
       };
     }
 
+    case "set_partner_resource": {
+      const partner = context.partnerCharacter;
+      const resource = effect.resource;
+
+      if (
+        !partner ||
+        !["gold", "provisions"].includes(resource)
+      ) {
+        return {
+          type: effect.type,
+          resource,
+          unsupported: true
+        };
+      }
+
+      const before = Number(partner[resource] || 0);
+      partner[resource] = Math.max(0, Number(effect.value || 0));
+
+      return {
+        type: effect.type,
+        resource,
+        before,
+        value: partner[resource]
+      };
+    }
+
     case "change_partner_stat": {
       const partner = context.partnerCharacter;
       if (!partner || !(effect.stat in partner.stats)) {
