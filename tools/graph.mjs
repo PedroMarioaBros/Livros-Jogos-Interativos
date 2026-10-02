@@ -45,6 +45,9 @@ function selfTargets(node, syncEntry) {
   for (const route of syncEntry?.routes || []) {
     addTarget(targets, route.target);
   }
+  for (const target of node.knownTargetsPendingReview || []) {
+    addTarget(targets, target);
+  }
 
   addTarget(targets, node.test?.successTarget);
   addTarget(targets, node.test?.failureTarget);
@@ -265,6 +268,11 @@ function analyzeCharacter(
     deadEnds,
     endings,
     openReferenceInputs,
+    reviewEdges: Object.values(refs).reduce(
+      (sum, node) =>
+        sum + (node.knownTargetsPendingReview?.length || 0),
+      0
+    ),
     selfEdgesMap: selfEdges,
     crossEdgesMap: crossEdges
   };
