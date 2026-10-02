@@ -1862,6 +1862,26 @@ function playCombatRound() {
   if (!state.encounter || state.encounter.finished) return;
 
   const node = state.characterData.references[String(state.ref)];
+  const roundRoll = node.encounterSpecial?.roundRoll;
+
+  if (roundRoll) {
+    const specialRoll = rollExpression(roundRoll.dice || "1d6");
+
+    if (specialRoll.total === Number(roundRoll.trigger)) {
+      const target = Number(roundRoll.target);
+      state.encounter = null;
+      hideCombat();
+      showGameMessage(
+        `Regra especial: ${specialRoll.rolls.join(" + ")} = ${specialRoll.total}. A consequência especial foi ativada.`
+      );
+
+      if (Number.isInteger(target) && target > 0) {
+        navigateTo(target, "Regra especial do combate");
+      }
+      return;
+    }
+  }
+
   const result = playEncounterRound(state.encounter, state.hero);
 
   if (result.round) {
