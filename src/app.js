@@ -33,6 +33,7 @@ import {
   applyCombatSpell,
   applyCooperativeCombatSpell
 } from "./engine/spell-combat.js";
+import { useInstantKillItem } from "./engine/combat-item.js";
 import {
   createDuoSession,
   beginHandoff,
@@ -138,6 +139,7 @@ async function init() {
   $("load-game").addEventListener("click", loadGame);
   $("restart-game").addEventListener("click", restartGame);
   $("cast-spell").addEventListener("click", castSelectedSpell);
+  $("use-combat-item").addEventListener("click", useSelectedCombatItem);
   $("spell-select").addEventListener("change", updateSpellCostUI);
   $("handoff-player").addEventListener("click", startPlayerHandoff);
   $("handoff-confirm").addEventListener("click", finishPlayerHandoff);
@@ -1626,6 +1628,7 @@ function hideCombat() {
   $("combat-card").classList.add("hidden");
   $("combat-continue").classList.add("hidden");
   $("spell-panel").classList.add("hidden");
+  $("combat-item-panel").classList.add("hidden");
 }
 
 function renderEncounter(node) {
@@ -1716,6 +1719,7 @@ function renderEncounter(node) {
   }
 
   renderSpellPanel(node);
+  renderCombatItemPanel(node);
   $("combat-round").classList.remove("hidden");
   $("combat-continue").classList.add("hidden");
 }
@@ -1735,6 +1739,7 @@ function renderCooperativeEncounter(node) {
   }
 
   renderSpellPanel(node);
+  renderCombatItemPanel(node);
   renderDuoStatus();
 }
 
@@ -1804,6 +1809,7 @@ function completeCooperativeCombatVictory(node) {
   $("combat-title").textContent = "🏆 Vitória dos príncipes";
   $("combat-round").classList.add("hidden");
   $("spell-panel").classList.add("hidden");
+  $("combat-item-panel").classList.add("hidden");
 
   const choices = availableChoices(node, storyContext());
 
@@ -1868,6 +1874,7 @@ function playCooperativeCombatRound() {
 
   markFallenDuoHeroes();
   updateCooperativeCombatDisplay();
+  renderCombatItemPanel(node);
 
   if (result.events.length) {
     const descriptions = result.events.map(event => {
@@ -1916,6 +1923,7 @@ function playCooperativeCombatRound() {
       state.cooperativeEncounter.winner = "enemies";
       $("combat-round").classList.add("hidden");
       $("spell-panel").classList.add("hidden");
+      $("combat-item-panel").classList.add("hidden");
       $("combat-title").textContent = "☠️ Os dois príncipes foram derrotados";
       showGameMessage(
         "A ENERGIA dos dois personagens chegou a zero."
@@ -1925,6 +1933,117 @@ function playCooperativeCombatRound() {
 
   persistActiveDuoPlayer();
   renderDuoStatus();
+}
+
+function combatItemContext() {
+  const cooperative =
+    state.cooperativeEncounter &&
+    !state.cooperativeEncounter.finished;
+
+  if (cooperative) {
+    return {
+      cooperative: true,
+      encounter: state.cooperativeEncounter,
+      character: state.cooperativeEncounter.heroes?.[1]
+    };
+  }
+
+  return {
+    cooperative: false,
+    encounter: state.encounter,
+    character: state.character === "lothar" ? state.hero : null
+  };
+}
+
+function renderCombatItemPanel(node) {
+  const panel = $("combat-item-panel");
+  const context = combatItemContext();
+  const character = context.character;
+  const encounter = context.encounter;
+
+  const canUse =
+    character &&
+    encounter &&
+    !encounter.finished &&
+    character.stats?.energia > 0 &&
+    character.flags?.includes("raio_de_electron_identificado") &&
+    character.items?.includes("raio_de_electron");
+
+  if (!canUse) {
+    panel.classList.add("hidden");
+    return;
+  }
+
+  const living = (encounter.enemies || [])
+    .map((enemy, index) => ({ enemy, index }))
+    .filter(entry => entry.enemy.energia > 0);
+
+  let targets = living;
+  if (!context.cooperative && Number.isInteger(encounter.currentEnemyIndex)) {
+    targets = living.filter(
+      entry => entry.index === encounter.currentEnemyIndex
+    );
+  }
+
+  if (!targets.length) {
+    panel.classList.add("hidden");
+    return;
+  }
+
+  panel.classList.remove("hidden");
+  $("combat-item-target").innerHTML = targets
+    .map(entry =>
+      "<option value=\"" + entry.index + "\">" +
+      entry.enemy.name + " — ENERGIA " + entry.enemy.energia +
+      "</option>"
+    )
+    .join("");
+  $("combat-item-result").textContent =
+    "O Raio de Dizimação é consumido ao ser usado e destrói o alvo instantaneamente.";
+}
+
+function useSelectedCombatItem() {
+  const context = combatItemContext();
+  if (!context.character || !context.encounter) return;
+
+  const enemyIndex = Number($("combat-item-target").value);
+  const result = useInstantKillItem(
+    context.character,
+    context.encounter,
+    "raio_de_electron",
+    { enemyIndex }
+  );
+
+  if (!result.ok) {
+    $("combat-item-result").textContent =
+      "Não foi possível usar o Raio de Dizimação.";
+    return;
+  }
+
+  $("combat-log").textContent =
+    "Raio de Dizimação: " + result.enemyName +
+    " foi destruído instantaneamente.";
+  $("combat-item-panel").classList.add("hidden");
+
+  if (context.cooperative) {
+    updateCooperativeCombatDisplay();
+  } else {
+    updateCombatOpponents();
+  }
+
+  renderSheet();
+  persistActiveDuoPlayer();
+
+  const node = state.characterData.references[String(state.ref)];
+  if (result.victory) {
+    if (context.cooperative) {
+      completeCooperativeCombatVictory(node);
+    } else {
+      completeCombatVictory(node);
+    }
+  } else {
+    renderCombatItemPanel(node);
+  }
 }
 
 function updateCombatOpponents() {
@@ -2161,6 +2280,7 @@ function completeCombatVictory(node) {
   $("combat-title").textContent = "🏆 Vitória";
   $("combat-round").classList.add("hidden");
   $("spell-panel").classList.add("hidden");
+  $("combat-item-panel").classList.add("hidden");
 
   if (node.postVictoryChoices?.length) {
     $("combat-continue").classList.add("hidden");
@@ -2247,6 +2367,7 @@ function playCombatRound() {
 
   const enemy = currentOpponent(state.encounter);
   updateCombatOpponents();
+  renderCombatItemPanel(node);
 
   if (
     result.round &&
@@ -2259,6 +2380,7 @@ function playCombatRound() {
     $("combat-title").textContent = "☠️ Limite de séries atingido";
     $("combat-round").classList.add("hidden");
     $("spell-panel").classList.add("hidden");
+    $("combat-item-panel").classList.add("hidden");
 
     if (node.onRoundLimit) {
       $("combat-continue").classList.remove("hidden");
@@ -2281,6 +2403,7 @@ function playCombatRound() {
       ? "⚠️ Combate perdido"
       : "☠️ Derrota";
     $("combat-round").classList.add("hidden");
+    $("combat-item-panel").classList.add("hidden");
 
     if (
       node.partnerRemovedOnDefeat &&
