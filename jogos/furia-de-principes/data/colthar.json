@@ -6445,6 +6445,445 @@
           "target": 8
         }
       ]
+    },
+    "401": {
+      "estado": "extraida",
+      "resumo": "A travessia direta do deserto causa insolação e dano aleatório; o destino depende de Lothar ainda estar vivo.",
+      "effects": [
+        {
+          "type": "random_stat_damage",
+          "stat": "energia",
+          "dice": "1d6"
+        }
+      ],
+      "choices": [
+        {
+          "label": "Lothar saiu da aventura",
+          "target": 10,
+          "conditions": [
+            {
+              "type": "partner_removed"
+            }
+          ]
+        },
+        {
+          "label": "Lothar continua ativo",
+          "target": 462,
+          "conditions": [
+            {
+              "type": "partner_active"
+            }
+          ]
+        }
+      ]
+    },
+    "402": {
+      "estado": "extraida",
+      "resumo": "Depois de derrotar o mercador de escravos, Colthar liberta os cativos e pode ficar com a corda mágica antes de se reunir com Lothar.",
+      "partnerInstruction": {
+        "sendToReference": 289
+      },
+      "choices": [
+        {
+          "label": "Levar a corda mágica",
+          "target": 289,
+          "effects": [
+            {
+              "type": "add_item",
+              "item": "corda_magica"
+            }
+          ]
+        },
+        {
+          "label": "Deixar a corda",
+          "target": 289
+        }
+      ]
+    },
+    "403": {
+      "estado": "parcial",
+      "resumo": "Três Orcs atacam Colthar enquanto Lothar está em perigo do lado de fora da cabana.",
+      "encounterNeedsReview": true,
+      "onVictory": 131,
+      "notes": "O OCR preserva Orc Um 8/6, Orc Três 6/4 e ENERGIA 4 do Orc Dois, mas a HABILIDADE do segundo Orc está ilegível. Não cadastrar o encontro completo até conferência visual."
+    },
+    "404": {
+      "estado": "extraida",
+      "resumo": "Depois de derrotar o próprio reflexo, Colthar começa a desaparecer; um espelho pode salvá-lo.",
+      "choices": [
+        {
+          "label": "Usar um espelho",
+          "target": 447,
+          "conditions": [
+            {
+              "type": "has_item",
+              "item": "espelho"
+            }
+          ]
+        },
+        {
+          "label": "Sem espelho",
+          "target": 362,
+          "conditions": [
+            {
+              "type": "not_has_item",
+              "item": "espelho"
+            }
+          ]
+        }
+      ]
+    },
+    "405": {
+      "estado": "extraida",
+      "resumo": "A água gelada do rio fere Colthar antes de ele continuar a trilha.",
+      "effects": [
+        {
+          "type": "change_stat",
+          "stat": "energia",
+          "delta": -1
+        }
+      ],
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 197
+        }
+      ]
+    },
+    "406": {
+      "estado": "extraida",
+      "resumo": "Uma visão mostra Colthar caindo num buraco negro e então se desfaz.",
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 496
+        }
+      ]
+    },
+    "407": {
+      "estado": "extraida",
+      "resumo": "A Hidra exige a vida de Colthar e o confronto torna-se inevitável.",
+      "choices": [
+        {
+          "label": "Enfrentar a Hidra",
+          "target": 487
+        }
+      ]
+    },
+    "408": {
+      "estado": "extraida",
+      "resumo": "O Unicórnio cura completamente os ferimentos de Colthar.",
+      "effects": [
+        {
+          "type": "restore_stat_to_initial",
+          "stat": "energia"
+        }
+      ],
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 373
+        }
+      ]
+    },
+    "409": {
+      "estado": "extraida",
+      "resumo": "No alto de uma árvore, Colthar decide explorar uma escada interna ou continuar a subir por fora.",
+      "choices": [
+        {
+          "label": "Explorar o interior da árvore",
+          "target": 375
+        },
+        {
+          "label": "Continuar subindo pelo lado de fora",
+          "target": 450
+        }
+      ]
+    },
+    "410": {
+      "estado": "extraida",
+      "resumo": "Colthar arremessa a espada contra um ninho e compara 2d6 com sua HABILIDADE.",
+      "rollAgainstStat": {
+        "dice": "2d6",
+        "stat": "habilidade",
+        "successWhen": "lte",
+        "successTarget": 449,
+        "failureTarget": 393
+      }
+    },
+    "411": {
+      "estado": "extraida",
+      "resumo": "Colthar encontra e veste uma armadura mágica vermelha sem elmo; depois decide se desce até o rio ou sai do poço.",
+      "effects": [
+        {
+          "type": "add_item",
+          "item": "armadura_vermelha_sem_elmo"
+        }
+      ],
+      "choices": [
+        {
+          "label": "Descer até o rio",
+          "target": 316
+        },
+        {
+          "label": "Subir para fora do poço",
+          "target": 59
+        }
+      ]
+    },
+    "412": {
+      "estado": "extraida",
+      "resumo": "Treze Bruxas surpreendem Colthar; possuir uma cruz de ouro muda o caminho.",
+      "choices": [
+        {
+          "label": "Usar a cruz de ouro",
+          "target": 172,
+          "conditions": [
+            {
+              "type": "has_item",
+              "item": "cruz_de_ouro"
+            }
+          ]
+        },
+        {
+          "label": "Sem cruz de ouro",
+          "target": 327,
+          "conditions": [
+            {
+              "type": "not_has_item",
+              "item": "cruz_de_ouro"
+            }
+          ]
+        }
+      ]
+    },
+    "413": {
+      "estado": "extraida",
+      "resumo": "Dois Ogres interceptam Colthar numa floresta proibida.",
+      "encounter": {
+        "enemies": [
+          {
+            "name": "Bill",
+            "habilidade": 7,
+            "energia": 8
+          },
+          {
+            "name": "Bert",
+            "habilidade": 8,
+            "energia": 8
+          }
+        ]
+      },
+      "onVictory": 177,
+      "onDefeat": 110
+    },
+    "414": {
+      "estado": "extraida",
+      "resumo": "Uma Duende pede ajuda contra um Gnomo; Colthar decide ajudá-la ou examinar sua coroa.",
+      "choices": [
+        {
+          "label": "Ajudar a Duende",
+          "target": 440
+        },
+        {
+          "label": "Examinar a coroa",
+          "target": 158
+        }
+      ]
+    },
+    "415": {
+      "estado": "extraida",
+      "resumo": "No alto da árvore, um humanóide reptiliano lança um feitiço; Colthar decide lutar ou fugir.",
+      "choices": [
+        {
+          "label": "Lutar",
+          "target": 227
+        },
+        {
+          "label": "Fugir",
+          "target": 378
+        }
+      ]
+    },
+    "416": {
+      "estado": "extraida",
+      "resumo": "Colthar envia Lothar para a referência correspondente e aguarda instruções.",
+      "partnerInstruction": {
+        "sendToReference": 190,
+        "wait": true
+      }
+    },
+    "417": {
+      "estado": "extraida",
+      "resumo": "Os irmãos decidem quem abrirá uma caixa perigosa.",
+      "choices": [
+        {
+          "label": "Colthar abre a caixa",
+          "target": 255
+        },
+        {
+          "label": "Lothar abre a caixa",
+          "target": 333
+        }
+      ]
+    },
+    "418": {
+      "estado": "extraida",
+      "resumo": "Depois de atravessar a ponte, os irmãos ouvem duas vozes e decidem investigar ou continuar pela trilha.",
+      "choices": [
+        {
+          "label": "Investigar as vozes",
+          "target": 322
+        },
+        {
+          "label": "Continuar pela trilha",
+          "target": 353
+        }
+      ]
+    },
+    "419": {
+      "estado": "extraida",
+      "resumo": "Colthar alcança uma escada em espiral e decide abrir uma porta de carvalho ou continuar subindo.",
+      "choices": [
+        {
+          "label": "Abrir a porta de carvalho",
+          "target": 252
+        },
+        {
+          "label": "Continuar subindo",
+          "target": 91
+        }
+      ]
+    },
+    "420": {
+      "estado": "extraida",
+      "resumo": "Scuttlies roubam os pertences dos dois irmãos durante a noite; eles decidem entre magia e perseguição.",
+      "effects": [
+        {
+          "type": "stash_and_clear_items"
+        },
+        {
+          "type": "stash_and_clear_partner_items"
+        }
+      ],
+      "choices": [
+        {
+          "label": "Lothar tenta magia para recuperar os pertences",
+          "target": 83
+        },
+        {
+          "label": "Perseguir os Scuttlies",
+          "target": 47
+        }
+      ]
+    },
+    "421": {
+      "estado": "extraida",
+      "resumo": "Os irmãos comparam quantas Pedras de Poder possuem e seguem para destinos diferentes conforme o resultado.",
+      "dynamicDuoComparison": {
+        "resource": "pedra_de_poder",
+        "partnerGreaterTarget": 44,
+        "selfGreaterTarget": 185,
+        "equalTarget": 71
+      }
+    },
+    "422": {
+      "estado": "extraida",
+      "resumo": "Lothar retorna de um buraco com um excelente escudo para Colthar; o item aumenta HABILIDADE e ENERGIA.",
+      "effects": [
+        {
+          "type": "add_item",
+          "item": "escudo_excelente"
+        },
+        {
+          "type": "change_stat",
+          "stat": "habilidade",
+          "delta": 1
+        },
+        {
+          "type": "change_stat",
+          "stat": "energia",
+          "delta": 1
+        }
+      ],
+      "choices": [
+        {
+          "label": "Prosseguir até a porta",
+          "target": 196
+        }
+      ]
+    },
+    "423": {
+      "estado": "extraida",
+      "resumo": "Dois Anões atacam Colthar ao perceberem sua ferramenta de mineração.",
+      "encounter": {
+        "enemies": [
+          {
+            "name": "Anão Velho",
+            "habilidade": 9,
+            "energia": 8
+          },
+          {
+            "name": "Anão Jovem",
+            "habilidade": 8,
+            "energia": 10
+          }
+        ]
+      },
+      "onVictory": 139
+    },
+    "424": {
+      "estado": "extraida",
+      "resumo": "Depois de uma noite gelada nas colinas, Colthar perde ENERGIA e retorna à floresta.",
+      "effects": [
+        {
+          "type": "change_stat",
+          "stat": "energia",
+          "delta": -1
+        }
+      ],
+      "choices": [
+        {
+          "label": "Voltar à trilha",
+          "target": 197
+        }
+      ]
+    },
+    "425": {
+      "estado": "extraida",
+      "resumo": "Preso no saco do Gigante, Colthar escolhe entre oferecer ouro, oferecer vinho ou cortar o saco.",
+      "choices": [
+        {
+          "label": "Oferecer todo o ouro ao Gigante",
+          "target": 21,
+          "conditions": [
+            {
+              "type": "gold_gte",
+              "value": 1
+            }
+          ],
+          "effects": [
+            {
+              "type": "set_gold",
+              "value": 0
+            }
+          ]
+        },
+        {
+          "label": "Oferecer uma garrafa de vinho",
+          "target": 69,
+          "conditions": [
+            {
+              "type": "has_item",
+              "item": "garrafa_de_vinho"
+            }
+          ]
+        },
+        {
+          "label": "Cortar o saco para fugir",
+          "target": 128
+        }
+      ]
     }
   }
 }
