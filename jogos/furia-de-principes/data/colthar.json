@@ -7278,6 +7278,368 @@
         }
       ],
       "onVictory": 375
+    },
+    "451": {
+      "estado": "validada",
+      "resumo": "Ponto de sincronização: Colthar define STATUS 11 e aguarda AÇÃO 1, 31 ou 32."
+    },
+    "452": {
+      "estado": "extraida",
+      "resumo": "A cruz de ouro afasta o Vampiro o suficiente para Colthar iniciar um combate mortal.",
+      "encounter": {
+        "enemies": [
+          {
+            "name": "Vampiro",
+            "habilidade": 10,
+            "energia": 8
+          }
+        ]
+      },
+      "onVictory": 223
+    },
+    "453": {
+      "estado": "validada",
+      "resumo": "Ponto de sincronização: Colthar define STATUS 10 e aguarda AÇÃO 1, 28, 29 ou 30."
+    },
+    "454": {
+      "estado": "extraida",
+      "resumo": "Colthar descobre a Gema Sagrada azul; se AÇÃO for 40, Lothar deve ser avisado antes da conclusão.",
+      "partnerInstruction": {
+        "conditionalSend": [
+          {
+            "condition": {
+              "type": "shared_equals",
+              "key": "acao",
+              "value": 40
+            },
+            "target": 368
+          }
+        ]
+      },
+      "effects": [
+        {
+          "type": "add_item",
+          "item": "gema_sagrada_azul"
+        }
+      ],
+      "choices": [
+        {
+          "label": "Concluir a Prova de Realeza",
+          "target": 500
+        }
+      ]
+    },
+    "455": {
+      "estado": "extraida",
+      "resumo": "Preso por fios junto à janela, Colthar precisa aguardar o resultado do combate de Lothar dentro da cabana.",
+      "partnerInstruction": {
+        "wait": true,
+        "sourceCharacter": "lothar"
+      }
+    },
+    "456": {
+      "estado": "extraida",
+      "resumo": "Três Mulheres da Floresta atacam Colthar com galhos em chamas.",
+      "encounter": {
+        "enemies": [
+          {
+            "name": "Mulher da Floresta Um",
+            "habilidade": 8,
+            "energia": 8
+          },
+          {
+            "name": "Mulher da Floresta Dois",
+            "habilidade": 8,
+            "energia": 6
+          },
+          {
+            "name": "Mulher da Floresta Três",
+            "habilidade": 7,
+            "energia": 4
+          }
+        ]
+      },
+      "onVictory": 78
+    },
+    "457": {
+      "estado": "extraida",
+      "resumo": "Colthar tenta negociar com a Hidra e precisa Testar a Sorte.",
+      "test": {
+        "type": "luck",
+        "successTarget": 105,
+        "failureTarget": 407
+      }
+    },
+    "458": {
+      "estado": "extraida",
+      "resumo": "O Coletor de Impostos toma todo o ouro de Colthar e também seu cavalo; os irmãos decidem se continuam juntos.",
+      "effects": [
+        {
+          "type": "set_gold",
+          "value": 0
+        },
+        {
+          "type": "remove_item_if_present",
+          "item": "cavalo"
+        }
+      ],
+      "choices": [
+        {
+          "label": "Continuar juntos",
+          "target": 383
+        },
+        {
+          "label": "Separar-se",
+          "target": 446
+        }
+      ]
+    },
+    "459": {
+      "estado": "extraida",
+      "resumo": "Depois de vencer o Troll, Colthar encontra uma arca na cabana e decide se a abre.",
+      "choices": [
+        {
+          "label": "Abrir a arca",
+          "target": 299
+        },
+        {
+          "label": "Deixar a arca",
+          "target": 339
+        }
+      ]
+    },
+    "460": {
+      "estado": "extraida",
+      "resumo": "Um Javali Selvagem investe contra Colthar; ele decide subir numa árvore ou lutar.",
+      "choices": [
+        {
+          "label": "Pular para a árvore",
+          "target": 229
+        },
+        {
+          "label": "Preparar-se para lutar",
+          "target": 34
+        }
+      ]
+    },
+    "461": {
+      "estado": "extraida",
+      "resumo": "Colthar enfrenta um Gigante de Pedra.",
+      "encounter": {
+        "enemies": [
+          {
+            "name": "Gigante de Pedra",
+            "habilidade": 10,
+            "energia": 10
+          }
+        ]
+      },
+      "onVictory": 474
+    },
+    "462": {
+      "estado": "extraida",
+      "resumo": "No oásis, os irmãos decidem quem investigará a caravana ou se ambos esperarão.",
+      "choices": [
+        {
+          "label": "Colthar vai ao oásis",
+          "target": 150
+        },
+        {
+          "label": "Lothar investiga à noite",
+          "target": 286
+        },
+        {
+          "label": "Os dois aguardam a caravana partir",
+          "target": 249
+        }
+      ]
+    },
+    "463": {
+      "estado": "extraida",
+      "resumo": "O guerreiro congelado desperta e ataca; Colthar decide lutar ou fugir.",
+      "choices": [
+        {
+          "label": "Lutar",
+          "target": 56
+        },
+        {
+          "label": "Fugir",
+          "target": 222
+        }
+      ]
+    },
+    "464": {
+      "estado": "extraida",
+      "resumo": "O Gigante de duas cabeças coloca os irmãos num saco; eles decidem se Lothar tentará magia.",
+      "choices": [
+        {
+          "label": "Lothar lança um feitiço",
+          "target": 394
+        },
+        {
+          "label": "Não usar magia",
+          "target": 425
+        }
+      ]
+    },
+    "465": {
+      "estado": "extraida",
+      "resumo": "Depois de responder corretamente ao Demônio, Colthar deve escolher entre três gemas coloridas.",
+      "choices": [
+        {
+          "label": "Escolher a gema vermelha",
+          "target": 439
+        },
+        {
+          "label": "Escolher a gema verde",
+          "target": 454
+        },
+        {
+          "label": "Escolher a gema amarela",
+          "target": 482
+        }
+      ]
+    },
+    "466": {
+      "estado": "extraida",
+      "resumo": "A corda mágica captura Colthar e o incorpora à caravana de escravos.",
+      "partnerInstruction": {
+        "sendToReference": 96
+      },
+      "ending": "removed"
+    },
+    "467": {
+      "estado": "extraida",
+      "resumo": "Um galho quebra e lança Colthar dentro de uma cerca viva; uma muda de vidoeiro pode salvá-lo.",
+      "choices": [
+        {
+          "label": "Usar a muda de vidoeiro",
+          "target": 492,
+          "conditions": [
+            {
+              "type": "has_item",
+              "item": "muda_de_vidoeiro"
+            }
+          ]
+        },
+        {
+          "label": "Sem muda de vidoeiro",
+          "target": 109,
+          "conditions": [
+            {
+              "type": "not_has_item",
+              "item": "muda_de_vidoeiro"
+            }
+          ]
+        }
+      ]
+    },
+    "468": {
+      "estado": "extraida",
+      "resumo": "Uma multidão agride Colthar e o prende no tronco da praça.",
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 23
+        }
+      ]
+    },
+    "469": {
+      "estado": "extraida",
+      "resumo": "Colthar deve permanecer aguardando instruções de Lothar.",
+      "partnerInstruction": {
+        "wait": true,
+        "sourceCharacter": "lothar"
+      }
+    },
+    "470": {
+      "estado": "extraida",
+      "resumo": "O livro sagrado enfraquece o Vampiro, mas Colthar ainda precisa enfrentá-lo.",
+      "encounter": {
+        "enemies": [
+          {
+            "name": "Vampiro",
+            "habilidade": 10,
+            "energia": 8
+          }
+        ]
+      },
+      "onVictory": 223
+    },
+    "471": {
+      "estado": "extraida",
+      "resumo": "Os irmãos caem numa armadilha da estalagem; Lothar desmaia e Colthar enfrenta sozinho um Minotauro.",
+      "encounter": {
+        "enemies": [
+          {
+            "name": "Minotauro",
+            "habilidade": 8,
+            "energia": 8
+          }
+        ]
+      },
+      "onVictory": 112,
+      "partnerRemovedOnDefeat": true,
+      "notes": "Se Colthar perder, o texto encerra a aventura dos dois irmãos."
+    },
+    "472": {
+      "estado": "extraida",
+      "resumo": "Perseguido por três Lobos, Colthar escolhe entre escalar um penhasco, subir numa árvore ou enfrentá-los.",
+      "choices": [
+        {
+          "label": "Escalar o penhasco",
+          "target": 442
+        },
+        {
+          "label": "Subir na árvore",
+          "target": 397
+        },
+        {
+          "label": "Enfrentar os Lobos",
+          "target": 191
+        }
+      ]
+    },
+    "473": {
+      "estado": "extraida",
+      "resumo": "Na floresta tropical de Orcmoot, Colthar sobe numa árvore para se orientar e precisa Testar a Sorte.",
+      "test": {
+        "type": "luck",
+        "successTarget": 409,
+        "failureTarget": 336
+      }
+    },
+    "474": {
+      "estado": "extraida",
+      "resumo": "Depois de derrotar o Gigante, Colthar pega a chave, liberta o Pégaso e é transportado para as terras baixas.",
+      "choices": [
+        {
+          "label": "Prosseguir sozinho",
+          "target": 453
+        }
+      ]
+    },
+    "475": {
+      "estado": "extraida",
+      "resumo": "O Unicórnio concede o desejo de Colthar, restaurando HABILIDADE e SORTE.",
+      "effects": [
+        {
+          "type": "change_stat",
+          "stat": "habilidade",
+          "delta": 1
+        },
+        {
+          "type": "change_stat",
+          "stat": "sorte",
+          "delta": 1
+        }
+      ],
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 373
+        }
+      ]
     }
   }
 }
