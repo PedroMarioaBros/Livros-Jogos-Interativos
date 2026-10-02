@@ -81,12 +81,13 @@
   - [x] CI exige um único sucesso por volume na referência 500 e resolução para encontros completos
 - [ ] Testar todos os caminhos alcançáveis
   - [x] Análise automática dos grafos de ambos os volumes
-  - [x] Grafo combinado em dupla com rotas cruzadas e STATUS/AÇÃO: 973/1000 nós explicitamente alcançáveis, zero becos sem saída
+  - [x] Grafo combinado em dupla com rotas cruzadas e STATUS/AÇÃO: 988/1000 nós explicitamente alcançáveis, zero becos sem saída
   - [x] Regressões de morte em combate, transição solo e resultado do outro príncipe
   - [x] Auditoria de runtime nas 989 referências completas: 335 efeitos e 178 condições com suporte reconhecido pelo CI
   - [x] Raio de Dizimação implementado em combate solo/cooperativo; referência 314 confirmada no OCR do item `livros-jogos` do Archive.org
   - [x] Enigma numérico de Lothar 44 migrado para `referenceInput` após confirmação no Archive.org
   - [x] Colthar 19 confirmado no Archive.org com rotas 133 e 243
+  - [x] Auditoria reversa de resolução: zero ciclos alcançáveis presos sem final, espera, resposta numérica ou revisão explícita
 
 ## Fase 3 — Interface
 - [ ] Biblioteca de aventuras
