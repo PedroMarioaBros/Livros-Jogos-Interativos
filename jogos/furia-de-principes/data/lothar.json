@@ -4997,7 +4997,7 @@
           "target": 395
         }
       ],
-      "needsEngineSupport": true
+      "notes": "Motor já suporta o Raio de Dizimação em combate; a referência continua parcial até conferência visual da fonte."
     },
     "315": {
       "estado": "extraida",
