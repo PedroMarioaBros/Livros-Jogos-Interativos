@@ -21,7 +21,8 @@ import {
   applyEffects,
   availableChoices,
   countItem,
-  resolveDynamicDuoComparison
+  resolveDynamicDuoComparison,
+  resolveConditionalEncounterModifiers
 } from "../src/engine/story.js";
 import {
   createEncounter,
@@ -1291,6 +1292,101 @@ test("sincronizações 185 e 199 de Colthar estão verificadas", () => {
   assert.equal(ref199.effects[0].value, 3);
   assert.equal(ref199.routes[0].target, 242);
   assert.equal(ref199.routes[1].target, 287);
+});
+
+test("modificador condicional de encontro respeita item possuído", () => {
+  const hero = createCharacter(warriorData, sequence([0, 0, 0, 0]));
+  const definition = {
+    conditionalModifiers: [{
+      conditions: [{ type: "has_item", item: "sapatos_para_neve" }],
+      modifiers: { heroSkill: 2 }
+    }]
+  };
+
+  let modifiers = resolveConditionalEncounterModifiers(
+    definition,
+    { character: hero, shared: {}, partnerActive: false }
+  );
+  assert.equal(modifiers.heroSkill, undefined);
+
+  hero.items.push("sapatos_para_neve");
+  modifiers = resolveConditionalEncounterModifiers(
+    definition,
+    { character: hero, shared: {}, partnerActive: false }
+  );
+  assert.equal(modifiers.heroSkill, 2);
+});
+
+test("ouro conjunto insuficiente é detectado corretamente", () => {
+  const colthar = createCharacter(warriorData, sequence([0, 0, 0, 0]));
+  const lothar = createCharacter(warriorData, sequence([0, 0, 0, 0]));
+  colthar.gold = 4;
+  lothar.gold = 5;
+
+  const choices = availableChoices(
+    {
+      choices: [
+        {
+          label: "Pagar",
+          target: 1,
+          conditions: [{ type: "shared_gold_gte", value: 10 }]
+        },
+        {
+          label: "Sem ouro",
+          target: 2,
+          conditions: [{ type: "shared_gold_lt", value: 10 }]
+        }
+      ]
+    },
+    {
+      character: colthar,
+      partnerCharacter: lothar,
+      shared: {},
+      partnerActive: true
+    }
+  );
+
+  assert.equal(choices.length, 1);
+  assert.equal(choices[0].target, 2);
+});
+
+test("Colthar possui o bloco 201 a 225 estruturado", () => {
+  for (let ref = 201; ref <= 225; ref += 1) {
+    assert.ok(
+      warriorBookData.references[String(ref)],
+      `Referência ${ref} ausente`
+    );
+  }
+
+  assert.equal(
+    warriorBookData.references["203"].effects[0].flag,
+    "encontrou_dragesima"
+  );
+  assert.equal(
+    warriorBookData.references["215"].encounter.conditionalModifiers[0].modifiers.heroSkill,
+    2
+  );
+  assert.equal(
+    warriorBookData.references["220"].estado,
+    "parcial"
+  );
+  assert.equal(
+    warriorBookData.references["224"].choices[1].conditions[0].type,
+    "shared_gold_lt"
+  );
+});
+
+test("sincronização 217 de Colthar está verificada", () => {
+  const ref217 = syncBookData.entries.find(
+    entry => entry.character === "colthar" && entry.reference === 217
+  );
+
+  assert.equal(ref217?.verified, true);
+  assert.equal(ref217.effects[0].value, 9);
+  assert.deepEqual(
+    ref217.routes.map(route => route.target),
+    [96, 142, 493, 289]
+  );
 });
 
 test("set_stat define atributo sem ultrapassar o valor inicial", () => {
