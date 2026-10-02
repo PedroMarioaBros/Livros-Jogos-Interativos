@@ -4720,6 +4720,150 @@
         "successTarget": 390,
         "failureTarget": 347
       }
+    },
+    "289": {
+      "estado": "extraida",
+      "resumo": "Colthar reencontra Lothar inesperadamente e os irmãos voltam a viajar juntos.",
+      "choices": [
+        {
+          "label": "Prosseguir juntos",
+          "target": 25
+        }
+      ]
+    },
+    "290": {
+      "estado": "extraida",
+      "resumo": "O anfitrião élfico se irrita com Colthar; ele precisa Testar a Sorte.",
+      "test": {
+        "type": "luck",
+        "successTarget": 427,
+        "failureTarget": 494
+      }
+    },
+    "291": {
+      "estado": "extraida",
+      "resumo": "Dois Salteadores dos Ares atacam os irmãos no deserto; cada príncipe enfrenta um adversário e Lothar pode usar magia.",
+      "partnerInstruction": {
+        "sendToReference": 291
+      },
+      "encounter": {
+        "cooperative": true,
+        "allowCombatMagic": true,
+        "enemies": [
+          {
+            "name": "Salteador dos Ares Um",
+            "habilidade": 9,
+            "energia": 8
+          },
+          {
+            "name": "Salteador dos Ares Dois",
+            "habilidade": 9,
+            "energia": 8
+          }
+        ]
+      },
+      "choices": [
+        {
+          "label": "Vitória com Lothar vivo",
+          "target": 221,
+          "conditions": [
+            {
+              "type": "partner_active"
+            }
+          ]
+        },
+        {
+          "label": "Vitória após Lothar sair da aventura",
+          "target": 17,
+          "conditions": [
+            {
+              "type": "partner_removed"
+            }
+          ]
+        }
+      ]
+    },
+    "292": {
+      "estado": "extraida",
+      "resumo": "Colthar precisa Testar a Sorte.",
+      "test": {
+        "type": "luck",
+        "successTarget": 472,
+        "failureTarget": 191
+      }
+    },
+    "293": {
+      "estado": "extraida",
+      "resumo": "Cogumelos restauram completamente ENERGIA e SORTE; se ainda possuir a mochila, Colthar pode guardar dois para uso posterior.",
+      "effects": [
+        {
+          "type": "restore_stat_to_initial",
+          "stat": "energia"
+        },
+        {
+          "type": "restore_stat_to_initial",
+          "stat": "sorte"
+        }
+      ],
+      "choices": [
+        {
+          "label": "Guardar dois cogumelos curativos",
+          "target": 374,
+          "conditions": [
+            {
+              "type": "has_item",
+              "item": "mochila"
+            }
+          ],
+          "effects": [
+            {
+              "type": "add_item",
+              "item": "cogumelo_curativo"
+            },
+            {
+              "type": "add_item",
+              "item": "cogumelo_curativo"
+            }
+          ]
+        },
+        {
+          "label": "Não guardar cogumelos",
+          "target": 374
+        }
+      ]
+    },
+    "294": {
+      "estado": "extraida",
+      "resumo": "Colthar deixa a aventura; Lothar deve ser encaminhado conforme o valor atual de AÇÃO.",
+      "partnerInstruction": {
+        "conditionalSend": [
+          {
+            "condition": {
+              "type": "shared_equals",
+              "key": "acao",
+              "value": 36
+            },
+            "target": 136
+          },
+          {
+            "condition": {
+              "type": "shared_not_in",
+              "key": "acao",
+              "values": [
+                36
+              ]
+            },
+            "target": 473
+          }
+        ]
+      },
+      "ending": "removed-transition",
+      "choices": [
+        {
+          "label": "Encerrar transição",
+          "target": 39
+        }
+      ]
     }
   }
 }
