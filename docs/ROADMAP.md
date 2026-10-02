@@ -69,11 +69,12 @@
   - [x] Referências 1–500 estruturadas continuamente
 - [x] Extrair referências de Lothar
   - [x] Referências 1–500 estruturadas continuamente
-- [ ] Mapear todas as sincronizações STATUS/AÇÃO
+- [x] Mapear todas as sincronizações STATUS/AÇÃO
   - [x] Motor genérico de sincronização
   - [x] Primeira varredura de AÇÃO de Lothar
   - [x] Primeiros pontos verificados de STATUS de Colthar (31 e 60)
-  - [x] 33 pontos atualmente catalogados conferidos individualmente
+  - [x] 34 pontos catalogados e conferidos individualmente
+  - [x] Varredura final das 1.000 referências concluída com cobertura automática no CI
 - [ ] Classificar finais, mortes e encontros
 - [ ] Testar todos os caminhos alcançáveis
   - [x] Análise automática dos grafos de ambos os volumes

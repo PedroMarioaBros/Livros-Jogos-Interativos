@@ -35,6 +35,20 @@
     },
     {
       "character": "colthar",
+      "reference": 39,
+      "verified": true,
+      "type": "partner-removed-transition",
+      "effects": [
+        {
+          "type": "set_shared",
+          "key": "status",
+          "value": 1
+        }
+      ],
+      "notes": "Transição espelhada da referência 39 de Lothar: STATUS passa a 1 quando Colthar sai da aventura e o fluxo continua em modo solo."
+    },
+    {
+      "character": "colthar",
       "reference": 60,
       "verified": true,
       "effects": [
