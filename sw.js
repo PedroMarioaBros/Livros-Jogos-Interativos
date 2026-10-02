@@ -1,4 +1,4 @@
-const CACHE_NAME = "livros-jogos-v25";
+const CACHE_NAME = "livros-jogos-v26";
 
 const APP_SHELL = [
   "./",
