@@ -40,7 +40,8 @@ import {
   completeHandoff,
   updateDuoPlayer,
   restoreDuoSession,
-  resolvePartnerOutcomeRoute
+  resolvePartnerOutcomeRoute,
+  endingRemovesDuoPlayer
 } from "./engine/duo.js";
 
 const state = {
@@ -1595,9 +1596,7 @@ function renderReference(reference, options = {}) {
   }
 
   if (node.ending) {
-    if (
-      ["death", "removed"].includes(node.ending)
-    ) {
+    if (endingRemovesDuoPlayer(node.ending)) {
       removeCurrentDuoPlayer(
         node.afterDeathReference ?? null
       );
