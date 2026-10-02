@@ -288,6 +288,10 @@ export function applyEffect(character, effect, context = {}, rng = Math.random) 
       );
       return { type: effect.type, value: character.provisions };
 
+    case "set_provisions":
+      character.provisions = Math.max(0, Number(effect.value || 0));
+      return { type: effect.type, value: character.provisions };
+
     case "set_stat": {
       if (!(effect.stat in character.stats)) {
         return {
