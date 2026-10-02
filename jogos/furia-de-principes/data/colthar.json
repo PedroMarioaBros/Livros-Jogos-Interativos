@@ -4142,6 +4142,364 @@
         ],
         "continueTarget": 323
       }
+    },
+    "251": {
+      "estado": "extraida",
+      "resumo": "Ao investigar um buraco, Colthar perturba uma criatura de tentáculos que o agarra pelo pescoço.",
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 479
+        }
+      ]
+    },
+    "252": {
+      "estado": "parcial",
+      "resumo": "Dois Lobisomens atacam Colthar; um machado de prata concede +2 HABILIDADE durante o combate.",
+      "encounterNeedsReview": true,
+      "onVictory": 426,
+      "notes": "O OCR do Internet Archive preserva o primeiro Lobisomem como HABILIDADE 10 / ENERGIA 6 e o segundo com ENERGIA 6, mas a HABILIDADE do segundo está ilegível. Não cadastrar o encontro completo até conferência visual."
+    },
+    "253": {
+      "estado": "extraida",
+      "resumo": "Depois que uma Bruxa desaparece, Colthar recolhe o cabo de vassoura deixado para trás.",
+      "effects": [
+        {
+          "type": "add_item",
+          "item": "cabo_de_vassoura"
+        }
+      ],
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 367
+        }
+      ]
+    },
+    "254": {
+      "estado": "extraida",
+      "resumo": "Sob a mortalha branca há um Ghoul que ataca Colthar; após vencê-lo, ele pode examinar outros caixões.",
+      "encounter": {
+        "enemies": [
+          {
+            "name": "Ghoul",
+            "habilidade": 8,
+            "energia": 6
+          }
+        ]
+      },
+      "postVictoryChoices": [
+        {
+          "label": "Examinar o tecido turquesa",
+          "target": 235
+        },
+        {
+          "label": "Examinar o tecido escarlate",
+          "target": 134
+        },
+        {
+          "label": "Examinar o tecido verde-esmeralda",
+          "target": 297
+        }
+      ]
+    },
+    "255": {
+      "estado": "extraida",
+      "resumo": "Serpentes escondidas numa caixa mordem Colthar, causando dano aleatório.",
+      "effects": [
+        {
+          "type": "random_stat_damage",
+          "stat": "energia",
+          "dice": "1d6"
+        }
+      ],
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 373
+        }
+      ]
+    },
+    "256": {
+      "estado": "extraida",
+      "resumo": "Dentro de uma antiga caverna alagada, Colthar escolhe entre contornar o lago por uma saliência ou atravessá-lo pelas pedras.",
+      "choices": [
+        {
+          "label": "Seguir pela saliência",
+          "target": 97
+        },
+        {
+          "label": "Atravessar pelas pedras",
+          "target": 392
+        }
+      ]
+    },
+    "257": {
+      "estado": "extraida",
+      "resumo": "Colthar escapa de braços que surgem da água e decide voltar à capela.",
+      "choices": [
+        {
+          "label": "Voltar à capela",
+          "target": 72
+        }
+      ]
+    },
+    "258": {
+      "estado": "extraida",
+      "resumo": "Uma passagem sinuosa termina diante de uma Serpente e duas saídas.",
+      "choices": [
+        {
+          "label": "Correr para a saída da esquerda",
+          "target": 329
+        },
+        {
+          "label": "Correr para a saída da direita",
+          "target": 476
+        },
+        {
+          "label": "Enfrentar a Serpente",
+          "target": 398
+        }
+      ]
+    },
+    "259": {
+      "estado": "extraida",
+      "resumo": "Colthar se protege de uma criatura alada e, depois de esperar, retoma a viagem.",
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 256
+        }
+      ]
+    },
+    "260": {
+      "estado": "extraida",
+      "resumo": "Colthar encontra um gigantesco ninho de formigas e decide entrar nele ou tentar destruí-lo.",
+      "choices": [
+        {
+          "label": "Entrar pelo buraco",
+          "target": 314
+        },
+        {
+          "label": "Tentar destruir o ninho com a espada",
+          "target": 410
+        }
+      ]
+    },
+    "261": {
+      "estado": "extraida",
+      "resumo": "Depois de vencer os Todd, Colthar deixa a estalagem e segue para as montanhas.",
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 4
+        }
+      ]
+    },
+    "262": {
+      "estado": "extraida",
+      "resumo": "Colthar ganha três moedas de ouro numa noite de carteado e deixa a vila.",
+      "effects": [
+        {
+          "type": "change_gold",
+          "delta": 3
+        }
+      ],
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 367
+        }
+      ]
+    },
+    "263": {
+      "estado": "parcial",
+      "resumo": "A cruz de ouro e o livro sagrado subjugam o Vampiro.",
+      "needsManualReview": true,
+      "notes": "O OCR do Internet Archive corta o número do destino imediatamente após 'Volte para'. Manter sem destino até conferência visual."
+    },
+    "264": {
+      "estado": "extraida",
+      "resumo": "Colthar acorda Lothar aos gritos e precisa aguardar a decisão do irmão.",
+      "partnerInstruction": {
+        "sendToReference": 58,
+        "wait": true
+      }
+    },
+    "265": {
+      "estado": "extraida",
+      "resumo": "Colthar se materializa no deserto ao lado de Lothar e os irmãos voltam a viajar juntos.",
+      "choices": [
+        {
+          "label": "Prosseguir juntos",
+          "target": 173
+        }
+      ]
+    },
+    "266": {
+      "estado": "parcial",
+      "resumo": "Três Homens das Cavernas atacam Colthar.",
+      "encounterNeedsReview": true,
+      "onVictory": 65,
+      "notes": "O OCR preserva Homem das Cavernas Dois 8/6 e Três 8/4, além da ENERGIA 6 do primeiro, mas a HABILIDADE do primeiro está ilegível. Não cadastrar o encontro completo até conferência visual."
+    },
+    "267": {
+      "estado": "extraida",
+      "resumo": "Ao correr para a espada, Colthar provoca a queda de uma enorme pedra e fica preso para sempre.",
+      "ending": "removed",
+      "afterDeathReference": 39
+    },
+    "268": {
+      "estado": "extraida",
+      "resumo": "Os Leprechauns desaparecem levando todas as moedas de ouro dos dois irmãos.",
+      "effects": [
+        {
+          "type": "set_gold",
+          "value": 0
+        },
+        {
+          "type": "set_partner_resource",
+          "resource": "gold",
+          "value": 0
+        }
+      ],
+      "choices": [
+        {
+          "label": "Voltar à trilha",
+          "target": 353
+        }
+      ]
+    },
+    "269": {
+      "estado": "extraida",
+      "resumo": "Dois Bandoleiros do Ar atacam os irmãos; cada príncipe enfrenta um inimigo e Lothar pode usar magia.",
+      "partnerInstruction": {
+        "sendToReference": 269
+      },
+      "encounter": {
+        "cooperative": true,
+        "allowCombatMagic": true,
+        "enemies": [
+          {
+            "name": "Bandoleiro do Ar Um",
+            "habilidade": 9,
+            "energia": 8
+          },
+          {
+            "name": "Bandoleiro do Ar Dois",
+            "habilidade": 9,
+            "energia": 8
+          }
+        ]
+      },
+      "choices": [
+        {
+          "label": "Vitória com Lothar vivo",
+          "target": 303,
+          "conditions": [
+            {
+              "type": "partner_active"
+            }
+          ]
+        },
+        {
+          "label": "Vitória após Lothar cair",
+          "target": 17,
+          "conditions": [
+            {
+              "type": "partner_removed"
+            }
+          ]
+        }
+      ]
+    },
+    "270": {
+      "estado": "extraida",
+      "resumo": "Lothar desaparece e Colthar precisa enfrentar sozinho uma Traça monstruosa.",
+      "encounter": {
+        "enemies": [
+          {
+            "name": "Traça",
+            "habilidade": 7,
+            "energia": 10
+          }
+        ]
+      },
+      "onVictory": 202,
+      "partnerOnDefeat": 497
+    },
+    "271": {
+      "estado": "extraida",
+      "resumo": "Colthar precisa enfrentar um Demônio.",
+      "encounter": {
+        "enemies": [
+          {
+            "name": "Demônio",
+            "habilidade": 10,
+            "energia": 10
+          }
+        ]
+      },
+      "onVictory": 430
+    },
+    "272": {
+      "estado": "extraida",
+      "resumo": "Uma visão do destino mostra Colthar correndo em direção a uma velha antes de desaparecer.",
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 496
+        }
+      ]
+    },
+    "273": {
+      "estado": "extraida",
+      "resumo": "Ao chegar a um grande monólito durante a noite, Colthar decide ignorar um buraco luminoso ou investigá-lo.",
+      "choices": [
+        {
+          "label": "Ignorar o buraco e procurar abrigo",
+          "target": 424
+        },
+        {
+          "label": "Espiar pelo buraco",
+          "target": 218
+        }
+      ]
+    },
+    "274": {
+      "estado": "extraida",
+      "resumo": "Colthar usa fogo para afastar um dos Lobos Cinzentos e enfrenta os dois restantes.",
+      "encounter": {
+        "enemies": [
+          {
+            "name": "Lobo Um",
+            "habilidade": 9,
+            "energia": 8
+          },
+          {
+            "name": "Lobo Dois",
+            "habilidade": 8,
+            "energia": 6
+          }
+        ]
+      },
+      "onVictory": 207
+    },
+    "275": {
+      "estado": "extraida",
+      "resumo": "Colthar oferece uma muda de vidoeiro ao Druida, que aceita o presente e o deixa partir.",
+      "effects": [
+        {
+          "type": "remove_item_if_present",
+          "item": "muda_de_vidoeiro"
+        }
+      ],
+      "choices": [
+        {
+          "label": "Deixar as terras do Druida",
+          "target": 78
+        }
+      ]
     }
   }
 }
