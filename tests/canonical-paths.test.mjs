@@ -9,6 +9,7 @@ import {
   conditionMet
 } from "../src/engine/story.js";
 import { processSyncPoint } from "../src/engine/sync.js";
+import { castSituationalSpell } from "../src/engine/magic.js";
 import { endingRemovesDuoPlayer } from "../src/engine/duo.js";
 
 function constantRng() {
@@ -48,7 +49,7 @@ const [colthar, lothar, syncData, game] = await Promise.all([
 
 const books = { colthar, lothar };
 
-const canonicalDuoRoute = [
+const canonicalColtharRoute = [
   { character: "colthar", to: 199 },
   { character: "colthar", wait: true },
   { character: "lothar", to: 199 },
@@ -123,6 +124,89 @@ const canonicalDuoRoute = [
   { character: "colthar", to: 454 },
   { character: "colthar", to: 500 },
   { character: "colthar", success: true }
+];
+
+const canonicalLotharRoute = [
+  { character: "colthar", to: 148 },
+  { character: "colthar", wait: true },
+  { character: "lothar", to: 148 },
+  { character: "lothar", to: 325 },
+  { character: "colthar", to: 325 },
+  { character: "colthar", to: 102 },
+  { character: "colthar", to: 18 },
+  { character: "colthar", to: 260 },
+  { character: "colthar", to: 410 },
+  { character: "colthar", to: 449 },
+  { character: "colthar", ending: "death" },
+  { character: "lothar", to: 363 },
+  { character: "lothar", to: 254 },
+  { character: "lothar", to: 42 },
+  { character: "lothar", to: 165 },
+  { character: "lothar", to: 293 },
+  { character: "lothar", to: 13 },
+  { character: "lothar", to: 245 },
+  { character: "lothar", to: 109 },
+  { character: "lothar", to: 209 },
+  { character: "lothar", to: 340 },
+  { character: "lothar", to: 251 },
+  { character: "lothar", to: 157 },
+  { character: "lothar", to: 328 },
+  { character: "lothar", to: 430 },
+  { character: "lothar", to: 52 },
+  { character: "lothar", to: 119 },
+  { character: "lothar", to: 499 },
+  { character: "lothar", to: 367 },
+  { character: "lothar", to: 2 },
+  { character: "lothar", to: 167 },
+  { character: "lothar", to: 205 },
+  { character: "lothar", to: 187 },
+  { character: "lothar", to: 77 },
+  { character: "lothar", to: 210 },
+  { character: "lothar", to: 87 },
+  { character: "lothar", to: 149 },
+  { character: "lothar", to: 329 },
+  { character: "lothar", to: 96 },
+  { character: "lothar", to: 405 },
+  { character: "lothar", to: 342 },
+  { character: "lothar", to: 495 },
+  { character: "lothar", to: 4 },
+  { character: "lothar", to: 278 },
+  { character: "lothar", to: 413 },
+  { character: "lothar", to: 396 },
+  { character: "lothar", to: 459 },
+  { character: "lothar", to: 172 },
+  { character: "lothar", to: 465 },
+  { character: "lothar", to: 227 },
+  { character: "lothar", to: 443 },
+  { character: "lothar", to: 356 },
+  { character: "lothar", to: 191 },
+  { character: "lothar", to: 237 },
+  { character: "lothar", to: 28 },
+  { character: "lothar", to: 65 },
+  { character: "lothar", to: 284 },
+  { character: "lothar", to: 338 },
+  { character: "lothar", to: 180 },
+  { character: "lothar", to: 344 },
+  { character: "lothar", to: 86 },
+  { character: "lothar", to: 136 },
+  { character: "lothar", to: 305 },
+  { character: "lothar", to: 41 },
+  { character: "lothar", to: 473 },
+  { character: "lothar", to: 141 },
+  { character: "lothar", to: 211 },
+  { character: "lothar", to: 375 },
+  { character: "lothar", to: 93 },
+  { character: "lothar", to: 494 },
+  { character: "lothar", to: 22 },
+  { character: "lothar", to: 398 },
+  { character: "lothar", to: 64 },
+  { character: "lothar", to: 435 },
+  { character: "lothar", to: 31 },
+  { character: "lothar", to: 44 },
+  { character: "lothar", to: 18 },
+  { character: "lothar", to: 454 },
+  { character: "lothar", to: 500 },
+  { character: "lothar", success: true }
 ];
 
 function otherCharacter(character) {
@@ -468,6 +552,38 @@ function processAction(state, action) {
     applyVictoryRewards(state, character, node);
   }
 
+  if (directType === "spell") {
+    const option = (node.spellOptions || []).find(
+      entry => Number(entry.successTarget) === Number(action.to)
+    );
+
+    assert.ok(
+      option,
+      `${character} ${reference}: feitiço para ${action.to} ausente`
+    );
+
+    const result = castSituationalSpell(
+      state.heroes[character],
+      {
+        ...option,
+        failureTarget: node.failureTarget
+      },
+      constantRng
+    );
+
+    assert.equal(
+      result.ok,
+      true,
+      `${character} ${reference}: MAGIA insuficiente`
+    );
+    assert.equal(
+      result.success,
+      true,
+      `${character} ${reference}: feitiço situacional falhou`
+    );
+    assert.equal(Number(result.target), Number(action.to));
+  }
+
   setReference(state, character, action.to);
   state.history.push(
     `${character} ${reference} ${directType}→${action.to}`
@@ -477,7 +593,7 @@ function processAction(state, action) {
 test("rota conjunta coerente leva Colthar do início ao sucesso 500", () => {
   const state = createState();
 
-  for (const action of canonicalDuoRoute) {
+  for (const action of canonicalColtharRoute) {
     processAction(state, action);
 
     if (!state.removed.colthar) {
@@ -505,4 +621,43 @@ test("rota conjunta coerente leva Colthar do início ao sucesso 500", () => {
     true
   );
   assert.ok(state.history.length >= 70);
+});
+
+
+test("rota conjunta coerente leva Lothar do início ao sucesso 500", () => {
+  const state = createState();
+  const initialMagic = state.heroes.lothar.stats.magia;
+
+  for (const action of canonicalLotharRoute) {
+    processAction(state, action);
+
+    if (!state.removed.colthar) {
+      assert.ok(
+        state.heroes.colthar.stats.energia > 0,
+        "Colthar morreu antes do final previsto na referência 449"
+      );
+    }
+
+    if (!state.removed.lothar) {
+      assert.ok(
+        state.heroes.lothar.stats.energia > 0,
+        "Lothar morreu durante a rota canônica"
+      );
+    }
+  }
+
+  assert.equal(state.refs.lothar, 500);
+  assert.equal(state.removed.colthar, true);
+  assert.equal(state.removed.lothar, false);
+  assert.equal(state.shared.status, 1);
+  assert.equal(state.shared.acao, 39);
+  assert.equal(
+    initialMagic - state.heroes.lothar.stats.magia,
+    9
+  );
+  assert.equal(
+    state.heroes.lothar.items.includes("gema_sagrada_azul"),
+    true
+  );
+  assert.ok(state.history.length >= 75);
 });
