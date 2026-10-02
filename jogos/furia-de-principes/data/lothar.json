@@ -4556,15 +4556,18 @@
       "choices": [
         {
           "label": "Entrar juntos pela porta",
-          "target": 486
+          "target": 486,
+          "partnerTarget": 486
         },
         {
           "label": "Lothar pela porta e Colthar pela janela",
-          "target": 453
+          "target": 455,
+          "partnerTarget": 455
         },
         {
           "label": "Colthar pela porta e Lothar usa magia pela janela",
-          "target": 403
+          "target": 403,
+          "partnerTarget": 403
         }
       ]
     },
