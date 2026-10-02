@@ -123,23 +123,153 @@ for (const character of ["colthar", "lothar"]) {
   }
 }
 
-const lotharComplete = await readJSON(
-  "jogos/furia-de-principes/data/lothar.json"
-);
-const lotharIds = Object.keys(lotharComplete.references || {})
-  .map(Number)
-  .sort((a, b) => a - b);
+const completeBooks = {};
 
-if (lotharIds.length !== 500) {
-  log(
-    "error",
-    `Lothar possui ${lotharIds.length} referências; esperado: 500`
+for (const character of ["colthar", "lothar"]) {
+  const data = await readJSON(
+    `jogos/furia-de-principes/data/${character}.json`
   );
+  completeBooks[character] = data;
+
+  const ids = Object.keys(data.references || {})
+    .map(Number)
+    .sort((a, b) => a - b);
+
+  if (ids.length !== 500) {
+    log(
+      "error",
+      `${character}: possui ${ids.length} referências; esperado: 500`
+    );
+  }
+
+  for (let id = 1; id <= 500; id += 1) {
+    if (!data.references[String(id)]) {
+      log("error", `${character}: referência ausente ${id}`);
+    }
+  }
 }
 
-for (let id = 1; id <= 500; id += 1) {
-  if (!lotharComplete.references[String(id)]) {
-    log("error", `Lothar: referência ausente ${id}`);
+const syncData = await readJSON(
+  "jogos/furia-de-principes/data/sincronizacao.json"
+);
+const syncEntries = syncData.entries || [];
+const syncKeys = new Set();
+
+for (const entry of syncEntries) {
+  const key = `${entry.character}:${Number(entry.reference)}`;
+
+  if (!["colthar", "lothar"].includes(entry.character)) {
+    log("error", `sincronização com personagem inválido: ${entry.character}`);
+    continue;
+  }
+
+  if (
+    !Number.isInteger(Number(entry.reference)) ||
+    Number(entry.reference) < 1 ||
+    Number(entry.reference) > 500
+  ) {
+    log(
+      "error",
+      `sincronização ${key}: referência inválida`
+    );
+    continue;
+  }
+
+  if (syncKeys.has(key)) {
+    log("error", `sincronização duplicada: ${key}`);
+  }
+  syncKeys.add(key);
+
+  if (!completeBooks[entry.character].references[String(entry.reference)]) {
+    log("error", `sincronização ${key}: referência inexistente`);
+  }
+
+  if (entry.verified !== true) {
+    log("warning", `sincronização ${key}: ainda não verificada`);
+  }
+
+  for (const effect of entry.effects || []) {
+    if (effect.type !== "set_shared") continue;
+
+    if (!["status", "acao"].includes(effect.key)) {
+      log(
+        "error",
+        `sincronização ${key}: chave compartilhada inválida ${effect.key}`
+      );
+    }
+
+    if (!Number.isInteger(Number(effect.value))) {
+      log(
+        "error",
+        `sincronização ${key}: valor compartilhado inválido ${effect.value}`
+      );
+    }
+  }
+
+  for (const route of entry.routes || []) {
+    const target = Number(route.target);
+    if (
+      !Number.isInteger(target) ||
+      target < 1 ||
+      target > 500
+    ) {
+      log(
+        "error",
+        `sincronização ${key}: destino inválido ${route.target}`
+      );
+      continue;
+    }
+
+    if (!completeBooks[entry.character].references[String(target)]) {
+      log(
+        "error",
+        `sincronização ${key}: destino inexistente ${target}`
+      );
+    }
+  }
+}
+
+for (const character of ["colthar", "lothar"]) {
+  const refs = completeBooks[character].references || {};
+
+  for (const [reference, node] of Object.entries(refs)) {
+    const sharedEffects = (node.effects || []).filter(
+      effect =>
+        effect.type === "set_shared" &&
+        ["status", "acao"].includes(effect.key)
+    );
+
+    if (sharedEffects.length === 0) continue;
+
+    const entry = syncEntries.find(
+      item =>
+        item.character === character &&
+        Number(item.reference) === Number(reference)
+    );
+
+    if (!entry) {
+      log(
+        "error",
+        `${character} ${reference}: set_shared STATUS/AÇÃO sem entrada em sincronizacao.json`
+      );
+      continue;
+    }
+
+    for (const effect of sharedEffects) {
+      const mirrored = (entry.effects || []).some(
+        syncEffect =>
+          syncEffect.type === "set_shared" &&
+          syncEffect.key === effect.key &&
+          Number(syncEffect.value) === Number(effect.value)
+      );
+
+      if (!mirrored) {
+        log(
+          "error",
+          `${character} ${reference}: efeito ${effect.key}=${effect.value} não espelhado em sincronizacao.json`
+        );
+      }
+    }
   }
 }
 
