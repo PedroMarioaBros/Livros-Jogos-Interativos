@@ -136,7 +136,7 @@ Nenhuma referência será marcada como `validada` sem conferência explícita. O
 - [x] Fluxo de instalação pelo navegador quando suportado
 - [x] Salvamento local compatível com uso offline
 - [x] Auditoria automática do APP_SHELL, imports JS e dependências do jogo no cache offline
-- [ ] Ícones raster PWA 192×192 e 512×512
+- [x] Ícones raster PWA 192×192 e 512×512, com dimensões reais auditadas no CI
 - [ ] Ícones finais em múltiplos tamanhos
 - [ ] Empacotamento Android/APK
 - [ ] Testes de instalação e atualização em aparelho real
