@@ -38,7 +38,8 @@
       "cajado_magico_reduz_habilidade"
     ],
     "stackable": [
-      "pedra_de_poder"
+      "pedra_de_poder",
+      "pergaminho_marrom"
     ]
   }
 }
