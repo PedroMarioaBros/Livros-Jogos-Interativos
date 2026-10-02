@@ -139,4 +139,7 @@ Nenhuma referência será marcada como `validada` sem conferência explícita. O
 - [x] Ícones raster PWA 192×192 e 512×512, com dimensões reais auditadas no CI
 - [ ] Ícones finais em múltiplos tamanhos
 - [ ] Empacotamento Android/APK
+  - [x] Bootstrap Capacitor 8.5.2 com build `www/` e auditoria no CI
+  - [ ] Gerar projeto Android nativo
+  - [ ] Gerar primeiro APK de debug
 - [ ] Testes de instalação e atualização em aparelho real
