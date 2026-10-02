@@ -79,6 +79,16 @@ const syncBookData = JSON.parse(
   )
 );
 
+const gameBookConfig = JSON.parse(
+  await fs.readFile(
+    new URL(
+      "../jogos/furia-de-principes/game.json",
+      import.meta.url
+    ),
+    "utf8"
+  )
+);
+
 const warriorData = {
   character: "colthar",
   displayName: "Colthar",
@@ -1386,6 +1396,76 @@ test("sincronização 217 de Colthar está verificada", () => {
   assert.deepEqual(
     ref217.routes.map(route => route.target),
     [96, 142, 493, 289]
+  );
+});
+
+test("Pergaminhos Marrons são empilháveis", () => {
+  const hero = createCharacter(warriorData, sequence([0, 0, 0, 0]));
+  const context = {
+    itemTags: gameBookConfig.itemTags
+  };
+
+  applyEffects(hero, [
+    { type: "add_item", item: "pergaminho_marrom" },
+    { type: "add_item", item: "pergaminho_marrom" }
+  ], context);
+
+  assert.equal(countItem(hero, "pergaminho_marrom"), 2);
+  assert.equal(
+    gameBookConfig.itemTags.stackable.includes("pergaminho_marrom"),
+    true
+  );
+});
+
+test("Colthar possui o bloco 226 a 250 estruturado", () => {
+  for (let ref = 226; ref <= 250; ref += 1) {
+    assert.ok(
+      warriorBookData.references[String(ref)],
+      `Referência ${ref} ausente`
+    );
+  }
+
+  assert.equal(
+    warriorBookData.references["227"].effects[0].item,
+    "pergaminho_marrom"
+  );
+  assert.equal(
+    warriorBookData.references["228"].encounter.enemies[0].habilidade,
+    9
+  );
+  assert.equal(
+    warriorBookData.references["241"].estado,
+    "parcial"
+  );
+  assert.equal(
+    warriorBookData.references["241"].needsManualReview,
+    true
+  );
+  assert.equal(
+    warriorBookData.references["250"].merchant.items.length,
+    6
+  );
+});
+
+test("referência 248 aplica ferimento e tesouro compartilhado", () => {
+  const effects = warriorBookData.references["248"].effects;
+
+  assert.equal(
+    effects.some(
+      effect =>
+        effect.type === "change_stat" &&
+        effect.stat === "habilidade" &&
+        effect.delta === -1
+    ),
+    true
+  );
+  assert.equal(
+    effects.some(
+      effect =>
+        effect.type === "add_shared_loot" &&
+        effect.gold === 8
+    ),
+    true
   );
 });
 
