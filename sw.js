@@ -1,10 +1,12 @@
-const CACHE_NAME = "livros-jogos-v45";
+const CACHE_NAME = "livros-jogos-v46";
 
 const APP_SHELL = [
   "./",
   "./index.html",
   "./manifest.webmanifest",
   "./assets/app-icon.svg",
+  "./assets/app-icon-192.png",
+  "./assets/app-icon-512.png",
   "./src/style.css",
   "./src/app.js",
   "./src/engine/dice.js",
