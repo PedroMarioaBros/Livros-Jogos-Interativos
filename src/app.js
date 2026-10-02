@@ -1102,6 +1102,55 @@ function renderReference(reference, options = {}) {
     $("choices").appendChild(button);
   }
 
+  if (node.referenceInput) {
+    const answerButton = document.createElement("button");
+    answerButton.textContent =
+      node.referenceInput.label || "🔢 Informar referência-resposta";
+    answerButton.addEventListener("click", () => {
+      const answer = window.prompt(
+        node.referenceInput.prompt ||
+          "Digite o número da referência que corresponde à sua resposta:"
+      );
+
+      if (answer === null) return;
+
+      const target = Number(answer);
+      const min = Number(node.referenceInput.min || 1);
+      const max = Number(node.referenceInput.max || 500);
+
+      if (
+        !Number.isInteger(target) ||
+        target < min ||
+        target > max
+      ) {
+        showGameMessage(
+          `Informe uma referência inteira entre ${min} e ${max}.`
+        );
+        return;
+      }
+
+      navigateTo(target, "Resposta numérica");
+    });
+    $("choices").appendChild(answerButton);
+
+    const fallbackTarget = Number(
+      node.referenceInput.fallbackTarget
+    );
+    if (
+      Number.isInteger(fallbackTarget) &&
+      fallbackTarget > 0
+    ) {
+      const fallbackButton = document.createElement("button");
+      fallbackButton.textContent =
+        node.referenceInput.fallbackLabel ||
+        `Não sei a resposta → ${fallbackTarget}`;
+      fallbackButton.addEventListener("click", () =>
+        navigateTo(fallbackTarget, "Não soube responder")
+      );
+      $("choices").appendChild(fallbackButton);
+    }
+  }
+
   if (node.spellOptions?.length) {
     for (const option of node.spellOptions) {
       const button = document.createElement("button");

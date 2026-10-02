@@ -4948,6 +4948,380 @@
       "resumo": "Um acidente fatal encerra a aventura de Colthar.",
       "ending": "death",
       "afterDeathReference": 39
+    },
+    "301": {
+      "estado": "extraida",
+      "resumo": "Os irmãos conseguem abrir a jaula e escolhem entre seguir uma luz distante ou mover-se na direção oposta.",
+      "partnerInstruction": {
+        "sendToReference": 301
+      },
+      "choices": [
+        {
+          "label": "Aproximar-se da luz",
+          "target": 354
+        },
+        {
+          "label": "Ir para o lado oposto",
+          "target": 428
+        }
+      ]
+    },
+    "302": {
+      "estado": "extraida",
+      "resumo": "Colthar alcança a plataforma do Elfo, recebe comida e bebida e recupera ENERGIA antes de decidir se fica para ajudar.",
+      "effects": [
+        {
+          "type": "change_stat",
+          "stat": "energia",
+          "delta": 1
+        }
+      ],
+      "choices": [
+        {
+          "label": "Ficar e proteger a árvore",
+          "target": 40
+        },
+        {
+          "label": "Continuar a jornada",
+          "target": 290
+        }
+      ]
+    },
+    "303": {
+      "estado": "extraida",
+      "resumo": "Depois de vencer o ataque aéreo, os irmãos são deixados pelo Roc no deserto.",
+      "choices": [
+        {
+          "label": "Prosseguir pelo deserto",
+          "target": 173
+        }
+      ]
+    },
+    "304": {
+      "estado": "extraida",
+      "resumo": "Sem ouro suficiente para o imposto, Colthar entrega todo o ouro e também o cavalo, se ainda o possuir; depois os irmãos decidem se continuam juntos.",
+      "effects": [
+        {
+          "type": "set_gold",
+          "value": 0
+        },
+        {
+          "type": "remove_item_if_present",
+          "item": "cavalo"
+        }
+      ],
+      "choices": [
+        {
+          "label": "Continuar juntos",
+          "target": 383
+        },
+        {
+          "label": "Separar-se",
+          "target": 446
+        }
+      ]
+    },
+    "305": {
+      "estado": "extraida",
+      "resumo": "Colthar tenta retirar a chave da Hidra adormecida e precisa Testar a Sorte.",
+      "test": {
+        "type": "luck",
+        "successTarget": 41,
+        "failureTarget": 388
+      }
+    },
+    "306": {
+      "estado": "extraida",
+      "resumo": "Uma Traça Gigante derruba Colthar, que fica dependente das ações de Lothar.",
+      "partnerInstruction": {
+        "wait": true,
+        "sourceCharacter": "lothar"
+      }
+    },
+    "307": {
+      "estado": "extraida",
+      "resumo": "Ao sair das escadas da montanha, o próximo destino depende de Colthar já ter bebido a Poção.",
+      "choices": [
+        {
+          "label": "Já bebeu a Poção",
+          "target": 89,
+          "conditions": [
+            {
+              "type": "flag",
+              "flag": "bebeu_pocao"
+            }
+          ]
+        },
+        {
+          "label": "Não bebeu a Poção",
+          "target": 171,
+          "conditions": [
+            {
+              "type": "flag_not",
+              "flag": "bebeu_pocao"
+            }
+          ]
+        }
+      ]
+    },
+    "308": {
+      "estado": "extraida",
+      "resumo": "Colthar encontra o Gigante de Pedra dormindo e decide onde procurar a chave.",
+      "choices": [
+        {
+          "label": "Procurar nos bolsos do Gigante",
+          "target": 92
+        },
+        {
+          "label": "Examinar a mesa",
+          "target": 205
+        }
+      ]
+    },
+    "309": {
+      "estado": "extraida",
+      "resumo": "Colthar chega a um antigo mosteiro e escolhe entre uma rachadura numa torre ou a entrada principal.",
+      "choices": [
+        {
+          "label": "Passar pela rachadura",
+          "target": 419
+        },
+        {
+          "label": "Entrar pelo portão principal",
+          "target": 195
+        }
+      ]
+    },
+    "310": {
+      "estado": "extraida",
+      "resumo": "Uma grade enferrujada revela um túnel horizontal que leva Colthar para fora.",
+      "choices": [
+        {
+          "label": "Seguir pelo túnel",
+          "target": 432
+        }
+      ]
+    },
+    "311": {
+      "estado": "extraida",
+      "resumo": "Colthar deve resolver um enigma e usar o número da resposta como referência; se não souber, existe um caminho de falha.",
+      "referenceInput": {
+        "label": "🔢 Informar a referência correspondente à resposta",
+        "prompt": "Digite o número da referência que corresponde ao peso que você calculou:",
+        "min": 1,
+        "max": 500,
+        "fallbackTarget": 380,
+        "fallbackLabel": "Não sei a resposta → 380"
+      }
+    },
+    "312": {
+      "estado": "extraida",
+      "resumo": "Depois de fazer um pedido no poço, Colthar recebe uma advertência e escolhe entre a estrada norte e a sul.",
+      "choices": [
+        {
+          "label": "Seguir pela estrada norte",
+          "target": 391
+        },
+        {
+          "label": "Seguir pela estrada sul",
+          "target": 384
+        }
+      ]
+    },
+    "313": {
+      "estado": "extraida",
+      "resumo": "Separados por um rio de lava, os irmãos decidem quem atravessa a ponte de pedra ou se cada um continua do seu lado.",
+      "choices": [
+        {
+          "label": "Colthar atravessa a ponte",
+          "target": 160
+        },
+        {
+          "label": "Lothar atravessa a ponte",
+          "target": 55
+        },
+        {
+          "label": "Cada um continua do seu lado",
+          "target": 99
+        }
+      ]
+    },
+    "314": {
+      "estado": "extraida",
+      "resumo": "Um Chad ataca Colthar numa passagem escura.",
+      "encounter": {
+        "enemies": [
+          {
+            "name": "Chad",
+            "habilidade": 10,
+            "energia": 6
+          }
+        ]
+      },
+      "onVictory": 77
+    },
+    "315": {
+      "estado": "extraida",
+      "resumo": "No povoado das Amazonas, os irmãos escolhem entre libertar um Unicórnio ou examinar dois recipientes.",
+      "choices": [
+        {
+          "label": "Libertar o Unicórnio",
+          "target": 147
+        },
+        {
+          "label": "Examinar a cesta de vime",
+          "target": 32
+        },
+        {
+          "label": "Examinar a caixa",
+          "target": 417
+        }
+      ]
+    },
+    "316": {
+      "estado": "extraida",
+      "resumo": "Colthar perde o equilíbrio durante a travessia e sua aventura termina.",
+      "ending": "death",
+      "afterDeathReference": 39
+    },
+    "317": {
+      "estado": "extraida",
+      "resumo": "Para aliviar o peso do Roc, os irmãos descem por uma corda até o deserto e seguem a consequência do encontro aéreo.",
+      "partnerInstruction": {
+        "sendToReference": 317
+      },
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 291
+        }
+      ]
+    },
+    "318": {
+      "estado": "extraida",
+      "resumo": "Depois do confronto com os Espectros, Colthar recebe uma cruz de ouro e escolhe entre duas saídas.",
+      "effects": [
+        {
+          "type": "add_item",
+          "item": "cruz_de_ouro"
+        }
+      ],
+      "choices": [
+        {
+          "label": "Entrar pela segunda porta",
+          "target": 141
+        },
+        {
+          "label": "Examinar a entrada da cripta",
+          "target": 331
+        }
+      ]
+    },
+    "319": {
+      "estado": "extraida",
+      "resumo": "Diante de um rio de lava, Colthar escolhe entre atravessar a ponte natural ou continuar pela beirada.",
+      "choices": [
+        {
+          "label": "Atravessar a ponte de pedra",
+          "target": 160
+        },
+        {
+          "label": "Continuar pela beirada",
+          "target": 99
+        }
+      ]
+    },
+    "320": {
+      "estado": "extraida",
+      "resumo": "Ao examinar um lago escuro, uma criatura agarra Colthar e ele precisa Testar a Sorte.",
+      "test": {
+        "type": "luck",
+        "successTarget": 257,
+        "failureTarget": 369
+      }
+    },
+    "321": {
+      "estado": "extraida",
+      "resumo": "Uma criatura surpreende Colthar e encerra sua aventura.",
+      "ending": "death",
+      "afterDeathReference": 39
+    },
+    "322": {
+      "estado": "extraida",
+      "resumo": "Os irmãos encontram dois Leprechauns e escolhem entre capturá-los, abordá-los com vinho ou ignorá-los e usar o arco-íris.",
+      "choices": [
+        {
+          "label": "Capturar os dois Leprechauns",
+          "target": 285
+        },
+        {
+          "label": "Capturar apenas um",
+          "target": 268
+        },
+        {
+          "label": "Aproximar-se amigavelmente com vinho",
+          "target": 240,
+          "conditions": [
+            {
+              "type": "has_item",
+              "item": "garrafa_de_vinho"
+            }
+          ]
+        },
+        {
+          "label": "Ignorar e correr para o arco-íris",
+          "target": 204
+        }
+      ]
+    },
+    "323": {
+      "estado": "extraida",
+      "resumo": "Na hospedagem do monge, os irmãos decidem se esperam o conselho da manhã ou se separam e partem antes.",
+      "choices": [
+        {
+          "label": "Esperar o monge",
+          "target": 471
+        },
+        {
+          "label": "Separar-se e partir",
+          "target": 379
+        }
+      ]
+    },
+    "324": {
+      "estado": "extraida",
+      "resumo": "Colthar desce por um rochedo; uma rolagem de 2d6 contra HABILIDADE define o resultado.",
+      "rollAgainstStat": {
+        "dice": "2d6",
+        "stat": "habilidade",
+        "successWhen": "lte",
+        "successTarget": 118,
+        "failureTarget": 231
+      }
+    },
+    "325": {
+      "estado": "extraida",
+      "resumo": "Separado de Lothar, Colthar encontra três Kobolds atacando uma mulher e enfrenta todos em sequência.",
+      "encounter": {
+        "enemies": [
+          {
+            "name": "Kobold Um",
+            "habilidade": 9,
+            "energia": 6
+          },
+          {
+            "name": "Kobold Dois",
+            "habilidade": 8,
+            "energia": 4
+          },
+          {
+            "name": "Kobold Três",
+            "habilidade": 8,
+            "energia": 4
+          }
+        ]
+      },
+      "onVictory": 102
     }
   }
 }

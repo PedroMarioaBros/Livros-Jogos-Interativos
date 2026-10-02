@@ -40,6 +40,7 @@ function nodeTargets(node) {
   addTarget(targets, node.dynamicChoice?.failureTarget);
   addTarget(targets, node.encounterSpecial?.roundRoll?.target);
   addTarget(targets, node.playerEffectChoice?.continueTarget);
+  addTarget(targets, node.referenceInput?.fallbackTarget);
 
   if (node.dynamicDuoComparison) {
     addTarget(targets, node.dynamicDuoComparison.partnerGreaterTarget);

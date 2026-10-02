@@ -58,6 +58,7 @@
   - [x] Oitava expansão estrutural: referências 226–250 conferidas; 250 referências cadastradas no banco
   - [x] Nona expansão estrutural: referências 251–275 conferidas; 275 referências cadastradas no banco
   - [x] Décima expansão estrutural: referências 276–300 conferidas; 300 referências cadastradas no banco
+  - [x] Décima primeira expansão estrutural: referências 301–325 conferidas; 325 referências cadastradas no banco
 - [x] Extrair referências de Lothar
   - [x] Referências 1–500 estruturadas continuamente
 - [ ] Mapear todas as sincronizações STATUS/AÇÃO
