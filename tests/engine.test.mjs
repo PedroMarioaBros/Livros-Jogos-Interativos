@@ -896,6 +896,40 @@ test("itens preservados podem excluir objetos mantidos com o personagem", () => 
 });
 
 
+test("efeito narrativo pode alterar atributo do parceiro", () => {
+  const colthar = createCharacter(warriorData, sequence([0, 0, 0, 0]));
+  const lothar = createCharacter(warriorData, sequence([0, 0, 0, 0]));
+  const before = lothar.stats.energia;
+
+  const results = applyEffects(
+    colthar,
+    [{ type: "change_partner_stat", stat: "energia", delta: -2 }],
+    { partnerCharacter: lothar }
+  );
+
+  assert.equal(lothar.stats.energia, before - 2);
+  assert.equal(results[0].unsupported, undefined);
+});
+
+test("Colthar possui o bloco 76 a 100 estruturado", () => {
+  for (let ref = 76; ref <= 100; ref += 1) {
+    assert.ok(
+      warriorBookData.references[String(ref)],
+      `Referência ${ref} ausente`
+    );
+    assert.notEqual(
+      warriorBookData.references[String(ref)].estado,
+      "pendente",
+      `Referência ${ref} ainda pendente`
+    );
+  }
+
+  assert.equal(warriorBookData.references["76"].encounter.enemies[0].habilidade, 9);
+  assert.equal(warriorBookData.references["80"].encounter.enemies[0].energia, 12);
+  assert.equal(warriorBookData.references["82"].encounter.enemies[0].habilidade, 8);
+  assert.equal(warriorBookData.references["100"].choices[1].target, 175);
+});
+
 test("set_stat define atributo sem ultrapassar o valor inicial", () => {
   const mage = createCharacter(mageData, sequence([0, 0, 0, 0, 0]));
   mage.stats.magia = 5;
