@@ -19,6 +19,7 @@ As porcentagens abaixo são estimativas de engenharia para um **Fúria de Prínc
 | STATUS/AÇÃO catalogados | 34 |
 | STATUS/AÇÃO verificados | 34/34 catalogados |
 | Feitiços de Combate | 12/12 implementados |
+| Grafo combinado — alcance explícito | 973/1000 (97,3%) |
 
 Colthar está contínuo de **1 a 500**, sem lacunas estruturais. Isso conclui 100% da estrutura narrativa dos dois volumes. A varredura final de STATUS/AÇÃO também foi concluída: existem 34 pontos catalogados e 34 verificados; o CI agora exige cobertura para todo efeito inline que altere STATUS ou AÇÃO. Ainda existem 11 referências parciais em Colthar (19, 144, 168, 169, 220, 241, 252, 263, 266, 378 e 403) e 3 em Lothar (44, 314 e 347); essas lacunas permanecem explícitas porque o OCR não permite validação segura.
 
@@ -36,15 +37,15 @@ Colthar está contínuo de **1 a 500**, sem lacunas estruturais. Isso conclui 10
 | Combate individual | 96% |
 | Magia de Lothar | 96% |
 | Combate cooperativo | 88% |
-| Interface funcional | 85% |
+| Interface funcional | 86% |
 | Salvamento e histórico | 95% |
-| Dois jogadores no mesmo aparelho | 88% |
+| Dois jogadores no mesmo aparelho | 90% |
 | Sincronização entre dois aparelhos | 0% |
 | Camada PWA/offline | 70% |
 | Empacotamento Android/APK | 0% |
 | Ilustrações e áudio finais | 0–5% |
-| Testes do motor | 94% |
-| Testes da aventura completa | ~79% |
+| Testes do motor | 95% |
+| Testes da aventura completa | ~82% |
 
 ## Percentual global
 
@@ -59,10 +60,10 @@ Para evitar uma média simples enganosa, o acompanhamento global usa pesos fixos
 
 Com essa régua, o projeto está em aproximadamente:
 
-- **Fúria de Príncipes completo no mesmo aparelho: ~88%**;
-- **aplicativo Android final: ~82% do caminho total**.
+- **Fúria de Príncipes completo no mesmo aparelho: ~89%**;
+- **aplicativo Android final: ~83% do caminho total**.
 
-Esses percentuais são conservadores: o conteúdo narrativo e os testes de caminhos têm o maior peso, e são hoje o principal trabalho restante.
+O grafo combinado em dupla agora distingue corretamente rotas próprias e rotas do parceiro: 973 de 1000 referências são alcançáveis por transições explícitas, sem alvos inválidos e sem becos sem saída não explicados. As 27 restantes descendem de apenas três entradas não explícitas: Colthar 243 e os enigmas numéricos que podem levar a Colthar 465 e Lothar 18. Esses percentuais continuam conservadores porque ainda faltam execução de caminhos completos, conferência visual das 14 referências parciais e empacotamento final.
 
 ## Marcos
 
@@ -72,8 +73,8 @@ Esses percentuais são conservadores: o conteúdo narrativo e os testes de camin
 | Demonstração jogável de Fúria | ~92% |
 | Colthar solo completo | ~95% |
 | Lothar solo completo | ~94% |
-| Fúria completo no mesmo aparelho | ~88% |
-| Aplicativo Android final | ~82% |
+| Fúria completo no mesmo aparelho | ~89% |
+| Aplicativo Android final | ~83% |
 
 ## Próximos gargalos
 
