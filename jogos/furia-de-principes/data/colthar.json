@@ -301,7 +301,10 @@
     "21": {
       "estado": "extraida",
       "resumo": "A tentativa de negociar com o gigante termina de forma fatal para os dois irmãos.",
-      "ending": "death"
+      "ending": "death",
+      "partnerInstruction": {
+        "sendToReference": 21
+      }
     },
     "22": {
       "estado": "extraida",
@@ -3987,7 +3990,13 @@
       "estado": "parcial",
       "resumo": "Durante uma viagem no Roc, um Roc inimigo se aproxima e uma rolagem de 1d6 define a consequência.",
       "needsManualReview": true,
-      "notes": "A tabela do OCR do Internet Archive está corrompida: registra 1 → 317, '7' → 178, 3/4/5 → 269 e 6 → 84. Como o dado é 1d6, o segundo valor precisa de conferência visual antes de cadastrar a rolagem completa."
+      "notes": "A tabela do OCR do Internet Archive está corrompida: registra 1 → 317, '7' → 178, 3/4/5 → 269 e 6 → 84. Como o dado é 1d6, o segundo valor precisa de conferência visual antes de cadastrar a rolagem completa.",
+      "knownTargetsPendingReview": [
+        317,
+        178,
+        269,
+        84
+      ]
     },
     "242": {
       "estado": "extraida",
@@ -4700,15 +4709,18 @@
       "choices": [
         {
           "label": "Ambos entram pela porta",
-          "target": 486
+          "target": 486,
+          "partnerTarget": 486
         },
         {
           "label": "Lothar entra pela porta e Colthar pela janela",
-          "target": 455
+          "target": 455,
+          "partnerTarget": 455
         },
         {
           "label": "Colthar entra pela porta e Lothar lança magia pela janela",
-          "target": 403
+          "target": 403,
+          "partnerTarget": 403
         }
       ]
     },

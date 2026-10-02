@@ -2227,6 +2227,55 @@ test("referência 493 encaminha Lothar por vitória ou derrota", () => {
   assert.equal(ref493.encounterSpecial.roundRoll.target, 298);
 });
 
+test("referência 287 coordena os destinos dos dois irmãos", () => {
+  const coltharChoices = warriorBookData.references["287"].choices;
+  const lotharChoices = mageBookData.references["287"].choices;
+
+  assert.deepEqual(
+    coltharChoices.map(choice => choice.target),
+    [486, 455, 403]
+  );
+  assert.deepEqual(
+    coltharChoices.map(choice => choice.partnerTarget),
+    [486, 455, 403]
+  );
+
+  assert.deepEqual(
+    lotharChoices.map(choice => choice.target),
+    [486, 455, 403]
+  );
+  assert.deepEqual(
+    lotharChoices.map(choice => choice.partnerTarget),
+    [486, 455, 403]
+  );
+});
+
+test("referência 21 de Colthar encaminha Lothar para o final correspondente", () => {
+  const ref21 = warriorBookData.references["21"];
+
+  assert.equal(ref21.ending, "death");
+  assert.equal(
+    ref21.partnerInstruction.sendToReference,
+    21
+  );
+  assert.equal(
+    mageBookData.references["21"].ending,
+    "death"
+  );
+});
+
+test("referência 241 mantém apenas destinos confirmados para auditoria", () => {
+  const ref241 = warriorBookData.references["241"];
+
+  assert.equal(ref241.estado, "parcial");
+  assert.equal(ref241.needsManualReview, true);
+  assert.deepEqual(
+    ref241.knownTargetsPendingReview,
+    [317, 178, 269, 84]
+  );
+  assert.equal(ref241.roll, undefined);
+});
+
 test("set_stat define atributo sem ultrapassar o valor inicial", () => {
   const mage = createCharacter(mageData, sequence([0, 0, 0, 0, 0]));
   mage.stats.magia = 5;

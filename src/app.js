@@ -958,6 +958,7 @@ function renderReference(reference, options = {}) {
       const effectContext = {
         shared: state.shared,
         partnerActive: state.partnerActive,
+        partnerCharacter: getPartnerHero(),
         itemTags: state.config?.itemTags || {},
         ignoreSharedMutations:
           state.mode === "solo" &&
@@ -969,6 +970,34 @@ function renderReference(reference, options = {}) {
         effectContext
       );
       state.shared = effectContext.shared;
+
+      if (
+        Number.isInteger(Number(choice.partnerTarget)) &&
+        state.mode === "dupla" &&
+        state.duo
+      ) {
+        const other =
+          state.character === "colthar" ? "lothar" : "colthar";
+        const partner = state.duo.players[other];
+        const partnerTarget = Number(choice.partnerTarget);
+
+        if (!partner.removed && partner.reference !== partnerTarget) {
+          updateDuoPlayer(state.duo, other, {
+            reference: partnerTarget,
+            history: [
+              ...(partner.history || []),
+              {
+                from: partner.reference,
+                to: partnerTarget,
+                label: `Escolha coordenada de ${state.hero.name}`
+              }
+            ]
+          });
+          updatePartnerState();
+          renderDuoStatus();
+        }
+      }
+
       renderSheet();
       navigateTo(choice.target, choice.label);
     });
