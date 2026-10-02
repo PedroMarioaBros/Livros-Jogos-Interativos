@@ -89,6 +89,7 @@
   - [x] Colthar 19 confirmado no Archive.org com rotas 133 e 243
   - [x] Auditoria reversa de resolução: zero ciclos alcançáveis presos sem final, espera, resposta numérica ou revisão explícita
   - [x] Finais conjuntos e `removed-transition` normalizados no runtime do modo dupla
+  - [x] Resultados de combate que movem/removem o parceiro centralizados em `duo.js` e cobertos por regressões reais
 
 ## Fase 3 — Interface
 - [ ] Biblioteca de aventuras
