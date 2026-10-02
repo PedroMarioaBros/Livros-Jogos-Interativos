@@ -2994,3 +2994,15 @@ test("Lothar 44 usa entrada numérica com fallback para 380", () => {
   assert.equal(ref44.dynamicChoice, undefined);
   assert.equal(ref44.needsMoreExtraction, undefined);
 });
+
+
+test("Colthar 19 possui as duas rotas confirmadas no Archive", () => {
+  const ref19 = warriorBookData.references["19"];
+
+  assert.equal(ref19.estado, "extraida");
+  assert.deepEqual(
+    ref19.choices.map(choice => choice.target),
+    [133, 243]
+  );
+  assert.equal(ref19.needsManualReview, undefined);
+});
