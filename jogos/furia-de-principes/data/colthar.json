@@ -5707,6 +5707,368 @@
           "target": 497
         }
       ]
+    },
+    "351": {
+      "estado": "extraida",
+      "resumo": "A velha escolhida restaura toda a SORTE de Colthar, mas as outras o punem reduzindo sua HABILIDADE.",
+      "effects": [
+        {
+          "type": "restore_stat_to_initial",
+          "stat": "sorte"
+        },
+        {
+          "type": "change_stat",
+          "stat": "habilidade",
+          "delta": -2
+        }
+      ],
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 389
+        }
+      ]
+    },
+    "352": {
+      "estado": "extraida",
+      "resumo": "Um Demônio do Fogo com quatro braços ataca Colthar; cada braço funciona como um oponente sucessivo.",
+      "encounter": {
+        "enemies": [
+          {
+            "name": "Braço Um",
+            "habilidade": 10,
+            "energia": 4
+          },
+          {
+            "name": "Braço Dois",
+            "habilidade": 10,
+            "energia": 4
+          },
+          {
+            "name": "Braço Três",
+            "habilidade": 9,
+            "energia": 4
+          },
+          {
+            "name": "Braço Quatro",
+            "habilidade": 8,
+            "energia": 4
+          }
+        ]
+      },
+      "onVictory": 412
+    },
+    "353": {
+      "estado": "extraida",
+      "resumo": "Um Gigante de duas cabeças pergunta aos irmãos quantos cérebros possui.",
+      "choices": [
+        {
+          "label": "Responder: um cérebro",
+          "target": 464
+        },
+        {
+          "label": "Responder: dois cérebros",
+          "target": 483
+        }
+      ]
+    },
+    "354": {
+      "estado": "extraida",
+      "resumo": "Os irmãos avistam Amazonas de guarda e decidem entre tentar passar furtivamente ou procurar outra rota.",
+      "choices": [
+        {
+          "label": "Tentar passar furtivamente",
+          "target": 488
+        },
+        {
+          "label": "Procurar outro caminho",
+          "target": 428
+        }
+      ]
+    },
+    "355": {
+      "estado": "extraida",
+      "resumo": "Sem lanterna, Colthar perde o equilíbrio no poço e é levado pela correnteza subterrânea.",
+      "choices": [
+        {
+          "label": "Prosseguir com a correnteza",
+          "target": 28
+        }
+      ]
+    },
+    "356": {
+      "estado": "extraida",
+      "resumo": "Colthar atravessa as pedras e escolhe uma das duas passagens adiante.",
+      "choices": [
+        {
+          "label": "Seguir pela passagem da esquerda",
+          "target": 93
+        },
+        {
+          "label": "Seguir pela passagem da direita",
+          "target": 258
+        }
+      ]
+    },
+    "357": {
+      "estado": "extraida",
+      "resumo": "Dois Zumbis saem das covas e atacam os irmãos; cada príncipe enfrenta um inimigo.",
+      "partnerInstruction": {
+        "sendToReference": 357
+      },
+      "encounter": {
+        "cooperative": true,
+        "allowCombatMagic": true,
+        "enemies": [
+          {
+            "name": "Zumbi Um",
+            "habilidade": 7,
+            "energia": 10
+          },
+          {
+            "name": "Zumbi Dois",
+            "habilidade": 7,
+            "energia": 10
+          }
+        ]
+      },
+      "choices": [
+        {
+          "label": "Vitória com Lothar vivo",
+          "target": 11,
+          "conditions": [
+            {
+              "type": "partner_active"
+            }
+          ]
+        },
+        {
+          "label": "Vitória após Lothar sair da aventura",
+          "target": 446,
+          "conditions": [
+            {
+              "type": "partner_removed"
+            }
+          ]
+        }
+      ]
+    },
+    "358": {
+      "estado": "extraida",
+      "resumo": "Dois Fantasmas bloqueiam a trilha e atacam Colthar.",
+      "encounter": {
+        "enemies": [
+          {
+            "name": "Fantasma Um",
+            "habilidade": 9,
+            "energia": 8
+          },
+          {
+            "name": "Fantasma Dois",
+            "habilidade": 9,
+            "energia": 8
+          }
+        ]
+      },
+      "onVictory": 61
+    },
+    "359": {
+      "estado": "extraida",
+      "resumo": "Depois de uma queda, Colthar encontra seu cavalo morto e decide recuperar o que estava na sela ou partir imediatamente.",
+      "effects": [
+        {
+          "type": "remove_item_if_present",
+          "item": "cavalo"
+        }
+      ],
+      "choices": [
+        {
+          "label": "Recuperar as moedas da sela",
+          "target": 7
+        },
+        {
+          "label": "Partir imediatamente",
+          "target": 396
+        }
+      ]
+    },
+    "360": {
+      "estado": "extraida",
+      "resumo": "O feitiço de Lothar transforma a Traça em um animal inofensivo.",
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 202
+        }
+      ]
+    },
+    "361": {
+      "estado": "extraida",
+      "resumo": "As Piranhas da Areia alcançam os irmãos antes que consigam escapar.",
+      "partnerInstruction": {
+        "sendToReference": 129
+      },
+      "ending": "death"
+    },
+    "362": {
+      "estado": "extraida",
+      "resumo": "Colthar não consegue impedir um processo mágico irreversível e sua aventura termina.",
+      "ending": "death",
+      "afterDeathReference": 39
+    },
+    "363": {
+      "estado": "extraida",
+      "resumo": "Colthar evita uma bola de fogo e retorna em direção ao responsável pelo ataque.",
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 194
+        }
+      ]
+    },
+    "364": {
+      "estado": "extraida",
+      "resumo": "Numa estalagem, Colthar pode juntar-se a um jogo caso possua algum item, ou seguir adiante.",
+      "choices": [
+        {
+          "label": "Participar do jogo",
+          "target": 216,
+          "conditions": [
+            {
+              "type": "has_any_item"
+            }
+          ]
+        },
+        {
+          "label": "Não jogar",
+          "target": 180
+        }
+      ]
+    },
+    "365": {
+      "estado": "extraida",
+      "resumo": "Lothar retorna depois de um combate subterrâneo e os irmãos seguem juntos.",
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 196
+        }
+      ]
+    },
+    "366": {
+      "estado": "extraida",
+      "resumo": "Os irmãos se reencontram no deserto e escolhem entre seguir uma trilha tortuosa ou atravessar diretamente as dunas.",
+      "choices": [
+        {
+          "label": "Seguir pela trilha",
+          "target": 462
+        },
+        {
+          "label": "Atravessar diretamente as dunas",
+          "target": 401
+        }
+      ]
+    },
+    "367": {
+      "estado": "validada",
+      "resumo": "Ponto de sincronização: Colthar define STATUS 7 e aguarda AÇÃO 1 ou 27."
+    },
+    "368": {
+      "estado": "extraida",
+      "resumo": "Colthar encontra Lothar já de posse de uma Gema Sagrada; a disputa pelo trono termina em favor do irmão.",
+      "ending": "removed"
+    },
+    "369": {
+      "estado": "extraida",
+      "resumo": "Criaturas do lago arrastam Colthar para as profundezas, encerrando sua aventura.",
+      "ending": "death",
+      "afterDeathReference": 39
+    },
+    "370": {
+      "estado": "extraida",
+      "resumo": "Um Wight guardião do tesouro ataca Colthar; ao vencer, ele recebe uma espada mágica e melhorias de atributos.",
+      "encounter": {
+        "enemies": [
+          {
+            "name": "Wight",
+            "habilidade": 10,
+            "energia": 8
+          }
+        ]
+      },
+      "rewards": [
+        {
+          "type": "add_item",
+          "item": "espada_de_gelo"
+        },
+        {
+          "type": "change_stat",
+          "stat": "habilidade",
+          "delta": 2
+        },
+        {
+          "type": "change_stat",
+          "stat": "sorte",
+          "delta": 1
+        }
+      ],
+      "onVictory": 197
+    },
+    "371": {
+      "estado": "extraida",
+      "resumo": "Depois de pagar o Troll, os irmãos atravessam a ponte.",
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 418
+        }
+      ]
+    },
+    "372": {
+      "estado": "extraida",
+      "resumo": "Uma tentativa de libertação falha e os dois irmãos são alcançados pelas Piranhas da Areia.",
+      "partnerInstruction": {
+        "sendToReference": 372
+      },
+      "ending": "death"
+    },
+    "373": {
+      "estado": "extraida",
+      "resumo": "Durante a confusão na vila das Amazonas, Colthar se separa de Lothar e segue sozinho até outra estrada.",
+      "choices": [
+        {
+          "label": "Prosseguir sozinho",
+          "target": 282
+        }
+      ]
+    },
+    "374": {
+      "estado": "extraida",
+      "resumo": "Uma cerca viva bloqueia Colthar; ele decide cortá-la ou procurar outra passagem.",
+      "choices": [
+        {
+          "label": "Cortar caminho pela cerca viva",
+          "target": 335
+        },
+        {
+          "label": "Procurar um caminho adiante",
+          "target": 460
+        }
+      ]
+    },
+    "375": {
+      "estado": "extraida",
+      "resumo": "Um Gorila encurrala Colthar numa torre e precisa ser enfrentado.",
+      "encounter": {
+        "enemies": [
+          {
+            "name": "Gorila",
+            "habilidade": 9,
+            "energia": 10
+          }
+        ]
+      },
+      "onVictory": 415
     }
   }
 }

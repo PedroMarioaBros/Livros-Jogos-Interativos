@@ -1739,6 +1739,79 @@ test("rolagem 327 só existe sem o Pé de Coelho", () => {
   );
 });
 
+test("has_any_item exige inventário não vazio", () => {
+  const hero = createCharacter(warriorData, sequence([0, 0, 0, 0]));
+
+  let choices = availableChoices(
+    {
+      choices: [{
+        label: "Jogar",
+        target: 216,
+        conditions: [{ type: "has_any_item" }]
+      }]
+    },
+    { character: hero, shared: {}, partnerActive: false }
+  );
+  assert.equal(choices.length, 1);
+
+  hero.items = [];
+  choices = availableChoices(
+    {
+      choices: [{
+        label: "Jogar",
+        target: 216,
+        conditions: [{ type: "has_any_item" }]
+      }]
+    },
+    { character: hero, shared: {}, partnerActive: false }
+  );
+  assert.equal(choices.length, 0);
+});
+
+test("Colthar possui o bloco 351 a 375 estruturado", () => {
+  for (let ref = 351; ref <= 375; ref += 1) {
+    assert.ok(
+      warriorBookData.references[String(ref)],
+      `Referência ${ref} ausente`
+    );
+    assert.notEqual(
+      warriorBookData.references[String(ref)].estado,
+      "pendente",
+      `Referência ${ref} ainda pendente`
+    );
+  }
+
+  assert.equal(
+    warriorBookData.references["352"].encounter.enemies.length,
+    4
+  );
+  assert.equal(
+    warriorBookData.references["357"].encounter.cooperative,
+    true
+  );
+  assert.equal(
+    warriorBookData.references["370"].rewards[0].item,
+    "espada_de_gelo"
+  );
+  assert.equal(
+    warriorBookData.references["375"].encounter.enemies[0].energia,
+    10
+  );
+});
+
+test("sincronização 367 de Colthar está verificada", () => {
+  const ref367 = syncBookData.entries.find(
+    entry => entry.character === "colthar" && entry.reference === 367
+  );
+
+  assert.equal(ref367?.verified, true);
+  assert.equal(ref367.effects[0].value, 7);
+  assert.deepEqual(
+    ref367.routes.map(route => route.target),
+    [2, 27]
+  );
+});
+
 test("set_stat define atributo sem ultrapassar o valor inicial", () => {
   const mage = createCharacter(mageData, sequence([0, 0, 0, 0, 0]));
   mage.stats.magia = 5;

@@ -106,6 +106,8 @@ export function conditionMet(condition, context) {
       return character.gold >= Number(condition.value);
     case "has_item":
       return hasItem(character, condition.item);
+    case "has_any_item":
+      return (character.items || []).length > 0;
     case "not_has_item":
       return !hasItem(character, condition.item);
     case "partner_active":
