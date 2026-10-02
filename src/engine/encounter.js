@@ -1,3 +1,4 @@
+import { rollExpression } from "./dice.js";
 import { createOpponent, combatRound } from "./combat.js";
 
 export function createEncounter(reference, definition) {
@@ -125,5 +126,26 @@ export function playEncounterRound(
     ...status,
     round: record,
     nextOpponent: status.opponent
+  };
+}
+
+
+export function resolveEncounterRoundRoll(roundRoll, rng = Math.random) {
+  if (!roundRoll) {
+    return {
+      triggered: false,
+      target: null,
+      roll: null
+    };
+  }
+
+  const roll = rollExpression(roundRoll.dice || "1d6", rng);
+  const trigger = Number(roundRoll.trigger);
+  const triggered = roll.total === trigger;
+
+  return {
+    triggered,
+    target: triggered ? Number(roundRoll.target) : null,
+    roll
   };
 }

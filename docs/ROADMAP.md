@@ -46,17 +46,19 @@
   - [x] Loja compartilhada com estoque único entre os dois príncipes
   - [x] Limite de séries em combates com prazo narrativo
   - [x] Efeitos condicionais nas sincronizações STATUS/AÇÃO
+  - [x] Rolagem especial a cada série de combate
 - [ ] Extrair referências de Colthar
   - [x] Primeira expansão estrutural: 77 referências cadastradas no banco
   - [x] Segunda expansão estrutural: referências 75–100 conferidas; 102 referências cadastradas no banco
   - [x] Terceira expansão estrutural: referências 101–125 conferidas; 127 referências cadastradas no banco
+  - [x] Quarta expansão estrutural: referências 126–150 conferidas; 151 referências cadastradas no banco
 - [x] Extrair referências de Lothar
   - [x] Referências 1–500 estruturadas continuamente
 - [ ] Mapear todas as sincronizações STATUS/AÇÃO
   - [x] Motor genérico de sincronização
   - [x] Primeira varredura de AÇÃO de Lothar
   - [x] Primeiros pontos verificados de STATUS de Colthar (31 e 60)
-  - [x] 22 pontos atualmente catalogados conferidos individualmente
+  - [x] 24 pontos atualmente catalogados conferidos individualmente
 - [ ] Classificar finais, mortes e encontros
 - [ ] Testar todos os caminhos alcançáveis
   - [x] Análise automática dos grafos de ambos os volumes

@@ -12,7 +12,12 @@ import {
   conditionMet,
   resolveDynamicDuoComparison
 } from "./engine/story.js";
-import { createEncounter, playEncounterRound, currentOpponent } from "./engine/encounter.js";
+import {
+  createEncounter,
+  playEncounterRound,
+  currentOpponent,
+  resolveEncounterRoundRoll
+} from "./engine/encounter.js";
 import {
   createCooperativeCombatState,
   cooperativeCombatStep
@@ -1862,6 +1867,23 @@ function playCombatRound() {
   if (!state.encounter || state.encounter.finished) return;
 
   const node = state.characterData.references[String(state.ref)];
+  const roundRoll = resolveEncounterRoundRoll(
+    node.encounterSpecial?.roundRoll
+  );
+
+  if (roundRoll.triggered) {
+    state.encounter = null;
+    hideCombat();
+    showGameMessage(
+      `Regra especial: ${roundRoll.roll.rolls.join(" + ")} = ${roundRoll.roll.total}. A consequência especial foi ativada.`
+    );
+
+    if (Number.isInteger(roundRoll.target) && roundRoll.target > 0) {
+      navigateTo(roundRoll.target, "Regra especial do combate");
+    }
+    return;
+  }
+
   const result = playEncounterRound(state.encounter, state.hero);
 
   if (result.round) {
