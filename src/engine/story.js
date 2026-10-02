@@ -129,6 +129,41 @@ export function conditionMet(condition, context) {
   }
 }
 
+export function resolveConditionalEncounterModifiers(
+  definition,
+  context
+) {
+  const merged = {
+    ...(definition?.modifiers || {})
+  };
+
+  for (const rule of definition?.conditionalModifiers || []) {
+    const matches = (rule.conditions || []).every(condition =>
+      conditionMet(condition, context)
+    );
+
+    if (!matches) continue;
+
+    for (const [key, value] of Object.entries(rule.modifiers || {})) {
+      if (
+        typeof value === "number" &&
+        typeof merged[key] === "number"
+      ) {
+        merged[key] += value;
+      } else if (
+        typeof value === "number" &&
+        merged[key] === undefined
+      ) {
+        merged[key] = value;
+      } else {
+        merged[key] = value;
+      }
+    }
+  }
+
+  return merged;
+}
+
 export function choiceAvailable(choice, context) {
   return (choice.conditions || []).every(condition =>
     conditionMet(condition, context)
