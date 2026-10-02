@@ -90,6 +90,7 @@
   - [x] Auditoria reversa de resolução: zero ciclos alcançáveis presos sem final, espera, resposta numérica ou revisão explícita
   - [x] Finais conjuntos e `removed-transition` normalizados no runtime do modo dupla
   - [x] Resultados de combate que movem/removem o parceiro centralizados em `duo.js` e cobertos por regressões reais
+  - [x] Smoke test de 104/104 encontros completos e 208 resoluções integrais de combate (vitória/derrota)
 
 ## Fase 3 — Interface
 - [ ] Biblioteca de aventuras
