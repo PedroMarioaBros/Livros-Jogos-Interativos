@@ -6540,11 +6540,14 @@
       ]
     },
     "420": {
-      "estado": "parcial",
-      "resumo": "Scuttlies roubam praticamente todos os pertences dos irmãos durante a noite; eles decidem entre magia e perseguição.",
+      "estado": "extraida",
+      "resumo": "Scuttlies roubam os pertences dos dois irmãos durante a noite; eles decidem entre magia e perseguição.",
       "effects": [
         {
           "type": "stash_and_clear_items"
+        },
+        {
+          "type": "stash_and_clear_partner_items"
         }
       ],
       "choices": [
@@ -6557,8 +6560,7 @@
           "target": 47
         }
       ],
-      "needsEngineSupport": true,
-      "notes": "No modo dupla, a perda deve ser aplicada também ao inventário de Colthar."
+      "notes": "Confisco conjunto suportado pelo motor; itens empilháveis permanecem preservados para restauração."
     },
     "421": {
       "estado": "extraida",
