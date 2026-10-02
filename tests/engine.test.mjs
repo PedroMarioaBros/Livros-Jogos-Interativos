@@ -1697,7 +1697,7 @@ test("Colthar possui o bloco 326 a 350 estruturado", () => {
   }
 
   assert.equal(
-    warriorBookData.references["327"].roll.conditions[0].flag,
+    warriorBookData.references["327"].roll.conditions[0].item,
     "pe_de_coelho_da_sorte"
   );
   assert.equal(
