@@ -140,6 +140,10 @@ Nenhuma referência será marcada como `validada` sem conferência explícita. O
 - [ ] Ícones finais em múltiplos tamanhos
 - [ ] Empacotamento Android/APK
   - [x] Bootstrap Capacitor 8.5.2 com build `www/` e auditoria no CI
-  - [ ] Gerar projeto Android nativo
-  - [ ] Gerar primeiro APK de debug
+  - [x] Gerar projeto Android nativo de forma reproduzível no CI
+  - [x] Gerar primeiro APK de debug
+  - [x] Validar assinatura, applicationId, minSdk/targetSdk e checksum do APK
+  - [ ] Testar instalação e abertura em aparelho Android real
+  - [ ] Testar offline, save/load e atualização no APK instalado
+  - [ ] Preparar build de release assinado
 - [ ] Testes de instalação e atualização em aparelho real
