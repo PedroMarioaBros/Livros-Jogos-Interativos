@@ -1632,6 +1632,57 @@ test("referência 294 encaminha Lothar conforme AÇÃO", () => {
   assert.equal(routes[1].target, 473);
 });
 
+test("Colthar possui o bloco 301 a 325 estruturado", () => {
+  for (let ref = 301; ref <= 325; ref += 1) {
+    assert.ok(
+      warriorBookData.references[String(ref)],
+      `Referência ${ref} ausente`
+    );
+    assert.notEqual(
+      warriorBookData.references[String(ref)].estado,
+      "pendente",
+      `Referência ${ref} ainda pendente`
+    );
+  }
+
+  assert.equal(
+    warriorBookData.references["311"].referenceInput.fallbackTarget,
+    380
+  );
+  assert.equal(
+    warriorBookData.references["314"].encounter.enemies[0].habilidade,
+    10
+  );
+  assert.equal(
+    warriorBookData.references["318"].effects[0].item,
+    "cruz_de_ouro"
+  );
+  assert.equal(
+    warriorBookData.references["325"].encounter.enemies.length,
+    3
+  );
+});
+
+test("referência 324 compara 2d6 com HABILIDADE", () => {
+  const rule = warriorBookData.references["324"].rollAgainstStat;
+
+  assert.deepEqual(rule, {
+    dice: "2d6",
+    stat: "habilidade",
+    successWhen: "lte",
+    successTarget: 118,
+    failureTarget: 231
+  });
+});
+
+test("enigma 311 oferece resposta livre e rota explícita de desistência", () => {
+  const input = warriorBookData.references["311"].referenceInput;
+
+  assert.equal(input.min, 1);
+  assert.equal(input.max, 500);
+  assert.equal(input.fallbackTarget, 380);
+});
+
 test("set_stat define atributo sem ultrapassar o valor inicial", () => {
   const mage = createCharacter(mageData, sequence([0, 0, 0, 0, 0]));
   mage.stats.magia = 5;
