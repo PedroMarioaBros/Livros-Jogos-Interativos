@@ -7640,6 +7640,501 @@
           "target": 373
         }
       ]
+    },
+    "476": {
+      "estado": "extraida",
+      "resumo": "Uma enorme pedra rola pelo túnel; possuir uma barra de ferro decide se Colthar consegue escapar.",
+      "choices": [
+        {
+          "label": "Usar a barra de ferro",
+          "target": 208,
+          "conditions": [
+            {
+              "type": "has_item",
+              "item": "barra_de_ferro"
+            }
+          ]
+        },
+        {
+          "label": "Sem barra de ferro",
+          "target": 349,
+          "conditions": [
+            {
+              "type": "not_has_item",
+              "item": "barra_de_ferro"
+            }
+          ]
+        }
+      ]
+    },
+    "477": {
+      "estado": "extraida",
+      "resumo": "A Poção torna Colthar invisível; ele decide descer o penhasco ou explorar a caverna.",
+      "choices": [
+        {
+          "label": "Descer o penhasco",
+          "target": 324
+        },
+        {
+          "label": "Explorar a caverna",
+          "target": 153
+        }
+      ]
+    },
+    "478": {
+      "estado": "extraida",
+      "resumo": "Depois de passar pelos guardas, os irmãos escolhem entre duas passagens ou, se ainda possível, permitem que Lothar volte para tentar magia.",
+      "choices": [
+        {
+          "label": "Seguir pela passagem bem usada",
+          "target": 283
+        },
+        {
+          "label": "Seguir pela passagem menos usada",
+          "target": 399
+        },
+        {
+          "label": "Lothar volta à superfície para tentar magia",
+          "target": 83,
+          "conditions": [
+            {
+              "type": "partner_flag_not",
+              "flag": "tentou_magia_scutllies"
+            }
+          ]
+        }
+      ]
+    },
+    "479": {
+      "estado": "extraida",
+      "resumo": "Colthar precisa se libertar de um Estrangulador.",
+      "encounter": {
+        "enemies": [
+          {
+            "name": "Estrangulador",
+            "habilidade": 9,
+            "energia": 4
+          }
+        ]
+      },
+      "onVictory": 432
+    },
+    "480": {
+      "estado": "extraida",
+      "resumo": "Os irmãos enfrentam juntos uma Traça, alternando as séries de ataque.",
+      "partnerInstruction": {
+        "sendToReference": 480
+      },
+      "encounter": {
+        "cooperative": true,
+        "allowCombatMagic": true,
+        "enemies": [
+          {
+            "name": "Traça",
+            "habilidade": 7,
+            "energia": 10
+          }
+        ]
+      },
+      "choices": [
+        {
+          "label": "Vitória com Lothar vivo",
+          "target": 202,
+          "conditions": [
+            {
+              "type": "partner_active"
+            }
+          ]
+        },
+        {
+          "label": "Vitória após Lothar cair",
+          "target": 497,
+          "conditions": [
+            {
+              "type": "partner_removed"
+            }
+          ]
+        }
+      ]
+    },
+    "481": {
+      "estado": "extraida",
+      "resumo": "Os irmãos descobrem que os estalajadeiros são canibais e decidem como atacá-los.",
+      "choices": [
+        {
+          "label": "Lothar ataca a mulher e Colthar usa o lustre",
+          "target": 138
+        },
+        {
+          "label": "Colthar ataca a mulher e Lothar usa o lustre",
+          "target": 43
+        }
+      ]
+    },
+    "482": {
+      "estado": "extraida",
+      "resumo": "A gema escolhida revela-se vermelha e incinera Colthar; se AÇÃO for 40, Lothar deve ser encaminhado.",
+      "partnerInstruction": {
+        "conditionalSend": [
+          {
+            "condition": {
+              "type": "shared_equals",
+              "key": "acao",
+              "value": 40
+            },
+            "target": 44
+          }
+        ]
+      },
+      "ending": "death",
+      "afterDeathReference": 39
+    },
+    "483": {
+      "estado": "extraida",
+      "resumo": "O Gigante de duas cabeças aceita a resposta e deixa os irmãos passarem.",
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 224
+        }
+      ]
+    },
+    "484": {
+      "estado": "extraida",
+      "resumo": "Colthar fere a criatura e perde ENERGIA antes de continuar.",
+      "effects": [
+        {
+          "type": "change_stat",
+          "stat": "energia",
+          "delta": -2
+        }
+      ],
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 276
+        }
+      ]
+    },
+    "485": {
+      "estado": "extraida",
+      "resumo": "Lothar alcança Colthar após a luta contra os Homens-lagarto; os irmãos recuam juntos para o deserto.",
+      "partnerInstruction": {
+        "sendToReference": 485
+      },
+      "choices": [
+        {
+          "label": "Voltar ao deserto",
+          "target": 249
+        }
+      ]
+    },
+    "486": {
+      "estado": "extraida",
+      "resumo": "Os irmãos invadem a cabana e enfrentam juntos três Orcs; Lothar pode usar magia.",
+      "partnerInstruction": {
+        "sendToReference": 486
+      },
+      "encounter": {
+        "cooperative": true,
+        "allowCombatMagic": true,
+        "enemies": [
+          {
+            "name": "Orc Um",
+            "habilidade": 8,
+            "energia": 6
+          },
+          {
+            "name": "Orc Dois",
+            "habilidade": 7,
+            "energia": 4
+          },
+          {
+            "name": "Orc Três",
+            "habilidade": 6,
+            "energia": 4
+          }
+        ]
+      },
+      "choices": [
+        {
+          "label": "Vitória com Lothar vivo",
+          "target": 9,
+          "conditions": [
+            {
+              "type": "partner_active"
+            }
+          ]
+        },
+        {
+          "label": "Vitória após Lothar cair",
+          "target": 35,
+          "conditions": [
+            {
+              "type": "partner_removed"
+            }
+          ]
+        }
+      ]
+    },
+    "487": {
+      "estado": "extraida",
+      "resumo": "Colthar enfrenta as cabeças da Hidra como adversários sucessivos; uma cabeça pode já ter sido eliminada anteriormente.",
+      "encounter": {
+        "enemies": [
+          {
+            "name": "Cabeça Um",
+            "habilidade": 11,
+            "energia": 4
+          },
+          {
+            "name": "Cabeça Dois",
+            "habilidade": 10,
+            "energia": 4
+          },
+          {
+            "name": "Cabeça Três",
+            "habilidade": 9,
+            "energia": 4
+          }
+        ],
+        "conditionalEnemyRemovals": [
+          {
+            "conditions": [
+              {
+                "type": "flag",
+                "flag": "hidra_primeira_cabeca_morta"
+              }
+            ],
+            "enemyNames": [
+              "Cabeça Um"
+            ]
+          }
+        ]
+      },
+      "rewards": [
+        {
+          "type": "set_flag",
+          "flag": "hidra_morta"
+        }
+      ],
+      "onVictory": 41,
+      "onDefeat": 294
+    },
+    "488": {
+      "estado": "extraida",
+      "resumo": "Três Amazonas descobrem os irmãos; eles enfrentam as adversárias de forma cooperativa e Lothar pode usar magia.",
+      "partnerInstruction": {
+        "sendToReference": 488
+      },
+      "encounter": {
+        "cooperative": true,
+        "allowCombatMagic": true,
+        "enemies": [
+          {
+            "name": "Amazona Um",
+            "habilidade": 10,
+            "energia": 6
+          },
+          {
+            "name": "Amazona Dois",
+            "habilidade": 9,
+            "energia": 4
+          },
+          {
+            "name": "Amazona Três",
+            "habilidade": 9,
+            "energia": 4
+          }
+        ]
+      },
+      "choices": [
+        {
+          "label": "Vitória com Lothar vivo",
+          "target": 315,
+          "conditions": [
+            {
+              "type": "partner_active"
+            }
+          ]
+        },
+        {
+          "label": "Vitória após Lothar cair",
+          "target": 376,
+          "conditions": [
+            {
+              "type": "partner_removed"
+            }
+          ]
+        }
+      ]
+    },
+    "489": {
+      "estado": "extraida",
+      "resumo": "Uma grande fissura bloqueia o túnel; o cabo de vassoura da Bruxa pode fornecer uma saída.",
+      "choices": [
+        {
+          "label": "Usar o cabo de vassoura",
+          "target": 121,
+          "conditions": [
+            {
+              "type": "has_item",
+              "item": "cabo_de_vassoura"
+            }
+          ]
+        },
+        {
+          "label": "Sem cabo de vassoura",
+          "target": 174,
+          "conditions": [
+            {
+              "type": "not_has_item",
+              "item": "cabo_de_vassoura"
+            }
+          ]
+        }
+      ]
+    },
+    "490": {
+      "estado": "validada",
+      "resumo": "Ponto de sincronização: Colthar define STATUS 12 e aguarda AÇÃO 1, 31 ou 32."
+    },
+    "491": {
+      "estado": "extraida",
+      "resumo": "Uma criatura gelatinosa cai do teto e encerra a aventura de Colthar.",
+      "ending": "death",
+      "afterDeathReference": 39
+    },
+    "492": {
+      "estado": "extraida",
+      "resumo": "A muda de vidoeiro faz a cerca viva recuar e abre um caminho de fuga.",
+      "choices": [
+        {
+          "label": "Escapar",
+          "target": 63
+        }
+      ]
+    },
+    "493": {
+      "estado": "extraida",
+      "resumo": "Colthar tenta libertar Lothar de uma caravana de escravos enquanto uma corda mágica tenta capturá-lo a cada série.",
+      "encounter": {
+        "enemies": [
+          {
+            "name": "Capanga Um",
+            "habilidade": 8,
+            "energia": 4
+          },
+          {
+            "name": "Capanga Dois",
+            "habilidade": 7,
+            "energia": 4
+          },
+          {
+            "name": "Mercador de Escravos",
+            "habilidade": 6,
+            "energia": 4
+          }
+        ]
+      },
+      "encounterSpecial": {
+        "roundRoll": {
+          "dice": "1d6",
+          "trigger": 6,
+          "target": 298
+        }
+      },
+      "onVictory": 381,
+      "partnerOnVictory": 381,
+      "partnerOnDefeat": 298
+    },
+    "494": {
+      "estado": "extraida",
+      "resumo": "O Elfo transforma Colthar em parte permanente de sua coleção.",
+      "ending": "removed",
+      "afterDeathReference": 39
+    },
+    "495": {
+      "estado": "extraida",
+      "resumo": "Uma queda entre pedras instáveis termina de forma fatal para Colthar.",
+      "ending": "death",
+      "afterDeathReference": 39
+    },
+    "496": {
+      "estado": "extraida",
+      "resumo": "Depois da visão da Morte, os irmãos decidem se continuam juntos ou se separam.",
+      "choices": [
+        {
+          "label": "Continuar juntos",
+          "target": 107
+        },
+        {
+          "label": "Separar-se",
+          "target": 446
+        }
+      ]
+    },
+    "497": {
+      "estado": "extraida",
+      "resumo": "Com Lothar fora da aventura, Colthar atravessa a ponte sozinho e reencontra seu cavalo.",
+      "partnerRemoved": true,
+      "effects": [
+        {
+          "type": "add_item",
+          "item": "cavalo"
+        }
+      ],
+      "choices": [
+        {
+          "label": "Prosseguir sozinho",
+          "target": 100
+        }
+      ]
+    },
+    "498": {
+      "estado": "extraida",
+      "resumo": "Depois de subjugar o Gigante, o destino depende de Lothar ainda estar na aventura.",
+      "choices": [
+        {
+          "label": "Lothar saiu da aventura",
+          "target": 2,
+          "conditions": [
+            {
+              "type": "partner_removed"
+            }
+          ]
+        },
+        {
+          "label": "Lothar continua ativo",
+          "target": 224,
+          "conditions": [
+            {
+              "type": "partner_active"
+            }
+          ]
+        }
+      ]
+    },
+    "499": {
+      "estado": "extraida",
+      "resumo": "Colthar paga duas moedas por uma cura duvidosa e depois é expulso da vila.",
+      "effects": [
+        {
+          "type": "change_gold",
+          "delta": -2
+        }
+      ],
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 367
+        }
+      ]
+    },
+    "500": {
+      "estado": "validada",
+      "resumo": "Colthar retorna triunfante com a Gema Sagrada e é reconhecido como sucessor do trono de Gundobad.",
+      "ending": "success"
     }
   }
 }

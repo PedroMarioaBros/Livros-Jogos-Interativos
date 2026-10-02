@@ -11,7 +11,8 @@ import {
   availableChoices,
   conditionMet,
   resolveDynamicDuoComparison,
-  resolveConditionalEncounterModifiers
+  resolveConditionalEncounterModifiers,
+  resolveConditionalEncounterEnemies
 } from "./engine/story.js";
 import {
   createEncounter,
@@ -1498,11 +1499,16 @@ function renderEncounter(node) {
   }
 
   if (encounterDefinition) {
+    const context = storyContext();
     encounterDefinition = {
       ...encounterDefinition,
+      enemies: resolveConditionalEncounterEnemies(
+        encounterDefinition,
+        context
+      ),
       modifiers: resolveConditionalEncounterModifiers(
         encounterDefinition,
-        storyContext()
+        context
       )
     };
   }

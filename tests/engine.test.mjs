@@ -22,7 +22,8 @@ import {
   availableChoices,
   countItem,
   resolveDynamicDuoComparison,
-  resolveConditionalEncounterModifiers
+  resolveConditionalEncounterModifiers,
+  resolveConditionalEncounterEnemies
 } from "../src/engine/story.js";
 import {
   createEncounter,
@@ -2090,6 +2091,109 @@ test("referência 454 encaminha Lothar somente para AÇÃO 40", () => {
   assert.equal(instruction.condition.key, "acao");
   assert.equal(instruction.condition.value, 40);
   assert.equal(instruction.target, 368);
+});
+
+test("Colthar possui todas as 500 referências estruturadas", () => {
+  for (let ref = 1; ref <= 500; ref += 1) {
+    assert.ok(
+      warriorBookData.references[String(ref)],
+      `Referência ${ref} ausente`
+    );
+    assert.notEqual(
+      warriorBookData.references[String(ref)].estado,
+      "pendente",
+      `Referência ${ref} ainda pendente`
+    );
+  }
+
+  assert.equal(
+    Object.keys(warriorBookData.references).length,
+    500
+  );
+  assert.equal(
+    warriorBookData.references["500"].ending,
+    "success"
+  );
+});
+
+test("Hidra remove a primeira cabeça quando ela já foi cortada", () => {
+  const hero = createCharacter(warriorData, sequence([0, 0, 0, 0]));
+  const definition = warriorBookData.references["487"].encounter;
+
+  let enemies = resolveConditionalEncounterEnemies(
+    definition,
+    { character: hero, shared: {}, partnerActive: false }
+  );
+  assert.equal(enemies.length, 3);
+
+  hero.flags.push("hidra_primeira_cabeca_morta");
+  enemies = resolveConditionalEncounterEnemies(
+    definition,
+    { character: hero, shared: {}, partnerActive: false }
+  );
+
+  assert.equal(enemies.length, 2);
+  assert.deepEqual(
+    enemies.map(enemy => enemy.name),
+    ["Cabeça Dois", "Cabeça Três"]
+  );
+});
+
+test("referência 487 registra a morte da Hidra após a vitória", () => {
+  assert.equal(
+    warriorBookData.references["487"].rewards.some(
+      effect =>
+        effect.type === "set_flag" &&
+        effect.flag === "hidra_morta"
+    ),
+    true
+  );
+});
+
+test("opção de magia da 478 depende da tentativa de Lothar", () => {
+  const choice = warriorBookData.references["478"].choices[2];
+  assert.deepEqual(
+    choice.conditions,
+    [{
+      type: "partner_flag_not",
+      flag: "tentou_magia_scutllies"
+    }]
+  );
+
+  assert.equal(
+    mageBookData.references["83"].effects.some(
+      effect =>
+        effect.type === "set_flag" &&
+        effect.flag === "tentou_magia_scutllies"
+    ),
+    true
+  );
+
+  assert.deepEqual(
+    mageBookData.references["478"].choices[2].conditions,
+    [{
+      type: "flag_not",
+      flag: "tentou_magia_scutllies"
+    }]
+  );
+});
+
+test("sincronização 490 de Colthar está verificada", () => {
+  const ref490 = syncBookData.entries.find(
+    entry => entry.character === "colthar" && entry.reference === 490
+  );
+
+  assert.equal(ref490?.verified, true);
+  assert.equal(ref490.effects[0].value, 12);
+  assert.deepEqual(ref490.routes.map(route => route.target), [282, 200]);
+});
+
+test("referência 493 encaminha Lothar por vitória ou derrota", () => {
+  const ref493 = warriorBookData.references["493"];
+
+  assert.equal(ref493.partnerOnVictory, 381);
+  assert.equal(ref493.partnerOnDefeat, 298);
+  assert.equal(ref493.encounterSpecial.roundRoll.target, 298);
 });
 
 test("set_stat define atributo sem ultrapassar o valor inicial", () => {

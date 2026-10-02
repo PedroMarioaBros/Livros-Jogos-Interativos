@@ -114,6 +114,10 @@ export function conditionMet(condition, context) {
       return Boolean(partnerActive);
     case "partner_removed":
       return !partnerActive;
+    case "partner_flag":
+      return Boolean(context.partnerCharacter?.flags?.includes(condition.flag));
+    case "partner_flag_not":
+      return !Boolean(context.partnerCharacter?.flags?.includes(condition.flag));
     case "shared_equals":
       return shared[condition.key] === condition.value;
     case "shared_not_in":
@@ -168,6 +172,29 @@ export function resolveConditionalEncounterModifiers(
   }
 
   return merged;
+}
+
+export function resolveConditionalEncounterEnemies(
+  definition,
+  context
+) {
+  const removedNames = new Set();
+
+  for (const rule of definition?.conditionalEnemyRemovals || []) {
+    const matches = (rule.conditions || []).every(condition =>
+      conditionMet(condition, context)
+    );
+
+    if (!matches) continue;
+
+    for (const name of rule.enemyNames || []) {
+      removedNames.add(name);
+    }
+  }
+
+  return (definition?.enemies || []).filter(
+    enemy => !removedNames.has(enemy.name)
+  );
 }
 
 export function choiceAvailable(choice, context) {
