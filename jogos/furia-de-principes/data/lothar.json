@@ -3496,7 +3496,13 @@
         },
         {
           "label": "Não há ouro suficiente",
-          "target": 304
+          "target": 304,
+          "conditions": [
+            {
+              "type": "shared_gold_lt",
+              "value": 10
+            }
+          ]
         }
       ]
     },
