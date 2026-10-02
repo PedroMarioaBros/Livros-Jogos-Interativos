@@ -93,6 +93,7 @@
   - [x] Smoke test de 104/104 encontros completos e 208 resoluções integrais de combate (vitória/derrota)
   - [x] Smoke test do runtime narrativo em 989/989 referências completas, cobrindo 335 efeitos e 178 condições
   - [x] Primeira rota conjunta completa reproduzida no CI: início → morte de Lothar → continuação solo de Colthar → sucesso 500
+  - [x] Segunda rota conjunta completa reproduzida no CI: início → morte de Colthar → continuação solo de Lothar → sucesso 500
 
 ## Fase 3 — Interface
 - [ ] Biblioteca de aventuras
