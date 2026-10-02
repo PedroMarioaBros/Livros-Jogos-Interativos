@@ -721,13 +721,17 @@
       ]
     },
     "44": {
-      "estado": "parcial",
-      "resumo": "Um demônio propõe um enigma cujo número correto leva diretamente à referência correspondente; erro leva a 380.",
-      "dynamicChoice": {
-        "type": "numeric-riddle",
-        "failureTarget": 380
+      "estado": "extraida",
+      "resumo": "Um demônio propõe um enigma cujo número correto leva diretamente à referência correspondente; desconhecer ou errar leva a 380.",
+      "referenceInput": {
+        "label": "🔢 Informar a referência correspondente à resposta",
+        "prompt": "Digite o número da referência que corresponde ao número de fossos nos Três Infernos:",
+        "min": 1,
+        "max": 500,
+        "fallbackTarget": 380,
+        "fallbackLabel": "Não sei a resposta → 380"
       },
-      "needsMoreExtraction": true
+      "notes": "Estrutura e destino de falha 380 confirmados no OCR derivado do item livros-jogos do Archive.org."
     },
     "45": {
       "estado": "extraida",

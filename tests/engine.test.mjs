@@ -2982,3 +2982,15 @@ test("Lothar 314 está extraída e pronta para o Raio de Dizimação", () => {
   assert.equal(ref314.choices[0].target, 395);
   assert.equal(ref314.needsEngineSupport, undefined);
 });
+
+
+test("Lothar 44 usa entrada numérica com fallback para 380", () => {
+  const ref44 = mageBookData.references["44"];
+
+  assert.equal(ref44.estado, "extraida");
+  assert.equal(ref44.referenceInput.min, 1);
+  assert.equal(ref44.referenceInput.max, 500);
+  assert.equal(ref44.referenceInput.fallbackTarget, 380);
+  assert.equal(ref44.dynamicChoice, undefined);
+  assert.equal(ref44.needsMoreExtraction, undefined);
+});
