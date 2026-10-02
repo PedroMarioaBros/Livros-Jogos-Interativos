@@ -1408,7 +1408,8 @@ function renderReference(reference, options = {}) {
     choices.length === 0 &&
     !node.test &&
     !node.encounter &&
-    !node.partnerInstruction
+    !node.partnerInstruction &&
+    !node.playerEffectChoice
   ) {
     const info = document.createElement("p");
     info.className = "muted";
