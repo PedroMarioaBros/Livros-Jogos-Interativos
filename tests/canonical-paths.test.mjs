@@ -72,6 +72,7 @@ const canonicalDuoRoute = [
   { character: "colthar", to: 256 },
   { character: "colthar", to: 97 },
   { character: "colthar", to: 258 },
+  { character: "colthar", to: 398 },
   { character: "colthar", to: 476 },
   { character: "colthar", to: 208 },
   { character: "colthar", to: 382 },
