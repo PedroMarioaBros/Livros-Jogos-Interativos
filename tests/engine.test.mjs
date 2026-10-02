@@ -2035,6 +2035,63 @@ test("referência 448 aumenta o máximo de SORTE antes de restaurar", () => {
   );
 });
 
+test("Colthar possui o bloco 451 a 475 estruturado", () => {
+  for (let ref = 451; ref <= 475; ref += 1) {
+    assert.ok(
+      warriorBookData.references[String(ref)],
+      `Referência ${ref} ausente`
+    );
+    assert.notEqual(
+      warriorBookData.references[String(ref)].estado,
+      "pendente",
+      `Referência ${ref} ainda pendente`
+    );
+  }
+
+  assert.equal(
+    warriorBookData.references["452"].encounter.enemies[0].energia,
+    8
+  );
+  assert.equal(
+    warriorBookData.references["454"].effects[0].item,
+    "gema_sagrada_azul"
+  );
+  assert.equal(
+    warriorBookData.references["471"].partnerRemovedOnDefeat,
+    true
+  );
+  assert.equal(
+    warriorBookData.references["475"].effects.length,
+    2
+  );
+});
+
+test("sincronizações 451 e 453 de Colthar estão verificadas", () => {
+  const ref451 = syncBookData.entries.find(
+    entry => entry.character === "colthar" && entry.reference === 451
+  );
+  const ref453 = syncBookData.entries.find(
+    entry => entry.character === "colthar" && entry.reference === 453
+  );
+
+  assert.equal(ref451?.verified, true);
+  assert.equal(ref451.effects[0].value, 11);
+  assert.deepEqual(ref451.routes.map(route => route.target), [282, 366]);
+
+  assert.equal(ref453?.verified, true);
+  assert.equal(ref453.effects[0].value, 10);
+  assert.deepEqual(ref453.routes.map(route => route.target), [96, 289]);
+});
+
+test("referência 454 encaminha Lothar somente para AÇÃO 40", () => {
+  const instruction =
+    warriorBookData.references["454"].partnerInstruction.conditionalSend[0];
+
+  assert.equal(instruction.condition.key, "acao");
+  assert.equal(instruction.condition.value, 40);
+  assert.equal(instruction.target, 368);
+});
+
 test("set_stat define atributo sem ultrapassar o valor inicial", () => {
   const mage = createCharacter(mageData, sequence([0, 0, 0, 0, 0]));
   mage.stats.magia = 5;
