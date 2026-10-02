@@ -1217,6 +1217,82 @@ test("referência 76 entrega o fura-gelo após a vitória", () => {
   );
 });
 
+test("recuperação residual mantém um ponto de dano do último combate", () => {
+  const hero = createCharacter(warriorData, sequence([0, 0, 0, 0]));
+  hero.stats.energia -= 6;
+  hero.lastCombatDamage = 6;
+  const before = hero.stats.energia;
+
+  const [result] = applyEffects(
+    hero,
+    [{
+      type: "recover_last_combat_damage_except",
+      stat: "energia",
+      leave: 1
+    }]
+  );
+
+  assert.equal(result.damage, 6);
+  assert.equal(result.leave, 1);
+  assert.equal(result.recovered, 5);
+  assert.equal(hero.stats.energia, before + 5);
+});
+
+test("Colthar possui o bloco 176 a 200 estruturado", () => {
+  for (let ref = 176; ref <= 200; ref += 1) {
+    assert.ok(
+      warriorBookData.references[String(ref)],
+      `Referência ${ref} ausente`
+    );
+    assert.notEqual(
+      warriorBookData.references[String(ref)].estado,
+      "pendente",
+      `Referência ${ref} ainda pendente`
+    );
+  }
+
+  assert.equal(
+    warriorBookData.references["186"].encounter.noCombatMagic,
+    true
+  );
+  assert.equal(
+    warriorBookData.references["191"].encounter.enemies.length,
+    3
+  );
+  assert.equal(
+    warriorBookData.references["199"].estado,
+    "validada"
+  );
+});
+
+test("Pedra de Poder da referência 181 é item empilhável do fluxo", () => {
+  const effects = warriorBookData.references["181"].effects;
+  assert.equal(
+    effects.some(
+      effect =>
+        effect.type === "add_item" &&
+        effect.item === "pedra_de_poder"
+    ),
+    true
+  );
+});
+
+test("sincronizações 185 e 199 de Colthar estão verificadas", () => {
+  const ref185 = syncBookData.entries.find(
+    entry => entry.character === "colthar" && entry.reference === 185
+  );
+  const ref199 = syncBookData.entries.find(
+    entry => entry.character === "colthar" && entry.reference === 199
+  );
+
+  assert.equal(ref185?.verified, true);
+  assert.equal(ref185.effects[0].value, 20);
+  assert.equal(ref199?.verified, true);
+  assert.equal(ref199.effects[0].value, 3);
+  assert.equal(ref199.routes[0].target, 242);
+  assert.equal(ref199.routes[1].target, 287);
+});
+
 test("set_stat define atributo sem ultrapassar o valor inicial", () => {
   const mage = createCharacter(mageData, sequence([0, 0, 0, 0, 0]));
   mage.stats.magia = 5;
