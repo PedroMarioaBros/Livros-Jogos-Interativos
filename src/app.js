@@ -1078,7 +1078,16 @@ function renderReference(reference, options = {}) {
     $("choices").appendChild(button);
   }
 
-  if (node.roll) {
+  const rollAvailable =
+    node.roll &&
+    (
+      !node.roll.conditions?.length ||
+      node.roll.conditions.every(condition =>
+        conditionMet(condition, storyContext())
+      )
+    );
+
+  if (rollAvailable) {
     const button = document.createElement("button");
     button.textContent = `🎲 Rolar ${node.roll.dice}`;
     button.addEventListener("click", () => {
