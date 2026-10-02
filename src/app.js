@@ -41,7 +41,8 @@ import {
   updateDuoPlayer,
   restoreDuoSession,
   resolvePartnerOutcomeRoute,
-  endingRemovesDuoPlayer
+  endingRemovesDuoPlayer,
+  applyPartnerCombatOutcome
 } from "./engine/duo.js";
 
 const state = {
@@ -2240,27 +2241,15 @@ function castSelectedSpell() {
 }
 
 function completeCombatVictory(node) {
-  if (
-    node.partnerOnVictory &&
-    state.mode === "dupla" &&
-    state.duo
-  ) {
-    const other =
-      state.character === "colthar" ? "lothar" : "colthar";
-    const partner = state.duo.players[other];
+  if (state.mode === "dupla" && state.duo) {
+    const partnerResult = applyPartnerCombatOutcome(
+      state.duo,
+      state.character,
+      node,
+      "victory"
+    );
 
-    if (!partner.removed) {
-      updateDuoPlayer(state.duo, other, {
-        reference: Number(node.partnerOnVictory),
-        history: [
-          ...(partner.history || []),
-          {
-            from: partner.reference,
-            to: Number(node.partnerOnVictory),
-            label: "Vitória do outro príncipe"
-          }
-        ]
-      });
+    if (partnerResult.changed) {
       updatePartnerState();
       renderDuoStatus();
     }
@@ -2404,53 +2393,17 @@ function playCombatRound() {
     $("combat-round").classList.add("hidden");
     $("combat-item-panel").classList.add("hidden");
 
-    if (
-      node.partnerRemovedOnDefeat &&
-      state.mode === "dupla" &&
-      state.duo
-    ) {
-      const other =
-        state.character === "colthar" ? "lothar" : "colthar";
-      const partner = state.duo.players[other];
+    if (state.mode === "dupla" && state.duo) {
+      const partnerResult = applyPartnerCombatOutcome(
+        state.duo,
+        state.character,
+        node,
+        "defeat"
+      );
 
-      if (!partner.removed) {
-        updateDuoPlayer(state.duo, other, {
-          removed: true,
-          history: [
-            ...(partner.history || []),
-            {
-              from: partner.reference,
-              to: partner.reference,
-              label: "Derrota fatal do outro príncipe"
-            }
-          ]
-        });
+      if (partnerResult.changed) {
         updatePartnerState();
         renderDuoStatus();
-      }
-    }
-
-    if (
-      node.partnerOnDefeat &&
-      state.mode === "dupla" &&
-      state.duo
-    ) {
-      const other =
-        state.character === "colthar" ? "lothar" : "colthar";
-      const partner = state.duo.players[other];
-
-      if (!partner.removed) {
-        updateDuoPlayer(state.duo, other, {
-          reference: node.partnerOnDefeat,
-          history: [
-            ...(partner.history || []),
-            {
-              from: partner.reference,
-              to: node.partnerOnDefeat,
-              label: "Derrota do outro príncipe"
-            }
-          ]
-        });
       }
     }
 
