@@ -23,7 +23,11 @@ import {
   countItem,
   resolveDynamicDuoComparison
 } from "../src/engine/story.js";
-import { createEncounter, playEncounterRound } from "../src/engine/encounter.js";
+import {
+  createEncounter,
+  playEncounterRound,
+  resolveEncounterRoundRoll
+} from "../src/engine/encounter.js";
 import { createSaveSnapshot, serializeSave, parseSave } from "../src/engine/save.js";
 import {
   applyCombatSpell,
@@ -1107,6 +1111,68 @@ test("sincronizações 111 e 123 de Colthar estão catalogadas e verificadas", (
   assert.equal(ref111.routes[1].target, 313);
   assert.equal(ref123?.verified, true);
   assert.equal(ref123.routes[0].target, 282);
+});
+
+test("regra especial por série pode capturar Colthar", () => {
+  const triggered = resolveEncounterRoundRoll(
+    { dice: "1d6", trigger: 6, target: 466 },
+    sequence([0.999])
+  );
+  const safe = resolveEncounterRoundRoll(
+    { dice: "1d6", trigger: 6, target: 466 },
+    sequence([0])
+  );
+
+  assert.equal(triggered.triggered, true);
+  assert.equal(triggered.target, 466);
+  assert.equal(triggered.roll.total, 6);
+  assert.equal(safe.triggered, false);
+  assert.equal(safe.target, null);
+});
+
+test("Colthar possui o bloco 126 a 150 estruturado", () => {
+  for (let ref = 126; ref <= 150; ref += 1) {
+    assert.ok(
+      warriorBookData.references[String(ref)],
+      `Referência ${ref} ausente`
+    );
+  }
+
+  assert.equal(
+    warriorBookData.references["128"].encounter.enemies[0].energia,
+    10
+  );
+  assert.equal(
+    warriorBookData.references["142"].encounterSpecial.roundRoll.target,
+    466
+  );
+  assert.equal(
+    warriorBookData.references["144"].estado,
+    "parcial"
+  );
+  assert.equal(
+    warriorBookData.references["144"].encounterNeedsReview,
+    true
+  );
+  assert.equal(
+    warriorBookData.references["150"].encounter.enemies[1].energia,
+    6
+  );
+});
+
+test("sincronizações 136 e 148 de Colthar estão verificadas", () => {
+  const ref136 = syncBookData.entries.find(
+    entry => entry.character === "colthar" && entry.reference === 136
+  );
+  const ref148 = syncBookData.entries.find(
+    entry => entry.character === "colthar" && entry.reference === 148
+  );
+
+  assert.equal(ref136?.verified, true);
+  assert.equal(ref136.effects[0].value, 16);
+  assert.equal(ref148?.verified, true);
+  assert.equal(ref148.effects[0].value, 2);
+  assert.equal(ref148.routes[0].target, 325);
 });
 
 test("set_stat define atributo sem ultrapassar o valor inicial", () => {
