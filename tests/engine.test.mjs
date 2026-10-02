@@ -989,6 +989,126 @@ test("Colthar possui o bloco 76 a 100 estruturado", () => {
   assert.equal(warriorBookData.references["100"].choices[1].target, 175);
 });
 
+test("sincronização condicional de Colthar 123 escolhe STATUS por flag", () => {
+  const entryData = {
+    entries: [{
+      character: "colthar",
+      reference: 123,
+      effects: [
+        {
+          type: "set_shared",
+          key: "status",
+          value: 13,
+          conditions: [{ type: "flag", flag: "encontrou_dragesima" }]
+        },
+        {
+          type: "set_shared",
+          key: "status",
+          value: 14,
+          conditions: [{ type: "flag_not", flag: "encontrou_dragesima" }]
+        }
+      ],
+      waitFor: "acao",
+      routes: [{ acao: [1, 31, 32], target: 282 }]
+    }]
+  };
+  const hero = createCharacter(warriorData, sequence([0, 0, 0, 0]));
+
+  let result = processSyncPoint(
+    entryData,
+    {
+      character: "colthar",
+      reference: 123,
+      shared: { status: 0, acao: 31 }
+    },
+    { character: hero, partnerActive: true }
+  );
+
+  assert.equal(result.shared.status, 14);
+  assert.equal(result.target, 282);
+
+  hero.flags.push("encontrou_dragesima");
+  result = processSyncPoint(
+    entryData,
+    {
+      character: "colthar",
+      reference: 123,
+      shared: { status: 0, acao: 1 }
+    },
+    { character: hero, partnerActive: true }
+  );
+
+  assert.equal(result.shared.status, 13);
+  assert.equal(result.target, 282);
+});
+
+test("encontro preserva limite máximo de séries", () => {
+  const encounter = createEncounter(109, {
+    roundLimit: 3,
+    enemies: [{ name: "Cerca Viva", habilidade: 9, energia: 4 }]
+  });
+
+  assert.equal(encounter.roundLimit, 3);
+});
+
+test("efeito pode zerar provisões diretamente", () => {
+  const hero = createCharacter(warriorData, sequence([0, 0, 0, 0]));
+  assert.ok(hero.provisions > 0);
+
+  applyEffects(hero, [{ type: "set_provisions", value: 0 }]);
+
+  assert.equal(hero.provisions, 0);
+});
+
+test("Colthar possui o bloco 101 a 125 estruturado", () => {
+  for (let ref = 101; ref <= 125; ref += 1) {
+    assert.ok(
+      warriorBookData.references[String(ref)],
+      `Referência ${ref} ausente`
+    );
+    assert.notEqual(
+      warriorBookData.references[String(ref)].estado,
+      "pendente",
+      `Referência ${ref} ainda pendente`
+    );
+  }
+
+  assert.equal(
+    warriorBookData.references["103"].encounter.enemies[0].habilidade,
+    8
+  );
+  assert.equal(
+    warriorBookData.references["109"].encounter.roundLimit,
+    3
+  );
+  assert.equal(
+    warriorBookData.references["117"].encounter.enemies.length,
+    2
+  );
+  assert.equal(
+    warriorBookData.references["123"].estado,
+    "validada"
+  );
+  assert.equal(
+    warriorBookData.references["125"].choices[0].target,
+    346
+  );
+});
+
+test("sincronizações 111 e 123 de Colthar estão catalogadas e verificadas", () => {
+  const ref111 = syncBookData.entries.find(
+    entry => entry.character === "colthar" && entry.reference === 111
+  );
+  const ref123 = syncBookData.entries.find(
+    entry => entry.character === "colthar" && entry.reference === 123
+  );
+
+  assert.equal(ref111?.verified, true);
+  assert.equal(ref111.routes[1].target, 313);
+  assert.equal(ref123?.verified, true);
+  assert.equal(ref123.routes[0].target, 282);
+});
+
 test("set_stat define atributo sem ultrapassar o valor inicial", () => {
   const mage = createCharacter(mageData, sequence([0, 0, 0, 0, 0]));
   mage.stats.magia = 5;

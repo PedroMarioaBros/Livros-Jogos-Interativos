@@ -1,3 +1,5 @@
+import { conditionMet } from "./story.js";
+
 export function findSyncEntry(syncData, character, reference) {
   return (syncData?.entries || []).find(
     entry =>
@@ -13,6 +15,20 @@ export function applySyncEffects(shared, entry, options = {}) {
   if (options.ignoreMutations) return next;
 
   for (const effect of entry.effects || []) {
+    const conditions = effect.conditions || [];
+    const matches =
+      conditions.length === 0 ||
+      conditions.every(condition =>
+        conditionMet(condition, {
+          character: options.character,
+          partnerCharacter: options.partnerCharacter,
+          shared: next,
+          partnerActive: options.partnerActive
+        })
+      );
+
+    if (!matches) continue;
+
     if (effect.type === "set_shared") {
       next[effect.key] = effect.value;
     }
@@ -52,7 +68,10 @@ export function processSyncPoint(syncData, state, options = {}) {
   }
 
   const shared = applySyncEffects(state.shared, entry, {
-    ignoreMutations: Boolean(options.ignoreMutations)
+    ignoreMutations: Boolean(options.ignoreMutations),
+    character: options.character,
+    partnerCharacter: options.partnerCharacter,
+    partnerActive: options.partnerActive
   });
 
   return {
