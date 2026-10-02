@@ -706,8 +706,15 @@ function renderReference(reference, options = {}) {
     return;
   }
 
+  const encounterAvailable =
+    !node.encounter?.conditions?.length ||
+    node.encounter.conditions.every(condition =>
+      conditionMet(condition, storyContext())
+    );
+
   if (
     (node.encounter || node.encounterDynamic) &&
+    encounterAvailable &&
     !state.completedEncounters.has(state.ref)
   ) {
     renderEncounter(node);
