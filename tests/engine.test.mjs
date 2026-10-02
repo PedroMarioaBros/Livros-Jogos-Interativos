@@ -1175,6 +1175,48 @@ test("sincronizações 136 e 148 de Colthar estão verificadas", () => {
   assert.equal(ref148.routes[0].target, 325);
 });
 
+test("Colthar possui o bloco 151 a 175 estruturado", () => {
+  for (let ref = 151; ref <= 175; ref += 1) {
+    assert.ok(
+      warriorBookData.references[String(ref)],
+      `Referência ${ref} ausente`
+    );
+  }
+
+  assert.equal(
+    warriorBookData.references["153"].encounter.enemies[0].habilidade,
+    9
+  );
+  assert.equal(
+    warriorBookData.references["168"].estado,
+    "parcial"
+  );
+  assert.equal(
+    warriorBookData.references["169"].encounterNeedsReview,
+    true
+  );
+  assert.equal(
+    warriorBookData.references["172"].encounter.enemies[0].energia,
+    8
+  );
+  assert.equal(
+    warriorBookData.references["175"].choices[3].target,
+    312
+  );
+});
+
+test("referência 76 entrega o fura-gelo após a vitória", () => {
+  const reward = warriorBookData.references["76"].rewards.find(
+    effect => effect.type === "add_item" && effect.item === "fura_gelo"
+  );
+
+  assert.ok(reward);
+  assert.equal(
+    warriorBookData.references["166"].choices[0].conditions[0].item,
+    "fura_gelo"
+  );
+});
+
 test("set_stat define atributo sem ultrapassar o valor inicial", () => {
   const mage = createCharacter(mageData, sequence([0, 0, 0, 0, 0]));
   mage.stats.magia = 5;

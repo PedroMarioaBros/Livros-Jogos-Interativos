@@ -1420,7 +1420,13 @@
           }
         ]
       },
-      "onVictory": 166
+      "onVictory": 166,
+      "rewards": [
+        {
+          "type": "add_item",
+          "item": "fura_gelo"
+        }
+      ]
     },
     "77": {
       "estado": "extraida",
@@ -2577,6 +2583,402 @@
       "partnerOnDefeat": 10,
       "onVictory": 485,
       "notes": "Atributos do segundo Homem-lagarto confirmados pelo encontro correspondente de Lothar."
+    },
+    "151": {
+      "estado": "extraida",
+      "resumo": "Ao tocar uma esfera, Colthar recebe uma pista sobre Orcmoot, o homem verde e um pergaminho.",
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 412
+        }
+      ]
+    },
+    "152": {
+      "estado": "extraida",
+      "resumo": "A velha escolhida abençoa Colthar, restaurando sua ENERGIA, mas o encontro também lhe custa SORTE.",
+      "effects": [
+        {
+          "type": "restore_stat_to_initial",
+          "stat": "energia"
+        },
+        {
+          "type": "change_stat",
+          "stat": "sorte",
+          "delta": -1
+        }
+      ],
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 389
+        }
+      ]
+    },
+    "153": {
+      "estado": "extraida",
+      "resumo": "No fundo de uma caverna escura, um Morcego Gigante retorna e ataca Colthar.",
+      "encounter": {
+        "enemies": [
+          {
+            "name": "Morcego Gigante",
+            "habilidade": 9,
+            "energia": 8
+          }
+        ]
+      },
+      "onVictory": 277
+    },
+    "154": {
+      "estado": "extraida",
+      "resumo": "Um Druida transforma Colthar em faisão e o remove definitivamente da aventura.",
+      "ending": "removed",
+      "afterDeathReference": 39
+    },
+    "155": {
+      "estado": "extraida",
+      "resumo": "Colthar manda Lothar seguir para a mesma referência e os irmãos prosseguem juntos.",
+      "partnerInstruction": {
+        "sendToReference": 473
+      },
+      "choices": [
+        {
+          "label": "Ir também para a referência indicada",
+          "target": 473
+        }
+      ]
+    },
+    "156": {
+      "estado": "extraida",
+      "resumo": "A Poção torna o Ciclope visível e Colthar precisa enfrentá-lo.",
+      "encounter": {
+        "enemies": [
+          {
+            "name": "Ciclope",
+            "habilidade": 8,
+            "energia": 10
+          }
+        ]
+      },
+      "onVictory": 181
+    },
+    "157": {
+      "estado": "extraida",
+      "resumo": "A visão do vale anima Colthar, aumentando sua SORTE; adiante ele escolhe entre examinar um poço ou explorar uma caverna.",
+      "effects": [
+        {
+          "type": "change_stat",
+          "stat": "sorte",
+          "delta": 1
+        }
+      ],
+      "choices": [
+        {
+          "label": "Examinar o poço",
+          "target": 284
+        },
+        {
+          "label": "Explorar a caverna",
+          "target": 266
+        }
+      ]
+    },
+    "158": {
+      "estado": "extraida",
+      "resumo": "Uma coroa explode ao toque de Colthar e reduz sua ENERGIA.",
+      "effects": [
+        {
+          "type": "change_stat",
+          "stat": "energia",
+          "delta": -1
+        }
+      ],
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 238
+        }
+      ]
+    },
+    "159": {
+      "estado": "extraida",
+      "resumo": "Os equipamentos confiscados retornam magicamente; os irmãos decidem se continuam juntos ou se separam.",
+      "effects": [
+        {
+          "type": "restore_stashed_items"
+        }
+      ],
+      "choices": [
+        {
+          "label": "Continuar juntos",
+          "target": 107
+        },
+        {
+          "label": "Separar-se",
+          "target": 446
+        }
+      ]
+    },
+    "160": {
+      "estado": "extraida",
+      "resumo": "Uma ponte desaba e Colthar cai na lava.",
+      "ending": "death",
+      "afterDeathReference": 39
+    },
+    "161": {
+      "estado": "extraida",
+      "resumo": "Preso pelas Amazonas, Colthar tenta forçar uma das barras da cela e Testa a Sorte.",
+      "test": {
+        "type": "luck",
+        "successTarget": 301,
+        "failureTarget": 219
+      }
+    },
+    "162": {
+      "estado": "extraida",
+      "resumo": "A faixa verde transporta os irmãos para uma trilha de floresta.",
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 353
+        }
+      ]
+    },
+    "163": {
+      "estado": "extraida",
+      "resumo": "Colthar entrega um frasco de Água Benta e recebe dez moedas de ouro.",
+      "effects": [
+        {
+          "type": "remove_item_if_present",
+          "item": "agua_benta"
+        },
+        {
+          "type": "change_gold",
+          "delta": 10
+        }
+      ],
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 100
+        }
+      ]
+    },
+    "164": {
+      "estado": "extraida",
+      "resumo": "Colthar corta uma das três cabeças da Hidra antes de iniciar o confronto principal.",
+      "effects": [
+        {
+          "type": "set_flag",
+          "flag": "hidra_primeira_cabeca_morta"
+        }
+      ],
+      "choices": [
+        {
+          "label": "Enfrentar as duas cabeças restantes",
+          "target": 487
+        }
+      ],
+      "notes": "A referência 487 de Colthar deverá respeitar a flag hidra_primeira_cabeca_morta e iniciar o combate com uma cabeça já eliminada."
+    },
+    "165": {
+      "estado": "extraida",
+      "resumo": "Colthar escorrega dos apoios molhados e é levado pela correnteza.",
+      "choices": [
+        {
+          "label": "Prosseguir com a correnteza",
+          "target": 28
+        }
+      ]
+    },
+    "166": {
+      "estado": "extraida",
+      "resumo": "Numa câmara congelada, Colthar encontra um guerreiro preso no gelo segurando um grande martelo e escolhe como libertá-lo.",
+      "choices": [
+        {
+          "label": "Usar o fura-gelo",
+          "target": 395,
+          "conditions": [
+            {
+              "type": "has_item",
+              "item": "fura_gelo"
+            }
+          ]
+        },
+        {
+          "label": "Derreter o gelo com uma lanterna",
+          "target": 340,
+          "conditions": [
+            {
+              "type": "has_item",
+              "item": "lanterna"
+            }
+          ]
+        },
+        {
+          "label": "Quebrar o gelo com a espada",
+          "target": 463
+        }
+      ]
+    },
+    "167": {
+      "estado": "extraida",
+      "resumo": "Um vento sobrenatural atinge Colthar na capela; ele precisa Testar a Sorte.",
+      "test": {
+        "type": "luck",
+        "successTarget": 341,
+        "failureTarget": 187
+      }
+    },
+    "168": {
+      "estado": "parcial",
+      "resumo": "Colthar surpreende uma Bruxa junto a um grande caldeirão e precisa enfrentá-la.",
+      "encounterNeedsReview": true,
+      "onVictory": 253,
+      "notes": "O OCR do Internet Archive preserva HABILIDADE 10, mas perdeu a ENERGIA da Bruxa. O encontro não deve ser cadastrado integralmente até conferência visual."
+    },
+    "169": {
+      "estado": "parcial",
+      "resumo": "Três Zumbis atacam Colthar; os dois primeiros têm atributos legíveis, mas a HABILIDADE do terceiro foi corrompida pelo OCR.",
+      "encounterNeedsReview": true,
+      "postVictoryChoices": [
+        {
+          "label": "Correr pela trilha",
+          "target": 358
+        },
+        {
+          "label": "Ir em direção ao mausoléu",
+          "target": 119
+        }
+      ],
+      "notes": "OCR: Zumbi Um 9/6; Zumbi Dois 8/6; Zumbi Três com ENERGIA 4 e HABILIDADE ilegível. Não inventar o atributo faltante."
+    },
+    "170": {
+      "estado": "extraida",
+      "resumo": "Uma flecha atinge o braço de Colthar antes que ele se esconda e alcance um regato.",
+      "effects": [
+        {
+          "type": "change_stat",
+          "stat": "habilidade",
+          "delta": -1
+        },
+        {
+          "type": "change_stat",
+          "stat": "energia",
+          "delta": -1
+        }
+      ],
+      "choices": [
+        {
+          "label": "Prosseguir até o regato",
+          "target": 87
+        }
+      ]
+    },
+    "171": {
+      "estado": "extraida",
+      "resumo": "No fundo de um vale, Colthar escolhe entre seguir em direção às montanhas ou continuar pelo vale.",
+      "choices": [
+        {
+          "label": "Seguir para leste",
+          "target": 256
+        },
+        {
+          "label": "Continuar pelo vale",
+          "target": 6
+        }
+      ]
+    },
+    "172": {
+      "estado": "extraida",
+      "resumo": "A cruz de ouro afasta quase todas as Bruxas; a líder permanece e ataca Colthar.",
+      "encounter": {
+        "enemies": [
+          {
+            "name": "Bruxa Líder",
+            "habilidade": 7,
+            "energia": 8
+          }
+        ]
+      },
+      "onVictory": 24
+    },
+    "173": {
+      "estado": "extraida",
+      "resumo": "Na costa, os irmãos decidem como atravessar a grande ponte de corda para Orcmoot.",
+      "choices": [
+        {
+          "label": "Atravessar juntos",
+          "target": 29
+        },
+        {
+          "label": "Colthar atravessa primeiro",
+          "target": 51
+        },
+        {
+          "label": "Lothar atravessa primeiro",
+          "target": 136
+        }
+      ]
+    },
+    "174": {
+      "estado": "extraida",
+      "resumo": "Colthar salta um fosso; mochila e provisões se perdem, mas a façanha aumenta sua HABILIDADE.",
+      "effects": [
+        {
+          "type": "remove_item_if_present",
+          "item": "mochila"
+        },
+        {
+          "type": "set_provisions",
+          "value": 0
+        },
+        {
+          "type": "change_stat",
+          "stat": "habilidade",
+          "delta": 1
+        }
+      ],
+      "choices": [
+        {
+          "label": "Prosseguir",
+          "target": 192
+        }
+      ]
+    },
+    "175": {
+      "estado": "extraida",
+      "resumo": "Num velho poço, Colthar vê moedas no fundo e escolhe entre seguir viagem, tentar pegá-las ou fazer um pedido.",
+      "choices": [
+        {
+          "label": "Seguir pela estrada norte",
+          "target": 391
+        },
+        {
+          "label": "Seguir pela estrada sul",
+          "target": 384
+        },
+        {
+          "label": "Tentar pegar as moedas",
+          "target": 126
+        },
+        {
+          "label": "Jogar uma moeda no poço e fazer um pedido",
+          "target": 312,
+          "conditions": [
+            {
+              "type": "gold_gte",
+              "value": 1
+            }
+          ],
+          "effects": [
+            {
+              "type": "change_gold",
+              "delta": -1
+            }
+          ]
+        }
+      ]
     },
     "199": {
       "estado": "pendente",
