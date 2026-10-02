@@ -280,9 +280,19 @@
       ]
     },
     "19": {
-      "estado": "parcial",
-      "resumo": "Referência com OCR corrompido; há ao menos duas rotas de continuação, mas os destinos precisam de revisão visual.",
-      "needsManualReview": true
+      "estado": "extraida",
+      "resumo": "Ao entrar na vila, Colthar encontra uma multidão hostilizando uma velha presa ao tronco e decide se tenta salvá-la ou fala com alguém do grupo.",
+      "choices": [
+        {
+          "label": "Tentar salvar a velha",
+          "target": 133
+        },
+        {
+          "label": "Falar com alguém da multidão",
+          "target": 243
+        }
+      ],
+      "notes": "As duas rotas foram confirmadas no OCR derivado do item livros-jogos do Archive.org."
     },
     "20": {
       "estado": "extraida",
