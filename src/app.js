@@ -2132,6 +2132,32 @@ function playCombatRound() {
     $("combat-round").classList.add("hidden");
 
     if (
+      node.partnerRemovedOnDefeat &&
+      state.mode === "dupla" &&
+      state.duo
+    ) {
+      const other =
+        state.character === "colthar" ? "lothar" : "colthar";
+      const partner = state.duo.players[other];
+
+      if (!partner.removed) {
+        updateDuoPlayer(state.duo, other, {
+          removed: true,
+          history: [
+            ...(partner.history || []),
+            {
+              from: partner.reference,
+              to: partner.reference,
+              label: "Derrota fatal do outro príncipe"
+            }
+          ]
+        });
+        updatePartnerState();
+        renderDuoStatus();
+      }
+    }
+
+    if (
       node.partnerOnDefeat &&
       state.mode === "dupla" &&
       state.duo
