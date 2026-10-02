@@ -49,6 +49,7 @@ function selfTargets(node, syncEntry) {
     addTarget(targets, target);
   }
 
+  addTarget(targets, node.afterDeathReference);
   addTarget(targets, node.test?.successTarget);
   addTarget(targets, node.test?.failureTarget);
   addTarget(targets, node.onVictory);
