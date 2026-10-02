@@ -33,10 +33,10 @@ jobs:
           java-version: "21"
 
       - name: Aceitar licenças do Android SDK
-        run: yes | sdkmanager --licenses > /dev/null
+        run: yes | /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager --licenses > /dev/null || true
 
       - name: Instalar SDK Android 36
-        run: sdkmanager "platforms;android-36" "build-tools;36.0.0"
+        run: /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager "platforms;android-36" "build-tools;36.0.0"
 
       - name: Instalar dependências Capacitor
         run: npm install --package-lock=false --no-audit --no-fund
