@@ -75,7 +75,10 @@
   - [x] Primeiros pontos verificados de STATUS de Colthar (31 e 60)
   - [x] 34 pontos catalogados e conferidos individualmente
   - [x] Varredura final das 1.000 referências concluída com cobertura automática no CI
-- [ ] Classificar finais, mortes e encontros
+- [x] Classificar finais, mortes e encontros
+  - [x] 95 finais/saídas classificados em death, removed, removed-transition ou success
+  - [x] 105 encontros estruturados e 7 encontros explicitamente em revisão
+  - [x] CI exige um único sucesso por volume na referência 500 e resolução para encontros completos
 - [ ] Testar todos os caminhos alcançáveis
   - [x] Análise automática dos grafos de ambos os volumes
   - [x] Grafo combinado em dupla com rotas cruzadas e STATUS/AÇÃO: 973/1000 nós explicitamente alcançáveis, zero becos sem saída
