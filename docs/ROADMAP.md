@@ -63,6 +63,7 @@
   - [x] Décima terceira expansão estrutural: referências 351–375 conferidas; 375 referências cadastradas no banco
   - [x] Décima quarta expansão estrutural: referências 376–400 conferidas; 400 referências cadastradas no banco
   - [x] Décima quinta expansão estrutural: referências 401–425 conferidas; 425 referências cadastradas no banco
+  - [x] Décima sexta expansão estrutural: referências 426–450 conferidas; 450 referências cadastradas no banco
 - [x] Extrair referências de Lothar
   - [x] Referências 1–500 estruturadas continuamente
 - [ ] Mapear todas as sincronizações STATUS/AÇÃO

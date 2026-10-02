@@ -1971,6 +1971,32 @@ function castSelectedSpell() {
 }
 
 function completeCombatVictory(node) {
+  if (
+    node.partnerOnVictory &&
+    state.mode === "dupla" &&
+    state.duo
+  ) {
+    const other =
+      state.character === "colthar" ? "lothar" : "colthar";
+    const partner = state.duo.players[other];
+
+    if (!partner.removed) {
+      updateDuoPlayer(state.duo, other, {
+        reference: Number(node.partnerOnVictory),
+        history: [
+          ...(partner.history || []),
+          {
+            from: partner.reference,
+            to: Number(node.partnerOnVictory),
+            label: "Vitória do outro príncipe"
+          }
+        ]
+      });
+      updatePartnerState();
+      renderDuoStatus();
+    }
+  }
+
   if (!state.completedEncounters.has(state.ref)) {
     state.completedEncounters.add(state.ref);
     applyStoryEffects(state.hero, node.rewards || [], {

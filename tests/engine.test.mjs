@@ -1968,6 +1968,73 @@ test("Lothar 420 deixou de depender de suporte pendente", () => {
   );
 });
 
+test("Colthar possui o bloco 426 a 450 estruturado", () => {
+  for (let ref = 426; ref <= 450; ref += 1) {
+    assert.ok(
+      warriorBookData.references[String(ref)],
+      `Referência ${ref} ausente`
+    );
+    assert.notEqual(
+      warriorBookData.references[String(ref)].estado,
+      "pendente",
+      `Referência ${ref} ainda pendente`
+    );
+  }
+
+  assert.equal(
+    warriorBookData.references["433"].referenceInput.fallbackTarget,
+    380
+  );
+  assert.equal(
+    warriorBookData.references["438"].encounter.enemies.length,
+    2
+  );
+  assert.equal(
+    warriorBookData.references["443"].effects[0].item,
+    "sapatos_para_neve"
+  );
+  assert.equal(
+    warriorBookData.references["450"].rewards[0].item,
+    "pedra_de_poder"
+  );
+});
+
+test("vitória e derrota em Colthar 438 encaminham Lothar corretamente", () => {
+  const ref438 = warriorBookData.references["438"];
+
+  assert.equal(ref438.onVictory, 225);
+  assert.equal(ref438.partnerOnVictory, 225);
+  assert.equal(ref438.partnerOnDefeat, 6);
+});
+
+test("referência 47 mantém encaminhamento de parceiro após vitória", () => {
+  assert.equal(
+    warriorBookData.references["47"].partnerOnVictory,
+    478
+  );
+  assert.equal(
+    warriorBookData.references["47"].partnerOnDefeat,
+    6
+  );
+});
+
+test("referência 448 aumenta o máximo de SORTE antes de restaurar", () => {
+  assert.deepEqual(
+    warriorBookData.references["448"].effects,
+    [
+      {
+        type: "increase_initial_stat",
+        stat: "sorte",
+        delta: 1
+      },
+      {
+        type: "restore_stat_to_initial",
+        stat: "sorte"
+      }
+    ]
+  );
+});
+
 test("set_stat define atributo sem ultrapassar o valor inicial", () => {
   const mage = createCharacter(mageData, sequence([0, 0, 0, 0, 0]));
   mage.stats.magia = 5;
