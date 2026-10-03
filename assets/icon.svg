@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="112" fill="#19131d"/>
+  <path d="M106 112h132c39 0 70 31 70 70v218c-20-18-46-27-78-27H106z" fill="#d6c4ff"/>
+  <path d="M406 112H274c-39 0-70 31-70 70v218c20-18 46-27 78-27h124z" fill="#9fcbd2" opacity=".9"/>
+  <path d="M256 163l22 45 50 7-36 35 9 50-45-24-45 24 9-50-36-35 50-7z" fill="#19131d"/>
+  <text x="256" y="350" text-anchor="middle" font-family="system-ui,sans-serif" font-size="76" font-weight="800" fill="#19131d">FP</text>
+</svg>
