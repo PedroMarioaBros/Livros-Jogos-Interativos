@@ -147,5 +147,7 @@ Nenhuma referência será marcada como `validada` sem conferência explícita. O
   - [ ] Testar instalação e abertura em aparelho Android real
   - [x] Testar offline e save/load no APK instalado em emulador
   - [x] Testar atualização do APK instalado preservando os dados
-  - [ ] Preparar build de release assinado
+  - [x] Validar APK e AAB release assinados com chave efêmera de CI
+  - [x] Preparar workflow de produção com assinatura via GitHub Secrets
+  - [ ] Configurar chave definitiva e gerar primeiro release de produção
 - [ ] Testes de instalação e atualização em aparelho real
