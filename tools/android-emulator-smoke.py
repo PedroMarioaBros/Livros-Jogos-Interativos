@@ -78,7 +78,7 @@ def find_node(root: ET.Element, needle: str) -> ET.Element | None:
         if wanted in folded and contains is None:
             contains = node
 
-    return exact or contains
+    return exact if exact is not None else contains
 
 
 def node_center(node: ET.Element) -> tuple[int, int]:
