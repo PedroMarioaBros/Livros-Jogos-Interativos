@@ -17,6 +17,8 @@ jobs:
   build-android:
     runs-on: ubuntu-latest
     timeout-minutes: 45
+    env:
+      DEBUG_KEYSTORE_BASE64: ${{ secrets.ANDROID_TEST_DEBUG_KEYSTORE_BASE64 }}
 
     steps:
       - name: Baixar repositório
@@ -40,9 +42,7 @@ jobs:
         run: /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager "platforms;android-36" "build-tools;36.0.0"
 
       - name: Restaurar chave debug estável
-        if: ${{ secrets.ANDROID_TEST_DEBUG_KEYSTORE_BASE64 != '' }}
-        env:
-          DEBUG_KEYSTORE_BASE64: ${{ secrets.ANDROID_TEST_DEBUG_KEYSTORE_BASE64 }}
+        if: ${{ env.DEBUG_KEYSTORE_BASE64 != '' }}
         run: |
           mkdir -p "${HOME}/.android"
           printf '%s' "${DEBUG_KEYSTORE_BASE64}" | base64 --decode > "${HOME}/.android/debug.keystore"
@@ -50,7 +50,7 @@ jobs:
           echo "Assinatura debug estável carregada via GitHub Secret."
 
       - name: Avisar quando a assinatura debug for efêmera
-        if: ${{ secrets.ANDROID_TEST_DEBUG_KEYSTORE_BASE64 == '' }}
+        if: ${{ env.DEBUG_KEYSTORE_BASE64 == '' }}
         run: |
           echo "::warning::ANDROID_TEST_DEBUG_KEYSTORE_BASE64 não configurado. Este build debug terá assinatura efêmera e não deve ser usado para testar atualização sobre outra execução do CI."
           echo "debug_signing=ephemeral" >> "${GITHUB_ENV}"
