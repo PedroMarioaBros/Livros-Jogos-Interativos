@@ -8,8 +8,9 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 
 PACKAGE = "io.github.pedromariabros.livrosjogos"
-APK = Path("android/app/build/outputs/apk/debug/app-debug.apk")
-OUT = APK.parent
+APK_V1 = Path("android/app/build/outputs/apk/debug/app-debug-v1.apk")
+APK_V2 = Path("android/app/build/outputs/apk/debug/app-debug-v2.apk")
+OUT = APK_V1.parent
 REMOTE_XML = "/sdcard/livros-jogos-window.xml"
 
 
@@ -259,11 +260,12 @@ def disable_airplane_mode() -> None:
 
 
 def main() -> None:
-    if not APK.is_file():
-        raise RuntimeError(f"APK ausente: {APK}")
+    for apk in (APK_V1, APK_V2):
+        if not apk.is_file():
+            raise RuntimeError(f"APK ausente: {apk}")
 
     OUT.mkdir(parents=True, exist_ok=True)
-    adb("install", "-r", str(APK))
+    adb("install", "-r", str(APK_V1))
     adb("shell", "pm", "path", PACKAGE)
 
     try:
@@ -299,9 +301,30 @@ def main() -> None:
         screenshot("offline-save-load")
         dump_ui("offline-save-load")
 
+        adb("shell", "am", "force-stop", PACKAGE)
+        adb("install", "-r", str(APK_V2))
+
+        package_dump = adb("shell", "dumpsys", "package", PACKAGE).stdout
+        if "versionCode=2" not in package_dump:
+            raise RuntimeError("A atualização não instalou versionCode 2.")
+        if "versionName=1.0.1" not in package_dump:
+            raise RuntimeError("A atualização não instalou versionName 1.0.1.")
+
+        launch_app()
+        assert_foreground()
+        wait_for_text("Nova partida")
+
+        tap_text("Carregar partida salva")
+        wait_for_text("Partida carregada")
+        find_with_scroll("Referência 1")
+        assert_foreground()
+        screenshot("updated-save-load")
+        dump_ui("updated-save-load")
+
         print(
-            "OK: APK instalou, abriu, persistiu save após force-stop, "
-            "reabriu em modo avião e restaurou a partida na referência 1.",
+            "OK: APK v1 salvou a partida, funcionou offline após force-stop, "
+            "foi atualizado para v2 (versionCode 2 / versionName 1.0.1) "
+            "e preservou o save na referência 1.",
             flush=True,
         )
     finally:
