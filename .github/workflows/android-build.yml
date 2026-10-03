@@ -81,13 +81,15 @@ jobs:
         run: |
           set -euo pipefail
           OUT="android/app/build/outputs/apk/debug"
+          CI_OUT="android/app/build/ci-apks"
           GRADLE="android/app/build.gradle"
           AAPT="/usr/local/lib/android/sdk/build-tools/36.0.0/aapt"
           APKSIGNER="/usr/local/lib/android/sdk/build-tools/36.0.0/apksigner"
 
-          cp "$OUT/app-debug.apk" "$OUT/app-debug-v1.apk"
-          cp "$OUT/app-debug.badging.txt" "$OUT/app-debug-v1.badging.txt"
-          sha256sum "$OUT/app-debug-v1.apk" > "$OUT/app-debug-v1.apk.sha256"
+          mkdir -p "$CI_OUT"
+          cp "$OUT/app-debug.apk" "$CI_OUT/app-debug-v1.apk"
+          cp "$OUT/app-debug.badging.txt" "$CI_OUT/app-debug-v1.badging.txt"
+          sha256sum "$CI_OUT/app-debug-v1.apk" > "$CI_OUT/app-debug-v1.apk.sha256"
 
           python3 - <<'PY'
           from pathlib import Path
@@ -126,10 +128,10 @@ jobs:
           grep -F "sdkVersion:'24'" "$OUT/app-debug.badging.txt"
           grep -F "targetSdkVersion:'36'" "$OUT/app-debug.badging.txt"
 
-          cp "$OUT/app-debug.apk" "$OUT/app-debug-v2.apk"
-          cp "$OUT/app-debug.badging.txt" "$OUT/app-debug-v2.badging.txt"
+          cp "$OUT/app-debug.apk" "$CI_OUT/app-debug-v2.apk"
+          cp "$OUT/app-debug.badging.txt" "$CI_OUT/app-debug-v2.badging.txt"
           sha256sum "$OUT/app-debug.apk" > "$OUT/app-debug.apk.sha256"
-          sha256sum "$OUT/app-debug-v2.apk" > "$OUT/app-debug-v2.apk.sha256"
+          sha256sum "$CI_OUT/app-debug-v2.apk" > "$CI_OUT/app-debug-v2.apk.sha256"
 
       - name: Habilitar KVM para emulador
         run: |
@@ -156,12 +158,12 @@ jobs:
             android/app/build/outputs/apk/debug/app-debug.apk
             android/app/build/outputs/apk/debug/app-debug.apk.sha256
             android/app/build/outputs/apk/debug/app-debug.badging.txt
-            android/app/build/outputs/apk/debug/app-debug-v1.apk
-            android/app/build/outputs/apk/debug/app-debug-v1.apk.sha256
-            android/app/build/outputs/apk/debug/app-debug-v1.badging.txt
-            android/app/build/outputs/apk/debug/app-debug-v2.apk
-            android/app/build/outputs/apk/debug/app-debug-v2.apk.sha256
-            android/app/build/outputs/apk/debug/app-debug-v2.badging.txt
+            android/app/build/ci-apks/app-debug-v1.apk
+            android/app/build/ci-apks/app-debug-v1.apk.sha256
+            android/app/build/ci-apks/app-debug-v1.badging.txt
+            android/app/build/ci-apks/app-debug-v2.apk
+            android/app/build/ci-apks/app-debug-v2.apk.sha256
+            android/app/build/ci-apks/app-debug-v2.badging.txt
             android/app/build/outputs/apk/debug/emulator-*.png
             android/app/build/outputs/apk/debug/emulator-*.xml
           if-no-files-found: error
