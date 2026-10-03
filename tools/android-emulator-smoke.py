@@ -37,11 +37,42 @@ def adb(*args: str, check: bool = True) -> subprocess.CompletedProcess[str]:
 
 
 def dump_ui(name: str = "window") -> ET.Element:
-    adb("shell", "uiautomator", "dump", REMOTE_XML)
-    xml = adb("exec-out", "cat", REMOTE_XML).stdout
-    path = OUT / f"emulator-{name}.xml"
-    path.write_text(xml, encoding="utf-8")
-    return ET.fromstring(xml)
+    last_output = ""
+
+    for attempt in range(5):
+        adb("shell", "rm", "-f", REMOTE_XML, check=False)
+        dump_result = adb(
+            "shell",
+            "uiautomator",
+            "dump",
+            REMOTE_XML,
+            check=False,
+        )
+        xml = adb(
+            "exec-out",
+            "cat",
+            REMOTE_XML,
+            check=False,
+        ).stdout
+
+        last_output = (dump_result.stdout or "") + "\n" + (xml or "")
+
+        if xml.lstrip().startswith("<?xml"):
+            try:
+                root = ET.fromstring(xml)
+            except ET.ParseError:
+                pass
+            else:
+                path = OUT / f"emulator-{name}.xml"
+                path.write_text(xml, encoding="utf-8")
+                return root
+
+        time.sleep(1.0)
+
+    raise RuntimeError(
+        "Não foi possível obter uma árvore de UI válida após 5 tentativas. "
+        + last_output[-800:]
+    )
 
 
 def node_label(node: ET.Element) -> str:
