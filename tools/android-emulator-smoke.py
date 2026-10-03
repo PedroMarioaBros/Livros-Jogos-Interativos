@@ -150,18 +150,36 @@ def screenshot(name: str) -> None:
         raise RuntimeError(f"Captura vazia: {path}")
 
 
+def dismiss_system_dialogs() -> None:
+    for _ in range(4):
+        root = dump_ui("system-dialog-check")
+        wait_node = find_node(root, "Wait")
+        if wait_node is not None and wait_node.attrib.get("package") == "android":
+            x, y = node_center(wait_node)
+            adb("shell", "input", "tap", str(x), str(y))
+            time.sleep(1.0)
+            continue
+
+        close_node = find_node(root, "Close app")
+        if close_node is not None and close_node.attrib.get("package") == "android":
+            adb("shell", "input", "keyevent", "4")
+            time.sleep(1.0)
+            continue
+        return
+
+
 def launch_app() -> None:
     adb("shell", "am", "force-stop", PACKAGE)
     adb(
         "shell",
-        "monkey",
-        "-p",
-        PACKAGE,
-        "-c",
-        "android.intent.category.LAUNCHER",
-        "1",
+        "am",
+        "start",
+        "-W",
+        "-n",
+        f"{PACKAGE}/.MainActivity",
     )
-    time.sleep(5)
+    time.sleep(4)
+    dismiss_system_dialogs()
     pid = adb("shell", "pidof", PACKAGE).stdout.strip()
     if not pid:
         raise RuntimeError("O processo do aplicativo não permaneceu ativo.")
