@@ -6,6 +6,7 @@ on:
       - "package.json"
       - "capacitor.config.json"
       - "tools/build-web.mjs"
+      - "tools/android-emulator-smoke.py"
       - "assets/**"
       - "src/**"
       - "jogos/**"
@@ -91,16 +92,7 @@ jobs:
           profile: pixel_6
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
-          script: |
-            adb install -r android/app/build/outputs/apk/debug/app-debug.apk
-            adb shell pm path io.github.pedromariabros.livrosjogos
-            adb shell am force-stop io.github.pedromariabros.livrosjogos
-            adb shell monkey -p io.github.pedromariabros.livrosjogos -c android.intent.category.LAUNCHER 1
-            sleep 8
-            test -n "$(adb shell pidof io.github.pedromariabros.livrosjogos | tr -d '\r')"
-            adb shell dumpsys activity activities | grep -E "mResumedActivity|topResumedActivity" | grep -F "io.github.pedromariabros.livrosjogos"
-            adb exec-out screencap -p > android/app/build/outputs/apk/debug/emulator-launch.png
-            test -s android/app/build/outputs/apk/debug/emulator-launch.png
+          script: python3 tools/android-emulator-smoke.py
 
       - name: Publicar APK de debug
         uses: actions/upload-artifact@v4
@@ -110,6 +102,7 @@ jobs:
             android/app/build/outputs/apk/debug/app-debug.apk
             android/app/build/outputs/apk/debug/app-debug.apk.sha256
             android/app/build/outputs/apk/debug/app-debug.badging.txt
-            android/app/build/outputs/apk/debug/emulator-launch.png
+            android/app/build/outputs/apk/debug/emulator-*.png
+            android/app/build/outputs/apk/debug/emulator-*.xml
           if-no-files-found: error
           retention-days: 14
