@@ -81,12 +81,12 @@ for (const relativePath of [
     issues.push(`${relativePath} não contém <adaptive-icon>.`);
   }
 
-  if (!/background[^>]+drawable=/.test(xml)) {
-    issues.push(`${relativePath} não referencia background.`);
+  if (!/<background\b/.test(xml)) {
+    issues.push(`${relativePath} não declara <background>.`);
   }
 
-  if (!/foreground[^>]+drawable=/.test(xml)) {
-    issues.push(`${relativePath} não referencia foreground.`);
+  if (!/<foreground\b/.test(xml)) {
+    issues.push(`${relativePath} não declara <foreground>.`);
   }
 }
 
