@@ -245,6 +245,7 @@ async function startGame() {
   }
 
   state.pendingSharedLoot = null;
+  document.body.classList.add("game-active");
   $("setup").classList.add("hidden");
   $("game").classList.remove("hidden");
   renderSheet();
@@ -2551,12 +2552,14 @@ async function loadGame() {
       state.characterData = await loadCharacterData(state.character);
     }
 
+    document.body.classList.add("game-active");
     $("setup").classList.add("hidden");
     $("game").classList.remove("hidden");
     renderSheet();
     renderHistory();
     renderReference(state.ref, { applyEntryEffects: false });
     showGameMessage("Partida carregada.");
+    focusStory();
   } catch (error) {
     $("message").textContent = `Falha ao carregar: ${error.message}`;
   }
@@ -2578,6 +2581,7 @@ function restartGame() {
   state.pendingSharedLoot = null;
 
   hideCombat();
+  document.body.classList.remove("game-active");
   $("game").classList.add("hidden");
   $("setup").classList.remove("hidden");
   $("message").textContent = "Nova partida pronta para configurar.";

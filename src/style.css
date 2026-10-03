@@ -68,6 +68,10 @@ button {
   text-align: center;
 }
 
+body.game-active .app-header {
+  display: none;
+}
+
 .app-header h1,
 .section-heading h2,
 .story-card h2,
