@@ -15,7 +15,7 @@ on:
 jobs:
   build-android:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
 
     steps:
       - name: Baixar repositório
@@ -76,6 +76,39 @@ jobs:
         working-directory: android/app/build/outputs/apk/debug
         run: sha256sum app-debug.apk > app-debug.apk.sha256
 
+      - name: Habilitar KVM para emulador
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Instalar e abrir APK no emulador
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          target: default
+          arch: x86_64
+          profile: pixel_6
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          disable-animations: true
+          script: |
+            set -euxo pipefail
+            APK="android/app/build/outputs/apk/debug/app-debug.apk"
+            PACKAGE="io.github.pedromariabros.livrosjogos"
+
+            adb install -r "$APK"
+            adb shell pm path "$PACKAGE"
+            adb shell am force-stop "$PACKAGE"
+            adb shell monkey -p "$PACKAGE" -c android.intent.category.LAUNCHER 1
+            sleep 8
+
+            PID="$(adb shell pidof "$PACKAGE" | tr -d '\r')"
+            test -n "$PID"
+
+            adb shell dumpsys activity activities | grep -E "mResumedActivity|topResumedActivity" | grep -F "$PACKAGE"
+            adb exec-out screencap -p > android/app/build/outputs/apk/debug/emulator-launch.png
+            test -s android/app/build/outputs/apk/debug/emulator-launch.png
+
       - name: Publicar APK de debug
         uses: actions/upload-artifact@v4
         with:
@@ -84,5 +117,6 @@ jobs:
             android/app/build/outputs/apk/debug/app-debug.apk
             android/app/build/outputs/apk/debug/app-debug.apk.sha256
             android/app/build/outputs/apk/debug/app-debug.badging.txt
+            android/app/build/outputs/apk/debug/emulator-launch.png
           if-no-files-found: error
           retention-days: 14
