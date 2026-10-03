@@ -137,7 +137,7 @@ Nenhuma referência será marcada como `validada` sem conferência explícita. O
 - [x] Salvamento local compatível com uso offline
 - [x] Auditoria automática do APP_SHELL, imports JS e dependências do jogo no cache offline
 - [x] Ícones raster PWA 192×192 e 512×512, com dimensões reais auditadas no CI
-- [ ] Ícones finais em múltiplos tamanhos
+- [x] Ícones finais em múltiplos tamanhos
 - [ ] Empacotamento Android/APK
   - [x] Bootstrap Capacitor 8.5.2 com build `www/` e auditoria no CI
   - [x] Gerar projeto Android nativo de forma reproduzível no CI
