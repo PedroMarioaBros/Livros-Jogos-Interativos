@@ -8,9 +8,9 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 
 PACKAGE = "io.github.pedromariabros.livrosjogos"
-APK_V1 = Path("android/app/build/outputs/apk/debug/app-debug-v1.apk")
-APK_V2 = Path("android/app/build/outputs/apk/debug/app-debug-v2.apk")
-OUT = APK_V1.parent
+APK_V1 = Path("android/app/build/ci-apks/app-debug-v1.apk")
+APK_V2 = Path("android/app/build/ci-apks/app-debug-v2.apk")
+OUT = Path("android/app/build/outputs/apk/debug")
 REMOTE_XML = "/sdcard/livros-jogos-window.xml"
 
 
