@@ -145,6 +145,7 @@ Nenhuma referência será marcada como `validada` sem conferência explícita. O
   - [x] Validar assinatura, applicationId, minSdk/targetSdk e checksum do APK
   - [x] Testar instalação e abertura em emulador Android no CI
   - [ ] Testar instalação e abertura em aparelho Android real
-  - [ ] Testar offline, save/load e atualização no APK instalado
+  - [x] Testar offline e save/load no APK instalado em emulador
+  - [ ] Testar atualização do APK instalado preservando os dados
   - [ ] Preparar build de release assinado
 - [ ] Testes de instalação e atualização em aparelho real
