@@ -138,7 +138,15 @@ def node_is_visible(node: ET.Element) -> bool:
     if len(numbers) != 4:
         return False
     x1, y1, x2, y2 = numbers
-    return x2 > x1 and y2 > y1 and x2 > 0 and y2 > 0
+    width = x2 - x1
+    height = y2 - y1
+    return (
+        width >= 40
+        and height >= 24
+        and x2 > 0
+        and y2 > 128
+        and y1 < 2270
+    )
 
 
 def find_with_scroll(needle: str, *, attempts: int = 7) -> ET.Element:
