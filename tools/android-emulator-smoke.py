@@ -100,11 +100,20 @@ def swipe_down() -> None:
     time.sleep(0.7)
 
 
+def node_is_visible(node: ET.Element) -> bool:
+    bounds = node.attrib.get("bounds", "")
+    numbers = [int(value) for value in re.findall(r"\d+", bounds)]
+    if len(numbers) != 4:
+        return False
+    x1, y1, x2, y2 = numbers
+    return x2 > x1 and y2 > y1 and x2 > 0 and y2 > 0
+
+
 def find_with_scroll(needle: str, *, attempts: int = 7) -> ET.Element:
     for attempt in range(attempts):
         root = dump_ui(f"search-{attempt}")
         node = find_node(root, needle)
-        if node is not None:
+        if node is not None and node_is_visible(node):
             return node
         swipe_up()
 
