@@ -188,6 +188,27 @@ def wait_for_text(needle: str, *, timeout: float = 20.0) -> None:
     deadline = time.time() + timeout
     while time.time() < deadline:
         root = dump_ui("wait")
+
+        wait_node = find_node(root, "Wait")
+        if (
+            wait_node is not None
+            and wait_node.attrib.get("package") == "android"
+            and node_is_visible(wait_node)
+        ):
+            x, y = node_center(wait_node)
+            adb("shell", "input", "tap", str(x), str(y))
+            time.sleep(1.0)
+            continue
+
+        close_node = find_node(root, "Close app")
+        if (
+            close_node is not None
+            and close_node.attrib.get("package") == "android"
+        ):
+            adb("shell", "input", "keyevent", "4")
+            time.sleep(1.0)
+            continue
+
         if find_node(root, needle) is not None:
             return
         time.sleep(1.0)
