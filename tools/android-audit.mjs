@@ -88,7 +88,8 @@ for (const script of [
   "android:audit",
   "android:add",
   "android:sync",
-  "android:open"
+  "android:open",
+  "android:release-config"
 ]) {
   if (!pkg.scripts?.[script]) {
     issues.push(`Script npm ausente: ${script}`);
