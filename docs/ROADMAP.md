@@ -105,6 +105,7 @@
 - [x] Tela funcional de combate cooperativo
 - [x] Feitiços de Combate de Lothar em encontros cooperativos
 - [ ] Polimento visual da tela cooperativa e regras especiais remanescentes
+- [ ] Redesenho visual mobile após primeiro teste físico
 - [x] Inventário inicial e recursos na ficha
 - [x] Salvamento local
 - [x] Histórico de decisões
@@ -144,7 +145,7 @@ Nenhuma referência será marcada como `validada` sem conferência explícita. O
   - [x] Gerar primeiro APK de debug
   - [x] Validar assinatura, applicationId, minSdk/targetSdk e checksum do APK
   - [x] Testar instalação e abertura em emulador Android no CI
-  - [ ] Testar instalação e abertura em aparelho Android real
+  - [x] Testar instalação e abertura em aparelho Android real
   - [x] Testar offline e save/load no APK instalado em emulador
   - [x] Testar atualização do APK instalado preservando os dados
   - [x] Validar APK e AAB release assinados com chave efêmera de CI
