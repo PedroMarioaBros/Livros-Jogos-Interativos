@@ -17,6 +17,8 @@ jobs:
   build-android:
     runs-on: ubuntu-latest
     timeout-minutes: 45
+    env:
+      DEBUG_KEYSTORE_BASE64: ${{ secrets.ANDROID_TEST_DEBUG_KEYSTORE_BASE64 }}
 
     steps:
       - name: Baixar repositório
@@ -38,6 +40,20 @@ jobs:
 
       - name: Instalar SDK Android 36
         run: /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager "platforms;android-36" "build-tools;36.0.0"
+
+      - name: Restaurar chave debug estável
+        if: ${{ env.DEBUG_KEYSTORE_BASE64 != '' }}
+        run: |
+          mkdir -p "${HOME}/.android"
+          printf '%s' "${DEBUG_KEYSTORE_BASE64}" | base64 --decode > "${HOME}/.android/debug.keystore"
+          keytool -list -keystore "${HOME}/.android/debug.keystore" -storepass android -alias androiddebugkey > /dev/null
+          echo "Assinatura debug estável carregada via GitHub Secret."
+
+      - name: Avisar quando a assinatura debug for efêmera
+        if: ${{ env.DEBUG_KEYSTORE_BASE64 == '' }}
+        run: |
+          echo "::warning::ANDROID_TEST_DEBUG_KEYSTORE_BASE64 não configurado. Este build debug terá assinatura efêmera e não deve ser usado para testar atualização sobre outra execução do CI."
+          echo "debug_signing=ephemeral" >> "${GITHUB_ENV}"
 
       - name: Instalar dependências Capacitor
         run: npm install --package-lock=false --no-audit --no-fund
@@ -156,6 +172,79 @@ jobs:
           disable-animations: true
           script: python3 tools/android-emulator-smoke.py
 
+      - name: Gerar APK Preview lado a lado
+        run: |
+          set -euo pipefail
+          GRADLE="android/app/build.gradle"
+          STRINGS="android/app/src/main/res/values/strings.xml"
+          OUT="android/app/build/outputs/apk/debug"
+          CI_OUT="android/app/build/ci-apks"
+          AAPT="/usr/local/lib/android/sdk/build-tools/36.0.0/aapt"
+          APKSIGNER="/usr/local/lib/android/sdk/build-tools/36.0.0/apksigner"
+
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          gradle_path = Path("android/app/build.gradle")
+          gradle = gradle_path.read_text(encoding="utf-8")
+
+          gradle, app_id_count = re.subn(
+              r'applicationId\s+"io\.github\.pedromariabros\.livrosjogos"',
+              'applicationId "io.github.pedromariabros.livrosjogos.preview"',
+              gradle,
+              count=1,
+          )
+          gradle, version_code_count = re.subn(
+              r"\bversionCode\s+2\b",
+              "versionCode 3",
+              gradle,
+              count=1,
+          )
+          gradle, version_name_count = re.subn(
+              r'\bversionName\s+"1\.0\.1"',
+              'versionName "1.0.2-preview"',
+              gradle,
+              count=1,
+          )
+
+          if (app_id_count, version_code_count, version_name_count) != (1, 1, 1):
+              raise SystemExit(
+                  "Falha ao preparar Preview: "
+                  f"appId={app_id_count}, versionCode={version_code_count}, "
+                  f"versionName={version_name_count}"
+              )
+
+          gradle_path.write_text(gradle, encoding="utf-8")
+
+          strings_path = Path("android/app/src/main/res/values/strings.xml")
+          strings = strings_path.read_text(encoding="utf-8")
+          strings = re.sub(
+              r'(<string name="app_name">).*?(</string>)',
+              r'\1Livros-Jogos Preview\2',
+              strings,
+              count=1,
+          )
+          strings = re.sub(
+              r'(<string name="title_activity_main">).*?(</string>)',
+              r'\1Livros-Jogos Preview\2',
+              strings,
+              count=1,
+          )
+          strings_path.write_text(strings, encoding="utf-8")
+          PY
+
+          (cd android && ./gradlew assembleDebug --stacktrace)
+
+          "$APKSIGNER" verify --verbose "$OUT/app-debug.apk"
+          "$AAPT" dump badging "$OUT/app-debug.apk" | tee "$CI_OUT/app-preview-v3.badging.txt"
+          grep -F "package: name='io.github.pedromariabros.livrosjogos.preview' versionCode='3' versionName='1.0.2-preview'" "$CI_OUT/app-preview-v3.badging.txt"
+          grep -F "sdkVersion:'24'" "$CI_OUT/app-preview-v3.badging.txt"
+          grep -F "targetSdkVersion:'36'" "$CI_OUT/app-preview-v3.badging.txt"
+
+          cp "$OUT/app-debug.apk" "$CI_OUT/app-preview-v3.apk"
+          sha256sum "$CI_OUT/app-preview-v3.apk" > "$CI_OUT/app-preview-v3.apk.sha256"
+
       - name: Publicar APK de debug
         uses: actions/upload-artifact@v4
         with:
@@ -170,6 +259,9 @@ jobs:
             android/app/build/ci-apks/app-debug-v2.apk
             android/app/build/ci-apks/app-debug-v2.apk.sha256
             android/app/build/ci-apks/app-debug-v2.badging.txt
+            android/app/build/ci-apks/app-preview-v3.apk
+            android/app/build/ci-apks/app-preview-v3.apk.sha256
+            android/app/build/ci-apks/app-preview-v3.badging.txt
             android/app/build/outputs/apk/debug/emulator-*.png
             android/app/build/outputs/apk/debug/emulator-*.xml
           if-no-files-found: error
