@@ -36,6 +36,7 @@ As porcentagens abaixo são estimativas de engenharia para um **Fúria de Prínc
 | Primeiro APK Android de debug | gerado no CI, assinatura v2 válida, applicationId/SDKs auditados |
 | Integridade do APK | SHA-256 gerado e conferido; APK + checksum + badging publicados como artefato |
 | Smoke test Android em emulador | instalação, abertura, processo ativo, Activity em primeiro plano e captura de tela — OK |
+| APK offline + persistência | save na referência 1, force-stop, modo avião, reabertura e load na mesma referência — OK |
 | Persistência/offline no APK | partida Solo/Colthar salva, processo encerrado, modo avião ativado, APK reaberto e save restaurado na referência 1 — OK |
 | Rotas narrativas conjuntas completas executadas | 2/2 finais de sucesso (Colthar e Lothar → 500) |
 | Instâncias de efeitos auditadas | 335 |
@@ -62,7 +63,7 @@ Colthar está contínuo de **1 a 500**, sem lacunas estruturais. Isso conclui 10
 | Salvamento e histórico | 97% |
 | Dois jogadores no mesmo aparelho | 94% |
 | Sincronização entre dois aparelhos | 0% |
-| Camada PWA/offline | 82% |
+| Camada PWA/offline | 88% |
 | Empacotamento Android/APK | 75% |
 | Ilustrações e áudio finais | 0–5% |
 | Testes do motor | 99% |
