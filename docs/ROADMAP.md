@@ -143,6 +143,7 @@ Nenhuma referência será marcada como `validada` sem conferência explícita. O
   - [x] Gerar projeto Android nativo de forma reproduzível no CI
   - [x] Gerar primeiro APK de debug
   - [x] Validar assinatura, applicationId, minSdk/targetSdk e checksum do APK
+  - [x] Testar instalação e abertura em emulador Android no CI
   - [ ] Testar instalação e abertura em aparelho Android real
   - [ ] Testar offline, save/load e atualização no APK instalado
   - [ ] Preparar build de release assinado
