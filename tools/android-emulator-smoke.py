@@ -37,11 +37,42 @@ def adb(*args: str, check: bool = True) -> subprocess.CompletedProcess[str]:
 
 
 def dump_ui(name: str = "window") -> ET.Element:
-    adb("shell", "uiautomator", "dump", REMOTE_XML)
-    xml = adb("exec-out", "cat", REMOTE_XML).stdout
-    path = OUT / f"emulator-{name}.xml"
-    path.write_text(xml, encoding="utf-8")
-    return ET.fromstring(xml)
+    last_output = ""
+
+    for attempt in range(5):
+        adb("shell", "rm", "-f", REMOTE_XML, check=False)
+        dump_result = adb(
+            "shell",
+            "uiautomator",
+            "dump",
+            REMOTE_XML,
+            check=False,
+        )
+        xml = adb(
+            "exec-out",
+            "cat",
+            REMOTE_XML,
+            check=False,
+        ).stdout
+
+        last_output = (dump_result.stdout or "") + "\n" + (xml or "")
+
+        if xml.lstrip().startswith("<?xml"):
+            try:
+                root = ET.fromstring(xml)
+            except ET.ParseError:
+                pass
+            else:
+                path = OUT / f"emulator-{name}.xml"
+                path.write_text(xml, encoding="utf-8")
+                return root
+
+        time.sleep(1.0)
+
+    raise RuntimeError(
+        "Não foi possível obter uma árvore de UI válida após 5 tentativas. "
+        + last_output[-800:]
+    )
 
 
 def node_label(node: ET.Element) -> str:
@@ -107,12 +138,41 @@ def node_is_visible(node: ET.Element) -> bool:
     if len(numbers) != 4:
         return False
     x1, y1, x2, y2 = numbers
-    return x2 > x1 and y2 > y1 and x2 > 0 and y2 > 0
+    width = x2 - x1
+    height = y2 - y1
+    return (
+        width >= 40
+        and height >= 24
+        and x2 > 0
+        and y2 > 128
+        and y1 < 2270
+    )
 
 
 def find_with_scroll(needle: str, *, attempts: int = 7) -> ET.Element:
     for attempt in range(attempts):
         root = dump_ui(f"search-{attempt}")
+
+        wait_node = find_node(root, "Wait")
+        if (
+            wait_node is not None
+            and wait_node.attrib.get("package") == "android"
+            and node_is_visible(wait_node)
+        ):
+            x, y = node_center(wait_node)
+            adb("shell", "input", "tap", str(x), str(y))
+            time.sleep(1.0)
+            continue
+
+        close_node = find_node(root, "Close app")
+        if (
+            close_node is not None
+            and close_node.attrib.get("package") == "android"
+        ):
+            adb("shell", "input", "keyevent", "4")
+            time.sleep(1.0)
+            continue
+
         node = find_node(root, needle)
         if node is not None and node_is_visible(node):
             return node
@@ -136,6 +196,27 @@ def wait_for_text(needle: str, *, timeout: float = 20.0) -> None:
     deadline = time.time() + timeout
     while time.time() < deadline:
         root = dump_ui("wait")
+
+        wait_node = find_node(root, "Wait")
+        if (
+            wait_node is not None
+            and wait_node.attrib.get("package") == "android"
+            and node_is_visible(wait_node)
+        ):
+            x, y = node_center(wait_node)
+            adb("shell", "input", "tap", str(x), str(y))
+            time.sleep(1.0)
+            continue
+
+        close_node = find_node(root, "Close app")
+        if (
+            close_node is not None
+            and close_node.attrib.get("package") == "android"
+        ):
+            adb("shell", "input", "keyevent", "4")
+            time.sleep(1.0)
+            continue
+
         if find_node(root, needle) is not None:
             return
         time.sleep(1.0)

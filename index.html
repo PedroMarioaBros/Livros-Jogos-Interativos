@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#19131d">
+  <meta name="theme-color" content="#151018">
   <meta name="mobile-web-app-capable" content="yes">
   <title>Livros-Jogos Interativos</title>
   <link rel="manifest" href="manifest.webmanifest">
@@ -11,125 +11,183 @@
   <link rel="stylesheet" href="src/style.css">
 </head>
 <body>
-  <main>
-    <header>
-      <div class="muted">Biblioteca de Livros-Jogos Interativos</div>
+  <main class="app-shell">
+    <header class="app-header">
+      <div class="eyebrow">Livros-Jogos Interativos</div>
       <h1 id="game-title">Carregando…</h1>
-      <p id="game-status" class="muted"></p>
+      <p id="game-status" class="subtitle"></p>
     </header>
 
-    <section id="setup" class="card">
-      <h2>Nova partida</h2>
-
-      <p><strong>Modo</strong></p>
-      <div class="grid">
-        <button data-mode="solo">👤 Solo</button>
-        <button data-mode="dupla">👥 Dois jogadores</button>
+    <section id="setup" class="card setup-card">
+      <div class="section-heading">
+        <div>
+          <div class="eyebrow">Comece a jornada</div>
+          <h2>Nova partida</h2>
+        </div>
+        <span class="chapter-mark">I</span>
       </div>
 
-      <p style="margin-top:18px"><strong>Personagem <span class="muted">/ quem começa no modo dupla</span></strong></p>
-      <div class="grid">
-        <button data-character="colthar">⚔️ Colthar<br><span class="muted">Príncipe-Guerreiro</span></button>
-        <button data-character="lothar">🪄 Lothar<br><span class="muted">Príncipe-Feiticeiro</span></button>
+      <div class="setup-group">
+        <p class="setup-label">Como você quer jogar?</p>
+        <div class="choice-grid">
+          <button data-mode="solo" class="setup-option">
+            <span class="option-icon">👤</span>
+            <span>
+              <strong>Solo</strong>
+              <small>Uma jornada, um príncipe</small>
+            </span>
+          </button>
+          <button data-mode="dupla" class="setup-option">
+            <span class="option-icon">👥</span>
+            <span>
+              <strong>Dois jogadores</strong>
+              <small>Compartilhe o aparelho e a aventura</small>
+            </span>
+          </button>
+        </div>
       </div>
 
-      <button id="start" class="primary" style="margin-top:18px">🎲 Gerar ficha e começar</button>
-      <button id="load-game" style="margin-top:10px">💾 Carregar partida salva</button>
-      <button id="install-app" class="hidden" style="margin-top:10px">📲 Instalar aplicativo neste aparelho</button>
-      <p id="message" class="muted" style="margin-top:10px"></p>
+      <div class="setup-group">
+        <p class="setup-label">Escolha seu príncipe</p>
+        <div class="choice-grid">
+          <button data-character="colthar" class="setup-option hero-option">
+            <span class="option-icon">⚔️</span>
+            <span>
+              <strong>Colthar</strong>
+              <small>Príncipe-Guerreiro</small>
+            </span>
+          </button>
+          <button data-character="lothar" class="setup-option hero-option">
+            <span class="option-icon">🪄</span>
+            <span>
+              <strong>Lothar</strong>
+              <small>Príncipe-Feiticeiro</small>
+            </span>
+          </button>
+        </div>
+      </div>
+
+      <div class="setup-actions">
+        <button id="start" class="primary">🎲 Gerar ficha e começar</button>
+        <button id="load-game" class="secondary">💾 Carregar partida salva</button>
+        <button id="install-app" class="secondary hidden">📲 Instalar aplicativo neste aparelho</button>
+      </div>
+      <p id="message" class="feedback-line"></p>
     </section>
 
-    <section id="game" class="hidden">
+    <section id="game" class="hidden game-view">
       <div id="duo-bar" class="card duo-bar hidden">
         <div>
-          <strong>👥 Modo dupla no mesmo aparelho</strong>
-          <div id="duo-current" class="muted" style="margin-top:4px"></div>
+          <div class="eyebrow">Modo dupla</div>
+          <strong>Dois destinos, uma história</strong>
+          <div id="duo-current" class="muted compact-copy"></div>
+          <p id="sync-message" class="system-message"></p>
         </div>
         <button id="handoff-player" class="handoff-button">🔒 Entregar aparelho</button>
       </div>
 
-      <div class="card">
+      <section class="hud card">
         <div id="stats" class="stats"></div>
-        <p id="resources" style="margin-top:12px"></p>
-        <p id="inventory" class="muted"></p>
-        <p id="shared" class="muted"></p>
-
-        <div class="card" style="margin-top:14px">
-          <strong>Teste de sincronização em dupla</strong>
-          <p class="muted">Enquanto os dois aparelhos ainda não estão conectados, estes campos simulam o valor recebido do outro jogador.</p>
-          <div class="grid">
-            <label>STATUS<input id="manual-status" type="number" min="0" value="0"></label>
-            <label>AÇÃO<input id="manual-action" type="number" min="0" value="0"></label>
-          </div>
-          <button id="apply-sync" style="margin-top:10px">🔗 Aplicar STATUS/AÇÃO</button>
-          <p id="sync-message" class="muted" style="margin-top:10px"></p>
+        <div class="hud-meta">
+          <p id="resources"></p>
+          <p id="shared" class="muted"></p>
         </div>
+      </section>
 
-        <div class="grid" style="margin-top:14px">
-          <button id="use-provision">🥖 Consumir provisão</button>
-          <button id="test-luck">🍀 Testar Sorte</button>
-        </div>
-        <p id="game-message" class="muted" style="margin-top:12px"></p>
-
-        <div class="grid" style="margin-top:12px">
-          <button id="save-game">💾 Salvar partida</button>
-          <button id="restart-game">↻ Recomeçar</button>
-        </div>
-
-        <div class="card" style="margin-top:14px">
-          <strong>Histórico de decisões</strong>
-          <div id="history" class="history-list muted" style="margin-top:10px"></div>
-        </div>
-
-        <div class="card dev-tools" style="margin-top:14px">
-          <strong>Ferramenta de teste</strong>
-          <p class="muted">Permite abrir diretamente uma referência já cadastrada.</p>
-          <div class="grid">
-            <input id="dev-ref" type="number" min="1" max="500" value="34" aria-label="Referência">
-            <button id="dev-go">🧭 Ir para referência</button>
-          </div>
-        </div>
-      </div>
-
-      <div id="combat-card" class="card combat-card hidden">
-        <div class="muted">Encontro</div>
-        <h2 id="combat-title">Combate</h2>
-        <p id="combat-opponents"></p>
-
-        <div id="spell-panel" class="spell-panel hidden">
-          <strong>✨ Feitiço de Combate</strong>
-          <div class="grid" style="margin-top:10px">
-            <select id="spell-select" aria-label="Feitiço de Combate"></select>
-            <div id="spell-variable-wrap" class="hidden">
-              <label for="spell-magic-spend">MAGIA para Recuperação</label>
-              <input id="spell-magic-spend" type="number" min="3" step="3" value="3">
+      <div class="play-grid">
+        <div class="adventure-column">
+          <section id="story-card" class="card story-card">
+            <div class="story-heading">
+              <span id="reference" class="reference-badge"></span>
+              <span class="story-label">Sua jornada</span>
             </div>
-          </div>
-          <button id="cast-spell" style="margin-top:10px">🪄 Lançar feitiço</button>
-          <p id="spell-result" class="muted" style="margin-top:10px"></p>
+            <h2>Cena</h2>
+            <p id="scene" class="scene-copy"></p>
+            <p id="game-message" class="system-message"></p>
+            <div id="choices" class="choice-stack"></div>
+          </section>
+
+          <section id="combat-card" class="card combat-card hidden">
+            <div class="eyebrow danger">Encontro</div>
+            <h2 id="combat-title">Combate</h2>
+            <p id="combat-opponents" class="combat-opponents"></p>
+
+            <div id="spell-panel" class="spell-panel hidden">
+              <strong>✨ Feitiço de Combate</strong>
+              <div class="grid compact-grid">
+                <select id="spell-select" aria-label="Feitiço de Combate"></select>
+                <div id="spell-variable-wrap" class="hidden">
+                  <label for="spell-magic-spend">MAGIA para Recuperação</label>
+                  <input id="spell-magic-spend" type="number" min="3" step="3" value="3">
+                </div>
+              </div>
+              <button id="cast-spell">🪄 Lançar feitiço</button>
+              <p id="spell-result" class="muted compact-copy"></p>
+            </div>
+
+            <div id="combat-item-panel" class="spell-panel hidden">
+              <strong>⚡ Item de Combate</strong>
+              <div class="grid compact-grid">
+                <select id="combat-item-target" aria-label="Alvo do item de combate"></select>
+                <button id="use-combat-item">Usar Raio de Dizimação</button>
+              </div>
+              <p id="combat-item-result" class="muted compact-copy"></p>
+            </div>
+
+            <div id="combat-log" class="combat-log"></div>
+            <div class="grid compact-grid action-row">
+              <button id="combat-round" class="primary">🎲 Rolar rodada</button>
+              <button id="combat-continue" class="primary hidden">Continuar</button>
+            </div>
+          </section>
         </div>
 
-        <div id="combat-item-panel" class="spell-panel hidden">
-          <strong>⚡ Item de Combate</strong>
-          <div class="grid" style="margin-top:10px">
-            <select id="combat-item-target" aria-label="Alvo do item de combate"></select>
-            <button id="use-combat-item">Usar Raio de Dizimação</button>
-          </div>
-          <p id="combat-item-result" class="muted" style="margin-top:10px"></p>
-        </div>
+        <aside class="player-column">
+          <details class="card utility-card" open>
+            <summary>Ficha, inventário e ações</summary>
+            <div class="utility-body">
+              <p id="inventory" class="inventory-line"></p>
 
-        <div id="combat-log" class="combat-log"></div>
-        <div class="grid" style="margin-top:12px">
-          <button id="combat-round" class="primary">🎲 Rolar rodada</button>
-          <button id="combat-continue" class="primary hidden">Continuar</button>
-        </div>
-      </div>
+              <div class="grid compact-grid">
+                <button id="use-provision">🥖 Consumir provisão</button>
+                <button id="test-luck">🍀 Testar Sorte</button>
+              </div>
 
-      <div class="card">
-        <div id="reference" class="muted"></div>
-        <h2 style="margin-top:8px">Cena</h2>
-        <p id="scene"></p>
-        <div id="choices" class="grid"></div>
+              <div class="grid compact-grid save-row">
+                <button id="save-game" class="secondary">💾 Salvar partida</button>
+                <button id="restart-game" class="ghost-danger">↻ Recomeçar</button>
+              </div>
+            </div>
+          </details>
+
+          <details class="card utility-card">
+            <summary>Histórico de decisões</summary>
+            <div id="history" class="history-list muted utility-body"></div>
+          </details>
+
+          <details id="sync-tools" class="card utility-card">
+            <summary>Sincronização manual</summary>
+            <div class="utility-body">
+              <p class="muted compact-copy">
+                Use apenas quando um ponto da aventura pedir os valores do outro príncipe.
+              </p>
+              <div class="grid compact-grid">
+                <label>STATUS<input id="manual-status" type="number" min="0" value="0"></label>
+                <label>AÇÃO<input id="manual-action" type="number" min="0" value="0"></label>
+              </div>
+              <button id="apply-sync">🔗 Aplicar STATUS/AÇÃO</button>
+            </div>
+          </details>
+
+          <section class="card dev-tools hidden">
+            <strong>Ferramenta de teste</strong>
+            <p class="muted compact-copy">Permite abrir diretamente uma referência já cadastrada.</p>
+            <div class="grid compact-grid">
+              <input id="dev-ref" type="number" min="1" max="500" value="34" aria-label="Referência">
+              <button id="dev-go">🧭 Ir para referência</button>
+            </div>
+          </section>
+        </aside>
       </div>
     </section>
   </main>
@@ -137,6 +195,7 @@
   <div id="handoff-overlay" class="privacy-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="handoff-title">
     <div class="privacy-card">
       <div class="privacy-lock">🔒</div>
+      <div class="eyebrow">Troca de jogador</div>
       <h2 id="handoff-title">Tela protegida</h2>
       <p>Entregue o aparelho para <strong id="handoff-target">o outro jogador</strong>.</p>
       <p class="muted">A aventura anterior ficou escondida para preservar as informações privadas de cada príncipe.</p>

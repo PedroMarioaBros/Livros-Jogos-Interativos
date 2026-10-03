@@ -108,7 +108,7 @@ async function init() {
 
   $("game-title").textContent = state.config.title;
   $("game-status").textContent =
-    `Motor modular carregado • ${state.spells.spells.length} feitiços catalogados`;
+    `Escolha seu príncipe e atravesse uma aventura de decisões, combate e magia.`;
 
   document.querySelectorAll("[data-mode]").forEach((button) => {
     button.addEventListener("click", () => {
@@ -146,6 +146,12 @@ async function init() {
   $("handoff-player").addEventListener("click", startPlayerHandoff);
   $("handoff-confirm").addEventListener("click", finishPlayerHandoff);
   $("install-app").addEventListener("click", installApp);
+
+  if (new URLSearchParams(window.location.search).has("dev")) {
+    document.querySelectorAll(".dev-tools").forEach(element => {
+      element.classList.remove("hidden");
+    });
+  }
 
   window.addEventListener("beforeinstallprompt", event => {
     event.preventDefault();
@@ -244,6 +250,7 @@ async function startGame() {
   renderSheet();
   renderHistory();
   renderReference(state.ref);
+  focusStory();
 }
 
 function persistActiveDuoPlayer() {
@@ -457,6 +464,7 @@ async function finishPlayerHandoff() {
   renderSheet();
   renderHistory();
   renderReference(state.ref, { applyEntryEffects: false });
+  focusStory();
 }
 
 function getPartnerHero() {
@@ -825,6 +833,22 @@ function renderSheet() {
   renderDuoStatus();
 }
 
+function focusStory() {
+  const story = $("story-card");
+  if (!story) return;
+
+  const reducedMotion = window.matchMedia?.(
+    "(prefers-reduced-motion: reduce)"
+  )?.matches;
+
+  window.requestAnimationFrame(() => {
+    story.scrollIntoView({
+      behavior: reducedMotion ? "auto" : "smooth",
+      block: "start"
+    });
+  });
+}
+
 function navigateTo(target, label = "Avançar", options = {}) {
   const from = state.ref;
   const to = Number(target);
@@ -839,6 +863,7 @@ function navigateTo(target, label = "Avançar", options = {}) {
   }
 
   renderReference(to, options);
+  focusStory();
 }
 
 function renderHistory() {
