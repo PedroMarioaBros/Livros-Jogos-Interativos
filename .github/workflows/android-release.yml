@@ -1,0 +1,214 @@
+name: Gerar release Android
+
+on:
+  pull_request:
+    paths:
+      - "package.json"
+      - "capacitor.config.json"
+      - ".gitignore"
+      - "tools/build-web.mjs"
+      - "tools/android-audit.mjs"
+      - "tools/android-release-config.mjs"
+      - "assets/**"
+      - "src/**"
+      - "jogos/**"
+      - ".github/workflows/android-release.yml"
+  workflow_dispatch:
+    inputs:
+      production_signing:
+        description: "Usar chave de produção configurada em GitHub Secrets"
+        required: true
+        default: false
+        type: boolean
+      version_code:
+        description: "versionCode Android"
+        required: true
+        default: "1"
+        type: string
+      version_name:
+        description: "versionName Android"
+        required: true
+        default: "0.1.0"
+        type: string
+
+jobs:
+  build-release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Baixar repositório
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Configurar JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - name: Aceitar licenças do Android SDK
+        run: yes | /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager --licenses > /dev/null || true
+
+      - name: Instalar SDK Android 36
+        run: /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager "platforms;android-36" "build-tools;36.0.0"
+
+      - name: Instalar dependências Capacitor
+        run: npm install --package-lock=false --no-audit --no-fund
+
+      - name: Gerar pacote web
+        run: npm run build:web
+
+      - name: Gerar projeto Android
+        run: npx cap add android
+
+      - name: Sincronizar projeto Android
+        run: npx cap sync android
+
+      - name: Definir versão de release
+        env:
+          INPUT_VERSION_CODE: ${{ inputs.version_code }}
+          INPUT_VERSION_NAME: ${{ inputs.version_name }}
+        run: |
+          if [ "${GITHUB_EVENT_NAME}" = "workflow_dispatch" ]; then
+            VERSION_CODE="${INPUT_VERSION_CODE}"
+            VERSION_NAME="${INPUT_VERSION_NAME}"
+          else
+            VERSION_CODE="1"
+            VERSION_NAME="$(node -p "require('./package.json').version")"
+          fi
+
+          echo "ANDROID_VERSION_CODE=${VERSION_CODE}" >> "${GITHUB_ENV}"
+          echo "ANDROID_VERSION_NAME=${VERSION_NAME}" >> "${GITHUB_ENV}"
+
+      - name: Gerar chave efêmera de validação
+        if: ${{ github.event_name != 'workflow_dispatch' || inputs.production_signing != true }}
+        run: |
+          mkdir -p .ci-signing
+          keytool -genkeypair             -keystore .ci-signing/release-ci.jks             -storepass ci-only-password             -keypass ci-only-password             -alias ci-release             -keyalg RSA             -keysize 2048             -validity 2             -dname "CN=Livros Jogos CI, OU=CI, O=Livros Jogos Interativos, L=CI, S=CI, C=BR"
+
+          echo "ANDROID_KEYSTORE_FILE=$(realpath .ci-signing/release-ci.jks)" >> "${GITHUB_ENV}"
+          echo "ANDROID_KEYSTORE_PASSWORD=ci-only-password" >> "${GITHUB_ENV}"
+          echo "ANDROID_KEY_ALIAS=ci-release" >> "${GITHUB_ENV}"
+          echo "ANDROID_KEY_PASSWORD=ci-only-password" >> "${GITHUB_ENV}"
+          echo "ANDROID_SIGNING_MODE=ci-ephemeral" >> "${GITHUB_ENV}"
+
+      - name: Carregar chave de produção
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.production_signing == true }}
+        env:
+          KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          set -euo pipefail
+
+          test -n "${KEYSTORE_BASE64}"
+          test -n "${KEYSTORE_PASSWORD}"
+          test -n "${KEY_ALIAS}"
+          test -n "${KEY_PASSWORD}"
+
+          mkdir -p .ci-signing
+          printf '%s' "${KEYSTORE_BASE64}" | base64 --decode > .ci-signing/release-production.jks
+
+          keytool -list             -keystore .ci-signing/release-production.jks             -storepass "${KEYSTORE_PASSWORD}" > /dev/null
+
+          echo "ANDROID_KEYSTORE_FILE=$(realpath .ci-signing/release-production.jks)" >> "${GITHUB_ENV}"
+          echo "ANDROID_KEYSTORE_PASSWORD=${KEYSTORE_PASSWORD}" >> "${GITHUB_ENV}"
+          echo "ANDROID_KEY_ALIAS=${KEY_ALIAS}" >> "${GITHUB_ENV}"
+          echo "ANDROID_KEY_PASSWORD=${KEY_PASSWORD}" >> "${GITHUB_ENV}"
+          echo "ANDROID_SIGNING_MODE=production" >> "${GITHUB_ENV}"
+
+      - name: Configurar Gradle para release assinado
+        run: npm run android:release-config
+
+      - name: Compilar APK e AAB release
+        working-directory: android
+        run: ./gradlew assembleRelease bundleRelease --stacktrace
+
+      - name: Confirmar artefatos release
+        run: |
+          test -f android/app/build/outputs/apk/release/app-release.apk
+          test -f android/app/build/outputs/bundle/release/app-release.aab
+
+      - name: Verificar assinatura release
+        run: |
+          APK="android/app/build/outputs/apk/release/app-release.apk"
+          AAB="android/app/build/outputs/bundle/release/app-release.aab"
+          APKSIGNER="/usr/local/lib/android/sdk/build-tools/36.0.0/apksigner"
+
+          "${APKSIGNER}" verify --verbose --print-certs "${APK}"
+          jarsigner -verify "${AAB}" > /dev/null
+
+      - name: Validar metadados de release
+        run: |
+          set -euo pipefail
+          APK="android/app/build/outputs/apk/release/app-release.apk"
+          OUT="android/app/build/outputs/apk/release/app-release.badging.txt"
+          AAPT="/usr/local/lib/android/sdk/build-tools/36.0.0/aapt"
+
+          "${AAPT}" dump badging "${APK}" | tee "${OUT}"
+          grep -F "package: name='io.github.pedromariabros.livrosjogos' versionCode='${ANDROID_VERSION_CODE}' versionName='${ANDROID_VERSION_NAME}'" "${OUT}"
+          grep -F "sdkVersion:'24'" "${OUT}"
+          grep -F "targetSdkVersion:'36'" "${OUT}"
+          grep -F "launchable-activity:" "${OUT}"
+
+          if grep -Fq "application-debuggable" "${OUT}"; then
+            echo "Release não pode ser debuggable."
+            exit 1
+          fi
+
+      - name: Gerar checksums e aviso de assinatura
+        run: |
+          APK_DIR="android/app/build/outputs/apk/release"
+          AAB_DIR="android/app/build/outputs/bundle/release"
+
+          sha256sum "${APK_DIR}/app-release.apk" > "${APK_DIR}/app-release.apk.sha256"
+          sha256sum "${AAB_DIR}/app-release.aab" > "${AAB_DIR}/app-release.aab.sha256"
+
+          {
+            echo "signing_mode=${ANDROID_SIGNING_MODE}"
+            echo "version_code=${ANDROID_VERSION_CODE}"
+            echo "version_name=${ANDROID_VERSION_NAME}"
+            if [ "${ANDROID_SIGNING_MODE}" = "ci-ephemeral" ]; then
+              echo "distribution=NAO_USAR_EM_PRODUCAO"
+              echo "note=Chave efemera criada apenas para validar o pipeline de release."
+            else
+              echo "distribution=production"
+              echo "note=Artefato assinado com a chave de producao fornecida via GitHub Secrets."
+            fi
+          } > "${APK_DIR}/SIGNING-NOTICE.txt"
+
+      - name: Publicar release de validação
+        if: ${{ github.event_name != 'workflow_dispatch' || inputs.production_signing != true }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: livros-jogos-ci-release
+          path: |
+            android/app/build/outputs/apk/release/app-release.apk
+            android/app/build/outputs/apk/release/app-release.apk.sha256
+            android/app/build/outputs/apk/release/app-release.badging.txt
+            android/app/build/outputs/apk/release/SIGNING-NOTICE.txt
+            android/app/build/outputs/bundle/release/app-release.aab
+            android/app/build/outputs/bundle/release/app-release.aab.sha256
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Publicar release de produção
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.production_signing == true }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: livros-jogos-production-release
+          path: |
+            android/app/build/outputs/apk/release/app-release.apk
+            android/app/build/outputs/apk/release/app-release.apk.sha256
+            android/app/build/outputs/apk/release/app-release.badging.txt
+            android/app/build/outputs/apk/release/SIGNING-NOTICE.txt
+            android/app/build/outputs/bundle/release/app-release.aab
+            android/app/build/outputs/bundle/release/app-release.aab.sha256
+          if-no-files-found: error
+          retention-days: 14
