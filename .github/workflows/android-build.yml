@@ -92,20 +92,13 @@ jobs:
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
           script: |
-            set -eux
-            APK="android/app/build/outputs/apk/debug/app-debug.apk"
-            PACKAGE="io.github.pedromariabros.livrosjogos"
-
-            adb install -r "$APK"
-            adb shell pm path "$PACKAGE"
-            adb shell am force-stop "$PACKAGE"
-            adb shell monkey -p "$PACKAGE" -c android.intent.category.LAUNCHER 1
+            adb install -r android/app/build/outputs/apk/debug/app-debug.apk
+            adb shell pm path io.github.pedromariabros.livrosjogos
+            adb shell am force-stop io.github.pedromariabros.livrosjogos
+            adb shell monkey -p io.github.pedromariabros.livrosjogos -c android.intent.category.LAUNCHER 1
             sleep 8
-
-            PID="$(adb shell pidof "$PACKAGE" | tr -d '\r')"
-            test -n "$PID"
-
-            adb shell dumpsys activity activities | grep -E "mResumedActivity|topResumedActivity" | grep -F "$PACKAGE"
+            test -n "$(adb shell pidof io.github.pedromariabros.livrosjogos | tr -d '\r')"
+            adb shell dumpsys activity activities | grep -E "mResumedActivity|topResumedActivity" | grep -F "io.github.pedromariabros.livrosjogos"
             adb exec-out screencap -p > android/app/build/outputs/apk/debug/emulator-launch.png
             test -s android/app/build/outputs/apk/debug/emulator-launch.png
 
