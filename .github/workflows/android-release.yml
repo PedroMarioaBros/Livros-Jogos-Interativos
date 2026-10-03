@@ -66,6 +66,12 @@ jobs:
       - name: Gerar projeto Android
         run: npx cap add android
 
+      - name: Gerar ícones e splash nativos Android
+        run: npm run android:assets
+
+      - name: Auditar assets nativos Android
+        run: npm run android:native-assets-audit
+
       - name: Sincronizar projeto Android
         run: npx cap sync android
 
