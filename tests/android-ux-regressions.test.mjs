@@ -101,3 +101,34 @@ test("Colthar 117 permanece extraída e marcada para revisão manual sem rebalan
   );
   assert.equal(ref117.onVictory, 429);
 });
+
+test("regra especial de combate preserva cálculo após navegar", () => {
+  const app = fs.readFileSync(
+    new URL("../src/app.js", import.meta.url),
+    "utf8"
+  );
+
+  assert.match(app, /REGRA ESPECIAL DE COMBATE/);
+  assert.match(
+    app,
+    /Regra: a consequência especial é ativada quando o total é/
+  );
+  assert.match(
+    app,
+    /"Regra especial do combate",[\s\S]*preserveMechanicsResult: true/
+  );
+});
+
+test("feitiços com dados exibem regra de conjuração e rolagens secundárias", () => {
+  const app = fs.readFileSync(
+    new URL("../src/app.js", import.meta.url),
+    "utf8"
+  );
+
+  assert.match(app, /FEITIÇO DE COMBATE/);
+  assert.match(app, /Regra de conjuração: 1–5 = sucesso; 6 = falha/);
+  assert.match(app, /Dano da Rajada:/);
+  assert.match(app, /Regra de Sono:/);
+  assert.match(app, /Estontear: 1d6 =/);
+  assert.match(app, /FEITIÇO NARRATIVO/);
+});
