@@ -15,6 +15,7 @@ export function createCharacter(data, rng = Math.random) {
     class: data.class,
     initialStats: { ...initialStats },
     stats: { ...initialStats },
+    initialProvisions: Number(resources.provisions || 0),
     provisions: Number(resources.provisions || 0),
     gold: Number(resources.gold || 0),
     items: [...(resources.items || [])],

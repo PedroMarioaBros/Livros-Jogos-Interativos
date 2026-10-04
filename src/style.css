@@ -277,6 +277,88 @@ button:disabled {
   line-height: 1.45;
 }
 
+.mechanics-result {
+  margin-top: 16px;
+  padding: 15px;
+  border: 1px solid rgba(216, 184, 106, .46);
+  border-radius: 15px;
+  background: rgba(216, 184, 106, .08);
+}
+
+.mechanics-result.mechanics-success {
+  border-color: rgba(108, 168, 167, .58);
+  background: rgba(62, 115, 111, .14);
+}
+
+.mechanics-result.mechanics-failure {
+  border-color: rgba(198, 107, 107, .62);
+  background: rgba(115, 54, 58, .16);
+}
+
+.mechanics-title {
+  display: block;
+  margin-bottom: 9px;
+  color: #fff1c5;
+  letter-spacing: .04em;
+}
+
+.mechanics-details {
+  display: grid;
+  gap: 5px;
+}
+
+.mechanics-details p {
+  margin: 0;
+  line-height: 1.45;
+}
+
+.mechanics-outcome {
+  margin-top: 5px !important;
+  font-weight: 850;
+  color: #fff7df;
+}
+
+.mechanics-consequence {
+  margin-top: 3px !important;
+  color: var(--gold-soft);
+}
+
+.ending-card {
+  margin-top: 14px;
+  padding: 15px;
+  border: 1px solid var(--border);
+  border-radius: 15px;
+  background: rgba(0, 0, 0, .18);
+}
+
+.ending-card strong {
+  display: block;
+  margin-bottom: 7px;
+  font-size: 1.05rem;
+}
+
+.ending-card p {
+  margin: 0;
+  line-height: 1.55;
+}
+
+.ending-card.ending-death {
+  border-color: rgba(198, 107, 107, .62);
+  background: rgba(115, 54, 58, .18);
+}
+
+.provision-box {
+  display: grid;
+  gap: 7px;
+  margin-top: 10px;
+}
+
+.provision-box button:disabled {
+  border-color: var(--border-soft);
+  background: rgba(40, 34, 44, .6);
+  color: #998f9a;
+}
+
 .feedback-line:empty,
 .system-message:empty {
   display: none;

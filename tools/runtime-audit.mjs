@@ -46,7 +46,9 @@ const SUPPORTED_NODE_KEYS = new Set([
 const METADATA_KEYS = new Set([
   "estado",
   "resumo",
-  "notes"
+  "notes",
+  "needsManualReview",
+  "manualReviewReason"
 ]);
 
 const SUPPORTED_EFFECT_TYPES = new Set([
