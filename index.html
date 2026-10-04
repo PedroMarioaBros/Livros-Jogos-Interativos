@@ -104,6 +104,7 @@
             <h2>Cena</h2>
             <p id="scene" class="scene-copy"></p>
             <p id="game-message" class="system-message"></p>
+            <section id="mechanics-result" class="mechanics-result hidden" aria-live="polite"></section>
             <div id="choices" class="choice-stack"></div>
           </section>
 
@@ -148,9 +149,11 @@
             <div class="utility-body">
               <p id="inventory" class="inventory-line"></p>
 
-              <div class="grid compact-grid">
+              <div class="provision-box">
                 <button id="use-provision">🥖 Consumir provisão</button>
-                <button id="test-luck">🍀 Testar Sorte</button>
+                <p id="provision-help" class="muted compact-copy">
+                  Consumir 1 provisão → recuperar até +2 ENERGIA.
+                </p>
               </div>
 
               <div class="grid compact-grid save-row">
