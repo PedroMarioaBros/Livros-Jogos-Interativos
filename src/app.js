@@ -1535,6 +1535,7 @@ function renderReference(reference, options = {}) {
         `🪄 ${option.label} — custo ${option.cost} MAGIA`;
 
       button.addEventListener("click", () => {
+        const magicBefore = state.hero.stats.magia;
         const result = castSituationalSpell(
           state.hero,
           {
@@ -1552,20 +1553,36 @@ function renderReference(reference, options = {}) {
           return;
         }
 
-        const outcome = result.automaticFailure
-          ? "Falha automática: MAGIA igual a zero."
-          : result.success
-            ? `Feitiço funcionou (dado ${result.die}).`
-            : `Feitiço falhou (dado ${result.die}).`;
+        const targetDescription = result.target
+          ? `A narrativa segue para a referência ${result.target}.`
+          : "A narrativa exige uma escolha adicional antes de continuar.";
 
-        showGameMessage(outcome);
+        const rows = [
+          `Feitiço: ${option.label}`,
+          `MAGIA antes: ${magicBefore}`,
+          `Custo: ${result.cost} MAGIA`,
+          `MAGIA após: ${result.magicAfter}`
+        ];
 
-        if (!result.success && node.partnerOnFailure) {
-          showGameMessage(
-            outcome +
-            ` O outro jogador também deve seguir para ${node.partnerOnFailure}.`
-          );
+        if (result.automaticFailure) {
+          rows.push("Dados: não houve rolagem porque MAGIA era 0.");
+          rows.push("Regra: MAGIA 0 provoca falha automática.");
+        } else {
+          rows.push(`Dado: 1d6 = ${result.die}`);
+          rows.push("Regra: 1–5 = sucesso; 6 = falha.");
         }
+
+        showMechanicsResult({
+          title: "🪄 FEITIÇO NARRATIVO",
+          rows,
+          outcome: `Resultado: ${result.success ? "SUCESSO" : "FALHA"}`,
+          consequence:
+            targetDescription +
+            (!result.success && node.partnerOnFailure
+              ? ` O outro jogador também deve seguir para ${node.partnerOnFailure}.`
+              : ""),
+          tone: result.success ? "success" : "failure"
+        });
 
         if (
           !result.success &&
@@ -1576,7 +1593,7 @@ function renderReference(reference, options = {}) {
           const info = document.createElement("p");
           info.className = "muted";
           info.textContent =
-            outcome + " Escolha como continuar após a falha.";
+            "O feitiço falhou. Escolha como continuar:";
           $("choices").appendChild(info);
 
           for (const failureChoice of node.failureChoices) {
@@ -1586,7 +1603,8 @@ function renderReference(reference, options = {}) {
             failureButton.addEventListener("click", () => {
               navigateTo(
                 failureChoice.target,
-                "Alternativa após falha de feitiço"
+                "Alternativa após falha de feitiço",
+                { preserveMechanicsResult: true }
               );
             });
             $("choices").appendChild(failureButton);
@@ -1622,7 +1640,8 @@ function renderReference(reference, options = {}) {
             result.target,
             result.success
               ? `Feitiço: ${option.label}`
-              : "Falha no feitiço"
+              : "Falha no feitiço",
+            { preserveMechanicsResult: true }
           );
         }
       });
@@ -2389,6 +2408,45 @@ function describeSpellResult(result) {
   return `${result.spellName} foi lançado com sucesso.`;
 }
 
+function combatSpellMechanicsRows(spell, result, magicBefore) {
+  const rows = [
+    `Feitiço: ${result.spellName || spell.name}`,
+    `MAGIA antes: ${magicBefore}`,
+    `Custo: ${result.cost} MAGIA`,
+    `MAGIA após: ${result.magicAfter}`,
+    `Dado de conjuração: 1d6 = ${result.die}`,
+    "Regra de conjuração: 1–5 = sucesso; 6 = falha."
+  ];
+
+  if (result.success && result.spellId === "rajada-mortal") {
+    const detail = result.details?.[0];
+    if (detail?.roll) {
+      rows.push(
+        `Dano da Rajada: ${detail.roll.rolls.join(" + ")} = ${detail.roll.total}`
+      );
+      if (detail.enemy) {
+        rows.push(
+          `${detail.enemy}: ENERGIA ${detail.before} → ${detail.after}`
+        );
+      }
+    }
+  }
+
+  if (result.success && result.spellId === "sono") {
+    const failValue = Number(spell.effect?.failsIfAnyDieIs ?? 6);
+    rows.push(
+      `Regra de Sono: para cada inimigo, qualquer dado ${failValue} impede que ele adormeça.`
+    );
+    for (const detail of result.details || []) {
+      rows.push(
+        `${detail.enemy}: dados [${(detail.rolls || []).join(", ")}] → ${detail.asleep ? "ADORMECEU" : "RESISTIU"}`
+      );
+    }
+  }
+
+  return rows;
+}
+
 function castSelectedSpell() {
   const cooperative =
     state.cooperativeEncounter &&
@@ -2414,6 +2472,7 @@ function castSelectedSpell() {
   if (!spell) return;
 
   const magicSpend = Number($("spell-magic-spend").value);
+  const magicBefore = caster.stats.magia;
   const result = cooperative
     ? applyCooperativeCombatSpell(
         caster,
@@ -2429,6 +2488,17 @@ function castSelectedSpell() {
       );
 
   $("spell-result").textContent = describeSpellResult(result);
+
+  if (result.ok) {
+    showMechanicsResult({
+      title: "🪄 FEITIÇO DE COMBATE",
+      rows: combatSpellMechanicsRows(spell, result, magicBefore),
+      outcome: `Resultado: ${result.success ? "SUCESSO" : "FALHA"}`,
+      consequence: describeSpellResult(result),
+      tone: result.success ? "success" : "failure"
+    });
+  }
+
   renderSheet();
 
   if (cooperative) {
@@ -2450,7 +2520,8 @@ function castSelectedSpell() {
         state.characterData.references[String(state.ref)]
       );
       $("spell-result").textContent =
-        `Feitiço lançado. Ainda resta ${limit - attempts} tentativa(s) antes do combate.`;
+        describeSpellResult(result) +
+        ` Ainda resta ${limit - attempts} tentativa(s) antes do combate.`;
     }
   }
 
@@ -2545,14 +2616,29 @@ function playCombatRound() {
   );
 
   if (roundRoll.triggered) {
+    const specialRule = node.encounterSpecial?.roundRoll;
     state.encounter = null;
     hideCombat();
-    showGameMessage(
-      `Regra especial: ${roundRoll.roll.rolls.join(" + ")} = ${roundRoll.roll.total}. A consequência especial foi ativada.`
-    );
+
+    showMechanicsResult({
+      title: "🎲 REGRA ESPECIAL DE COMBATE",
+      rows: [
+        `Dados: ${roundRoll.roll.rolls.join(" + ")} = ${roundRoll.roll.total}`,
+        `Regra: a consequência especial é ativada quando o total é ${specialRule.trigger}.`,
+        `Comparação: ${roundRoll.roll.total} = ${specialRule.trigger}`
+      ],
+      outcome: "Resultado: REGRA ESPECIAL ATIVADA",
+      consequence:
+        `Consequência: a narrativa segue para a referência ${roundRoll.target}.`,
+      tone: "failure"
+    });
 
     if (Number.isInteger(roundRoll.target) && roundRoll.target > 0) {
-      navigateTo(roundRoll.target, "Regra especial do combate");
+      navigateTo(
+        roundRoll.target,
+        "Regra especial do combate",
+        { preserveMechanicsResult: true }
+      );
     }
     return;
   }
@@ -2573,11 +2659,24 @@ function playCombatRound() {
       ? " A Sombra foi vencida; Lothar continuará o combate pessoalmente."
       : "";
 
+    const specialRoundNote =
+      roundRoll.roll && !roundRoll.triggered
+        ? ` Regra especial: ${roundRoll.roll.rolls.join(" + ")} = ${roundRoll.roll.total}; ativa somente em ${node.encounterSpecial.roundRoll.trigger}, portanto não foi ativada.`
+        : "";
+
+    const incomingSave = state.encounter.modifiers?.incomingHitSave;
+    const stunNote =
+      Number.isInteger(result.round.incomingSaveRoll) && incomingSave
+        ? ` Estontear: 1d6 = ${result.round.incomingSaveRoll}; ` +
+          `${(incomingSave.noDamageResults || []).join("/")} anulam o dano e ` +
+          `${(incomingSave.normalDamageResults || []).join("/")} mantêm o dano.`
+        : "";
+
     $("combat-log").textContent =
       `Rodada ${result.round.round}: ` +
       `${attacker} ${result.round.heroRolls.join("+")} + HABILIDADE = ${result.round.heroAttack}; ` +
       `${result.round.enemyName} ${result.round.enemyRolls.join("+")} + HABILIDADE = ${result.round.enemyAttack}. ` +
-      labels[result.round.outcome] + shadowNote;
+      labels[result.round.outcome] + shadowNote + specialRoundNote + stunNote;
   }
 
   renderSheet();
