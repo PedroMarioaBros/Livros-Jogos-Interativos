@@ -87,6 +87,7 @@
   - [x] Raio de Dizimação implementado em combate solo/cooperativo; referência 314 confirmada no OCR do item `livros-jogos` do Archive.org
   - [x] Enigma numérico de Lothar 44 migrado para `referenceInput` após confirmação no Archive.org
   - [x] Colthar 19 confirmado no Archive.org com rotas 133 e 243
+  - [ ] Colthar 117 — validar visualmente na fonte original os dois Gárgulas e todas as regras/alternativas do encontro antes de confirmar balanceamento
   - [x] Auditoria reversa de resolução: zero ciclos alcançáveis presos sem final, espera, resposta numérica ou revisão explícita
   - [x] Finais conjuntos e `removed-transition` normalizados no runtime do modo dupla
   - [x] Resultados de combate que movem/removem o parceiro centralizados em `duo.js` e cobertos por regressões reais
@@ -106,6 +107,11 @@
 - [x] Feitiços de Combate de Lothar em encontros cooperativos
 - [ ] Polimento visual da tela cooperativa e regras especiais remanescentes
 - [ ] Redesenho visual mobile após primeiro teste físico
+  - [x] Remover Teste de Sorte geral da ficha; manter apenas ação contextual da narrativa
+  - [x] Exibir cálculo persistente de Teste de Sorte após a navegação
+  - [x] Exibir dados/regra/consequência em rolagens narrativas e testes de atributo
+  - [x] Identificar morte narrativa separadamente de ENERGIA 0
+  - [x] Mostrar estoque/efeito das provisões e bloquear consumo durante combate
 - [x] Inventário inicial e recursos na ficha
 - [x] Salvamento local
 - [x] Histórico de decisões
@@ -127,7 +133,7 @@
 
 ## Regra de qualidade
 
-Nenhuma referência será marcada como `validada` sem conferência explícita. O motor deve aceitar conteúdo incompleto sem inventar destinos inexistentes.
+Nenhuma referência será marcada como `validada` sem conferência explícita. O motor deve aceitar conteúdo incompleto sem inventar destinos inexistentes. Seguir `docs/VALIDACAO_FONTES.md`: quando leitura/OCR permanecer ambíguo após as tentativas de confirmação, apresentar a página ao usuário e solicitar validação visual antes de fixar o dado.
 
 
 ## Fase 5 — Aplicativo instalável
