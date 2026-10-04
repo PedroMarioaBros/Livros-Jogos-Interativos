@@ -2056,6 +2056,8 @@
     },
     "117": {
       "estado": "extraida",
+      "needsManualReview": true,
+      "manualReviewReason": "Confirmar visualmente na fonte original os atributos dos dois Gárgulas, o combate sucessivo e a ausência de regra especial, fuga, ajuda, item, modificador ou condição omitida.",
       "resumo": "Ao mexer em um espelho, Colthar desperta dois Gárgulas que precisa enfrentar sucessivamente.",
       "encounter": {
         "enemies": [
