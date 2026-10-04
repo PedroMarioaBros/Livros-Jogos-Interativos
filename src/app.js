@@ -1922,6 +1922,7 @@ function renderEncounter(node) {
       state.cooperativeEncounter.reference = state.ref;
     }
 
+    renderSheet();
     renderCooperativeEncounter(node);
     return;
   }
@@ -1931,6 +1932,8 @@ function renderEncounter(node) {
   if (!state.encounter || state.encounter.reference !== state.ref) {
     state.encounter = createEncounter(state.ref, encounterDefinition);
   }
+
+  renderSheet();
 
   const enemy = currentOpponent(state.encounter);
   $("combat-title").textContent = enemy
