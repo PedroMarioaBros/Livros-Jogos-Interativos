@@ -132,7 +132,6 @@ async function init() {
 
   $("start").addEventListener("click", startGame);
   $("use-provision").addEventListener("click", useProvision);
-  $("test-luck").addEventListener("click", runLuckTest);
   $("apply-sync").addEventListener("click", applyManualSync);
   $("combat-round").addEventListener("click", playCombatRound);
   $("combat-continue").addEventListener("click", continueAfterCombat);
@@ -198,6 +197,73 @@ function updateShared() {
 
 function showGameMessage(message) {
   $("game-message").textContent = message;
+}
+
+function clearMechanicsResult() {
+  const box = $("mechanics-result");
+  if (!box) return;
+
+  box.innerHTML = "";
+  box.className = "mechanics-result hidden";
+}
+
+function showMechanicsResult({
+  title,
+  rows = [],
+  outcome = "",
+  consequence = "",
+  tone = "neutral"
+}) {
+  const box = $("mechanics-result");
+  if (!box) return;
+
+  box.innerHTML = "";
+  box.className = `mechanics-result mechanics-${tone}`;
+
+  const heading = document.createElement("strong");
+  heading.className = "mechanics-title";
+  heading.textContent = title;
+  box.appendChild(heading);
+
+  const details = document.createElement("div");
+  details.className = "mechanics-details";
+
+  for (const row of rows) {
+    const line = document.createElement("p");
+    line.textContent = row;
+    details.appendChild(line);
+  }
+
+  if (outcome) {
+    const line = document.createElement("p");
+    line.className = "mechanics-outcome";
+    line.textContent = outcome;
+    details.appendChild(line);
+  }
+
+  if (consequence) {
+    const line = document.createElement("p");
+    line.className = "mechanics-consequence";
+    line.textContent = consequence;
+    details.appendChild(line);
+  }
+
+  box.appendChild(details);
+}
+
+function combatIsActive() {
+  return Boolean(
+    (state.encounter && !state.encounter.finished) ||
+    (state.cooperativeEncounter && !state.cooperativeEncounter.finished)
+  );
+}
+
+function provisionContext() {
+  return {
+    inCombat: combatIsActive(),
+    castingSpell: false,
+    hostile: false
+  };
 }
 
 async function startGame() {
@@ -796,8 +862,50 @@ function renderSheet() {
     )
     .join("");
 
+  const initialProvisions = Number(
+    hero.initialProvisions ??
+    state.characterData?.startingResources?.provisions ??
+    hero.provisions
+  );
+
   $("resources").textContent =
-    `Provisões: ${hero.provisions} • Ouro: ${hero.gold}`;
+    `🥖 Provisões: ${hero.provisions}/${initialProvisions} • Ouro: ${hero.gold}`;
+
+  const provisionButton = $("use-provision");
+  const provisionHelp = $("provision-help");
+  const inCombat = combatIsActive();
+  const energyFull =
+    hero.stats.energia >= hero.initialStats.energia;
+  const energyRecoveryBlocked =
+    hero.flags?.includes("sem_recuperacao_energia");
+
+  provisionButton.disabled =
+    inCombat ||
+    hero.provisions <= 0 ||
+    energyFull ||
+    energyRecoveryBlocked;
+
+  if (inCombat) {
+    provisionButton.textContent = "🥖 Provisões indisponíveis em combate";
+    provisionHelp.textContent =
+      "Não é possível consumir provisões durante o combate.";
+  } else if (hero.provisions <= 0) {
+    provisionButton.textContent = "🥖 Sem provisões";
+    provisionHelp.textContent =
+      "Você não possui mais provisões.";
+  } else if (energyRecoveryBlocked) {
+    provisionButton.textContent = "🥖 Recuperação de ENERGIA bloqueada";
+    provisionHelp.textContent =
+      "Uma condição da aventura impede recuperar ENERGIA neste momento.";
+  } else if (energyFull) {
+    provisionButton.textContent = "🥖 ENERGIA máxima";
+    provisionHelp.textContent =
+      "ENERGIA máxima — não é necessário consumir provisão.";
+  } else {
+    provisionButton.textContent = "🥖 Consumir 1 provisão";
+    provisionHelp.textContent =
+      `Consumir 1 provisão → recuperar até +2 ENERGIA. Restam ${hero.provisions}/${initialProvisions}.`;
+  }
 
   const inventory = $("inventory");
   inventory.innerHTML = "";
@@ -854,6 +962,10 @@ function navigateTo(target, label = "Avançar", options = {}) {
   const from = state.ref;
   const to = Number(target);
 
+  if (options.preserveMechanicsResult !== true) {
+    clearMechanicsResult();
+  }
+
   if (Number.isInteger(from) && Number.isInteger(to) && from !== to) {
     state.history.push({
       from,
@@ -886,6 +998,10 @@ function renderHistory() {
 }
 
 function renderReference(reference, options = {}) {
+  if (options.preserveMechanicsResult !== true) {
+    clearMechanicsResult();
+  }
+
   state.ref = Number(reference);
   renderDuoStatus();
   const node = state.characterData.references[String(state.ref)];
@@ -941,9 +1057,20 @@ function renderReference(reference, options = {}) {
       result => result.type === "random_stat_damage"
     );
     if (randomDamage) {
-      showGameMessage(
-        `Efeito da cena: ${randomDamage.roll.rolls.join(" + ")} = ${randomDamage.roll.total} de dano em ${randomDamage.stat.toUpperCase()}.`
-      );
+      showMechanicsResult({
+        title: "🎲 DANO ALEATÓRIO",
+        rows: [
+          `Atributo afetado: ${randomDamage.stat.toUpperCase()}`,
+          `Valor antes: ${randomDamage.before}`,
+          `Dados: ${randomDamage.roll.rolls.join(" + ")} = ${randomDamage.roll.total}`,
+          `Dano aplicado: -${randomDamage.roll.total}`,
+          `Valor depois: ${randomDamage.value}`
+        ],
+        outcome: "Resultado: dano aplicado pela narrativa.",
+        consequence:
+          "A ficha foi atualizada com o resultado desta rolagem.",
+        tone: "failure"
+      });
     }
 
     renderSheet();
@@ -1165,14 +1292,32 @@ function renderReference(reference, options = {}) {
     button.textContent = "🍀 Testar a Sorte";
     button.addEventListener("click", () => {
       const result = testLuck(state.hero);
+      const target = result.success
+        ? node.test.successTarget
+        : node.test.failureTarget;
+      const comparison = result.success ? "≤" : ">";
+      const outcome = result.success ? "SUCESSO" : "AZAR";
+
       renderSheet();
-      showGameMessage(
-        `Teste de Sorte: ${result.rolls.join(" + ")} = ${result.total}. ` +
-        (result.success ? "SUCESSO." : "AZAR.")
-      );
+      showMechanicsResult({
+        title: "🍀 TESTE DE SORTE",
+        rows: [
+          `SORTE antes do teste: ${result.luckBefore}`,
+          `Dados: ${result.rolls.join(" + ")} = ${result.total}`,
+          "Regra: sucesso se 2d6 ≤ SORTE atual",
+          `Comparação: ${result.total} ${comparison} ${result.luckBefore}`,
+          `SORTE após o teste: ${result.luckAfter}`
+        ],
+        outcome: `Resultado: ${outcome}`,
+        consequence:
+          `Consequência: a narrativa seguiu para a referência ${target} pelo resultado de ${outcome}.`,
+        tone: result.success ? "success" : "failure"
+      });
+
       navigateTo(
-        result.success ? node.test.successTarget : node.test.failureTarget,
-        result.success ? "Teste de Sorte: sucesso" : "Teste de Sorte: azar"
+        target,
+        result.success ? "Teste de Sorte: sucesso" : "Teste de Sorte: azar",
+        { preserveMechanicsResult: true }
       );
     });
     $("choices").appendChild(button);
@@ -1216,14 +1361,23 @@ function renderReference(reference, options = {}) {
         return result.total >= min && result.total <= max;
       });
 
-      showGameMessage(
-        `Rolagem compartilhada: ${result.total}.`
-      );
-
       if (route) {
+        const [min, max] = route.range || [];
+        showMechanicsResult({
+          title: "🎲 ROLAGEM COMPARTILHADA",
+          rows: [
+            `Dados: ${result.rolls.join(" + ")} = ${result.total}`,
+            `Faixa correspondente: ${min}–${max}`
+          ],
+          outcome: `Resultado: referência ${route.target}`,
+          consequence:
+            "Consequência: a rolagem compartilhada definiu o próximo caminho narrativo.",
+          tone: "neutral"
+        });
         navigateTo(
           route.target,
-          `Rolagem compartilhada ${result.total}`
+          `Rolagem compartilhada ${result.total}`,
+          { preserveMechanicsResult: true }
         );
       }
     });
@@ -1245,19 +1399,37 @@ function renderReference(reference, options = {}) {
           ? result.total <= statValue
           : result.total >= statValue;
 
-      showGameMessage(
-        `Rolagem: ${result.rolls.join(" + ")} = ${result.total}; ` +
-        `${node.rollAgainstStat.stat.toUpperCase()} = ${statValue}. ` +
-        (success ? "SUCESSO." : "FALHA.")
-      );
+      const target = success
+        ? node.rollAgainstStat.successTarget
+        : node.rollAgainstStat.failureTarget;
+      const operator =
+        node.rollAgainstStat.successWhen === "lte" ? "≤" : "≥";
+      const rule =
+        node.rollAgainstStat.successWhen === "lte"
+          ? `sucesso se a rolagem for ≤ ${node.rollAgainstStat.stat.toUpperCase()}`
+          : `sucesso se a rolagem for ≥ ${node.rollAgainstStat.stat.toUpperCase()}`;
+
+      showMechanicsResult({
+        title: "🎲 TESTE DE ATRIBUTO",
+        rows: [
+          `Atributo usado: ${node.rollAgainstStat.stat.toUpperCase()}`,
+          `Valor atual: ${statValue}`,
+          `Dados: ${result.rolls.join(" + ")} = ${result.total}`,
+          `Regra: ${rule}`,
+          `Comparação: ${result.total} ${operator} ${statValue}`
+        ],
+        outcome: `Resultado: ${success ? "SUCESSO" : "FALHA"}`,
+        consequence:
+          `Consequência: a narrativa seguiu para a referência ${target}.`,
+        tone: success ? "success" : "failure"
+      });
 
       navigateTo(
-        success
-          ? node.rollAgainstStat.successTarget
-          : node.rollAgainstStat.failureTarget,
+        target,
         success
           ? "Teste de atributo: sucesso"
-          : "Teste de atributo: falha"
+          : "Teste de atributo: falha",
+        { preserveMechanicsResult: true }
       );
     });
 
@@ -1283,14 +1455,24 @@ function renderReference(reference, options = {}) {
         return result.total >= min && result.total <= max;
       });
 
-      showGameMessage(
-        `Rolagem: ${result.rolls.join(" + ")} = ${result.total}.`
-      );
-
       if (route) {
+        const [min, max] = route.range || [];
+        showMechanicsResult({
+          title: "🎲 ROLAGEM NARRATIVA",
+          rows: [
+            `Dados: ${result.rolls.join(" + ")} = ${result.total}`,
+            `Faixa correspondente: ${min}–${max}`
+          ],
+          outcome: `Resultado: referência ${route.target}`,
+          consequence:
+            "Consequência: o resultado dos dados definiu o próximo caminho da história.",
+          tone: "neutral"
+        });
+
         navigateTo(
           route.target,
-          `Rolagem ${result.total}`
+          `Rolagem ${result.total}`,
+          { preserveMechanicsResult: true }
         );
       }
     });
@@ -1629,12 +1811,30 @@ function renderReference(reference, options = {}) {
       );
     }
 
-    const info = document.createElement("p");
-    info.className = "muted";
-    info.textContent =
-      state.mode === "dupla" && state.partnerActive
-        ? "Fim da aventura deste príncipe. O outro jogador pode continuar."
-        : "Fim desta aventura.";
+    const info = document.createElement("div");
+    const isNarrativeDeath = node.ending === "death";
+    info.className = isNarrativeDeath
+      ? "ending-card ending-death"
+      : "ending-card";
+
+    const heading = document.createElement("strong");
+    heading.textContent = isNarrativeDeath
+      ? "☠️ Morte narrativa"
+      : "Fim desta aventura";
+    info.appendChild(heading);
+
+    const body = document.createElement("p");
+    if (isNarrativeDeath) {
+      body.textContent =
+        (node.resumo ? node.resumo + " " : "") +
+        `Esta morte decorre da narrativa desta referência, não exige que a ENERGIA chegue a 0. ENERGIA atual: ${state.hero.stats.energia}/${state.hero.initialStats.energia}.`;
+    } else {
+      body.textContent =
+        state.mode === "dupla" && state.partnerActive
+          ? "Fim da aventura deste príncipe. O outro jogador pode continuar."
+          : "Fim desta aventura.";
+    }
+    info.appendChild(body);
     $("choices").appendChild(info);
   } else if (
     choices.length === 0 &&
@@ -2593,18 +2793,22 @@ function restartGame() {
 function useProvision() {
   if (!state.hero) return;
 
-  const result = consumeProvision(state.hero);
+  const context = provisionContext();
+  const result = consumeProvision(state.hero, context);
 
   if (result.ok) {
+    const unit = result.provisions === 1 ? "provisão" : "provisões";
     showGameMessage(
-      `Provisão consumida: +${result.restored} de ENERGIA.`
+      `Provisão consumida. +${result.restored} ENERGIA. Restam ${result.provisions} ${unit}.`
     );
   } else {
     const messages = {
-      "full-energy": "Sua ENERGIA já está no máximo.",
+      "full-energy": "ENERGIA máxima — não é necessário consumir provisão.",
       "no-provisions": "Você não possui mais provisões.",
-      "energy-recovery-blocked": "Uma maldição impede qualquer recuperação de ENERGIA.",
-      blocked: "Não é possível consumir provisões neste momento."
+      "energy-recovery-blocked": "Uma condição da aventura impede recuperar ENERGIA neste momento.",
+      blocked: context.inCombat
+        ? "Não é possível consumir provisões durante o combate."
+        : "Não é possível consumir provisões neste momento."
     };
     showGameMessage(messages[result.reason] || "Não foi possível usar a provisão.");
   }
@@ -2629,18 +2833,6 @@ function applyManualSync() {
   state.shared = { status, acao };
   updateShared();
   renderReference(state.ref, { applyEntryEffects: false });
-}
-
-function runLuckTest() {
-  if (!state.hero) return;
-
-  const result = testLuck(state.hero);
-  showGameMessage(
-    `Teste de Sorte: ${result.rolls.join(" + ")} = ${result.total}. ` +
-    (result.success ? "SUCESSO." : "AZAR.") +
-    ` SORTE agora: ${result.luckAfter}.`
-  );
-  renderSheet();
 }
 
 init().catch((error) => {
