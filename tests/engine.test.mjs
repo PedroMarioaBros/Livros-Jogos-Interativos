@@ -1977,7 +1977,7 @@ test("Colthar possui o bloco 401 a 425 estruturado", () => {
     );
   }
 
-  assert.equal(warriorBookData.references["403"].estado, "parcial");
+  assert.equal(warriorBookData.references["403"].estado, "extraida");
   assert.equal(
     warriorBookData.references["413"].encounter.enemies[1].habilidade,
     8
