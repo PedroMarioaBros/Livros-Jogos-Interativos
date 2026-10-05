@@ -1,6 +1,6 @@
 # Progresso do projeto
 
-Atualização de referência: 2026-10-04.
+Atualização de referência: 2026-10-05.
 
 As porcentagens abaixo são estimativas de engenharia para um **Fúria de Príncipes completo, testado e instalável**, não apenas para um protótipo. Medidas de conteúdo são calculadas diretamente dos JSONs; estimativas de engenharia usam uma régua conservadora e não são média simples.
 
@@ -9,28 +9,28 @@ As porcentagens abaixo são estimativas de engenharia para um **Fúria de Prínc
 | Medida | Estado atual |
 | --- | ---: |
 | Colthar — referências estruturadas | 500/500 (100%) |
-| Colthar — completas/extraídas | 490/500 (98,0%) |
-| Colthar — parciais | 10 |
+| Colthar — completas/extraídas | 491/500 (98,2%) |
+| Colthar — parciais | 9 |
 | Colthar — pendentes | 0 |
 | Lothar — referências estruturadas | 500/500 (100%) |
-| Lothar — completas/extraídas | 499/500 (99,8%) |
+| Lothar — completas/extraídas | 500/500 (100%) |
 | Narrativa combinada — estruturada | 1000/1000 (100%) |
-| Narrativa combinada — completa/extraída | 989/1000 (98,9%) |
+| Narrativa combinada — completa/extraída | 991/1000 (99,1%) |
 | STATUS/AÇÃO catalogados | 34 |
 | STATUS/AÇÃO verificados | 34/34 catalogados |
 | Feitiços de Combate | 12/12 implementados |
 | Grafo combinado — alcance explícito | 988/1000 (98,8%) |
 | Finais/saídas classificados | 95/95 |
-| Encontros estruturados | 105 |
-| Encontros aguardando revisão visual | 7 |
+| Encontros estruturados | 107 |
+| Encontros aguardando revisão visual | 6 |
 | Referências extraídas com revisão manual adicional | 1 (Colthar 117) |
-| Encontros completos executados no CI | 104/104 |
-| Simulações integrais de combate | 208/208 (104 vitórias + 104 derrotas) |
-| Testes automatizados | 154/154 |
+| Encontros completos executados no CI | 106/106 |
+| Simulações integrais de combate | 212/212 (106 vitórias + 106 derrotas) |
+| Testes automatizados | 156/156 |
 | Transições pós-saída suportadas | 64/64 |
 | Rotas por resultado do parceiro suportadas | 2/2 cenas (4 rotas) |
-| Referências completas auditadas pelo runtime | 989/989 |
-| Referências completas executadas em smoke test narrativo | 989/989 |
+| Referências completas auditadas pelo runtime | 991/991 |
+| Referências completas executadas em smoke test narrativo | 991/991 |
 | Rota completa com save/load intermediário | 1/1 validada até o final 500 |
 | Auditoria PWA/offline | 28 recursos de shell, 14 módulos JS, 5 dependências de jogo e 3 ícones — 0 problemas/warnings |
 | Bootstrap Android/Capacitor | webDir `www`, 10 arquivos críticos e 28 recursos auditados — 0 problemas |
@@ -54,7 +54,7 @@ As porcentagens abaixo são estimativas de engenharia para um **Fúria de Prínc
 | Instâncias de condições auditadas | 178 |
 | Escolhas coordenadas auditadas | 6 |
 
-Colthar está contínuo de **1 a 500**, sem lacunas estruturais. Isso conclui 100% da estrutura narrativa dos dois volumes. A varredura final de STATUS/AÇÃO também foi concluída: existem 34 pontos catalogados e 34 verificados; o CI agora exige cobertura para todo efeito inline que altere STATUS ou AÇÃO. Ainda existem 10 referências parciais em Colthar (144, 168, 169, 220, 241, 252, 263, 266, 378 e 403) e 1 em Lothar (347). Além delas, Colthar 117 permanece `extraida`, mas agora está marcada com `needsManualReview` após o teste físico: os atributos dos dois Gárgulas, o combate sucessivo e a ausência de regras especiais/alternativas precisam ser conferidos visualmente na fonte original antes de qualquer validação definitiva ou rebalanceamento. Colthar 19 e Lothar 314/44 foram promovidas após conferência do OCR derivado do próprio item `livros-jogos` do Archive.org.
+Colthar está contínuo de **1 a 500**, sem lacunas estruturais. Isso conclui 100% da estrutura narrativa dos dois volumes. A varredura final de STATUS/AÇÃO também foi concluída: existem 34 pontos catalogados e 34 verificados; o CI agora exige cobertura para todo efeito inline que altere STATUS ou AÇÃO. Ainda existem 9 referências parciais em Colthar (144, 168, 169, 220, 241, 252, 263, 266 e 378) e nenhuma em Lothar. Colthar 403 e Lothar 347 foram fechadas por confirmação cruzada com variantes correspondentes dos próprios dois volumes, sem preencher lacunas por dedução. Além delas, Colthar 117 permanece `extraida`, mas agora está marcada com `needsManualReview` após o teste físico: os atributos dos dois Gárgulas, o combate sucessivo e a ausência de regras especiais/alternativas precisam ser conferidos visualmente na fonte original antes de qualquer validação definitiva ou rebalanceamento. Colthar 19 e Lothar 314/44 foram promovidas após conferência do OCR derivado do próprio item `livros-jogos` do Archive.org.
 
 ## Estado por área
 
@@ -64,9 +64,9 @@ Colthar está contínuo de **1 a 500**, sem lacunas estruturais. Isso conclui 10
 | Motor genérico de livro-jogo | 98% |
 | Regras específicas de Fúria de Príncipes | 96% |
 | Conteúdo estrutural de Colthar | 100% |
-| Conteúdo completo/extraído de Colthar | 98,0% |
+| Conteúdo completo/extraído de Colthar | 98,2% |
 | Conteúdo estrutural de Lothar | 100% |
-| Conteúdo completo/extraído de Lothar | 99,8% |
+| Conteúdo completo/extraído de Lothar | 100% |
 | Combate individual | 97% |
 | Magia de Lothar | 96% |
 | Combate cooperativo | 91% |
@@ -97,7 +97,7 @@ Com essa régua, o projeto está em aproximadamente:
 - **Fúria de Príncipes completo no mesmo aparelho: ~92%**;
 - **aplicativo Android final: ~90% do caminho total**.
 
-A classificação automática agora cobre 95 finais/saídas e 105 encontros estruturados. Há exatamente um final de sucesso por volume, ambos na referência 500; 7 encontros de Colthar permanecem explicitamente em revisão visual. O grafo combinado em dupla distingue corretamente rotas próprias e rotas do parceiro: 988 de 1000 referências são alcançáveis por transições explícitas, sem alvos inválidos, sem becos sem saída não explicados e sem ciclos alcançáveis presos fora de qualquer resolução. As 12 restantes descendem de apenas duas entradas não explícitas por resposta numérica: Colthar 465 e Lothar 18. O runtime do modo dupla agora executa 64 transições pós-saída para a referência 39 e as duas cenas dependentes do resultado do parceiro (Lothar 270 e 493). Uma auditoria automática adicional cobre as 989 referências completas: 335 instâncias de efeitos, 178 condições, 4 rotas por resultado do parceiro e 6 escolhas coordenadas são validadas contra o catálogo de recursos suportados pelo motor. Derrotas fatais em combate individual removem corretamente o príncipe ativo antes de o outro continuar. Finais `removed-transition` também removem corretamente o personagem, e mortes conjuntas diretas removem ambos os príncipes sem exigir handoff intermediário. O CI também instancia todos os 104 encontros completos e executa 208 resoluções integrais determinísticas — uma vitória e uma derrota para cada encontro — além da suíte unitária e das auditorias. Além disso, as 989 referências completas passam por execução real de efeitos, recompensas, condições, escolhas e resoluções condicionais sem retornar recursos não suportados. Duas rotas conjuntas completas são reproduzidas no CI desde a referência 1 até os dois finais de sucesso 500. A rota de Colthar preserva STATUS/AÇÃO, inventário, flags, tesouro compartilhado, instruções cruzadas, morte de Lothar e continuação solo; a rota de Lothar valida pagamentos, três feitiços situacionais, morte de Colthar, STATUS=1 e continuação solo até 500. A rota de Lothar também é interrompida na referência 191, serializada, restaurada como sessão dupla e retomada até 500 preservando ouro, MAGIA, inventário, STATUS/AÇÃO, referências e remoção do parceiro. A PWA passa por auditoria automática de integridade do cache: todos os recursos/imports/dependências necessários ao jogo estão cobertos. Os ícones PNG reais 192×192 e 512×512 já estão no manifesto e no cache, com dimensões verificadas pelo CI. O empacotamento Android usa Capacitor com `webDir` gerado em `www/`. O CI já gera o projeto nativo, sincroniza os assets, compila `app-debug.apk`, verifica assinatura APK v2, `applicationId`, minSdk 24, target/compileSdk 36 e gera SHA-256 antes de publicar o artefato. O mesmo pipeline também instala o APK em um emulador Android, abre o aplicativo, confirma processo ativo e Activity em primeiro plano e salva capturas/árvores de UI como evidência. O smoke test agora cria uma partida Solo com Colthar, salva na referência 1, encerra o processo, ativa modo avião, reabre o APK e carrega o save, confirmando a restauração da referência 1 sem rede. O CI também gera uma v1 e uma v2 do APK, instala a v2 por cima da v1 com a mesma assinatura debug e confirma `versionCode 2`, `versionName 1.0.1` e preservação do save na referência 1. Um pipeline separado de release já gera APK e AAB, injeta configuração de assinatura por variáveis de ambiente, valida assinatura, applicationId, minSdk/targetSdk, versionCode/versionName, ausência de `application-debuggable` e checksums. Em pull requests ele usa uma chave efêmera marcada como não distribuível; em execução manual o mesmo pipeline aceita a chave definitiva via GitHub Secrets. A instalação, abertura, gameplay, save/load e atualização v1→v2 já foram validados manualmente em aparelho Android físico, com preservação do save. Um teste posterior de atualização v2→v3 produzida em outra execução do CI revelou corretamente um bloqueio de assinatura: as chaves debug efêmeras de execuções distintas não coincidem. O workflow agora aceita opcionalmente uma chave debug estável pelo secret `ANDROID_TEST_DEBUG_KEYSTORE_BASE64` e também gera uma Preview com package separado para testes lado a lado sem tocar nos dados da v2. A primeira rodada de correções baseada nos testes físicos removeu o Teste de Sorte geral da ficha, mantém somente o teste contextual exigido pela narrativa, preserva na tela o cálculo completo de Sorte/rolagens/dano após a mudança de referência, diferencia morte narrativa de ENERGIA 0 e torna o estoque/efeito das provisões explícito, bloqueando consumo durante combate. A suíte subiu para 154/154 testes. Ainda faltam verificar offline no aparelho físico, configurar a chave debug estável para continuidade dos testes, configurar a chave definitiva de produção, validar manualmente Colthar 117 contra a fonte e continuar o polimento visual mobile. Esses percentuais continuam conservadores porque ainda faltam execução de caminhos completos, conferência das 11 referências parciais restantes e empacotamento final.
+A classificação automática agora cobre 95 finais/saídas e 107 encontros estruturados. Há exatamente um final de sucesso por volume, ambos na referência 500; 6 encontros de Colthar permanecem explicitamente em revisão visual. O grafo combinado em dupla distingue corretamente rotas próprias e rotas do parceiro: 988 de 1000 referências são alcançáveis por transições explícitas, sem alvos inválidos, sem becos sem saída não explicados e sem ciclos alcançáveis presos fora de qualquer resolução. As 12 restantes descendem de apenas duas entradas não explícitas por resposta numérica: Colthar 465 e Lothar 18. O runtime do modo dupla agora executa 64 transições pós-saída para a referência 39 e as duas cenas dependentes do resultado do parceiro (Lothar 270 e 493). Uma auditoria automática adicional cobre as 991 referências completas: 335 instâncias de efeitos, 178 condições, 4 rotas por resultado do parceiro e 6 escolhas coordenadas são validadas contra o catálogo de recursos suportados pelo motor. Derrotas fatais em combate individual removem corretamente o príncipe ativo antes de o outro continuar. Finais `removed-transition` também removem corretamente o personagem, e mortes conjuntas diretas removem ambos os príncipes sem exigir handoff intermediário. O CI também instancia todos os 106 encontros completos e executa 212 resoluções integrais determinísticas — uma vitória e uma derrota para cada encontro — além da suíte unitária e das auditorias. Além disso, as 991 referências completas passam por execução real de efeitos, recompensas, condições, escolhas e resoluções condicionais sem retornar recursos não suportados. Duas rotas conjuntas completas são reproduzidas no CI desde a referência 1 até os dois finais de sucesso 500. A rota de Colthar preserva STATUS/AÇÃO, inventário, flags, tesouro compartilhado, instruções cruzadas, morte de Lothar e continuação solo; a rota de Lothar valida pagamentos, três feitiços situacionais, morte de Colthar, STATUS=1 e continuação solo até 500. A rota de Lothar também é interrompida na referência 191, serializada, restaurada como sessão dupla e retomada até 500 preservando ouro, MAGIA, inventário, STATUS/AÇÃO, referências e remoção do parceiro. A PWA passa por auditoria automática de integridade do cache: todos os recursos/imports/dependências necessários ao jogo estão cobertos. Os ícones PNG reais 192×192 e 512×512 já estão no manifesto e no cache, com dimensões verificadas pelo CI. O empacotamento Android usa Capacitor com `webDir` gerado em `www/`. O CI já gera o projeto nativo, sincroniza os assets, compila `app-debug.apk`, verifica assinatura APK v2, `applicationId`, minSdk 24, target/compileSdk 36 e gera SHA-256 antes de publicar o artefato. O mesmo pipeline também instala o APK em um emulador Android, abre o aplicativo, confirma processo ativo e Activity em primeiro plano e salva capturas/árvores de UI como evidência. O smoke test agora cria uma partida Solo com Colthar, salva na referência 1, encerra o processo, ativa modo avião, reabre o APK e carrega o save, confirmando a restauração da referência 1 sem rede. O CI também gera uma v1 e uma v2 do APK, instala a v2 por cima da v1 com a mesma assinatura debug e confirma `versionCode 2`, `versionName 1.0.1` e preservação do save na referência 1. Um pipeline separado de release já gera APK e AAB, injeta configuração de assinatura por variáveis de ambiente, valida assinatura, applicationId, minSdk/targetSdk, versionCode/versionName, ausência de `application-debuggable` e checksums. Em pull requests ele usa uma chave efêmera marcada como não distribuível; em execução manual o mesmo pipeline aceita a chave definitiva via GitHub Secrets. A instalação, abertura, gameplay, save/load e atualização v1→v2 já foram validados manualmente em aparelho Android físico, com preservação do save. Um teste posterior de atualização v2→v3 produzida em outra execução do CI revelou corretamente um bloqueio de assinatura: as chaves debug efêmeras de execuções distintas não coincidem. O workflow agora aceita opcionalmente uma chave debug estável pelo secret `ANDROID_TEST_DEBUG_KEYSTORE_BASE64` e também gera uma Preview com package separado para testes lado a lado sem tocar nos dados da v2. A primeira rodada de correções baseada nos testes físicos removeu o Teste de Sorte geral da ficha, mantém somente o teste contextual exigido pela narrativa, preserva na tela o cálculo completo de Sorte/rolagens/dano após a mudança de referência, diferencia morte narrativa de ENERGIA 0 e torna o estoque/efeito das provisões explícito, bloqueando consumo durante combate. A suíte subiu para 156/156 testes. Ainda faltam verificar offline no aparelho físico, configurar a chave debug estável para continuidade dos testes, configurar a chave definitiva de produção, validar manualmente Colthar 117 contra a fonte e continuar o polimento visual mobile. Esses percentuais continuam conservadores porque ainda faltam execução de caminhos completos, conferência das 9 referências parciais restantes e empacotamento final.
 
 ## Marcos
 
@@ -112,7 +112,7 @@ A classificação automática agora cobre 95 finais/saídas e 105 encontros estr
 
 ## Próximos gargalos
 
-1. fechar as 11 referências parciais restantes e validar manualmente Colthar 117 contra a fonte, sem inventar dados;
+1. fechar as 9 referências parciais restantes e validar manualmente Colthar 117 contra a fonte, sem inventar dados;
 2. ampliar execução de caminhos narrativos completos além da cobertura integral dos encontros;
 3. redesenhar a interface mobile após o primeiro teste físico, reduzindo confusão visual e aproximando a experiência de um jogo final;
 4. verificar offline em Android físico, configurar assinatura debug estável para testes entre builds e depois a chave definitiva de produção;
