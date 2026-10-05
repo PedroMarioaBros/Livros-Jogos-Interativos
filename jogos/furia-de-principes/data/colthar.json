@@ -6525,11 +6525,29 @@
       ]
     },
     "403": {
-      "estado": "parcial",
+      "estado": "extraida",
       "resumo": "Três Orcs atacam Colthar enquanto Lothar está em perigo do lado de fora da cabana.",
-      "encounterNeedsReview": true,
+      "encounter": {
+        "enemies": [
+          {
+            "name": "Orc Um",
+            "habilidade": 8,
+            "energia": 6
+          },
+          {
+            "name": "Orc Dois",
+            "habilidade": 7,
+            "energia": 4
+          },
+          {
+            "name": "Orc Três",
+            "habilidade": 6,
+            "energia": 4
+          }
+        ]
+      },
       "onVictory": 131,
-      "notes": "O OCR preserva Orc Um 8/6, Orc Três 6/4 e ENERGIA 4 do Orc Dois, mas a HABILIDADE do segundo Orc está ilegível. Não cadastrar o encontro completo até conferência visual."
+      "notes": "Atributos confirmados por correspondência direta com as variantes do mesmo confronto na cabana: Lothar 455 e o combate conjunto 486 usam os mesmos três Orcs (8/6, 7/4 e 6/4)."
     },
     "404": {
       "estado": "extraida",
