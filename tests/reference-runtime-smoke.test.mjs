@@ -230,7 +230,7 @@ test("runtime executa todas as referências completas sem recurso unsupported", 
     }
   }
 
-  assert.equal(completeReferences, 989);
+  assert.equal(completeReferences, 991);
   assert.equal(effectInstances, 335);
   assert.equal(conditionInstances, 178);
 });
