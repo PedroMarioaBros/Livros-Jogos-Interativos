@@ -5450,8 +5450,27 @@
       ]
     },
     "347": {
-      "estado": "parcial",
+      "estado": "extraida",
       "resumo": "Lothar enfrenta o mercador de escravos e seus capangas; a corda mágica pode capturá-lo se uma rolagem de 1d6 der 6 durante uma série de ataque.",
+      "encounter": {
+        "enemies": [
+          {
+            "name": "Capanga Um",
+            "habilidade": 8,
+            "energia": 4
+          },
+          {
+            "name": "Capanga Dois",
+            "habilidade": 7,
+            "energia": 4
+          },
+          {
+            "name": "Mercador de Escravos",
+            "habilidade": 6,
+            "energia": 4
+          }
+        ]
+      },
       "encounterSpecial": {
         "roundRoll": {
           "dice": "1d6",
@@ -5461,8 +5480,7 @@
         "allowCombatMagic": true,
         "onVictory": 402
       },
-      "needsManualReview": true,
-      "notes": "OCR dos atributos dos três oponentes está corrompido; revisar visualmente antes de cadastrar o encontro completo."
+      "notes": "Atributos confirmados por correspondência direta com Colthar 142: mesmo Mercador de Escravos, dois capangas, corda mágica com 1d6=6 levando a 466 e vitória levando a 402."
     },
     "348": {
       "estado": "extraida",
