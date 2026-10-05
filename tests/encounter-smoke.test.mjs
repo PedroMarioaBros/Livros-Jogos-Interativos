@@ -191,7 +191,7 @@ test("todos os encontros completos executam ao menos uma rodada", () => {
     }
   }
 
-  assert.equal(completeStructured, 104);
+  assert.equal(completeStructured, 106);
   assert.equal(cooperative, 29);
   assert.equal(dynamic, 1);
 });
@@ -381,6 +381,6 @@ test("todos os encontros completos chegam a vitória e derrota determinísticas"
     }
   }
 
-  assert.equal(victories, 104);
-  assert.equal(defeats, 104);
+  assert.equal(victories, 106);
+  assert.equal(defeats, 106);
 });
