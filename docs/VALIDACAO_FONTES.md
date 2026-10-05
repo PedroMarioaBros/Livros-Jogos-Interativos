@@ -81,6 +81,10 @@ A regra é especialmente importante para:
 
 A presença de dados plausíveis no JSON não elimina uma marcação de revisão manual.
 
+## Fila ativa de pendências
+
+As referências ainda não fechadas após esgotamento das fontes acessíveis ficam registradas em `docs/VALIDACAO-MANUAL-FURIA.md`. Essa fila é a fonte de verdade para novas rodadas de conferência e deve ser atualizada sempre que uma pendência for fechada.
+
 ## Caso ativo: Colthar 117
 
 O teste físico no Android mostrou funcionamento coerente do motor no encontro, mas a referência permanece `extraida`.
